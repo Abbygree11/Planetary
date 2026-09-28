@@ -1,9 +1,14 @@
 package dev.planetary.world;
 
+import dev.planetary.topology.FaceTransform;
 import dev.planetary.topology.PlanetDirection;
+import dev.planetary.topology.PlanetTopology;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.ticks.TickPriority;
 
 import java.util.Objects;
 
@@ -13,11 +18,14 @@ import java.util.Objects;
  *
  * <p>This deliberately is not a fake ServerLevel yet. It gives the later
  * Level/BlockGetter compatibility layer one canonical place for topology-aware
- * block, fluid and neighbor access.</p>
+ * block, fluid, neighbor and scheduled-tick access.</p>
  */
 public final class PlanetWorldAccess {
     private final int faceSizeBlocks;
     private final PlanetBlockStateStore blocks;
+    private final PlanetNeighborUpdateQueue neighborUpdates = new PlanetNeighborUpdateQueue();
+    private final PlanetTickScheduler<Block> blockTicks = new PlanetTickScheduler<>();
+    private final PlanetTickScheduler<Fluid> fluidTicks = new PlanetTickScheduler<>();
 
     public PlanetWorldAccess(int faceSizeBlocks) {
         this(faceSizeBlocks, new PlanetBlockStateStore());
@@ -39,6 +47,18 @@ public final class PlanetWorldAccess {
         return blocks;
     }
 
+    public PlanetNeighborUpdateQueue neighborUpdates() {
+        return neighborUpdates;
+    }
+
+    public PlanetTickScheduler<Block> blockTicks() {
+        return blockTicks;
+    }
+
+    public PlanetTickScheduler<Fluid> fluidTicks() {
+        return fluidTicks;
+    }
+
     public PlanetBlockPos relative(PlanetBlockPos pos, Direction direction) {
         Objects.requireNonNull(direction, "direction");
         return PlanetBlockTopology.step(
@@ -53,6 +73,31 @@ public final class PlanetWorldAccess {
                 Objects.requireNonNull(pos, "pos"),
                 Objects.requireNonNull(direction, "direction"),
                 faceSizeBlocks
+        );
+    }
+
+    /**
+     * Returns both the adjacent block and the target-local direction pointing
+     * back to the source. The latter matters at a cube edge, where simply
+     * taking vanilla direction.getOpposite() is not enough.
+     */
+    public PlanetNeighborRef neighbor(PlanetBlockPos source, Direction direction) {
+        Objects.requireNonNull(source, "source");
+        Objects.requireNonNull(direction, "direction");
+
+        PlanetDirection localDirection = PlanetVanillaDirection.fromVanilla(direction);
+        PlanetDirection backDirection = localDirection.opposite();
+
+        if (localDirection.isHorizontal()
+                && PlanetBlockTopology.isOnEdge(source, localDirection, faceSizeBlocks)) {
+            FaceTransform transform = PlanetTopology.edgeTransform(source.face(), localDirection);
+            backDirection = transform.transformDirection(localDirection).opposite();
+        }
+
+        return new PlanetNeighborRef(
+                relative(source, direction),
+                direction,
+                PlanetVanillaDirection.toVanilla(backDirection)
         );
     }
 
@@ -71,11 +116,45 @@ public final class PlanetWorldAccess {
         return blocks.setBlockState(pos, state);
     }
 
+    /**
+     * Stores a block and queues the six topology-aware neighbor updates when
+     * the state actually changed.
+     */
+    public BlockState setBlockStateAndUpdateNeighbors(PlanetBlockPos pos, BlockState state) {
+        BlockState previous = setBlockState(pos, state);
+        if (previous != state) {
+            neighborUpdates.enqueueAllNeighbors(this, pos, state.getBlock());
+        }
+        return previous;
+    }
+
+    public void updateNeighborsAt(PlanetBlockPos pos, Block sourceBlock) {
+        neighborUpdates.enqueueAllNeighbors(this, pos, sourceBlock);
+    }
+
     public BlockState getNeighborState(PlanetBlockPos pos, Direction direction) {
         return getBlockState(relative(pos, direction));
     }
 
     public FluidState getNeighborFluidState(PlanetBlockPos pos, Direction direction) {
         return getFluidState(relative(pos, direction));
+    }
+
+    public boolean scheduleBlockTick(
+            PlanetBlockPos pos,
+            Block block,
+            long triggerTick,
+            TickPriority priority
+    ) {
+        return blockTicks.schedule(block, pos, triggerTick, priority);
+    }
+
+    public boolean scheduleFluidTick(
+            PlanetBlockPos pos,
+            Fluid fluid,
+            long triggerTick,
+            TickPriority priority
+    ) {
+        return fluidTicks.schedule(fluid, pos, triggerTick, priority);
     }
 }
