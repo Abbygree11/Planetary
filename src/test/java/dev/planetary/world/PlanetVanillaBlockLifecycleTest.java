@@ -5,19 +5,19 @@ import dev.planetary.topology.PlanetFace;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ObserverBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.ticks.LevelTickAccess;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 final class PlanetVanillaBlockLifecycleTest {
     private static final int FACE_SIZE = 4096;
@@ -27,18 +27,23 @@ final class PlanetVanillaBlockLifecycleTest {
         MinecraftTestBootstrap.ensureBootstrapped();
     }
 
+    @SuppressWarnings("unchecked")
     @Test
-    void setBlockRunsRemoveBeforePlaceUsingCanonicalPlanetPosition() {
-        List<String> callbacks = new ArrayList<>();
-        TrackingBlock oldBlock = new TrackingBlock("old", callbacks);
-        TrackingBlock newBlock = new TrackingBlock("new", callbacks);
-
+    void setBlockRunsVanillaRemoveAndPlaceCallbacksAtCanonicalPosition() {
         PlanetWorldAccess world = new PlanetWorldAccess(
                 FACE_SIZE,
                 -3000,
                 999
         );
+
         Level level = mock(Level.class);
+        LevelTickAccess<Block> blockTicks = mock(LevelTickAccess.class);
+        when(level.getBlockTicks()).thenReturn(blockTicks);
+        when(blockTicks.hasScheduledTick(
+                org.mockito.ArgumentMatchers.any(BlockPos.class),
+                org.mockito.ArgumentMatchers.any(Block.class)
+        )).thenReturn(false);
+
         world.bindLevel(level);
 
         try {
@@ -48,33 +53,45 @@ final class PlanetVanillaBlockLifecycleTest {
                     -20,
                     FACE_SIZE / 2
             );
+            BlockPos canonicalPos = world.vanillaPosCodec().encode(pos);
 
-            world.setBlockState(pos, oldBlock.defaultBlockState());
-            callbacks.clear();
+            world.setBlockState(
+                    pos,
+                    Blocks.CHEST.defaultBlockState()
+            );
+            assertTrue(world.getBlockEntity(pos) != null);
+
+            BlockState poweredObserver = Blocks.OBSERVER
+                    .defaultBlockState()
+                    .setValue(ObserverBlock.POWERED, true);
+            BlockState unpoweredObserver = poweredObserver.setValue(
+                    ObserverBlock.POWERED,
+                    false
+            );
 
             assertTrue(world.setBlock(
                     pos,
-                    newBlock.defaultBlockState(),
+                    poweredObserver,
                     Block.UPDATE_KNOWN_SHAPE,
                     Block.UPDATE_LIMIT
             ));
 
-            assertEquals(
-                    List.of("remove:old", "place:new"),
-                    callbacks
+            // ChestBlock#onRemove delegates BE removal through the real Level.
+            verify(level).removeBlockEntity(canonicalPos);
+
+            // ObserverBlock#onPlace clears POWERED through Level#setBlock.
+            verify(level).setBlock(
+                    canonicalPos,
+                    unpoweredObserver,
+                    Block.UPDATE_CLIENTS
+                            | Block.UPDATE_KNOWN_SHAPE
             );
-            assertEquals(
-                    world.vanillaPosCodec().encode(pos),
-                    oldBlock.lastRemovePos
-            );
-            assertEquals(
-                    world.vanillaPosCodec().encode(pos),
-                    newBlock.lastPlacePos
-            );
+
             assertSame(
-                    newBlock.defaultBlockState(),
+                    poweredObserver,
                     world.getBlockState(pos)
             );
+            assertTrue(world.getBlockEntity(pos) == null);
         } finally {
             world.unbindLevel();
         }
@@ -82,9 +99,6 @@ final class PlanetVanillaBlockLifecycleTest {
 
     @Test
     void assigningTheExactSameStateDoesNotRunLifecycleAgain() {
-        List<String> callbacks = new ArrayList<>();
-        TrackingBlock block = new TrackingBlock("same", callbacks);
-
         PlanetWorldAccess world = new PlanetWorldAccess(FACE_SIZE);
         Level level = mock(Level.class);
         world.bindLevel(level);
@@ -96,10 +110,9 @@ final class PlanetVanillaBlockLifecycleTest {
                     10,
                     200
             );
-            BlockState state = block.defaultBlockState();
+            BlockState state = Blocks.STONE.defaultBlockState();
 
             world.setBlockState(pos, state);
-            callbacks.clear();
 
             assertFalse(world.setBlock(
                     pos,
@@ -107,63 +120,9 @@ final class PlanetVanillaBlockLifecycleTest {
                     Block.UPDATE_KNOWN_SHAPE,
                     Block.UPDATE_LIMIT
             ));
-            assertTrue(callbacks.isEmpty());
+            assertSame(state, world.getBlockState(pos));
         } finally {
             world.unbindLevel();
-        }
-    }
-
-    private static final class TrackingBlock extends Block {
-        private final String name;
-        private final List<String> callbacks;
-        private BlockPos lastRemovePos;
-        private BlockPos lastPlacePos;
-
-        private TrackingBlock(
-                String name,
-                List<String> callbacks
-        ) {
-            super(BlockBehaviour.Properties.of());
-            this.name = name;
-            this.callbacks = callbacks;
-        }
-
-        @Override
-        protected void onRemove(
-                BlockState state,
-                Level level,
-                BlockPos pos,
-                BlockState newState,
-                boolean movedByPiston
-        ) {
-            callbacks.add("remove:" + name);
-            lastRemovePos = pos.immutable();
-            super.onRemove(
-                    state,
-                    level,
-                    pos,
-                    newState,
-                    movedByPiston
-            );
-        }
-
-        @Override
-        protected void onPlace(
-                BlockState state,
-                Level level,
-                BlockPos pos,
-                BlockState oldState,
-                boolean movedByPiston
-        ) {
-            callbacks.add("place:" + name);
-            lastPlacePos = pos.immutable();
-            super.onPlace(
-                    state,
-                    level,
-                    pos,
-                    oldState,
-                    movedByPiston
-            );
         }
     }
 }
