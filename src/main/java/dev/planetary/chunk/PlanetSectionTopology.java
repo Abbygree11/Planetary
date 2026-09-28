@@ -44,6 +44,72 @@ public final class PlanetSectionTopology {
         );
     }
 
+    /**
+     * Applies a local 3D offset while transporting the local horizontal frame
+     * through every crossed cube edge.
+     *
+     * <p>The horizontal path is interleaved like a digital straight line so
+     * the result does not artificially walk all X steps before all Z steps.
+     * Local Y is radial and is unchanged by face transitions.</p>
+     */
+    public static PlanetSectionAddress offset(
+            PlanetSectionAddress origin,
+            int dx,
+            int dy,
+            int dz,
+            int faceSizeSections
+    ) {
+        Objects.requireNonNull(origin, "origin");
+        validateFaceSize(faceSizeSections);
+
+        PlanetSectionAddress current = origin;
+        PlanetDirection xDirection = dx >= 0 ? PlanetDirection.EAST : PlanetDirection.WEST;
+        PlanetDirection zDirection = dz >= 0 ? PlanetDirection.SOUTH : PlanetDirection.NORTH;
+
+        int xSteps = Math.abs(dx);
+        int zSteps = Math.abs(dz);
+        int doneX = 0;
+        int doneZ = 0;
+
+        while (doneX < xSteps || doneZ < zSteps) {
+            boolean takeX;
+            if (doneX >= xSteps) {
+                takeX = false;
+            } else if (doneZ >= zSteps) {
+                takeX = true;
+            } else {
+                long nextX = (long) (2 * doneX + 1) * zSteps;
+                long nextZ = (long) (2 * doneZ + 1) * xSteps;
+                takeX = nextX <= nextZ;
+            }
+
+            PlanetDirection moveDirection = takeX ? xDirection : zDirection;
+            FaceTransform crossed = isOnEdge(current, moveDirection, faceSizeSections)
+                    ? edgeTransform(current, moveDirection, faceSizeSections)
+                    : null;
+
+            current = step(current, moveDirection, faceSizeSections);
+
+            if (crossed != null) {
+                xDirection = crossed.transformDirection(xDirection);
+                zDirection = crossed.transformDirection(zDirection);
+            }
+
+            if (takeX) {
+                doneX++;
+            } else {
+                doneZ++;
+            }
+        }
+
+        return new PlanetSectionAddress(
+                current.face(),
+                current.x(),
+                current.y() + dy,
+                current.z()
+        );
+    }
+
     public static FaceTransform edgeTransform(
             PlanetSectionAddress address,
             PlanetDirection edge,
@@ -92,7 +158,7 @@ public final class PlanetSectionTopology {
         };
     }
 
-    private static void validateFaceSize(int faceSizeSections) {
+    static void validateFaceSize(int faceSizeSections) {
         if (faceSizeSections <= 0) {
             throw new IllegalArgumentException("faceSizeSections must be > 0");
         }
