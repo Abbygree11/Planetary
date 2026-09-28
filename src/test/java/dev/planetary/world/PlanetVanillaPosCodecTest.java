@@ -1,7 +1,9 @@
 package dev.planetary.world;
 
+import dev.planetary.topology.PlanetDirection;
 import dev.planetary.topology.PlanetFace;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
@@ -83,6 +85,67 @@ final class PlanetVanillaPosCodecTest {
         assertNotEquals(encodedX.getX(), encodedY.getX());
         assertEquals(encodedX.getY(), encodedY.getY());
         assertEquals(encodedX.getZ(), encodedY.getZ());
+    }
+
+    @Test
+    void oneStepVanillaBlockPosArithmeticCrossesEveryCubeEdgeCorrectly() {
+        Direction[] edges = {
+                Direction.NORTH,
+                Direction.SOUTH,
+                Direction.WEST,
+                Direction.EAST
+        };
+
+        for (PlanetFace face : PlanetFace.values()) {
+            for (Direction edge : edges) {
+                PlanetDirection planetEdge = PlanetVanillaDirection.fromVanilla(edge);
+
+                PlanetBlockPos source = switch (edge) {
+                    case WEST -> new PlanetBlockPos(face, 0, -20, FACE_SIZE / 3);
+                    case EAST -> new PlanetBlockPos(face, FACE_SIZE - 1, -20, FACE_SIZE / 3);
+                    case NORTH -> new PlanetBlockPos(face, FACE_SIZE / 3, -20, 0);
+                    case SOUTH -> new PlanetBlockPos(face, FACE_SIZE / 3, -20, FACE_SIZE - 1);
+                    default -> throw new IllegalStateException("Not a horizontal edge: " + edge);
+                };
+
+                PlanetBlockPos expected = PlanetBlockTopology.step(
+                        source,
+                        planetEdge,
+                        FACE_SIZE
+                );
+
+                BlockPos vanillaNeighbor = codec.encode(source).relative(edge);
+
+                assertEquals(
+                        expected,
+                        codec.decode(vanillaNeighbor),
+                        face + " " + edge
+                );
+            }
+        }
+    }
+
+    @Test
+    void guardSpaceAlsoPreservesSeveralVanillaStepsPastAnEdge() {
+        PlanetBlockPos source = new PlanetBlockPos(
+                PlanetFace.POS_Y,
+                FACE_SIZE - 1,
+                -100,
+                FACE_SIZE / 2
+        );
+
+        BlockPos vanilla = codec.encode(source).offset(5, 0, 0);
+
+        assertEquals(
+                PlanetBlockTopology.offset(
+                        source,
+                        5,
+                        0,
+                        0,
+                        FACE_SIZE
+                ),
+                codec.decode(vanilla)
+        );
     }
 
     @Test
