@@ -14,17 +14,27 @@ repositories {
 
 neoForge {
     version = '21.1.215'
+
     runs {
         client { client() }
     }
+
     mods {
-        planetary { sourceSet sourceSets.main }
+        planetary {
+            sourceSet sourceSets.main
+        }
+    }
+
+    unitTest {
+        enable()
+        testedMod = mods.planetary
     }
 }
 
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.11.4')
     testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 test {
