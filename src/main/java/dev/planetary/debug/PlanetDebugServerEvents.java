@@ -28,7 +28,7 @@ public final class PlanetDebugServerEvents {
         }
 
         ServerLevel level = player.serverLevel();
-        if (level.dimension() != Level.OVERWORLD) {
+        if (!level.dimension().equals(Level.OVERWORLD)) {
             player.sendSystemMessage(
                     Component.literal(
                             "[Planetary] Debug planet is currently enabled "
