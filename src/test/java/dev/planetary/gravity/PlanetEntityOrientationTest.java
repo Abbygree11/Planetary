@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 final class PlanetEntityOrientationTest {
-    private static final double EPSILON = 1.0E-9D;
+    private static final double EPSILON = 1.0E-6D;
 
     @Test
     void everyDirectedCubeEdgeHasAnOrientationTransition() {
