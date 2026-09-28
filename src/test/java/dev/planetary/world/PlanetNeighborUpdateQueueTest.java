@@ -72,8 +72,41 @@ final class PlanetNeighborUpdateQueueTest {
         List<PlanetNeighborUpdate> updates = world.neighborUpdates().drain();
         assertEquals(6, updates.size());
         assertTrue(
+                updates.stream().allMatch(
+                        update -> update.sourceBlock() == Blocks.AIR
+                )
+        );
+        assertTrue(
                 updates.stream().anyMatch(
                         update -> update.target().face() == PlanetFace.POS_X
+                )
+        );
+    }
+
+    @Test
+    void updateNeighborsExceptQueuesFiveDirections() {
+        PlanetWorldAccess world = new PlanetWorldAccess(FACE_SIZE);
+        PlanetBlockPos source = new PlanetBlockPos(
+                PlanetFace.POS_Y,
+                100,
+                0,
+                200
+        );
+
+        world.updateNeighborsAtExceptFromFacing(
+                source,
+                Blocks.STONE,
+                Direction.DOWN
+        );
+
+        List<PlanetNeighborUpdate> updates = world.neighborUpdates().drain();
+
+        assertEquals(5, updates.size());
+        assertTrue(
+                updates.stream().noneMatch(
+                        update -> update.target().equals(
+                                world.relative(source, Direction.DOWN)
+                        )
                 )
         );
     }
