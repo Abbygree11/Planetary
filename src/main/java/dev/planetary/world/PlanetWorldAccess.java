@@ -3,6 +3,7 @@ package dev.planetary.world;
 import dev.planetary.topology.FaceTransform;
 import dev.planetary.topology.PlanetDirection;
 import dev.planetary.topology.PlanetTopology;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
