@@ -60,7 +60,7 @@ final class PlanetEntityControlTest {
                 frame
         );
 
-        assertVec(result, 0.42, 0.3, 0.4);
+        assertVec(result, 0.42F, 0.3, 0.4);
     }
 
     @Test
@@ -76,7 +76,7 @@ final class PlanetEntityControlTest {
                 frame
         );
 
-        assertVec(result, 0.42, 0.0, 0.2);
+        assertVec(result, 0.42F, 0.0, 0.2);
     }
 
     @Test
