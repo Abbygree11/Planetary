@@ -5,49 +5,60 @@ import java.util.Set;
 /**
  * Single-player section loading policy for the first 2.0 implementation.
  *
- * <p>Render distance and simulation distance are both measured in the same
- * 16-block units users already know from Minecraft, but applied in 3D.
- * Simulation distance must never exceed render distance.</p>
+ * <p>Render distance and simulation distance are measured in Minecraft's
+ * familiar 16-block section units, but applied in 3D and canonicalized through
+ * the six cube-planet faces.</p>
  */
 public final class PlanetSectionLoadManager {
-    private final PlanetSectionRadiusTracker render;
-    private final PlanetSectionRadiusTracker simulation;
+    private final int faceSizeSections;
+    private final PlanetSectionAddressRadiusTracker render;
+    private final PlanetSectionAddressRadiusTracker simulation;
 
-    public PlanetSectionLoadManager(int renderDistanceSections, int simulationDistanceSections) {
+    public PlanetSectionLoadManager(
+            int faceSizeSections,
+            int renderDistanceSections,
+            int simulationDistanceSections
+    ) {
         validateDistances(renderDistanceSections, simulationDistanceSections);
-        this.render = new PlanetSectionRadiusTracker(renderDistanceSections);
-        this.simulation = new PlanetSectionRadiusTracker(simulationDistanceSections);
+        PlanetSectionTopology.validateFaceSize(faceSizeSections);
+        this.faceSizeSections = faceSizeSections;
+        this.render = new PlanetSectionAddressRadiusTracker(faceSizeSections, renderDistanceSections);
+        this.simulation = new PlanetSectionAddressRadiusTracker(faceSizeSections, simulationDistanceSections);
     }
 
-    public PlanetSectionActivityUpdate movePlayerTo(PlanetSectionPos playerSection) {
-        return new PlanetSectionActivityUpdate(
+    public PlanetSectionAddressActivityUpdate movePlayerTo(PlanetSectionAddress playerSection) {
+        return new PlanetSectionAddressActivityUpdate(
                 render.moveTo(playerSection),
                 simulation.moveTo(playerSection)
         );
     }
 
-    public PlanetSectionActivityUpdate setDistances(
+    public PlanetSectionAddressActivityUpdate setDistances(
             int renderDistanceSections,
             int simulationDistanceSections
     ) {
         validateDistances(renderDistanceSections, simulationDistanceSections);
 
-        return new PlanetSectionActivityUpdate(
+        return new PlanetSectionAddressActivityUpdate(
                 render.resize(renderDistanceSections),
                 simulation.resize(simulationDistanceSections)
         );
     }
 
-    public PlanetSectionActivityUpdate clear() {
-        return new PlanetSectionActivityUpdate(render.clear(), simulation.clear());
+    public PlanetSectionAddressActivityUpdate clear() {
+        return new PlanetSectionAddressActivityUpdate(render.clear(), simulation.clear());
     }
 
-    public Set<PlanetSectionPos> renderedSections() {
+    public Set<PlanetSectionAddress> renderedSections() {
         return render.activeSections();
     }
 
-    public Set<PlanetSectionPos> simulatedSections() {
+    public Set<PlanetSectionAddress> simulatedSections() {
         return simulation.activeSections();
+    }
+
+    public int faceSizeSections() {
+        return faceSizeSections;
     }
 
     public int renderDistanceSections() {
