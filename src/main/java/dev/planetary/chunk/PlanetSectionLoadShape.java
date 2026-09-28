@@ -2,6 +2,7 @@ package dev.planetary.chunk;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * Computes the 3D render/simulation neighborhood around a player section.
@@ -15,15 +16,32 @@ public final class PlanetSectionLoadShape {
     }
 
     public static Set<PlanetSectionPos> sphere(PlanetSectionPos center, int radiusSections) {
+        HashSet<PlanetSectionPos> result = new HashSet<>();
+        forEachSphere(center, radiusSections, result::add);
+        return Set.copyOf(result);
+    }
+
+    /**
+     * Iterates a sphere without first allocating a complete temporary set.
+     *
+     * <p>This is the primitive used by the incremental tracker: crossing a
+     * section boundary only creates the entering/leaving shell, not another
+     * copy of the whole loaded neighborhood.</p>
+     */
+    public static void forEachSphere(
+            PlanetSectionPos center,
+            int radiusSections,
+            Consumer<PlanetSectionPos> consumer
+    ) {
         if (center == null) {
             throw new NullPointerException("center");
         }
-        if (radiusSections < 0) {
-            throw new IllegalArgumentException("radiusSections must be >= 0");
+        if (consumer == null) {
+            throw new NullPointerException("consumer");
         }
+        validateRadius(radiusSections);
 
         long radiusSquared = (long) radiusSections * radiusSections;
-        HashSet<PlanetSectionPos> result = new HashSet<>();
 
         for (int dx = -radiusSections; dx <= radiusSections; dx++) {
             long dxSquared = (long) dx * dx;
@@ -35,12 +53,33 @@ public final class PlanetSectionLoadShape {
 
                 int maxDz = (int) Math.floor(Math.sqrt(remaining));
                 for (int dz = -maxDz; dz <= maxDz; dz++) {
-                    result.add(center.offset(dx, dy, dz));
+                    consumer.accept(center.offset(dx, dy, dz));
                 }
             }
         }
+    }
 
-        return Set.copyOf(result);
+    public static boolean contains(
+            PlanetSectionPos center,
+            PlanetSectionPos candidate,
+            int radiusSections
+    ) {
+        if (center == null) {
+            throw new NullPointerException("center");
+        }
+        if (candidate == null) {
+            throw new NullPointerException("candidate");
+        }
+        if (radiusSections < 0) {
+            return false;
+        }
+
+        long dx = (long) candidate.x() - center.x();
+        long dy = (long) candidate.y() - center.y();
+        long dz = (long) candidate.z() - center.z();
+        long distanceSquared = dx * dx + dy * dy + dz * dz;
+        long radiusSquared = (long) radiusSections * radiusSections;
+        return distanceSquared <= radiusSquared;
     }
 
     public static boolean containsOffset(int dx, int dy, int dz, int radiusSections) {
@@ -57,5 +96,11 @@ public final class PlanetSectionLoadShape {
             throw new IllegalArgumentException("sectionCount must be >= 0");
         }
         return (long) sectionCount * PlanetSection.BLOCK_COUNT;
+    }
+
+    private static void validateRadius(int radiusSections) {
+        if (radiusSections < 0) {
+            throw new IllegalArgumentException("radiusSections must be >= 0");
+        }
     }
 }
