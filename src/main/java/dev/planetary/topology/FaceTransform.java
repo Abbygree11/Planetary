@@ -118,6 +118,40 @@ public final class FaceTransform {
         throw new IllegalStateException("Unhandled direction " + direction);
     }
 
+    /**
+     * Parallel-transports an arbitrary vector expressed in the source local
+     * frame into the target local frame while folding across this edge.
+     *
+     * <p>Local UP/DOWN remain UP/DOWN relative to the player's body, while
+     * horizontal axes are remapped according to the exact edge transition.
+     * This is the transform needed for view/control orientation when gravity
+     * switches faces.</p>
+     */
+    public PlanetFrameVector transformVector(
+            PlanetFrameVector sourceVector
+    ) {
+        Objects.requireNonNull(sourceVector, "sourceVector");
+
+        PlanetDirection mappedEast =
+                transformDirection(PlanetDirection.EAST);
+        PlanetDirection mappedUp =
+                transformDirection(PlanetDirection.UP);
+        PlanetDirection mappedSouth =
+                transformDirection(PlanetDirection.SOUTH);
+
+        return new PlanetFrameVector(
+                sourceVector.x() * mappedEast.dx()
+                        + sourceVector.y() * mappedUp.dx()
+                        + sourceVector.z() * mappedSouth.dx(),
+                sourceVector.x() * mappedEast.dy()
+                        + sourceVector.y() * mappedUp.dy()
+                        + sourceVector.z() * mappedSouth.dy(),
+                sourceVector.x() * mappedEast.dz()
+                        + sourceVector.y() * mappedUp.dz()
+                        + sourceVector.z() * mappedSouth.dz()
+        );
+    }
+
     public PlanetPos crossBoundaryCell(PlanetPos source, int faceSize) {
         Objects.requireNonNull(source, "source");
         validateFaceSize(faceSize);

@@ -3,6 +3,7 @@ package dev.planetary.mixin;
 import dev.planetary.gravity.PlanetEntityCollision;
 import dev.planetary.gravity.PlanetEntityControl;
 import dev.planetary.gravity.PlanetEntityGeometry;
+import dev.planetary.gravity.PlanetEntityOrientation;
 import dev.planetary.gravity.PlanetGravityEntity;
 import dev.planetary.gravity.PlanetGravityRuntime;
 import dev.planetary.topology.PlanetFace;
@@ -53,6 +54,15 @@ public abstract class EntityGravityMixin
     public abstract double getZ();
 
     @Shadow
+    public abstract float getYRot();
+
+    @Shadow
+    public abstract void setYRot(float yRot);
+
+    @Shadow
+    public float yRotO;
+
+    @Shadow
     public abstract AABB getBoundingBox();
 
     @Shadow
@@ -86,7 +96,23 @@ public abstract class EntityGravityMixin
                         )
                 )
                 .map(frame -> {
-                    planetary$preferredGravityFace = frame.face();
+                    PlanetFace previousFace =
+                            planetary$preferredGravityFace;
+                    PlanetFace nextFace = frame.face();
+
+                    if (previousFace != null
+                            && previousFace != nextFace) {
+                        PlanetEntityOrientation.transportYaw(
+                                previousFace,
+                                nextFace,
+                                getYRot()
+                        ).ifPresent(targetYaw -> {
+                            setYRot(targetYaw);
+                            yRotO = targetYaw;
+                        });
+                    }
+
+                    planetary$preferredGravityFace = nextFace;
                     return frame;
                 });
     }
@@ -114,6 +140,66 @@ public abstract class EntityGravityMixin
                     PlanetEntityGeometry.rotateVanillaBoundingBox(
                             cir.getReturnValue(),
                             position(),
+                            frame
+                    )
+            );
+        });
+    }
+
+    @Inject(
+            method = "calculateViewVector(FF)Lnet/minecraft/world/phys/Vec3;",
+            at = @At("RETURN"),
+            cancellable = true
+    )
+    private void planetary$calculateViewVector(
+            float xRot,
+            float yRot,
+            CallbackInfoReturnable<Vec3> cir
+    ) {
+        planetary$gravityFrame().ifPresent(frame -> {
+            if (frame.face() == PlanetFace.POS_Y) {
+                return;
+            }
+
+            Vec3 local = cir.getReturnValue();
+            PlanetFrameVector world =
+                    frame.localToWorld(
+                            new PlanetFrameVector(
+                                    local.x,
+                                    local.y,
+                                    local.z
+                            )
+                    );
+
+            cir.setReturnValue(
+                    new Vec3(
+                            world.x(),
+                            world.y(),
+                            world.z()
+                    )
+            );
+        });
+    }
+
+    @Inject(
+            method = "getEyePosition(F)Lnet/minecraft/world/phys/Vec3;",
+            at = @At("HEAD"),
+            cancellable = true
+    )
+    private void planetary$getInterpolatedEyePosition(
+            float partialTicks,
+            CallbackInfoReturnable<Vec3> cir
+    ) {
+        planetary$gravityFrame().ifPresent(frame -> {
+            if (frame.face() == PlanetFace.POS_Y) {
+                return;
+            }
+
+            Entity self = (Entity) (Object) this;
+            cir.setReturnValue(
+                    PlanetEntityGeometry.eyePosition(
+                            self.getPosition(partialTicks),
+                            eyeHeight,
                             frame
                     )
             );
