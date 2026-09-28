@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Stores real vanilla/modded BlockEntity instances by canonical planet
@@ -125,6 +126,10 @@ public final class PlanetBlockEntityStore {
             removed.setRemoved();
         }
         return removed;
+    }
+
+    public Set<PlanetBlockPos> positions() {
+        return Set.copyOf(blockEntities.keySet());
     }
 
     public int size() {
