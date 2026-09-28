@@ -110,13 +110,30 @@ public final class PlanetWorldAccess {
      * delegate them back into this PlanetWorldAccess.</p>
      */
     public void bindLevel(Level level) {
-        this.boundLevel = Objects.requireNonNull(level, "level");
+        Level newLevel = Objects.requireNonNull(level, "level");
+
+        if (boundLevel != null && boundLevel != newLevel) {
+            PlanetLevelBridge.unbind(boundLevel, this);
+        }
+
+        PlanetLevelBridge.bind(newLevel, this);
+        this.boundLevel = newLevel;
+
         for (PlanetBlockPos pos : blockEntities.positions()) {
             BlockEntity blockEntity = blockEntities.get(pos);
             if (blockEntity != null) {
-                blockEntity.setLevel(level);
+                blockEntity.setLevel(newLevel);
             }
         }
+    }
+
+    public void unbindLevel() {
+        if (boundLevel == null) {
+            return;
+        }
+
+        PlanetLevelBridge.unbind(boundLevel, this);
+        boundLevel = null;
     }
 
     public Level boundLevel() {
