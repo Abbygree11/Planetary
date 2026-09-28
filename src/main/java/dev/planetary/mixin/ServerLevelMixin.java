@@ -1,18 +1,20 @@
 package dev.planetary.mixin;
 
 import dev.planetary.world.PlanetLevelBridge;
+import dev.planetary.world.PlanetVanillaUpdateFrame;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
- * ServerLevel overrides the Level neighbor-update entry points, so the server
- * needs the same Planetary routing as the base Level implementation.
+ * ServerLevel overrides several Level neighbor-update entry points, so the
+ * server needs the same Planetary routing and update-frame canonicalization.
  */
 @Mixin(ServerLevel.class)
 public abstract class ServerLevelMixin {
@@ -54,5 +56,79 @@ public abstract class ServerLevelMixin {
             );
             ci.cancel();
         });
+    }
+
+    @Inject(
+            method = "neighborChanged(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/Block;Lnet/minecraft/core/BlockPos;)V",
+            at = @At("HEAD"),
+            cancellable = true
+    )
+    private void planetary$neighborChanged(
+            BlockPos pos,
+            Block sourceBlock,
+            BlockPos sourcePos,
+            CallbackInfo ci
+    ) {
+        if (PlanetVanillaUpdateFrame.consumeReentryPermit()) {
+            return;
+        }
+
+        ServerLevel level = (ServerLevel) (Object) this;
+
+        PlanetVanillaUpdateFrame.resolve(level, pos, sourcePos)
+                .ifPresent(frame -> {
+                    if (frame.targetPos().equals(pos)
+                            && frame.sourceAliasPos().equals(sourcePos)) {
+                        return;
+                    }
+
+                    PlanetVanillaUpdateFrame.runWithReentryPermit(
+                            () -> level.neighborChanged(
+                                    frame.targetPos(),
+                                    sourceBlock,
+                                    frame.sourceAliasPos()
+                            )
+                    );
+                    ci.cancel();
+                });
+    }
+
+    @Inject(
+            method = "neighborChanged(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/Block;Lnet/minecraft/core/BlockPos;Z)V",
+            at = @At("HEAD"),
+            cancellable = true
+    )
+    private void planetary$neighborChangedWithState(
+            BlockState state,
+            BlockPos pos,
+            Block sourceBlock,
+            BlockPos sourcePos,
+            boolean isMoving,
+            CallbackInfo ci
+    ) {
+        if (PlanetVanillaUpdateFrame.consumeReentryPermit()) {
+            return;
+        }
+
+        ServerLevel level = (ServerLevel) (Object) this;
+
+        PlanetVanillaUpdateFrame.resolve(level, pos, sourcePos)
+                .ifPresent(frame -> {
+                    if (frame.targetPos().equals(pos)
+                            && frame.sourceAliasPos().equals(sourcePos)) {
+                        return;
+                    }
+
+                    PlanetVanillaUpdateFrame.runWithReentryPermit(
+                            () -> level.neighborChanged(
+                                    state,
+                                    frame.targetPos(),
+                                    sourceBlock,
+                                    frame.sourceAliasPos(),
+                                    isMoving
+                            )
+                    );
+                    ci.cancel();
+                });
     }
 }

@@ -1,6 +1,7 @@
 package dev.planetary.mixin;
 
 import dev.planetary.world.PlanetLevelBridge;
+import dev.planetary.world.PlanetVanillaUpdateFrame;
 import dev.planetary.world.PlanetWorldAccess;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -60,6 +61,122 @@ public abstract class LevelMixin {
             );
             ci.cancel();
         });
+    }
+
+    @Inject(
+            method = "neighborChanged(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/Block;Lnet/minecraft/core/BlockPos;)V",
+            at = @At("HEAD"),
+            cancellable = true
+    )
+    private void planetary$neighborChanged(
+            BlockPos pos,
+            Block sourceBlock,
+            BlockPos sourcePos,
+            CallbackInfo ci
+    ) {
+        if (PlanetVanillaUpdateFrame.consumeReentryPermit()) {
+            return;
+        }
+
+        Level level = (Level) (Object) this;
+
+        PlanetVanillaUpdateFrame.resolve(level, pos, sourcePos)
+                .ifPresent(frame -> {
+                    if (frame.targetPos().equals(pos)
+                            && frame.sourceAliasPos().equals(sourcePos)) {
+                        return;
+                    }
+
+                    PlanetVanillaUpdateFrame.runWithReentryPermit(
+                            () -> level.neighborChanged(
+                                    frame.targetPos(),
+                                    sourceBlock,
+                                    frame.sourceAliasPos()
+                            )
+                    );
+                    ci.cancel();
+                });
+    }
+
+    @Inject(
+            method = "neighborChanged(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/Block;Lnet/minecraft/core/BlockPos;Z)V",
+            at = @At("HEAD"),
+            cancellable = true
+    )
+    private void planetary$neighborChangedWithState(
+            BlockState state,
+            BlockPos pos,
+            Block sourceBlock,
+            BlockPos sourcePos,
+            boolean isMoving,
+            CallbackInfo ci
+    ) {
+        if (PlanetVanillaUpdateFrame.consumeReentryPermit()) {
+            return;
+        }
+
+        Level level = (Level) (Object) this;
+
+        PlanetVanillaUpdateFrame.resolve(level, pos, sourcePos)
+                .ifPresent(frame -> {
+                    if (frame.targetPos().equals(pos)
+                            && frame.sourceAliasPos().equals(sourcePos)) {
+                        return;
+                    }
+
+                    PlanetVanillaUpdateFrame.runWithReentryPermit(
+                            () -> level.neighborChanged(
+                                    state,
+                                    frame.targetPos(),
+                                    sourceBlock,
+                                    frame.sourceAliasPos(),
+                                    isMoving
+                            )
+                    );
+                    ci.cancel();
+                });
+    }
+
+    @Inject(
+            method = "neighborShapeChanged(Lnet/minecraft/core/Direction;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/BlockPos;II)V",
+            at = @At("HEAD"),
+            cancellable = true
+    )
+    private void planetary$neighborShapeChanged(
+            Direction direction,
+            BlockState queried,
+            BlockPos pos,
+            BlockPos sourcePos,
+            int flags,
+            int recursionLevel,
+            CallbackInfo ci
+    ) {
+        if (PlanetVanillaUpdateFrame.consumeReentryPermit()) {
+            return;
+        }
+
+        Level level = (Level) (Object) this;
+
+        PlanetVanillaUpdateFrame.resolve(level, pos, sourcePos)
+                .ifPresent(frame -> {
+                    if (frame.targetPos().equals(pos)
+                            && frame.sourceAliasPos().equals(sourcePos)
+                            && frame.directionToSource() == direction) {
+                        return;
+                    }
+
+                    PlanetVanillaUpdateFrame.runWithReentryPermit(
+                            () -> level.neighborShapeChanged(
+                                    frame.directionToSource(),
+                                    queried,
+                                    frame.targetPos(),
+                                    frame.sourceAliasPos(),
+                                    flags,
+                                    recursionLevel
+                            )
+                    );
+                    ci.cancel();
+                });
     }
 
     @Inject(method = "getBlockState", at = @At("HEAD"), cancellable = true)
