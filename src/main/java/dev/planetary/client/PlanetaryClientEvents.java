@@ -65,8 +65,13 @@ public final class PlanetaryClientEvents {
 
     @SubscribeEvent
     public static void onRender(
-            RenderLevelStageEvent.AfterTranslucentBlocks event
+            RenderLevelStageEvent event
     ) {
+        if (event.getStage()
+                != RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS) {
+            return;
+        }
+
         if (world == null
                 || level == null
                 || renderCenter == null
