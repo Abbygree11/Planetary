@@ -5,6 +5,7 @@ import dev.planetary.topology.PlanetDirection;
 import dev.planetary.topology.PlanetTopology;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
@@ -18,25 +19,65 @@ import java.util.Objects;
  *
  * <p>This deliberately is not a fake ServerLevel yet. It gives the later
  * Level/BlockGetter compatibility layer one canonical place for topology-aware
- * block, fluid, neighbor and scheduled-tick access.</p>
+ * block, fluid, BlockEntity, neighbor and scheduled-tick access.</p>
  */
 public final class PlanetWorldAccess {
     private final int faceSizeBlocks;
     private final PlanetBlockStateStore blocks;
+    private final PlanetVanillaPosCodec vanillaPosCodec;
+    private final PlanetBlockEntityStore blockEntities;
     private final PlanetNeighborUpdateQueue neighborUpdates = new PlanetNeighborUpdateQueue();
     private final PlanetTickScheduler<Block> blockTicks = new PlanetTickScheduler<>();
     private final PlanetTickScheduler<Fluid> fluidTicks = new PlanetTickScheduler<>();
 
     public PlanetWorldAccess(int faceSizeBlocks) {
-        this(faceSizeBlocks, new PlanetBlockStateStore());
+        this(
+                faceSizeBlocks,
+                PlanetVanillaPosCodec.PACKED_MIN_Y,
+                PlanetVanillaPosCodec.PACKED_MAX_Y,
+                new PlanetBlockStateStore()
+        );
+    }
+
+    public PlanetWorldAccess(
+            int faceSizeBlocks,
+            int minLocalY,
+            int maxLocalY
+    ) {
+        this(
+                faceSizeBlocks,
+                minLocalY,
+                maxLocalY,
+                new PlanetBlockStateStore()
+        );
     }
 
     public PlanetWorldAccess(int faceSizeBlocks, PlanetBlockStateStore blocks) {
+        this(
+                faceSizeBlocks,
+                PlanetVanillaPosCodec.PACKED_MIN_Y,
+                PlanetVanillaPosCodec.PACKED_MAX_Y,
+                blocks
+        );
+    }
+
+    public PlanetWorldAccess(
+            int faceSizeBlocks,
+            int minLocalY,
+            int maxLocalY,
+            PlanetBlockStateStore blocks
+    ) {
         if (faceSizeBlocks <= 0) {
             throw new IllegalArgumentException("faceSizeBlocks must be > 0");
         }
         this.faceSizeBlocks = faceSizeBlocks;
         this.blocks = Objects.requireNonNull(blocks, "blocks");
+        this.vanillaPosCodec = new PlanetVanillaPosCodec(
+                faceSizeBlocks,
+                minLocalY,
+                maxLocalY
+        );
+        this.blockEntities = new PlanetBlockEntityStore(vanillaPosCodec);
     }
 
     public int faceSizeBlocks() {
@@ -45,6 +86,18 @@ public final class PlanetWorldAccess {
 
     public PlanetBlockStateStore blocks() {
         return blocks;
+    }
+
+    public PlanetVanillaPosCodec vanillaPosCodec() {
+        return vanillaPosCodec;
+    }
+
+    public PlanetBlockEntityStore blockEntities() {
+        return blockEntities;
+    }
+
+    public BlockEntity getBlockEntity(PlanetBlockPos pos) {
+        return blockEntities.get(pos);
     }
 
     public PlanetNeighborUpdateQueue neighborUpdates() {
@@ -110,10 +163,15 @@ public final class PlanetWorldAccess {
     }
 
     /**
-     * Stores the exact vanilla/modded BlockState and returns the previous one.
+     * Stores the exact vanilla/modded BlockState, reconciles the corresponding
+     * real BlockEntity lifecycle, and returns the previous BlockState.
      */
     public BlockState setBlockState(PlanetBlockPos pos, BlockState state) {
-        return blocks.setBlockState(pos, state);
+        BlockState previous = blocks.setBlockState(pos, state);
+        if (previous != state) {
+            blockEntities.reconcileBlockState(pos, state);
+        }
+        return previous;
     }
 
     /**
