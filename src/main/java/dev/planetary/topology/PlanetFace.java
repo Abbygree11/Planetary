@@ -67,6 +67,18 @@ public enum PlanetFace {
                 .orElseThrow(() -> new IllegalArgumentException("Axis is not part of face frame: " + axis));
     }
 
+    public PlanetDirection localDirectionOf(PlanetVector worldAxis) {
+        return Arrays.stream(PlanetDirection.values())
+                .filter(direction ->
+                        worldVector(direction).equals(worldAxis)
+                )
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Vector is not a unit axis of face "
+                                + this + ": " + worldAxis
+                ));
+    }
+
     public PlanetFace neighborAcross(PlanetDirection edge) {
         if (!edge.isHorizontal()) {
             throw new IllegalArgumentException("Only horizontal directions identify a face edge: " + edge);

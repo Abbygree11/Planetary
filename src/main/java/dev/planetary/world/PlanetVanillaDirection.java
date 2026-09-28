@@ -3,6 +3,8 @@ package dev.planetary.world;
 import dev.planetary.topology.FaceTransform;
 import dev.planetary.topology.PlanetDirection;
 import dev.planetary.topology.PlanetFace;
+import dev.planetary.topology.PlanetGravityFrame;
+import dev.planetary.topology.PlanetVector;
 import dev.planetary.topology.PlanetTopology;
 import net.minecraft.core.Direction;
 
@@ -43,6 +45,59 @@ public final class PlanetVanillaDirection {
             case WEST -> Direction.WEST;
             case EAST -> Direction.EAST;
         };
+    }
+
+    /**
+     * Converts a vanilla Direction interpreted in local gravity coordinates
+     * into the corresponding ordinary world Direction.
+     */
+    public static Direction localToWorld(
+            PlanetGravityFrame frame,
+            Direction localDirection
+    ) {
+        Objects.requireNonNull(frame, "frame");
+        Objects.requireNonNull(localDirection, "localDirection");
+
+        PlanetVector axis = frame.worldAxis(
+                fromVanilla(localDirection)
+        );
+        return worldDirection(axis);
+    }
+
+    /**
+     * Converts an ordinary world Direction into the vanilla Direction a block
+     * or entity should observe inside the supplied local gravity frame.
+     */
+    public static Direction worldToLocal(
+            PlanetGravityFrame frame,
+            Direction worldDirection
+    ) {
+        Objects.requireNonNull(frame, "frame");
+        Objects.requireNonNull(worldDirection, "worldDirection");
+
+        PlanetVector axis = new PlanetVector(
+                worldDirection.getStepX(),
+                worldDirection.getStepY(),
+                worldDirection.getStepZ()
+        );
+
+        return toVanilla(frame.localDirectionOf(axis));
+    }
+
+    private static Direction worldDirection(
+            PlanetVector axis
+    ) {
+        for (Direction direction : Direction.values()) {
+            if (direction.getStepX() == axis.x()
+                    && direction.getStepY() == axis.y()
+                    && direction.getStepZ() == axis.z()) {
+                return direction;
+            }
+        }
+
+        throw new IllegalArgumentException(
+                "Not a vanilla unit direction: " + axis
+        );
     }
 
     public static Direction transformAcrossEdge(

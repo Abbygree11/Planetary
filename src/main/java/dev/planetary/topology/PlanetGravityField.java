@@ -217,6 +217,36 @@ public final class PlanetGravityField {
         );
     }
 
+    public Optional<PlanetGravityFrame> selectBlockFrame(
+            int blockX,
+            int blockY,
+            int blockZ,
+            PlanetFace preferred
+    ) {
+        return selectBlockFace(
+                blockX,
+                blockY,
+                blockZ,
+                preferred
+        ).map(PlanetGravityFrame::new);
+    }
+
+    public Optional<PlanetGravityFrame> selectEntityFrame(
+            double worldX,
+            double worldY,
+            double worldZ,
+            PlanetFace preferred,
+            double hysteresis
+    ) {
+        return selectEntityFace(
+                worldX,
+                worldY,
+                worldZ,
+                preferred,
+                hysteresis
+        ).map(PlanetGravityFrame::new);
+    }
+
     public PlanetVector gravityDirection(PlanetFace face) {
         Objects.requireNonNull(face, "face");
         return face.worldVector(PlanetDirection.DOWN);
