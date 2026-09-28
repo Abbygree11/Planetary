@@ -19,7 +19,7 @@ import java.util.PriorityQueue;
  */
 public final class PlanetTickScheduler<T> {
     private static final Comparator<PlanetScheduledTick<?>> ORDER =
-            Comparator.<PlanetScheduledTick<?>, Long>comparing(PlanetScheduledTick::triggerTick)
+            Comparator.<PlanetScheduledTick<?>>comparingLong(PlanetScheduledTick::triggerTick)
                     .thenComparingInt(tick -> tick.priority().ordinal())
                     .thenComparingLong(PlanetScheduledTick::subTickOrder);
 
