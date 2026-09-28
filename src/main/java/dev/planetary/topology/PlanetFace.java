@@ -48,6 +48,18 @@ public enum PlanetFace {
         };
     }
 
+    /**
+     * Exposes the face-local basis in global cube coordinates.
+     *
+     * <p>This is the shared contract for rendering, gravity, collision and
+     * other systems that need to rotate a local Minecraft frame into the
+     * physical cube frame without duplicating face-specific switch tables.</p>
+     */
+    public PlanetVector worldVector(PlanetDirection direction) {
+        AxisVector axis = axisFor(direction);
+        return new PlanetVector(axis.x(), axis.y(), axis.z());
+    }
+
     PlanetDirection localDirectionOf(AxisVector axis) {
         return Arrays.stream(PlanetDirection.values())
                 .filter(direction -> axisFor(direction).equals(axis))
