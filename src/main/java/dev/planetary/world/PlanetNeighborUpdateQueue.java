@@ -23,11 +23,24 @@ public final class PlanetNeighborUpdateQueue {
             PlanetBlockPos source,
             Block sourceBlock
     ) {
+        enqueueNeighborsExcept(world, source, sourceBlock, null);
+    }
+
+    public void enqueueNeighborsExcept(
+            PlanetWorldAccess world,
+            PlanetBlockPos source,
+            Block sourceBlock,
+            Direction exceptDirection
+    ) {
         Objects.requireNonNull(world, "world");
         Objects.requireNonNull(source, "source");
         Objects.requireNonNull(sourceBlock, "sourceBlock");
 
         for (Direction direction : Direction.values()) {
+            if (direction == exceptDirection) {
+                continue;
+            }
+
             PlanetNeighborRef neighbor = world.neighbor(source, direction);
             queue.addLast(new PlanetNeighborUpdate(
                     neighbor.position(),
