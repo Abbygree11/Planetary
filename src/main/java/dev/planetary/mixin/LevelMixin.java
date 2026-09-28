@@ -235,21 +235,16 @@ public abstract class LevelMixin {
     ) {
         Level level = (Level) (Object) this;
 
-        PlanetLevelBridge.resolve(level, pos).ifPresent(resolved -> {
-            PlanetWorldAccess world = resolved.world();
-
-            BlockState previous = (flags & Block.UPDATE_NEIGHBORS) != 0
-                    ? world.setBlockStateAndUpdateNeighbors(
-                            resolved.position(),
-                            state
-                    )
-                    : world.setBlockState(
-                            resolved.position(),
-                            state
-                    );
-
-            cir.setReturnValue(previous != state);
-        });
+        PlanetLevelBridge.resolve(level, pos).ifPresent(resolved ->
+                cir.setReturnValue(
+                        resolved.world().setBlock(
+                                resolved.position(),
+                                state,
+                                flags,
+                                recursionLeft
+                        )
+                )
+        );
     }
 
     @Inject(method = "setBlockEntity", at = @At("HEAD"), cancellable = true)

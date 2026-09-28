@@ -234,6 +234,130 @@ public final class PlanetWorldAccess {
     }
 
     /**
+     * Vanilla-compatible Level#setBlock path for a Planetary position.
+     *
+     * <p>The raw state is stored before the old block's onRemove callback, but
+     * the old BlockEntity is deliberately kept alive until that callback gets
+     * a chance to remove it. This mirrors LevelChunk#setBlockState and is
+     * required by vanilla/modded block lifecycle code.</p>
+     */
+    public boolean setBlock(
+            PlanetBlockPos pos,
+            BlockState state,
+            int flags,
+            int recursionLeft
+    ) {
+        Objects.requireNonNull(pos, "pos");
+        Objects.requireNonNull(state, "state");
+
+        if (boundLevel == null) {
+            BlockState previous = (flags & Block.UPDATE_NEIGHBORS) != 0
+                    ? setBlockStateAndUpdateNeighbors(pos, state)
+                    : setBlockState(pos, state);
+            return previous != state;
+        }
+
+        Level level = boundLevel;
+        BlockPos vanillaPos = vanillaPosCodec.encode(pos);
+
+        // Do not reconcile BlockEntities yet. Vanilla invokes oldState.onRemove
+        // after the section state changed but while the old BE can still exist.
+        BlockState previous = blocks.setBlockState(pos, state);
+        if (previous == state) {
+            return false;
+        }
+
+        boolean movedByPiston =
+                (flags & Block.UPDATE_MOVE_BY_PISTON) != 0;
+
+        if (!level.isClientSide) {
+            previous.onRemove(
+                    level,
+                    vanillaPos,
+                    state,
+                    movedByPiston
+            );
+        } else if (!previous.is(state.getBlock())
+                && previous.hasBlockEntity()) {
+            blockEntities.remove(pos);
+        }
+
+        // onRemove is allowed to replace the block again. LevelChunk aborts
+        // the outer placement when the requested block no longer owns the pos.
+        if (!blocks.getBlockState(pos).is(state.getBlock())) {
+            return false;
+        }
+
+        if (!level.isClientSide) {
+            state.onPlace(
+                    level,
+                    vanillaPos,
+                    previous,
+                    movedByPiston
+            );
+        }
+
+        // onPlace may itself change the state. Reconcile against the actual
+        // stored state when it still belongs to the requested block.
+        BlockState actualState = blocks.getBlockState(pos);
+        if (actualState.is(state.getBlock())) {
+            BlockEntity blockEntity =
+                    blockEntities.reconcileBlockState(pos, actualState);
+            if (blockEntity != null) {
+                blockEntity.setLevel(level);
+            }
+        }
+
+        // Vanilla markAndNotifyBlock performs notifications only when the
+        // requested state is still exactly the state stored at this position.
+        actualState = blocks.getBlockState(pos);
+        if (actualState == state) {
+            if ((flags & Block.UPDATE_NEIGHBORS) != 0) {
+                level.blockUpdated(vanillaPos, previous.getBlock());
+            }
+
+            if ((flags & Block.UPDATE_KNOWN_SHAPE) == 0
+                    && recursionLeft > 0) {
+                int shapeFlags = flags
+                        & ~(Block.UPDATE_NEIGHBORS
+                        | Block.UPDATE_SUPPRESS_DROPS);
+
+                previous.updateIndirectNeighbourShapes(
+                        level,
+                        vanillaPos,
+                        shapeFlags,
+                        recursionLeft - 1
+                );
+                state.updateNeighbourShapes(
+                        level,
+                        vanillaPos,
+                        shapeFlags,
+                        recursionLeft - 1
+                );
+                state.updateIndirectNeighbourShapes(
+                        level,
+                        vanillaPos,
+                        shapeFlags,
+                        recursionLeft - 1
+                );
+            }
+
+            level.onBlockStateChange(
+                    vanillaPos,
+                    previous,
+                    actualState
+            );
+            state.onBlockStateChange(
+                    level,
+                    vanillaPos,
+                    previous
+            );
+        }
+
+        return true;
+    }
+
+    /**
      * Stores a block and queues the six topology-aware neighbor updates when
      * the state actually changed.
      */
