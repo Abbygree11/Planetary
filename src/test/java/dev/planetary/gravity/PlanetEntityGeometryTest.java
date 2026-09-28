@@ -87,6 +87,36 @@ final class PlanetEntityGeometryTest {
         ), below);
     }
 
+    @Test
+    void supportSliceFollowsLocalDownInsteadOfWorldDown() {
+        AABB box = new AABB(
+                10.0, 20.0, 30.0,
+                11.8, 20.6, 30.6
+        );
+
+        AABB positiveX = PlanetEntityGeometry.supportSlice(
+                box,
+                new PlanetGravityFrame(PlanetFace.POS_X),
+                0.01
+        );
+        assertBox(
+                positiveX,
+                9.99, 20.0, 30.0,
+                10.0, 20.6, 30.6
+        );
+
+        AABB negativeZ = PlanetEntityGeometry.supportSlice(
+                box,
+                new PlanetGravityFrame(PlanetFace.NEG_Z),
+                0.01
+        );
+        assertBox(
+                negativeZ,
+                10.0, 20.0, 30.6,
+                11.8, 20.6, 30.61
+        );
+    }
+
     private static void assertBox(
             AABB box,
             double minX,

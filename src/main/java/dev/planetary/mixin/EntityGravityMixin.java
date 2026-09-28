@@ -1,12 +1,15 @@
 package dev.planetary.mixin;
 
+import dev.planetary.gravity.PlanetEntityCollision;
 import dev.planetary.gravity.PlanetEntityGeometry;
 import dev.planetary.gravity.PlanetGravityEntity;
 import dev.planetary.gravity.PlanetGravityRuntime;
 import dev.planetary.topology.PlanetFace;
+import dev.planetary.topology.PlanetFrameVector;
 import dev.planetary.topology.PlanetGravityFrame;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -15,16 +18,19 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Optional;
 
 /**
- * First entity-facing gravity hooks.
+ * Gravity-aware Entity geometry and movement semantics.
  *
- * <p>Movement and acceleration are intentionally not changed here yet. This
- * mixin establishes the gravity-aware entity geometry that those systems will
- * consume in the next layer.</p>
+ * <p>Physical position and deltaMovement remain in ordinary world XYZ. Only
+ * the parts of vanilla movement that interpret Y as "vertical" are temporarily
+ * expressed in the selected local gravity frame.</p>
  */
 @Mixin(Entity.class)
 public abstract class EntityGravityMixin
@@ -46,7 +52,22 @@ public abstract class EntityGravityMixin
     public abstract double getZ();
 
     @Shadow
+    public abstract AABB getBoundingBox();
+
+    @Shadow
+    public abstract float maxUpStep();
+
+    @Shadow
+    public abstract boolean onGround();
+
+    @Shadow
     private float eyeHeight;
+
+    @Shadow
+    private Optional<BlockPos> mainSupportingBlockPos;
+
+    @Shadow
+    private boolean onGroundNoBlocks;
 
     @Unique
     private PlanetFace planetary$preferredGravityFace;
@@ -141,5 +162,244 @@ public abstract class EntityGravityMixin
                     )
             );
         });
+    }
+
+    @Inject(
+            method = "getOnPos(F)Lnet/minecraft/core/BlockPos;",
+            at = @At("HEAD"),
+            cancellable = true
+    )
+    private void planetary$getOnPos(
+            float localDownOffset,
+            CallbackInfoReturnable<BlockPos> cir
+    ) {
+        planetary$gravityFrame().ifPresent(frame -> {
+            if (frame.face() == PlanetFace.POS_Y) {
+                return;
+            }
+
+            if (mainSupportingBlockPos.isPresent()) {
+                cir.setReturnValue(mainSupportingBlockPos.get());
+                return;
+            }
+
+            Vec3 offset =
+                    PlanetEntityGeometry.localOffsetToWorld(
+                            frame,
+                            0.0,
+                            -localDownOffset,
+                            0.0
+                    );
+            cir.setReturnValue(
+                    BlockPos.containing(position().add(offset))
+            );
+        });
+    }
+
+    @Inject(
+            method = "checkSupportingBlock(ZLnet/minecraft/world/phys/Vec3;)V",
+            at = @At("HEAD"),
+            cancellable = true
+    )
+    private void planetary$checkSupportingBlock(
+            boolean onGround,
+            Vec3 localMovement,
+            CallbackInfo ci
+    ) {
+        Optional<PlanetGravityFrame> frameOptional =
+                planetary$gravityFrame();
+        if (frameOptional.isEmpty()
+                || frameOptional.get().face() == PlanetFace.POS_Y) {
+            return;
+        }
+
+        ci.cancel();
+        PlanetGravityFrame frame = frameOptional.get();
+
+        if (!onGround) {
+            onGroundNoBlocks = false;
+            mainSupportingBlockPos = Optional.empty();
+            return;
+        }
+
+        AABB support = PlanetEntityGeometry.supportSlice(
+                getBoundingBox(),
+                frame,
+                1.0E-6D
+        );
+
+        Entity self = (Entity) (Object) this;
+        Optional<BlockPos> supporting =
+                level().findSupportingBlock(self, support);
+
+        if (supporting.isEmpty()
+                && !onGroundNoBlocks
+                && localMovement != null) {
+            Vec3 rewind =
+                    PlanetEntityGeometry.localOffsetToWorld(
+                            frame,
+                            -localMovement.x,
+                            0.0,
+                            -localMovement.z
+                    );
+            supporting = level().findSupportingBlock(
+                    self,
+                    support.move(rewind)
+            );
+        }
+
+        mainSupportingBlockPos = supporting;
+        onGroundNoBlocks = supporting.isEmpty();
+    }
+
+    @Inject(
+            method = "collide(Lnet/minecraft/world/phys/Vec3;)Lnet/minecraft/world/phys/Vec3;",
+            at = @At("HEAD"),
+            cancellable = true
+    )
+    private void planetary$collide(
+            Vec3 worldMovement,
+            CallbackInfoReturnable<Vec3> cir
+    ) {
+        Optional<PlanetGravityFrame> frameOptional =
+                planetary$gravityFrame();
+        if (frameOptional.isEmpty()
+                || frameOptional.get().face() == PlanetFace.POS_Y) {
+            return;
+        }
+
+        Entity self = (Entity) (Object) this;
+        cir.setReturnValue(
+                PlanetEntityCollision.collide(
+                        self,
+                        worldMovement,
+                        getBoundingBox(),
+                        level(),
+                        frameOptional.get(),
+                        maxUpStep(),
+                        onGround()
+                )
+        );
+    }
+
+    @ModifyVariable(
+            method = "move(Lnet/minecraft/world/entity/MoverType;Lnet/minecraft/world/phys/Vec3;)V",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/util/profiling/ProfilerFiller;pop()V",
+                    ordinal = 0
+            ),
+            ordinal = 0,
+            argsOnly = true
+    )
+    private Vec3 planetary$requestedMovementToLocal(
+            Vec3 worldMovement
+    ) {
+        return planetary$toLocalWhenActive(worldMovement);
+    }
+
+    @ModifyVariable(
+            method = "move(Lnet/minecraft/world/entity/MoverType;Lnet/minecraft/world/phys/Vec3;)V",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/util/profiling/ProfilerFiller;pop()V",
+                    ordinal = 0
+            ),
+            ordinal = 1
+    )
+    private Vec3 planetary$actualMovementToLocal(
+            Vec3 worldMovement
+    ) {
+        return planetary$toLocalWhenActive(worldMovement);
+    }
+
+    @Redirect(
+            method = "move(Lnet/minecraft/world/entity/MoverType;Lnet/minecraft/world/phys/Vec3;)V",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/world/entity/Entity;getDeltaMovement()Lnet/minecraft/world/phys/Vec3;"
+            )
+    )
+    private Vec3 planetary$getDeltaMovementInLocalFrame(
+            Entity entity
+    ) {
+        return planetary$toLocalWhenActive(
+                entity.getDeltaMovement()
+        );
+    }
+
+    @Redirect(
+            method = "move(Lnet/minecraft/world/entity/MoverType;Lnet/minecraft/world/phys/Vec3;)V",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/world/entity/Entity;setDeltaMovement(Lnet/minecraft/world/phys/Vec3;)V"
+            )
+    )
+    private void planetary$setLocalDeltaMovementVector(
+            Entity entity,
+            Vec3 localMovement
+    ) {
+        entity.setDeltaMovement(
+                planetary$toWorldWhenActive(localMovement)
+        );
+    }
+
+    @Redirect(
+            method = "move(Lnet/minecraft/world/entity/MoverType;Lnet/minecraft/world/phys/Vec3;)V",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/world/entity/Entity;setDeltaMovement(DDD)V"
+            )
+    )
+    private void planetary$setLocalDeltaMovementComponents(
+            Entity entity,
+            double x,
+            double y,
+            double z
+    ) {
+        Vec3 world = planetary$toWorldWhenActive(
+                new Vec3(x, y, z)
+        );
+        entity.setDeltaMovement(world);
+    }
+
+    @Unique
+    private Vec3 planetary$toLocalWhenActive(Vec3 world) {
+        Optional<PlanetGravityFrame> frameOptional =
+                planetary$gravityFrame();
+        if (frameOptional.isEmpty()
+                || frameOptional.get().face() == PlanetFace.POS_Y) {
+            return world;
+        }
+
+        PlanetFrameVector local =
+                frameOptional.get().worldToLocal(
+                        new PlanetFrameVector(
+                                world.x,
+                                world.y,
+                                world.z
+                        )
+                );
+        return new Vec3(local.x(), local.y(), local.z());
+    }
+
+    @Unique
+    private Vec3 planetary$toWorldWhenActive(Vec3 local) {
+        Optional<PlanetGravityFrame> frameOptional =
+                planetary$gravityFrame();
+        if (frameOptional.isEmpty()
+                || frameOptional.get().face() == PlanetFace.POS_Y) {
+            return local;
+        }
+
+        PlanetFrameVector world =
+                frameOptional.get().localToWorld(
+                        new PlanetFrameVector(
+                                local.x,
+                                local.y,
+                                local.z
+                        )
+                );
+        return new Vec3(world.x(), world.y(), world.z());
     }
 }

@@ -120,4 +120,83 @@ public final class PlanetEntityGeometry {
         );
         return BlockPos.containing(anchor.add(down));
     }
+
+    /**
+     * Thin world-space slab immediately below the entity in its local gravity
+     * frame. Used by Entity.checkSupportingBlock instead of assuming minY is
+     * always the floor-facing side of the box.
+     */
+    public static AABB supportSlice(
+            AABB box,
+            PlanetGravityFrame frame,
+            double epsilon
+    ) {
+        if (epsilon <= 0.0D) {
+            throw new IllegalArgumentException("epsilon must be > 0");
+        }
+
+        PlanetFrameVector down = frame.localToWorld(
+                new PlanetFrameVector(0.0, -1.0, 0.0)
+        );
+
+        if (down.x() < 0.0D) {
+            return new AABB(
+                    box.minX - epsilon,
+                    box.minY,
+                    box.minZ,
+                    box.minX,
+                    box.maxY,
+                    box.maxZ
+            );
+        }
+        if (down.x() > 0.0D) {
+            return new AABB(
+                    box.maxX,
+                    box.minY,
+                    box.minZ,
+                    box.maxX + epsilon,
+                    box.maxY,
+                    box.maxZ
+            );
+        }
+        if (down.y() < 0.0D) {
+            return new AABB(
+                    box.minX,
+                    box.minY - epsilon,
+                    box.minZ,
+                    box.maxX,
+                    box.minY,
+                    box.maxZ
+            );
+        }
+        if (down.y() > 0.0D) {
+            return new AABB(
+                    box.minX,
+                    box.maxY,
+                    box.minZ,
+                    box.maxX,
+                    box.maxY + epsilon,
+                    box.maxZ
+            );
+        }
+        if (down.z() < 0.0D) {
+            return new AABB(
+                    box.minX,
+                    box.minY,
+                    box.minZ - epsilon,
+                    box.maxX,
+                    box.maxY,
+                    box.minZ
+            );
+        }
+
+        return new AABB(
+                box.minX,
+                box.minY,
+                box.maxZ,
+                box.maxX,
+                box.maxY,
+                box.maxZ + epsilon
+        );
+    }
 }
