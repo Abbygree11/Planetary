@@ -3,6 +3,7 @@ package dev.planetary.mixin;
 import dev.planetary.world.PlanetLevelBridge;
 import dev.planetary.world.PlanetWorldAccess;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -20,6 +21,47 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  */
 @Mixin(Level.class)
 public abstract class LevelMixin {
+
+    @Inject(method = "updateNeighborsAt", at = @At("HEAD"), cancellable = true)
+    private void planetary$updateNeighborsAt(
+            BlockPos pos,
+            Block sourceBlock,
+            CallbackInfo ci
+    ) {
+        Level level = (Level) (Object) this;
+
+        PlanetLevelBridge.resolve(level, pos).ifPresent(resolved -> {
+            resolved.world().updateNeighborsAt(
+                    resolved.position(),
+                    sourceBlock
+            );
+            ci.cancel();
+        });
+    }
+
+    @Inject(
+            method = "updateNeighborsAtExceptFromFacing",
+            at = @At("HEAD"),
+            cancellable = true
+    )
+    private void planetary$updateNeighborsAtExceptFromFacing(
+            BlockPos pos,
+            Block sourceBlock,
+            Direction exceptDirection,
+            CallbackInfo ci
+    ) {
+        Level level = (Level) (Object) this;
+
+        PlanetLevelBridge.resolve(level, pos).ifPresent(resolved -> {
+            resolved.world().updateNeighborsAtExceptFromFacing(
+                    resolved.position(),
+                    sourceBlock,
+                    exceptDirection
+            );
+            ci.cancel();
+        });
+    }
+
     @Inject(method = "getBlockState", at = @At("HEAD"), cancellable = true)
     private void planetary$getBlockState(
             BlockPos pos,
