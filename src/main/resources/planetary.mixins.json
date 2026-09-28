@@ -6,6 +6,7 @@
   "mixins": [
     "BlockCapabilityMixin",
     "ChunkSourceMixin",
+    "EntityGravityMixin",
     "LevelMixin",
     "LevelTicksMixin",
     "ServerChunkCacheMixin",
