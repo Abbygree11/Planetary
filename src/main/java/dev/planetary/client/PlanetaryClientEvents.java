@@ -3,6 +3,7 @@ package dev.planetary.client;
 import dev.planetary.PlanetaryMod;
 import dev.planetary.debug.PlanetDebugPlanetoid;
 import dev.planetary.world.PlanetWorldAccess;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
@@ -75,7 +76,7 @@ public final class PlanetaryClientEvents {
         if (world == null
                 || level == null
                 || renderCenter == null
-                || event.getLevel() != level) {
+                || Minecraft.getInstance().level != level) {
             return;
         }
 
