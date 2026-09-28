@@ -70,7 +70,8 @@ final class PlanetSectionLoadManagerTest {
         PlanetSectionAddressActivityUpdate update = manager.movePlayerTo(onRightFace);
 
         assertTrue(!update.render().isEmpty());
-        assertTrue(update.render().toLoad().stream().noneMatch(manager.renderedSections()::contains) == false);
+        assertTrue(manager.renderedSections().containsAll(update.render().toLoad()));
+        assertTrue(update.render().toUnload().stream().noneMatch(manager.renderedSections()::contains));
         assertTrue(manager.renderedSections().contains(onRightFace));
     }
 
