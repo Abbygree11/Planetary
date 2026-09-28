@@ -3,6 +3,7 @@ package dev.planetary.client;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.planetary.debug.PlanetDebugPlanetoid;
 import dev.planetary.topology.PlanetDirection;
+import dev.planetary.topology.PlanetEmbedding;
 import dev.planetary.topology.PlanetFace;
 import dev.planetary.topology.PlanetVector;
 import dev.planetary.world.PlanetBlockPos;
@@ -69,11 +70,15 @@ final class PlanetDebugPlanetoidRenderer {
             PlanetWorldAccess world,
             PlanetFace face
     ) {
-        int half = PlanetDebugPlanetoid.FACE_SIZE / 2;
+        PlanetEmbedding embedding = new PlanetEmbedding(
+                PlanetDebugPlanetoid.FACE_SIZE
+        );
+        PlanetEmbedding.PlanetWorldPoint origin =
+                embedding.toWorld(face, 0.0, 0.0, 0.0);
 
         poseStack.pushPose();
+        poseStack.translate(origin.x(), origin.y(), origin.z());
         poseStack.mulPose(faceMatrix(face));
-        poseStack.translate(-half, half, -half);
 
         for (int x = 0; x < PlanetDebugPlanetoid.FACE_SIZE; x++) {
             for (int z = 0; z < PlanetDebugPlanetoid.FACE_SIZE; z++) {
