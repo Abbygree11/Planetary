@@ -1,0 +1,32 @@
+plugins {
+    id 'java'
+    id 'net.neoforged.moddev' version '2.0.107'
+}
+
+group = 'dev.planetary'
+version = '2.0.0-alpha.1'
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+repositories {
+    mavenCentral()
+}
+
+neoForge {
+    version = '21.1.215'
+    runs {
+        client { client() }
+    }
+    mods {
+        planetary { sourceSet sourceSets.main }
+    }
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.11.4')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
