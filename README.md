@@ -72,3 +72,19 @@ gravity-frame нужны для другой задачи: запускать va
 которое предполагает глобальный Y как UP, так, будто локальный UP текущей
 области и есть обычный Minecraft UP. Это необходимо для рельс, дверей,
 растений, жидкостей, сущностей и размещения блоков на любой стороне планеты.
+
+
+## Playable debug planet
+
+The current development harness creates a real 13×13×13 cube planet in the
+Overworld around core block `(0, 200, 0)`. The blocks are ordinary Minecraft
+blocks in the normal XYZ grid; edges and corners are not duplicated.
+
+On login the server builds the debug cube once, binds its
+`PlanetGravityField`, disables active creative flight, and teleports the
+player to the top face. The client binds the same fixed core locally so movement
+prediction and server physics use the same six infinite pyramid gravity
+regions.
+
+This is temporary scaffolding. It will be removed once the dedicated Planet
+world type synchronizes its real core/worldgen data.
