@@ -8,6 +8,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.chunk.ChunkSource;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
@@ -33,6 +34,7 @@ public final class PlanetWorldAccess {
     private final PlanetTickScheduler<Block> blockTicks = new PlanetTickScheduler<>();
     private final PlanetTickScheduler<Fluid> fluidTicks = new PlanetTickScheduler<>();
     private Level boundLevel;
+    private ChunkSource boundChunkSource;
 
     public PlanetWorldAccess(int faceSizeBlocks) {
         this(
@@ -118,20 +120,45 @@ public final class PlanetWorldAccess {
             if (boundLevel instanceof ServerLevel serverLevel) {
                 PlanetVanillaTickBridge.unbind(serverLevel, this);
             }
+            if (boundChunkSource != null) {
+                PlanetChunkAvailabilityBridge.unbind(
+                        boundChunkSource,
+                        this
+                );
+                boundChunkSource = null;
+            }
             PlanetLevelBridge.unbind(boundLevel, this);
         }
 
         PlanetLevelBridge.bind(newLevel, this);
+
+        ChunkSource newChunkSource = newLevel.getChunkSource();
         try {
             if (newLevel instanceof ServerLevel serverLevel) {
                 PlanetVanillaTickBridge.bind(serverLevel, this);
             }
+            if (newChunkSource != null) {
+                PlanetChunkAvailabilityBridge.bind(
+                        newChunkSource,
+                        this
+                );
+            }
         } catch (RuntimeException exception) {
+            if (newLevel instanceof ServerLevel serverLevel) {
+                PlanetVanillaTickBridge.unbind(serverLevel, this);
+            }
+            if (newChunkSource != null) {
+                PlanetChunkAvailabilityBridge.unbind(
+                        newChunkSource,
+                        this
+                );
+            }
             PlanetLevelBridge.unbind(newLevel, this);
             throw exception;
         }
 
         this.boundLevel = newLevel;
+        this.boundChunkSource = newChunkSource;
 
         for (PlanetBlockPos pos : blockEntities.positions()) {
             BlockEntity blockEntity = blockEntities.get(pos);
@@ -148,6 +175,13 @@ public final class PlanetWorldAccess {
 
         if (boundLevel instanceof ServerLevel serverLevel) {
             PlanetVanillaTickBridge.unbind(serverLevel, this);
+        }
+        if (boundChunkSource != null) {
+            PlanetChunkAvailabilityBridge.unbind(
+                    boundChunkSource,
+                    this
+            );
+            boundChunkSource = null;
         }
         PlanetLevelBridge.unbind(boundLevel, this);
         boundLevel = null;

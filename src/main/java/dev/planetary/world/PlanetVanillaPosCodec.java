@@ -177,6 +177,35 @@ public final class PlanetVanillaPosCodec {
         return tryDecode(vanillaPos).isPresent();
     }
 
+    /**
+     * Returns whether a vanilla chunk overlaps the horizontal virtual-atlas
+     * envelope used by this codec.
+     *
+     * <p>LevelAccessor#hasChunk loses Y before it reaches ChunkSource, so this
+     * intentionally answers only the X/Z part of the question. Vertical
+     * validity is still enforced by the normal BlockPos resolution path.</p>
+     */
+    public boolean containsChunk(int chunkX, int chunkZ) {
+        long chunkMinX = ((long) chunkX) << 4;
+        long chunkMinZ = ((long) chunkZ) << 4;
+        long chunkMaxX = chunkMinX + 15L;
+        long chunkMaxZ = chunkMinZ + 15L;
+
+        long atlasMinX = xOrigin;
+        long atlasMaxX = (long) xOrigin
+                + (long) faceCellSize * FACE_COUNT
+                - 1L;
+        long atlasMinZ = zOrigin;
+        long atlasMaxZ = (long) zOrigin
+                + faceCellSize
+                - 1L;
+
+        return chunkMaxX >= atlasMinX
+                && chunkMinX <= atlasMaxX
+                && chunkMaxZ >= atlasMinZ
+                && chunkMinZ <= atlasMaxZ;
+    }
+
     private void validatePlanetPosition(PlanetBlockPos pos) {
         if (pos.x() < 0 || pos.x() >= faceSizeBlocks
                 || pos.z() < 0 || pos.z() >= faceSizeBlocks) {

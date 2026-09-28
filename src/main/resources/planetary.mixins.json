@@ -4,8 +4,10 @@
   "package": "dev.planetary.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "ChunkSourceMixin",
     "LevelMixin",
     "LevelTicksMixin",
+    "ServerChunkCacheMixin",
     "ServerLevelMixin"
   ],
   "injectors": {
