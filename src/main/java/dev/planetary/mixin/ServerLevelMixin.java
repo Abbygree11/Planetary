@@ -1,6 +1,7 @@
 package dev.planetary.mixin;
 
 import dev.planetary.world.PlanetLevelBridge;
+import dev.planetary.world.PlanetSidedQueryFrame;
 import dev.planetary.world.PlanetVanillaUpdateFrame;
 import dev.planetary.world.PlanetWorldAccess;
 import net.minecraft.core.BlockPos;
@@ -8,6 +9,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.capabilities.ICapabilityInvalidationListener;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -130,6 +132,57 @@ public abstract class ServerLevelMixin {
                                     frame.sourceAliasPos(),
                                     isMoving
                             )
+                    );
+                    ci.cancel();
+                });
+    }
+
+
+    @Inject(
+            method = "invalidateCapabilities(Lnet/minecraft/core/BlockPos;)V",
+            at = @At("HEAD"),
+            cancellable = true,
+            remap = false
+    )
+    private void planetary$invalidateCapabilities(
+            BlockPos pos,
+            CallbackInfo ci
+    ) {
+        ServerLevel level = (ServerLevel) (Object) this;
+
+        PlanetSidedQueryFrame.canonicalize(level, pos)
+                .ifPresent(canonicalPos -> {
+                    if (canonicalPos.equals(pos)) {
+                        return;
+                    }
+
+                    level.invalidateCapabilities(canonicalPos);
+                    ci.cancel();
+                });
+    }
+
+    @Inject(
+            method = "registerCapabilityListener(Lnet/minecraft/core/BlockPos;Lnet/neoforged/neoforge/capabilities/ICapabilityInvalidationListener;)V",
+            at = @At("HEAD"),
+            cancellable = true,
+            remap = false
+    )
+    private void planetary$registerCapabilityListener(
+            BlockPos pos,
+            ICapabilityInvalidationListener listener,
+            CallbackInfo ci
+    ) {
+        ServerLevel level = (ServerLevel) (Object) this;
+
+        PlanetSidedQueryFrame.canonicalize(level, pos)
+                .ifPresent(canonicalPos -> {
+                    if (canonicalPos.equals(pos)) {
+                        return;
+                    }
+
+                    level.registerCapabilityListener(
+                            canonicalPos,
+                            listener
                     );
                     ci.cancel();
                 });

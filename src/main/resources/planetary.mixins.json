@@ -4,6 +4,7 @@
   "package": "dev.planetary.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "BlockCapabilityMixin",
     "ChunkSourceMixin",
     "LevelMixin",
     "LevelTicksMixin",
