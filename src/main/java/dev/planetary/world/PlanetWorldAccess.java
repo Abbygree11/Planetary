@@ -4,6 +4,7 @@ import dev.planetary.topology.FaceTransform;
 import dev.planetary.topology.PlanetDirection;
 import dev.planetary.topology.PlanetTopology;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -113,10 +114,22 @@ public final class PlanetWorldAccess {
         Level newLevel = Objects.requireNonNull(level, "level");
 
         if (boundLevel != null && boundLevel != newLevel) {
+            if (boundLevel instanceof ServerLevel serverLevel) {
+                PlanetVanillaTickBridge.unbind(serverLevel, this);
+            }
             PlanetLevelBridge.unbind(boundLevel, this);
         }
 
         PlanetLevelBridge.bind(newLevel, this);
+        try {
+            if (newLevel instanceof ServerLevel serverLevel) {
+                PlanetVanillaTickBridge.bind(serverLevel, this);
+            }
+        } catch (RuntimeException exception) {
+            PlanetLevelBridge.unbind(newLevel, this);
+            throw exception;
+        }
+
         this.boundLevel = newLevel;
 
         for (PlanetBlockPos pos : blockEntities.positions()) {
@@ -132,6 +145,9 @@ public final class PlanetWorldAccess {
             return;
         }
 
+        if (boundLevel instanceof ServerLevel serverLevel) {
+            PlanetVanillaTickBridge.unbind(serverLevel, this);
+        }
         PlanetLevelBridge.unbind(boundLevel, this);
         boundLevel = null;
     }
@@ -313,5 +329,65 @@ public final class PlanetWorldAccess {
             TickPriority priority
     ) {
         return fluidTicks.schedule(fluid, pos, triggerTick, priority);
+    }
+
+    public void runScheduledBlockTicks(
+            ServerLevel level,
+            long gameTime,
+            int maxTicks
+    ) {
+        requireBoundServerLevel(level);
+
+        var due = blockTicks.collectDueForExecution(gameTime, maxTicks);
+        try {
+            for (PlanetScheduledTick<Block> tick : due) {
+                blockTicks.markRunning(tick);
+
+                BlockState state = getBlockState(tick.position());
+                if (state.is(tick.type())) {
+                    state.tick(
+                            level,
+                            vanillaPosCodec.encode(tick.position()),
+                            level.getRandom()
+                    );
+                }
+            }
+        } finally {
+            blockTicks.finishExecutionBatch();
+        }
+    }
+
+    public void runScheduledFluidTicks(
+            ServerLevel level,
+            long gameTime,
+            int maxTicks
+    ) {
+        requireBoundServerLevel(level);
+
+        var due = fluidTicks.collectDueForExecution(gameTime, maxTicks);
+        try {
+            for (PlanetScheduledTick<Fluid> tick : due) {
+                fluidTicks.markRunning(tick);
+
+                FluidState state = getFluidState(tick.position());
+                if (state.is(tick.type())) {
+                    state.tick(
+                            level,
+                            vanillaPosCodec.encode(tick.position())
+                    );
+                }
+            }
+        } finally {
+            fluidTicks.finishExecutionBatch();
+        }
+    }
+
+    private void requireBoundServerLevel(ServerLevel level) {
+        Objects.requireNonNull(level, "level");
+        if (boundLevel != level) {
+            throw new IllegalStateException(
+                    "ServerLevel is not bound to this PlanetWorldAccess"
+            );
+        }
     }
 }

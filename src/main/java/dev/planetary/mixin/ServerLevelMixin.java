@@ -2,6 +2,7 @@ package dev.planetary.mixin;
 
 import dev.planetary.world.PlanetLevelBridge;
 import dev.planetary.world.PlanetVanillaUpdateFrame;
+import dev.planetary.world.PlanetWorldAccess;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -11,6 +12,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.function.BooleanSupplier;
 
 /**
  * ServerLevel overrides several Level neighbor-update entry points, so the
@@ -130,5 +133,53 @@ public abstract class ServerLevelMixin {
                     );
                     ci.cancel();
                 });
+    }
+
+    @Inject(
+            method = "tick",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/world/ticks/LevelTicks;tick(JILjava/util/function/BiConsumer;)V",
+                    ordinal = 0,
+                    shift = At.Shift.AFTER
+            )
+    )
+    private void planetary$runScheduledBlockTicks(
+            BooleanSupplier hasTimeLeft,
+            CallbackInfo ci
+    ) {
+        ServerLevel level = (ServerLevel) (Object) this;
+        PlanetWorldAccess world = PlanetLevelBridge.get(level);
+        if (world != null) {
+            world.runScheduledBlockTicks(
+                    level,
+                    level.getGameTime(),
+                    65536
+            );
+        }
+    }
+
+    @Inject(
+            method = "tick",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/world/ticks/LevelTicks;tick(JILjava/util/function/BiConsumer;)V",
+                    ordinal = 1,
+                    shift = At.Shift.AFTER
+            )
+    )
+    private void planetary$runScheduledFluidTicks(
+            BooleanSupplier hasTimeLeft,
+            CallbackInfo ci
+    ) {
+        ServerLevel level = (ServerLevel) (Object) this;
+        PlanetWorldAccess world = PlanetLevelBridge.get(level);
+        if (world != null) {
+            world.runScheduledFluidTicks(
+                    level,
+                    level.getGameTime(),
+                    65536
+            );
+        }
     }
 }

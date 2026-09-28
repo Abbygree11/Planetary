@@ -94,4 +94,38 @@ final class PlanetTickSchedulerTest {
         assertEquals(1, world.blockTicks().size());
         assertEquals(1, world.fluidTicks().size());
     }
+
+    @Test
+    void executionBatchExposesVanillaWillTickThisTickSemantics() {
+        PlanetTickScheduler<net.minecraft.world.level.block.Block> scheduler =
+                new PlanetTickScheduler<>();
+        PlanetBlockPos pos = new PlanetBlockPos(
+                PlanetFace.POS_Y,
+                7,
+                8,
+                9
+        );
+
+        scheduler.schedule(
+                Blocks.STONE,
+                pos,
+                100,
+                TickPriority.HIGH,
+                1234L
+        );
+
+        List<PlanetScheduledTick<net.minecraft.world.level.block.Block>> due =
+                scheduler.collectDueForExecution(100, 10);
+
+        assertEquals(1, due.size());
+        assertEquals(1234L, due.getFirst().subTickOrder());
+        assertTrue(scheduler.willTickThisTick(pos, Blocks.STONE));
+        assertFalse(scheduler.hasScheduledTick(pos, Blocks.STONE));
+
+        scheduler.markRunning(due.getFirst());
+        assertFalse(scheduler.willTickThisTick(pos, Blocks.STONE));
+
+        scheduler.finishExecutionBatch();
+        assertFalse(scheduler.willTickThisTick(pos, Blocks.STONE));
+    }
 }
