@@ -224,13 +224,69 @@ public final class PlanetWorldAccess {
     public BlockState setBlockStateAndUpdateNeighbors(PlanetBlockPos pos, BlockState state) {
         BlockState previous = setBlockState(pos, state);
         if (previous != state) {
-            neighborUpdates.enqueueAllNeighbors(this, pos, state.getBlock());
+            if (boundLevel != null) {
+                PlanetVanillaNeighborUpdates.updateAll(
+                        boundLevel,
+                        this,
+                        pos,
+                        previous.getBlock()
+                );
+            } else {
+                neighborUpdates.enqueueAllNeighbors(
+                        this,
+                        pos,
+                        previous.getBlock()
+                );
+            }
         }
         return previous;
     }
 
     public void updateNeighborsAt(PlanetBlockPos pos, Block sourceBlock) {
-        neighborUpdates.enqueueAllNeighbors(this, pos, sourceBlock);
+        Objects.requireNonNull(pos, "pos");
+        Objects.requireNonNull(sourceBlock, "sourceBlock");
+
+        if (boundLevel != null) {
+            PlanetVanillaNeighborUpdates.updateAll(
+                    boundLevel,
+                    this,
+                    pos,
+                    sourceBlock
+            );
+        } else {
+            neighborUpdates.enqueueAllNeighbors(
+                    this,
+                    pos,
+                    sourceBlock
+            );
+        }
+    }
+
+    public void updateNeighborsAtExceptFromFacing(
+            PlanetBlockPos pos,
+            Block sourceBlock,
+            Direction exceptDirection
+    ) {
+        Objects.requireNonNull(pos, "pos");
+        Objects.requireNonNull(sourceBlock, "sourceBlock");
+        Objects.requireNonNull(exceptDirection, "exceptDirection");
+
+        if (boundLevel != null) {
+            PlanetVanillaNeighborUpdates.updateExcept(
+                    boundLevel,
+                    this,
+                    pos,
+                    sourceBlock,
+                    exceptDirection
+            );
+        } else {
+            neighborUpdates.enqueueNeighborsExcept(
+                    this,
+                    pos,
+                    sourceBlock,
+                    exceptDirection
+            );
+        }
     }
 
     public BlockState getNeighborState(PlanetBlockPos pos, Direction direction) {
