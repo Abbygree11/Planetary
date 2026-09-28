@@ -4,6 +4,7 @@ import dev.planetary.topology.FaceTransform;
 import dev.planetary.topology.PlanetDirection;
 import dev.planetary.topology.PlanetTopology;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -29,6 +30,7 @@ public final class PlanetWorldAccess {
     private final PlanetNeighborUpdateQueue neighborUpdates = new PlanetNeighborUpdateQueue();
     private final PlanetTickScheduler<Block> blockTicks = new PlanetTickScheduler<>();
     private final PlanetTickScheduler<Fluid> fluidTicks = new PlanetTickScheduler<>();
+    private Level boundLevel;
 
     public PlanetWorldAccess(int faceSizeBlocks) {
         this(
@@ -100,6 +102,27 @@ public final class PlanetWorldAccess {
         return blockEntities.get(pos);
     }
 
+    /**
+     * Binds Planetary BlockEntities to the real Minecraft Level instance.
+     *
+     * <p>The virtual BlockPos codec keeps their coordinates stable; the next
+     * compatibility layer will intercept accesses to that virtual range and
+     * delegate them back into this PlanetWorldAccess.</p>
+     */
+    public void bindLevel(Level level) {
+        this.boundLevel = Objects.requireNonNull(level, "level");
+        for (PlanetBlockPos pos : blockEntities.positions()) {
+            BlockEntity blockEntity = blockEntities.get(pos);
+            if (blockEntity != null) {
+                blockEntity.setLevel(level);
+            }
+        }
+    }
+
+    public Level boundLevel() {
+        return boundLevel;
+    }
+
     public PlanetNeighborUpdateQueue neighborUpdates() {
         return neighborUpdates;
     }
@@ -169,7 +192,10 @@ public final class PlanetWorldAccess {
     public BlockState setBlockState(PlanetBlockPos pos, BlockState state) {
         BlockState previous = blocks.setBlockState(pos, state);
         if (previous != state) {
-            blockEntities.reconcileBlockState(pos, state);
+            BlockEntity blockEntity = blockEntities.reconcileBlockState(pos, state);
+            if (blockEntity != null && boundLevel != null) {
+                blockEntity.setLevel(boundLevel);
+            }
         }
         return previous;
     }
