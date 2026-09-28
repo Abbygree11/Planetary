@@ -1,6 +1,7 @@
 package dev.planetary.mixin;
 
 import dev.planetary.gravity.PlanetEntityCollision;
+import dev.planetary.gravity.PlanetEntityControl;
 import dev.planetary.gravity.PlanetEntityGeometry;
 import dev.planetary.gravity.PlanetGravityEntity;
 import dev.planetary.gravity.PlanetGravityRuntime;
@@ -361,6 +362,38 @@ public abstract class EntityGravityMixin
                 new Vec3(x, y, z)
         );
         entity.setDeltaMovement(world);
+    }
+
+    @Inject(
+            method = "moveRelative(FLnet/minecraft/world/phys/Vec3;)V",
+            at = @At("HEAD"),
+            cancellable = true
+    )
+    private void planetary$moveRelative(
+            float amount,
+            Vec3 localInput,
+            CallbackInfo ci
+    ) {
+        Optional<PlanetGravityFrame> frameOptional =
+                planetary$gravityFrame();
+        if (frameOptional.isEmpty()
+                || frameOptional.get().face() == PlanetFace.POS_Y) {
+            return;
+        }
+
+        Entity self = (Entity) (Object) this;
+        Vec3 worldInput =
+                PlanetEntityControl.relativeInputToWorld(
+                        localInput,
+                        amount,
+                        self.getYRot(),
+                        frameOptional.get()
+                );
+
+        self.setDeltaMovement(
+                self.getDeltaMovement().add(worldInput)
+        );
+        ci.cancel();
     }
 
     @Unique

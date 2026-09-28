@@ -8,6 +8,7 @@
     "ChunkSourceMixin",
     "EntityGravityMixin",
     "LevelMixin",
+    "LivingEntityGravityMixin",
     "LevelTicksMixin",
     "ServerChunkCacheMixin",
     "ServerLevelMixin"
