@@ -1,20 +1,19 @@
 package dev.planetary.mixin;
 
 import dev.planetary.client.PlanetCameraRotation;
-import dev.planetary.gravity.PlanetEntityGeometry;
+import dev.planetary.client.PlanetCameraTransition;
 import dev.planetary.gravity.PlanetGravityEntity;
-import dev.planetary.topology.PlanetFace;
 import dev.planetary.topology.PlanetGravityFrame;
 import net.minecraft.client.Camera;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -23,8 +22,7 @@ import java.util.Optional;
 
 /**
  * Makes Minecraft's actual Camera use the same local gravity frame as entity
- * movement. Entity view vectors alone are not sufficient because Camera.setup
- * normally rebuilds its own global-Y-up quaternion.
+ * movement and visually smooths discrete gravity-face transitions.
  */
 @Mixin(Camera.class)
 public abstract class CameraGravityMixin {
@@ -70,11 +68,21 @@ public abstract class CameraGravityMixin {
     private float eyeHeightOld;
 
     @Shadow
+    private float partialTickTime;
+
+    @Shadow
     protected abstract void setPosition(
             double x,
             double y,
             double z
     );
+
+    @Unique
+    private PlanetCameraTransition planetary$transition;
+
+    @Unique
+    private final Quaternionf planetary$effectiveFrameRotation =
+            new Quaternionf();
 
     @Inject(
             method = "setRotation(FFF)V",
@@ -89,21 +97,46 @@ public abstract class CameraGravityMixin {
         Optional<PlanetGravityFrame> frameOptional =
                 planetary$frame();
 
-        if (frameOptional.isEmpty()
-                || frameOptional.get().face()
-                == PlanetFace.POS_Y) {
+        if (frameOptional.isEmpty()) {
+            if (planetary$transition != null) {
+                planetary$transition.reset();
+            }
+            planetary$effectiveFrameRotation.identity();
             return;
         }
 
-        Quaternionf worldRotation =
+        PlanetGravityFrame frame = frameOptional.get();
+        Quaternionf targetCamera =
                 PlanetCameraRotation.cameraQuaternion(
                         this.yRot,
                         this.xRot,
                         this.roll,
-                        frameOptional.get()
+                        frame
+                );
+        Quaternionf targetFrame =
+                PlanetCameraRotation.frameQuaternion(frame);
+
+        if (planetary$transition == null) {
+            planetary$transition =
+                    new PlanetCameraTransition();
+        }
+
+        double timeTicks =
+                entity.level().getGameTime()
+                        + this.partialTickTime;
+
+        PlanetCameraTransition.Snapshot snapshot =
+                planetary$transition.update(
+                        frame.face(),
+                        targetCamera,
+                        targetFrame,
+                        timeTicks
                 );
 
-        this.rotation.set(worldRotation);
+        this.rotation.set(snapshot.cameraRotation());
+        this.planetary$effectiveFrameRotation.set(
+                snapshot.frameRotation()
+        );
 
         PLANETARY_FORWARDS.rotate(
                 this.rotation,
@@ -139,9 +172,7 @@ public abstract class CameraGravityMixin {
         Optional<PlanetGravityFrame> frameOptional =
                 planetary$frame();
 
-        if (frameOptional.isEmpty()
-                || frameOptional.get().face()
-                == PlanetFace.POS_Y) {
+        if (frameOptional.isEmpty()) {
             return;
         }
 
@@ -161,19 +192,20 @@ public abstract class CameraGravityMixin {
                 cameraEntity.getZ()
         );
 
-        double interpolatedEyeHeight =
+        float interpolatedEyeHeight =
                 Mth.lerp(
                         partialTick,
                         this.eyeHeightOld,
                         this.eyeHeight
                 );
 
-        Vec3 eyeOffset =
-                PlanetEntityGeometry.localOffsetToWorld(
-                        frameOptional.get(),
-                        0.0D,
+        Vector3f eyeOffset =
+                new Vector3f(
+                        0.0F,
                         interpolatedEyeHeight,
-                        0.0D
+                        0.0F
+                ).rotate(
+                        this.planetary$effectiveFrameRotation
                 );
 
         setPosition(
@@ -183,8 +215,10 @@ public abstract class CameraGravityMixin {
         );
     }
 
+    @Unique
     private Optional<PlanetGravityFrame> planetary$frame() {
-        if (!(this.entity instanceof PlanetGravityEntity gravityEntity)) {
+        if (!(this.entity
+                instanceof PlanetGravityEntity gravityEntity)) {
             return Optional.empty();
         }
 
