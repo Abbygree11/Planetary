@@ -36,6 +36,28 @@ public final class PlanetBlockGravity {
         );
     }
 
+    public static Optional<PlanetGravityFrame> frameAt(
+            Level level,
+            double worldX,
+            double worldY,
+            double worldZ
+    ) {
+        return PlanetGravityRuntime.findAt(
+                level,
+                worldX,
+                worldY,
+                worldZ
+        ).flatMap(
+                field -> field.selectEntityFrame(
+                        worldX,
+                        worldY,
+                        worldZ,
+                        null,
+                        0.0D
+                )
+        );
+    }
+
     public static Direction localDown(
             Level level,
             BlockPos pos

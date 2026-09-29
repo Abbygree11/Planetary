@@ -54,7 +54,8 @@ Working on all faces:
 4. Falling blocks:
    d165339 changed support/landing to local DOWN.
    Sand now physically falls in Planet gravity.
-   Breaking/falling particles still accelerate toward world -Y.
+   ParticleGravityMixin rotates vanilla particle gravity toward local DOWN.
+   Awaiting user verification for breaking/falling particle motion.
 5. Mob AI:
    before d165339 mobs repeatedly jumped on side faces.
    d165339 localized MoveControl target deltas.
@@ -73,8 +74,8 @@ GroundPathNavigation/PathNavigation/WalkNodeEvaluator use below/above, Plane.HOR
 
 ## Preferred next architecture
 Particles:
-- gravity acceleration along frame.worldDown
-- local-down collision/onGround classification
+- ParticleGravityMixin now compensates vanilla -Y gravity and applies the same acceleration along frame.worldDown.
+- local-down collision/onGround classification is still future work if visible settling/collision artifacts remain.
 
 Blocks:
 - treat vanilla blockstate directions as local values in Planet
