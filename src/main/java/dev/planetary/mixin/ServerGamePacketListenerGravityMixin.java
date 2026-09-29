@@ -33,7 +33,12 @@ public abstract class ServerGamePacketListenerGravityMixin {
 
     @Inject(
             method = "handleMovePlayer(Lnet/minecraft/network/protocol/game/ServerboundMovePlayerPacket;)V",
-            at = @At("HEAD")
+            at = @At(
+                value = "INVOKE",
+                target = "Lnet/minecraft/server/level/ServerPlayer;serverLevel()Lnet/minecraft/server/level/ServerLevel;",
+                ordinal = 0,
+                shift = At.Shift.BEFORE
+        )
     )
     private void planetary$recognizeLocalJump(
             ServerboundMovePlayerPacket packet,
