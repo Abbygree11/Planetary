@@ -16,6 +16,7 @@
     "EntityGravityMixin",
     "LevelMixin",
     "LivingEntityGravityMixin",
+    "PlayerGravityMixin",
     "LevelTicksMixin",
     "ServerChunkCacheMixin",
     "ServerGamePacketListenerGravityMixin",
