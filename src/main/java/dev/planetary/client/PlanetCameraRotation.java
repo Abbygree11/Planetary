@@ -39,6 +39,17 @@ public final class PlanetCameraRotation {
         return new Quaternionf().setFromNormalized(matrix);
     }
 
+    /**
+     * Rotation that maps a vanilla entity model from its local gravity frame
+     * into world space. Kept separate from cameraQuaternion because camera
+     * composition additionally includes local yaw/pitch/roll.
+     */
+    public static Quaternionf entityQuaternion(
+            PlanetGravityFrame frame
+    ) {
+        return frameQuaternion(frame);
+    }
+
     public static Quaternionf cameraQuaternion(
             float yawDegrees,
             float pitchDegrees,

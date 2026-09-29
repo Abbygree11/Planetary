@@ -55,7 +55,7 @@ public abstract class LivingEntityRendererGravityMixin<
         }
 
         poseStack.mulPose(
-                PlanetCameraRotation.frameQuaternion(
+                PlanetCameraRotation.entityQuaternion(
                         frameOptional.get()
                 )
         );

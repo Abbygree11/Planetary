@@ -1,7 +1,6 @@
 package dev.planetary.mixin;
 
 import dev.planetary.gravity.PlanetEntityCollision;
-import dev.planetary.gravity.PlanetEntityControl;
 import dev.planetary.gravity.PlanetEntityGeometry;
 import dev.planetary.gravity.PlanetEntityMotion;
 import dev.planetary.gravity.PlanetEntityOrientation;
@@ -160,6 +159,24 @@ public abstract class EntityGravityMixin
                 );
 
         if (fieldOptional.isEmpty()) {
+            if (planetary$currentGravityFrame != null) {
+                Entity self = (Entity) (Object) this;
+                Vec3 localVelocity = self.getDeltaMovement();
+                PlanetFrameVector worldVelocity =
+                        planetary$currentGravityFrame.localToWorld(
+                                new PlanetFrameVector(
+                                        localVelocity.x,
+                                        localVelocity.y,
+                                        localVelocity.z
+                                )
+                        );
+                self.setDeltaMovement(
+                        worldVelocity.x(),
+                        worldVelocity.y(),
+                        worldVelocity.z()
+                );
+            }
+
             planetary$currentGravityField = null;
             planetary$currentGravityFrame = null;
             planetary$preferredGravityFace = null;
@@ -167,7 +184,10 @@ public abstract class EntityGravityMixin
         }
 
         PlanetGravityField field = fieldOptional.get();
-        if (planetary$currentGravityField != field) {
+        boolean enteringField =
+                planetary$currentGravityField != field;
+
+        if (enteringField) {
             planetary$currentGravityField = field;
             planetary$currentGravityFrame = null;
             planetary$preferredGravityFace = null;
@@ -188,9 +208,48 @@ public abstract class EntityGravityMixin
         }
 
         PlanetGravityFrame next = nextOptional.get();
+        PlanetGravityFrame previousFrame =
+                planetary$currentGravityFrame;
         PlanetFace previousFace =
                 planetary$preferredGravityFace;
         PlanetFace nextFace = next.face();
+
+        Entity self = (Entity) (Object) this;
+        Vec3 velocity = self.getDeltaMovement();
+
+        if (enteringField) {
+            // Outside a Planet field vanilla velocity is world-space.
+            // Inside it, deltaMovement is stored in the local gravity frame.
+            PlanetFrameVector local =
+                    next.worldToLocal(
+                            new PlanetFrameVector(
+                                    velocity.x,
+                                    velocity.y,
+                                    velocity.z
+                            )
+                    );
+            self.setDeltaMovement(
+                    local.x(),
+                    local.y(),
+                    local.z()
+            );
+        } else if (previousFrame != null
+                && previousFace != nextFace) {
+            PlanetFrameVector reexpressed =
+                    previousFrame.transformLocalTo(
+                            next,
+                            new PlanetFrameVector(
+                                    velocity.x,
+                                    velocity.y,
+                                    velocity.z
+                            )
+                    );
+            self.setDeltaMovement(
+                    reexpressed.x(),
+                    reexpressed.y(),
+                    reexpressed.z()
+            );
+        }
 
         if (previousFace != null
                 && previousFace != nextFace) {
@@ -518,6 +577,25 @@ public abstract class EntityGravityMixin
         );
     }
 
+    /**
+     * deltaMovement and movement arguments are local inside Planet gravity.
+     * Only the physical displacement passed into collision/movement is rotated
+     * to world XYZ. After collision the existing hooks below convert both
+     * requested/actual movement back to local before vanilla derives
+     * horizontal/vertical collision and onGround flags.
+     */
+    @ModifyVariable(
+            method = "move(Lnet/minecraft/world/entity/MoverType;Lnet/minecraft/world/phys/Vec3;)V",
+            at = @At("HEAD"),
+            ordinal = 0,
+            argsOnly = true
+    )
+    private Vec3 planetary$movementToWorld(
+            Vec3 localMovement
+    ) {
+        return planetary$toWorldWhenActive(localMovement);
+    }
+
     @ModifyVariable(
             method = "move(Lnet/minecraft/world/entity/MoverType;Lnet/minecraft/world/phys/Vec3;)V",
             at = @At(
@@ -547,88 +625,6 @@ public abstract class EntityGravityMixin
             Vec3 worldMovement
     ) {
         return planetary$toLocalWhenActive(worldMovement);
-    }
-
-    @Redirect(
-            method = "move(Lnet/minecraft/world/entity/MoverType;Lnet/minecraft/world/phys/Vec3;)V",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/world/entity/Entity;getDeltaMovement()Lnet/minecraft/world/phys/Vec3;"
-            )
-    )
-    private Vec3 planetary$getDeltaMovementInLocalFrame(
-            Entity entity
-    ) {
-        return planetary$toLocalWhenActive(
-                entity.getDeltaMovement()
-        );
-    }
-
-    @Redirect(
-            method = "move(Lnet/minecraft/world/entity/MoverType;Lnet/minecraft/world/phys/Vec3;)V",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/world/entity/Entity;setDeltaMovement(Lnet/minecraft/world/phys/Vec3;)V"
-            )
-    )
-    private void planetary$setLocalDeltaMovementVector(
-            Entity entity,
-            Vec3 localMovement
-    ) {
-        entity.setDeltaMovement(
-                planetary$toWorldWhenActive(localMovement)
-        );
-    }
-
-    @Redirect(
-            method = "move(Lnet/minecraft/world/entity/MoverType;Lnet/minecraft/world/phys/Vec3;)V",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/world/entity/Entity;setDeltaMovement(DDD)V"
-            )
-    )
-    private void planetary$setLocalDeltaMovementComponents(
-            Entity entity,
-            double x,
-            double y,
-            double z
-    ) {
-        Vec3 world = planetary$toWorldWhenActive(
-                new Vec3(x, y, z)
-        );
-        entity.setDeltaMovement(world);
-    }
-
-    @Inject(
-            method = "moveRelative(FLnet/minecraft/world/phys/Vec3;)V",
-            at = @At("HEAD"),
-            cancellable = true
-    )
-    private void planetary$moveRelative(
-            float amount,
-            Vec3 localInput,
-            CallbackInfo ci
-    ) {
-        Optional<PlanetGravityFrame> frameOptional =
-                planetary$gravityFrame();
-        if (frameOptional.isEmpty()
-                || frameOptional.get().face() == PlanetFace.POS_Y) {
-            return;
-        }
-
-        Entity self = (Entity) (Object) this;
-        Vec3 worldInput =
-                PlanetEntityControl.relativeInputToWorld(
-                        localInput,
-                        amount,
-                        self.getYRot(),
-                        frameOptional.get()
-                );
-
-        self.setDeltaMovement(
-                self.getDeltaMovement().add(worldInput)
-        );
-        ci.cancel();
     }
 
     @Unique

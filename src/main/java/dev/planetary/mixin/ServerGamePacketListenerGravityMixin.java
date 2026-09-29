@@ -1,49 +1,42 @@
 package dev.planetary.mixin;
 
-import dev.planetary.gravity.PlanetEntitySupport;
 import dev.planetary.gravity.PlanetGravityEntity;
-import dev.planetary.gravity.PlanetPlayerMovement;
 import dev.planetary.topology.PlanetFace;
+import dev.planetary.topology.PlanetFrameVector;
 import dev.planetary.topology.PlanetGravityFrame;
-import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 import java.util.Optional;
 
 /**
- * Makes server-side player jump recognition use local UP instead of world +Y.
- *
- * <p>Vanilla recognizes a jump packet only when the incoming Y coordinate
- * rises. On a side face a perfectly normal jump changes X or Z instead, so the
- * server otherwise never calls jumpFromGround for that movement.</p>
+ * Player position packets contain world-space deltas, while Planet entities
+ * store movement in their local gravity frame. Reframe the packet delta at
+ * the exact ServerPlayer.move boundary, matching the proven GravityChanger
+ * approach and keeping client/server collision semantics identical.
  */
 @Mixin(ServerGamePacketListenerImpl.class)
 public abstract class ServerGamePacketListenerGravityMixin {
-    private static final double PLANETARY_JUMP_EPSILON =
-            1.0E-5D;
 
     @Shadow
     public ServerPlayer player;
 
-    @Inject(
+    @ModifyArg(
             method = "handleMovePlayer(Lnet/minecraft/network/protocol/game/ServerboundMovePlayerPacket;)V",
             at = @At(
-                value = "INVOKE",
-                target = "Lnet/minecraft/server/level/ServerPlayer;serverLevel()Lnet/minecraft/server/level/ServerLevel;",
-                ordinal = 0,
-                shift = At.Shift.BEFORE
-        )
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/server/level/ServerPlayer;move(Lnet/minecraft/world/entity/MoverType;Lnet/minecraft/world/phys/Vec3;)V"
+            ),
+            index = 1
     )
-    private void planetary$recognizeLocalJump(
-            ServerboundMovePlayerPacket packet,
-            CallbackInfo ci
+    private Vec3 planetary$worldMovementToLocal(
+            Vec3 worldMovement
     ) {
         Optional<PlanetGravityFrame> frameOptional =
                 ((PlanetGravityEntity) player)
@@ -51,27 +44,23 @@ public abstract class ServerGamePacketListenerGravityMixin {
 
         if (frameOptional.isEmpty()
                 || frameOptional.get().face()
-                == PlanetFace.POS_Y
-                || !PlanetEntitySupport.isGrounded(
-                        player,
-                        frameOptional.get()
-                )
-                || packet.isOnGround()) {
-            return;
+                == PlanetFace.POS_Y) {
+            return worldMovement;
         }
 
-        Vec3 movement = new Vec3(
-                packet.getX(player.getX()) - player.getX(),
-                packet.getY(player.getY()) - player.getY(),
-                packet.getZ(player.getZ()) - player.getZ()
+        PlanetFrameVector local =
+                frameOptional.get().worldToLocal(
+                        new PlanetFrameVector(
+                                worldMovement.x,
+                                worldMovement.y,
+                                worldMovement.z
+                        )
+                );
+
+        return new Vec3(
+                local.x(),
+                local.y(),
+                local.z()
         );
-
-        if (PlanetPlayerMovement.isMovingUp(
-                movement,
-                frameOptional.get(),
-                PLANETARY_JUMP_EPSILON
-        )) {
-            player.jumpFromGround();
-        }
     }
 }
