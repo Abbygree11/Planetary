@@ -1,6 +1,7 @@
 package dev.planetary.gravity;
 
 import dev.planetary.topology.PlanetDirection;
+import dev.planetary.topology.PlanetFace;
 import dev.planetary.topology.PlanetGravityFrame;
 import dev.planetary.topology.PlanetVector;
 import net.minecraft.core.BlockPos;
@@ -21,6 +22,14 @@ public final class PlanetBlockGravity {
             Level level,
             BlockPos pos
     ) {
+        return frameAt(level, pos, null);
+    }
+
+    public static Optional<PlanetGravityFrame> frameAt(
+            Level level,
+            BlockPos pos,
+            PlanetFace preferred
+    ) {
         return PlanetGravityRuntime.findAt(
                 level,
                 pos.getX() + 0.5D,
@@ -31,7 +40,7 @@ public final class PlanetBlockGravity {
                         pos.getX(),
                         pos.getY(),
                         pos.getZ(),
-                        null
+                        preferred
                 )
         );
     }
@@ -41,6 +50,22 @@ public final class PlanetBlockGravity {
             double worldX,
             double worldY,
             double worldZ
+    ) {
+        return frameAt(
+                level,
+                worldX,
+                worldY,
+                worldZ,
+                null
+        );
+    }
+
+    public static Optional<PlanetGravityFrame> frameAt(
+            Level level,
+            double worldX,
+            double worldY,
+            double worldZ,
+            PlanetFace preferred
     ) {
         return PlanetGravityRuntime.findAt(
                 level,
@@ -52,7 +77,7 @@ public final class PlanetBlockGravity {
                         worldX,
                         worldY,
                         worldZ,
-                        null,
+                        preferred,
                         0.0D
                 )
         );
@@ -62,7 +87,15 @@ public final class PlanetBlockGravity {
             Level level,
             BlockPos pos
     ) {
-        return frameAt(level, pos)
+        return localDown(level, pos, null);
+    }
+
+    public static Direction localDown(
+            Level level,
+            BlockPos pos,
+            PlanetFace preferred
+    ) {
+        return frameAt(level, pos, preferred)
                 .map(frame -> toDirection(
                         frame.worldAxis(
                                 PlanetDirection.DOWN
@@ -75,7 +108,15 @@ public final class PlanetBlockGravity {
             Level level,
             BlockPos pos
     ) {
-        return frameAt(level, pos)
+        return localUp(level, pos, null);
+    }
+
+    public static Direction localUp(
+            Level level,
+            BlockPos pos,
+            PlanetFace preferred
+    ) {
+        return frameAt(level, pos, preferred)
                 .map(frame -> toDirection(
                         frame.worldAxis(
                                 PlanetDirection.UP

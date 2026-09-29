@@ -9,7 +9,8 @@
     "LocalPlayerGravityMixin",
     "PlayerRendererGravityMixin",
     "ScreenEffectRendererGravityMixin",
-    "ParticleGravityMixin"
+    "ParticleGravityMixin",
+    "DripParticleGravityMixin"
   ],
   "mixins": [
     "BlockCapabilityMixin",

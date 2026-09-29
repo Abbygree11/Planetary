@@ -54,15 +54,18 @@ Working on all faces:
 4. Falling blocks:
    d165339 changed support/landing to local DOWN.
    Sand now physically falls in Planet gravity.
-   ParticleGravityMixin rotates vanilla particle gravity toward local DOWN.
-   Awaiting user verification for breaking/falling particle motion.
+   ParticleGravityMixin rotates base Particle gravity toward local DOWN.
+   User verified block-breaking particles now fall correctly.
+   DripParticle overrides tick(), so DripParticleGravityMixin separately rotates
+   water/lava/honey/dripstone drop acceleration. Awaiting verification.
 5. Mob AI:
    before d165339 mobs repeatedly jumped on side faces.
    d165339 localized MoveControl target deltas.
    user then reported mobs spin/rotate instead of walking.
-   PlanetWalkNodeEvaluator + navigation/path anchor mixins now implement a first local-floor pathfinder:
-   four tangent neighbors, local support, one-block step up/down and physical edge crossing.
-   Awaiting user verification; richer vanilla door/hazard/rail semantics are not yet ported.
+   PlanetWalkNodeEvaluator makes normal mobs walk correctly on side faces.
+   User verified ordinary walking now works, but mobs spin at gravity-zone boundaries.
+   Tie nodes now preserve the mob's current gravity face as preferred when selecting
+   path frame/support/waypoint frame. Awaiting boundary verification.
 6. Internal mining across gravity boundary is very disorienting.
    Physics is conceptually correct, but UX needs stronger hysteresis/camera/input transition assist.
 
@@ -75,7 +78,8 @@ GroundPathNavigation/PathNavigation/WalkNodeEvaluator use below/above, Plane.HOR
 
 ## Preferred next architecture
 Particles:
-- ParticleGravityMixin now compensates vanilla -Y gravity and applies the same acceleration along frame.worldDown.
+- ParticleGravityMixin handles classes that use Particle.tick().
+- DripParticleGravityMixin handles DripParticle's independent yd -= gravity tick.
 - local-down collision/onGround classification is still future work if visible settling/collision artifacts remain.
 
 Blocks:

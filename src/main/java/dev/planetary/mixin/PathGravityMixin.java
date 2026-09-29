@@ -1,6 +1,7 @@
 package dev.planetary.mixin;
 
 import dev.planetary.gravity.PlanetBlockGravity;
+import dev.planetary.gravity.PlanetGravityEntity;
 import dev.planetary.topology.PlanetGravityFrame;
 import dev.planetary.topology.PlanetVector;
 import net.minecraft.world.entity.Entity;
@@ -44,7 +45,10 @@ public abstract class PathGravityMixin {
                         entity.level(),
                         node.x + 0.5D,
                         node.y + 0.5D,
-                        node.z + 0.5D
+                        node.z + 0.5D,
+                        entity instanceof PlanetGravityEntity gravityEntity
+                                ? gravityEntity.planetary$gravityFace().orElse(null)
+                                : null
                 );
 
         if (frame.isEmpty()) {

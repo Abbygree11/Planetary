@@ -1,6 +1,7 @@
 package dev.planetary.gravity;
 
 import dev.planetary.topology.PlanetDirection;
+import dev.planetary.topology.PlanetFace;
 import dev.planetary.topology.PlanetGravityFrame;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -43,7 +44,8 @@ public final class PlanetWalkNodeEvaluator extends WalkNodeEvaluator {
 
         Direction up = PlanetBlockGravity.localUp(
                 this.mob.level(),
-                start
+                start,
+                preferredFace()
         );
         node = accepted(start.relative(up));
         if (node != null) {
@@ -52,7 +54,8 @@ public final class PlanetWalkNodeEvaluator extends WalkNodeEvaluator {
 
         Direction down = PlanetBlockGravity.localDown(
                 this.mob.level(),
-                start
+                start,
+                preferredFace()
         );
         node = accepted(start.relative(down));
         if (node != null) {
@@ -95,7 +98,8 @@ public final class PlanetWalkNodeEvaluator extends WalkNodeEvaluator {
         Optional<PlanetGravityFrame> frame =
                 PlanetBlockGravity.frameAt(
                         this.mob.level(),
-                        origin
+                        origin,
+                        preferredFace()
                 );
 
         if (frame.isEmpty()) {
@@ -156,7 +160,8 @@ public final class PlanetWalkNodeEvaluator extends WalkNodeEvaluator {
             Direction up =
                     PlanetBlockGravity.localUp(
                             this.mob.level(),
-                            candidate
+                            candidate,
+                            preferredFace()
                     );
 
             Node steppedUp =
@@ -169,7 +174,8 @@ public final class PlanetWalkNodeEvaluator extends WalkNodeEvaluator {
         Direction down =
                 PlanetBlockGravity.localDown(
                         this.mob.level(),
-                        candidate
+                        candidate,
+                        preferredFace()
                 );
 
         BlockPos lower = candidate.relative(down);
@@ -193,7 +199,8 @@ public final class PlanetWalkNodeEvaluator extends WalkNodeEvaluator {
         Direction up =
                 PlanetBlockGravity.localUp(
                         this.mob.level(),
-                        requested
+                        requested,
+                        preferredFace()
                 );
         BlockPos above = requested.relative(up);
         if (accepted(above) != null) {
@@ -203,7 +210,8 @@ public final class PlanetWalkNodeEvaluator extends WalkNodeEvaluator {
         Direction down =
                 PlanetBlockGravity.localDown(
                         this.mob.level(),
-                        requested
+                        requested,
+                        preferredFace()
                 );
         BlockPos below = requested.relative(down);
         if (accepted(below) != null) {
@@ -244,6 +252,12 @@ public final class PlanetWalkNodeEvaluator extends WalkNodeEvaluator {
                 && type == PathType.WATER;
     }
 
+    private PlanetFace preferredFace() {
+        return ((PlanetGravityEntity) this.mob)
+                .planetary$gravityFace()
+                .orElse(null);
+    }
+
     private PathType pathType(
             BlockPos pos
     ) {
@@ -264,7 +278,8 @@ public final class PlanetWalkNodeEvaluator extends WalkNodeEvaluator {
         Direction down =
                 PlanetBlockGravity.localDown(
                         this.mob.level(),
-                        pos
+                        pos,
+                        preferredFace()
                 );
         BlockPos supportPos =
                 pos.relative(down);
