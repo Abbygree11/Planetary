@@ -9,10 +9,11 @@ import java.util.Objects;
  * x=EAST, y=UP, z=SOUTH. This class only rotates that local frame into the
  * planet's ordinary world XYZ grid.</p>
  *
- * <p>World-space velocity should remain world-space when gravity changes.
- * Local movement/input can be transformed through this frame before it is
- * applied. This separation lets an entity keep its physical momentum while
- * its controls, camera and DOWN direction rotate at a gravity boundary.</p>
+ * <p>Planet entities keep deltaMovement in this local frame so vanilla
+ * movement code can continue treating Y as vertical. Physical collision is
+ * transformed to world XYZ at the Entity.move boundary. When the selected
+ * face changes, local velocity is re-expressed through world space so physical
+ * momentum remains continuous.</p>
  */
 public final class PlanetGravityFrame {
     private final PlanetFace face;

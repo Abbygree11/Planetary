@@ -1,6 +1,7 @@
 package dev.planetary.gravity;
 
 import dev.planetary.topology.PlanetGravityField;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 
 import java.util.IdentityHashMap;
@@ -26,7 +27,12 @@ public final class PlanetGravityRuntime {
             Level level,
             PlanetGravityField field
     ) {
-        bind(level, field, Activation.ALWAYS);
+        bind(
+                level,
+                field,
+                Activation.ALWAYS,
+                EntityActivation.ALWAYS
+        );
     }
 
     public static synchronized void bind(
@@ -34,11 +40,33 @@ public final class PlanetGravityRuntime {
             PlanetGravityField field,
             Activation activation
     ) {
+        bind(
+                level,
+                field,
+                activation,
+                EntityActivation.ALWAYS
+        );
+    }
+
+    public static synchronized void bind(
+            Level level,
+            PlanetGravityField field,
+            Activation activation,
+            EntityActivation entityActivation
+    ) {
         Objects.requireNonNull(level, "level");
         Objects.requireNonNull(field, "field");
         Objects.requireNonNull(activation, "activation");
+        Objects.requireNonNull(
+                entityActivation,
+                "entityActivation"
+        );
 
-        Binding next = new Binding(field, activation);
+        Binding next = new Binding(
+                field,
+                activation,
+                entityActivation
+        );
         Binding previous = BINDINGS.put(level, next);
 
         if (previous != null
@@ -94,6 +122,25 @@ public final class PlanetGravityRuntime {
         return Optional.of(binding.field());
     }
 
+    public static synchronized Optional<PlanetGravityField> findFor(
+            Entity entity
+    ) {
+        Objects.requireNonNull(entity, "entity");
+
+        Binding binding = BINDINGS.get(entity.level());
+        if (binding == null
+                || !binding.activation().contains(
+                        entity.getX(),
+                        entity.getY(),
+                        entity.getZ()
+                )
+                || !binding.entityActivation().contains(entity)) {
+            return Optional.empty();
+        }
+
+        return Optional.of(binding.field());
+    }
+
     @FunctionalInterface
     public interface Activation {
         Activation ALWAYS = (x, y, z) -> true;
@@ -101,9 +148,17 @@ public final class PlanetGravityRuntime {
         boolean contains(double x, double y, double z);
     }
 
+    @FunctionalInterface
+    public interface EntityActivation {
+        EntityActivation ALWAYS = entity -> true;
+
+        boolean contains(Entity entity);
+    }
+
     private record Binding(
             PlanetGravityField field,
-            Activation activation
+            Activation activation,
+            EntityActivation entityActivation
     ) {
     }
 }

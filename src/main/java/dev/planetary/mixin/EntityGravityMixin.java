@@ -113,13 +113,9 @@ public abstract class EntityGravityMixin
 
     @Override
     public Optional<PlanetGravityFrame> planetary$gravityFrame() {
+        Entity self = (Entity) (Object) this;
         Optional<PlanetGravityField> fieldOptional =
-                PlanetGravityRuntime.findAt(
-                        level(),
-                        getX(),
-                        getY(),
-                        getZ()
-                );
+                PlanetGravityRuntime.findFor(self);
 
         if (fieldOptional.isEmpty()) {
             return Optional.empty();
@@ -151,17 +147,12 @@ public abstract class EntityGravityMixin
     private void planetary$updateGravityFrameOncePerTick(
             CallbackInfo ci
     ) {
+        Entity self = (Entity) (Object) this;
         Optional<PlanetGravityField> fieldOptional =
-                PlanetGravityRuntime.findAt(
-                        level(),
-                        getX(),
-                        getY(),
-                        getZ()
-                );
+                PlanetGravityRuntime.findFor(self);
 
         if (fieldOptional.isEmpty()) {
             if (planetary$currentGravityFrame != null) {
-                Entity self = (Entity) (Object) this;
                 Vec3 localVelocity = self.getDeltaMovement();
                 PlanetFrameVector worldVelocity =
                         planetary$currentGravityFrame.localToWorld(
@@ -215,7 +206,6 @@ public abstract class EntityGravityMixin
                 planetary$preferredGravityFace;
         PlanetFace nextFace = next.face();
 
-        Entity self = (Entity) (Object) this;
         Vec3 velocity = self.getDeltaMovement();
 
         if (enteringField) {

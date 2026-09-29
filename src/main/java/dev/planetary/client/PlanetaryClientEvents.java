@@ -36,7 +36,8 @@ public final class PlanetaryClientEvents {
         PlanetGravityRuntime.bind(
                 level,
                 PlanetDebugWorld.gravityField(),
-                PlanetDebugWorld::isInGravityTestArea
+                PlanetGravityRuntime.Activation.ALWAYS,
+                PlanetDebugWorld::isGravityTestEntity
         );
 
         player.displayClientMessage(

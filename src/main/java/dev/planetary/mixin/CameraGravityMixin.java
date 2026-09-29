@@ -2,6 +2,7 @@ package dev.planetary.mixin;
 
 import dev.planetary.client.PlanetCameraRotation;
 import dev.planetary.client.PlanetCameraTransition;
+import dev.planetary.gravity.PlanetEntityGeometry;
 import dev.planetary.gravity.PlanetGravityEntity;
 import dev.planetary.topology.PlanetGravityFrame;
 import net.minecraft.client.Camera;
@@ -10,6 +11,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BlockGetter;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
+import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -80,10 +82,6 @@ public abstract class CameraGravityMixin {
     @Unique
     private PlanetCameraTransition planetary$transition;
 
-    @Unique
-    private final Quaternionf planetary$effectiveFrameRotation =
-            new Quaternionf();
-
     @Inject(
             method = "setRotation(FFF)V",
             at = @At("TAIL")
@@ -101,7 +99,6 @@ public abstract class CameraGravityMixin {
             if (planetary$transition != null) {
                 planetary$transition.reset();
             }
-            planetary$effectiveFrameRotation.identity();
             return;
         }
 
@@ -134,10 +131,6 @@ public abstract class CameraGravityMixin {
                 );
 
         this.rotation.set(snapshot.cameraRotation());
-        this.planetary$effectiveFrameRotation.set(
-                snapshot.frameRotation()
-        );
-
         PLANETARY_FORWARDS.rotate(
                 this.rotation,
                 this.forwards
@@ -199,19 +192,21 @@ public abstract class CameraGravityMixin {
                         this.eyeHeight
                 );
 
-        Vector3f eyeOffset =
-                new Vector3f(
-                        0.0F,
+        Vec3 exactEye =
+                PlanetEntityGeometry.eyePosition(
+                        new Vec3(
+                                entityX,
+                                entityY,
+                                entityZ
+                        ),
                         interpolatedEyeHeight,
-                        0.0F
-                ).rotate(
-                        this.planetary$effectiveFrameRotation
+                        frameOptional.get()
                 );
 
         setPosition(
-                entityX + eyeOffset.x,
-                entityY + eyeOffset.y,
-                entityZ + eyeOffset.z
+                exactEye.x,
+                exactEye.y,
+                exactEye.z
         );
     }
 
