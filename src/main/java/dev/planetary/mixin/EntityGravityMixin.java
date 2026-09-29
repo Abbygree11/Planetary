@@ -5,11 +5,11 @@ import dev.planetary.gravity.PlanetEntityControl;
 import dev.planetary.gravity.PlanetEntityGeometry;
 import dev.planetary.gravity.PlanetEntityMotion;
 import dev.planetary.gravity.PlanetEntityOrientation;
-import dev.planetary.gravity.PlanetEntitySupport;
 import dev.planetary.gravity.PlanetGravityEntity;
 import dev.planetary.gravity.PlanetGravityRuntime;
 import dev.planetary.topology.PlanetFace;
 import dev.planetary.topology.PlanetFrameVector;
+import dev.planetary.topology.PlanetGravityField;
 import dev.planetary.topology.PlanetGravityFrame;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
@@ -95,7 +95,17 @@ public abstract class EntityGravityMixin
     private boolean onGroundNoBlocks;
 
     @Unique
+    private static final double PLANETARY_FACE_HYSTERESIS =
+            0.10D;
+
+    @Unique
     private PlanetFace planetary$preferredGravityFace;
+
+    @Unique
+    private PlanetGravityField planetary$currentGravityField;
+
+    @Unique
+    private PlanetGravityFrame planetary$currentGravityFrame;
 
     @Unique
     private PlanetEntityMotion.CollisionResult
@@ -103,67 +113,105 @@ public abstract class EntityGravityMixin
 
     @Override
     public Optional<PlanetGravityFrame> planetary$gravityFrame() {
-        return PlanetGravityRuntime.find(level())
-                .flatMap(field ->
-                        field.selectEntityFrame(
-                                getX(),
-                                getY(),
-                                getZ(),
-                                planetary$preferredGravityFace,
-                                1.0E-7D
-                        )
-                )
-                .map(frame -> {
-                    PlanetFace previousFace =
-                            planetary$preferredGravityFace;
-                    PlanetFace nextFace = frame.face();
+        Optional<PlanetGravityField> fieldOptional =
+                PlanetGravityRuntime.findAt(
+                        level(),
+                        getX(),
+                        getY(),
+                        getZ()
+                );
 
-                    if (previousFace != null
-                            && previousFace != nextFace) {
-                        PlanetEntityOrientation.transportYaw(
-                                previousFace,
-                                nextFace,
-                                getYRot()
-                        ).ifPresent(targetYaw -> {
-                            setYRot(targetYaw);
-                            yRotO = targetYaw;
-                        });
-                    }
+        if (fieldOptional.isEmpty()) {
+            return Optional.empty();
+        }
 
-                    planetary$preferredGravityFace = nextFace;
-                    return frame;
-                });
+        PlanetGravityField field = fieldOptional.get();
+        if (planetary$currentGravityField == field
+                && planetary$currentGravityFrame != null) {
+            return Optional.of(
+                    planetary$currentGravityFrame
+            );
+        }
+
+        // Before the first entity tick, expose a pure position-derived frame
+        // without mutating face/yaw state.
+        return field.selectEntityFrame(
+                getX(),
+                getY(),
+                getZ(),
+                planetary$preferredGravityFace,
+                PLANETARY_FACE_HYSTERESIS
+        );
+    }
+
+    @Inject(
+            method = "baseTick()V",
+            at = @At("HEAD")
+    )
+    private void planetary$updateGravityFrameOncePerTick(
+            CallbackInfo ci
+    ) {
+        Optional<PlanetGravityField> fieldOptional =
+                PlanetGravityRuntime.findAt(
+                        level(),
+                        getX(),
+                        getY(),
+                        getZ()
+                );
+
+        if (fieldOptional.isEmpty()) {
+            planetary$currentGravityField = null;
+            planetary$currentGravityFrame = null;
+            planetary$preferredGravityFace = null;
+            return;
+        }
+
+        PlanetGravityField field = fieldOptional.get();
+        if (planetary$currentGravityField != field) {
+            planetary$currentGravityField = field;
+            planetary$currentGravityFrame = null;
+            planetary$preferredGravityFace = null;
+        }
+
+        Optional<PlanetGravityFrame> nextOptional =
+                field.selectEntityFrame(
+                        getX(),
+                        getY(),
+                        getZ(),
+                        planetary$preferredGravityFace,
+                        PLANETARY_FACE_HYSTERESIS
+                );
+
+        if (nextOptional.isEmpty()) {
+            planetary$currentGravityFrame = null;
+            return;
+        }
+
+        PlanetGravityFrame next = nextOptional.get();
+        PlanetFace previousFace =
+                planetary$preferredGravityFace;
+        PlanetFace nextFace = next.face();
+
+        if (previousFace != null
+                && previousFace != nextFace) {
+            PlanetEntityOrientation.transportYaw(
+                    previousFace,
+                    nextFace,
+                    getYRot()
+            ).ifPresent(targetYaw -> {
+                setYRot(targetYaw);
+                yRotO = targetYaw;
+            });
+        }
+
+        planetary$preferredGravityFace = nextFace;
+        planetary$currentGravityFrame = next;
     }
 
     @Override
     public Optional<PlanetFace> planetary$gravityFace() {
         return planetary$gravityFrame()
                 .map(PlanetGravityFrame::face);
-    }
-
-    @Inject(
-            method = "onGround()Z",
-            at = @At("HEAD"),
-            cancellable = true
-    )
-    private void planetary$onGround(
-            CallbackInfoReturnable<Boolean> cir
-    ) {
-        Optional<PlanetGravityFrame> frameOptional =
-                planetary$gravityFrame();
-
-        if (frameOptional.isEmpty()
-                || frameOptional.get().face() == PlanetFace.POS_Y) {
-            return;
-        }
-
-        Entity self = (Entity) (Object) this;
-        cir.setReturnValue(
-                PlanetEntitySupport.isGrounded(
-                        self,
-                        frameOptional.get()
-                )
-        );
     }
 
     @Inject(

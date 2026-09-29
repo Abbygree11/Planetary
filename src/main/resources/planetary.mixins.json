@@ -5,7 +5,7 @@
   "compatibilityLevel": "JAVA_21",
   "client": [
     "CameraGravityMixin",
-    "EntityRenderDispatcherGravityMixin",
+    "LivingEntityRendererGravityMixin",
     "PlayerRendererGravityMixin"
   ],
   "mixins": [

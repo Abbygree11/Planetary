@@ -1,6 +1,7 @@
 package dev.planetary.mixin;
 
 import dev.planetary.gravity.PlanetEntityControl;
+import dev.planetary.gravity.PlanetEntitySupport;
 import dev.planetary.gravity.PlanetGravityEntity;
 import dev.planetary.topology.PlanetFace;
 import dev.planetary.topology.PlanetFrameVector;
@@ -36,6 +37,36 @@ public abstract class LivingEntityGravityMixin {
 
     @Shadow
     protected abstract float getJumpPower();
+
+    @Inject(
+            method = "aiStep()V",
+            at = @At("HEAD")
+    )
+    private void planetary$refreshLocalGroundedState(
+            CallbackInfo ci
+    ) {
+        LivingEntity self =
+                (LivingEntity) (Object) this;
+        Optional<PlanetGravityFrame> frameOptional =
+                ((PlanetGravityEntity) self)
+                        .planetary$gravityFrame();
+
+        if (frameOptional.isEmpty()
+                || frameOptional.get().face()
+                == PlanetFace.POS_Y) {
+            return;
+        }
+
+        boolean grounded =
+                PlanetEntitySupport.isGrounded(
+                        self,
+                        frameOptional.get()
+                );
+
+        if (self.onGround() != grounded) {
+            self.setOnGround(grounded);
+        }
+    }
 
     @Inject(
             method = "jumpFromGround()V",

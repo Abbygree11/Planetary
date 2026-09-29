@@ -25,9 +25,11 @@ public final class PlanetDebugWorld {
     public static final int RADIUS = 6;
     public static final int DIAMETER = RADIUS * 2 + 1;
     public static final int CLEARANCE = 5;
+    public static final int GRAVITY_ACTIVE_RADIUS =
+            RADIUS + 12;
 
     public static final BlockPos CORE_POS =
-            new BlockPos(0, 200, 0);
+            new BlockPos(8, 200, 8);
 
     private static final PlanetCore CORE =
             new PlanetCore(
@@ -64,7 +66,30 @@ public final class PlanetDebugWorld {
 
     public static void attach(ServerLevel level) {
         prepare(level);
-        PlanetGravityRuntime.bind(level, GRAVITY_FIELD);
+        PlanetGravityRuntime.bind(
+                level,
+                GRAVITY_FIELD,
+                PlanetDebugWorld::isInGravityTestArea
+        );
+    }
+
+    public static boolean isInGravityTestArea(
+            double x,
+            double y,
+            double z
+    ) {
+        double dx = Math.abs(
+                x - (CORE_POS.getX() + 0.5D)
+        );
+        double dy = Math.abs(
+                y - (CORE_POS.getY() + 0.5D)
+        );
+        double dz = Math.abs(
+                z - (CORE_POS.getZ() + 0.5D)
+        );
+
+        return Math.max(dx, Math.max(dy, dz))
+                <= GRAVITY_ACTIVE_RADIUS;
     }
 
     public static void detach(ServerLevel level) {
