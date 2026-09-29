@@ -12,6 +12,7 @@ import dev.planetary.topology.PlanetGravityField;
 import dev.planetary.topology.PlanetGravityFrame;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -261,6 +262,32 @@ public abstract class EntityGravityMixin
                 setYRot(targetYaw);
                 yRotO = targetYaw;
             });
+
+            if (self instanceof LivingEntity living) {
+                PlanetEntityOrientation.transportYaw(
+                        previousFace,
+                        nextFace,
+                        living.yBodyRot
+                ).ifPresent(value -> living.yBodyRot = value);
+
+                PlanetEntityOrientation.transportYaw(
+                        previousFace,
+                        nextFace,
+                        living.yBodyRotO
+                ).ifPresent(value -> living.yBodyRotO = value);
+
+                PlanetEntityOrientation.transportYaw(
+                        previousFace,
+                        nextFace,
+                        living.yHeadRot
+                ).ifPresent(value -> living.yHeadRot = value);
+
+                PlanetEntityOrientation.transportYaw(
+                        previousFace,
+                        nextFace,
+                        living.yHeadRotO
+                ).ifPresent(value -> living.yHeadRotO = value);
+            }
         }
 
         planetary$preferredGravityFace = nextFace;
