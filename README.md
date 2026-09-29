@@ -88,3 +88,20 @@ regions.
 
 This is temporary scaffolding. It will be removed once the dedicated Planet
 world type synchronizes its real core/worldgen data.
+
+
+## Seamless Planet generation space
+
+Worldgen does not treat the six gravity pyramids as six generators or six
+terrain faces. `PlanetGenerationSpace` maps the ordinary cubic physical world
+into one continuous spherical procedural space. The Euclidean radius in
+generation space equals the physical Chebyshev shell radius
+`max(|dx|, |dy|, |dz|)`, and the transform is exactly reversible.
+
+Terrain noise, caves, lakes, biome climate, ore fields and other procedural
+fields use `WRAP` placement and therefore have no gravity-edge seam. Rigid
+structures use `AVOID_EDGE`; their origin/bounding extent must have enough
+clearance from the nearest gravity-boundary plane.
+
+`PlanetFace` remains a physics/local-orientation concept. It is deliberately
+not part of the generation-space transform.
