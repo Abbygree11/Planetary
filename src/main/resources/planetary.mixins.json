@@ -20,7 +20,10 @@
     "LevelTicksMixin",
     "ServerChunkCacheMixin",
     "ServerGamePacketListenerGravityMixin",
-    "ServerLevelMixin"
+    "ServerLevelMixin",
+    "FallingBlockGravityMixin",
+    "FallingBlockEntityGravityMixin",
+    "MoveControlGravityMixin"
   ],
   "injectors": {
     "defaultRequire": 1
