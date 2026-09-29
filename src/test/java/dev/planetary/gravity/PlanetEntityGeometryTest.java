@@ -52,10 +52,10 @@ final class PlanetEntityGeometryTest {
                 negativeZ,
                 9.7,
                 19.7,
-                28.2,
+                28.200001,
                 10.3,
                 20.3,
-                30.0
+                30.000001
         );
     }
 

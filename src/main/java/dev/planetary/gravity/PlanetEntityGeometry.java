@@ -17,6 +17,9 @@ import java.util.Objects;
  * oriented-box collision system is required.</p>
  */
 public final class PlanetEntityGeometry {
+    private static final double POSITIVE_DOWN_BB_EPSILON =
+            1.0E-6D;
+
     private PlanetEntityGeometry() {
     }
 
@@ -40,9 +43,27 @@ public final class PlanetEntityGeometry {
                 vanillaBox.minX - anchor.x,
                 vanillaBox.maxX - anchor.x
         };
+        PlanetFrameVector down =
+                frame.localToWorld(
+                        new PlanetFrameVector(
+                                0.0D,
+                                -1.0D,
+                                0.0D
+                        )
+                );
+
+        double localDownEpsilon =
+                down.x() > 0.0D
+                        || down.y() > 0.0D
+                        || down.z() > 0.0D
+                        ? -POSITIVE_DOWN_BB_EPSILON
+                        : 0.0D;
+
         double[] ys = {
-                vanillaBox.minY - anchor.y,
+                vanillaBox.minY - anchor.y
+                        + localDownEpsilon,
                 vanillaBox.maxY - anchor.y
+                        + localDownEpsilon
         };
         double[] zs = {
                 vanillaBox.minZ - anchor.z,
