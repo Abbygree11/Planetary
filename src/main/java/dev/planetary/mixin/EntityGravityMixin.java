@@ -141,6 +141,39 @@ public abstract class EntityGravityMixin
     }
 
     @Inject(
+            method = "onGround()Z",
+            at = @At("HEAD"),
+            cancellable = true
+    )
+    private void planetary$onGround(
+            CallbackInfoReturnable<Boolean> cir
+    ) {
+        Optional<PlanetGravityFrame> frameOptional =
+                planetary$gravityFrame();
+
+        if (frameOptional.isEmpty()
+                || frameOptional.get().face() == PlanetFace.POS_Y) {
+            return;
+        }
+
+        PlanetGravityFrame frame = frameOptional.get();
+        AABB support = PlanetEntityGeometry.supportSlice(
+                getBoundingBox(),
+                frame,
+                1.0E-4D
+        );
+
+        Entity self = (Entity) (Object) this;
+
+        cir.setReturnValue(
+                level().findSupportingBlock(
+                        self,
+                        support
+                ).isPresent()
+        );
+    }
+
+    @Inject(
             method = "makeBoundingBox()Lnet/minecraft/world/phys/AABB;",
             at = @At("RETURN"),
             cancellable = true
