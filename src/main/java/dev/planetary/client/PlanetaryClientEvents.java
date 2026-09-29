@@ -3,6 +3,8 @@ package dev.planetary.client;
 import dev.planetary.PlanetaryMod;
 import dev.planetary.debug.PlanetDebugWorld;
 import dev.planetary.gravity.PlanetGravityRuntime;
+import dev.planetary.worldgen.PlanetWorldKeys;
+import dev.planetary.worldgen.PlanetWorldSettings;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
@@ -33,20 +35,41 @@ public final class PlanetaryClientEvents {
         LocalPlayer player = event.getPlayer();
         level = (ClientLevel) player.level();
 
-        PlanetGravityRuntime.bind(
-                level,
-                PlanetDebugWorld.gravityField(),
-                PlanetGravityRuntime.Activation.ALWAYS,
-                PlanetDebugWorld::isGravityTestEntity
-        );
+        boolean planetWorld =
+                level.dimensionTypeRegistration()
+                        .unwrapKey()
+                        .filter(
+                                PlanetWorldKeys.PLANET_DIMENSION_TYPE::equals
+                        )
+                        .isPresent();
 
-        player.displayClientMessage(
-                Component.literal(
-                        "[Planetary] Client gravity field attached; "
-                                + "waiting for server debug planet."
-                ),
-                false
-        );
+        if (planetWorld) {
+            PlanetGravityRuntime.bind(
+                    level,
+                    PlanetWorldSettings.gravityField()
+            );
+
+            player.displayClientMessage(
+                    Component.literal(
+                            "[Planetary] Dedicated Planet gravity attached."
+                    ),
+                    false
+            );
+        } else {
+            PlanetGravityRuntime.bind(
+                    level,
+                    PlanetDebugWorld.gravityField(),
+                    PlanetGravityRuntime.Activation.ALWAYS,
+                    PlanetDebugWorld::isGravityTestEntity
+            );
+
+            player.displayClientMessage(
+                    Component.literal(
+                            "[Planetary] Client debug gravity attached."
+                    ),
+                    false
+            );
+        }
     }
 
     @SubscribeEvent
@@ -58,10 +81,13 @@ public final class PlanetaryClientEvents {
 
     private static void detach() {
         if (level != null) {
-            PlanetGravityRuntime.unbind(
-                    level,
-                    PlanetDebugWorld.gravityField()
-            );
+            PlanetGravityRuntime.find(level)
+                    .ifPresent(
+                            field -> PlanetGravityRuntime.unbind(
+                                    level,
+                                    field
+                            )
+                    );
         }
         level = null;
     }

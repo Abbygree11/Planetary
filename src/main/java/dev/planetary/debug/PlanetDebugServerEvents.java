@@ -1,6 +1,9 @@
 package dev.planetary.debug;
 
 import dev.planetary.PlanetaryMod;
+import dev.planetary.gravity.PlanetGravityRuntime;
+import dev.planetary.worldgen.PlanetChunkGenerator;
+import dev.planetary.worldgen.PlanetWorldSettings;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -20,6 +23,23 @@ public final class PlanetDebugServerEvents {
     }
 
     @SubscribeEvent
+    public static void onLevelLoad(
+            LevelEvent.Load event
+    ) {
+        if (!(event.getLevel() instanceof ServerLevel level)) {
+            return;
+        }
+
+        if (level.getChunkSource().getGenerator()
+                instanceof PlanetChunkGenerator) {
+            PlanetGravityRuntime.bind(
+                    level,
+                    PlanetWorldSettings.gravityField()
+            );
+        }
+    }
+
+    @SubscribeEvent
     public static void onPlayerLogin(
             PlayerEvent.PlayerLoggedInEvent event
     ) {
@@ -28,6 +48,35 @@ public final class PlanetDebugServerEvents {
         }
 
         ServerLevel level = player.serverLevel();
+
+        if (level.getChunkSource().getGenerator()
+                instanceof PlanetChunkGenerator) {
+            PlanetGravityRuntime.bind(
+                    level,
+                    PlanetWorldSettings.gravityField()
+            );
+
+            if (player.getAbilities().flying) {
+                player.getAbilities().flying = false;
+                player.onUpdateAbilities();
+            }
+
+            player.sendSystemMessage(
+                    Component.literal(
+                            "[Planetary] Dedicated Planet world active. "
+                                    + "Core: "
+                                    + PlanetWorldSettings.CORE_X
+                                    + ", "
+                                    + PlanetWorldSettings.CORE_Y
+                                    + ", "
+                                    + PlanetWorldSettings.CORE_Z
+                                    + "; diameter: "
+                                    + PlanetWorldSettings.DIAMETER
+                    )
+            );
+            return;
+        }
+
         if (!level.dimension().equals(Level.OVERWORLD)) {
             player.sendSystemMessage(
                     Component.literal(
@@ -70,7 +119,17 @@ public final class PlanetDebugServerEvents {
 
     @SubscribeEvent
     public static void onLevelUnload(LevelEvent.Unload event) {
-        if (event.getLevel() instanceof ServerLevel level) {
+        if (!(event.getLevel() instanceof ServerLevel level)) {
+            return;
+        }
+
+        if (level.getChunkSource().getGenerator()
+                instanceof PlanetChunkGenerator) {
+            PlanetGravityRuntime.unbind(
+                    level,
+                    PlanetWorldSettings.gravityField()
+            );
+        } else {
             PlanetDebugWorld.detach(level);
         }
     }
