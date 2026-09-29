@@ -24,12 +24,12 @@ import java.util.Set;
 public final class PlanetDebugWorld {
     public static final int RADIUS = 6;
     public static final int DIAMETER = RADIUS * 2 + 1;
-    public static final int CLEARANCE = 5;
+    public static final int CLEARANCE = 3;
     public static final int GRAVITY_ACTIVE_RADIUS =
             RADIUS + 12;
 
     public static final BlockPos CORE_POS =
-            new BlockPos(8, 200, 8);
+            new BlockPos(24, 280, 24);
 
     private static final PlanetCore CORE =
             new PlanetCore(
@@ -127,22 +127,23 @@ public final class PlanetDebugWorld {
                             CORE_POS.getZ() + dz
                     );
 
-                    if (shell > RADIUS) {
-                        if (!level.getBlockState(cursor).isAir()) {
-                            level.setBlock(
-                                    cursor,
-                                    Blocks.AIR.defaultBlockState(),
-                                    updateFlags
-                            );
-                        }
-                        continue;
-                    }
+                    BlockState target =
+                            shell > RADIUS
+                                    ? Blocks.AIR.defaultBlockState()
+                                    : blockStateAtOffset(
+                                            dx,
+                                            dy,
+                                            dz
+                                    );
 
-                    level.setBlock(
-                            cursor,
-                            blockStateAtOffset(dx, dy, dz),
-                            updateFlags
-                    );
+                    if (!level.getBlockState(cursor)
+                            .equals(target)) {
+                        level.setBlock(
+                                cursor,
+                                target,
+                                updateFlags
+                        );
+                    }
                 }
             }
         }
