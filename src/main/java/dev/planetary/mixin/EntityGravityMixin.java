@@ -5,6 +5,7 @@ import dev.planetary.gravity.PlanetEntityControl;
 import dev.planetary.gravity.PlanetEntityGeometry;
 import dev.planetary.gravity.PlanetEntityMotion;
 import dev.planetary.gravity.PlanetEntityOrientation;
+import dev.planetary.gravity.PlanetEntitySupport;
 import dev.planetary.gravity.PlanetGravityEntity;
 import dev.planetary.gravity.PlanetGravityRuntime;
 import dev.planetary.topology.PlanetFace;
@@ -156,20 +157,12 @@ public abstract class EntityGravityMixin
             return;
         }
 
-        PlanetGravityFrame frame = frameOptional.get();
-        AABB support = PlanetEntityGeometry.supportSlice(
-                getBoundingBox(),
-                frame,
-                1.0E-4D
-        );
-
         Entity self = (Entity) (Object) this;
-
         cir.setReturnValue(
-                level().findSupportingBlock(
+                PlanetEntitySupport.isGrounded(
                         self,
-                        support
-                ).isPresent()
+                        frameOptional.get()
+                )
         );
     }
 

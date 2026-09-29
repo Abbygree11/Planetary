@@ -1,5 +1,6 @@
 package dev.planetary.mixin;
 
+import dev.planetary.gravity.PlanetEntitySupport;
 import dev.planetary.gravity.PlanetGravityEntity;
 import dev.planetary.gravity.PlanetPlayerMovement;
 import dev.planetary.topology.PlanetFace;
@@ -51,7 +52,10 @@ public abstract class ServerGamePacketListenerGravityMixin {
         if (frameOptional.isEmpty()
                 || frameOptional.get().face()
                 == PlanetFace.POS_Y
-                || !player.onGround()
+                || !PlanetEntitySupport.isGrounded(
+                        player,
+                        frameOptional.get()
+                )
                 || packet.isOnGround()) {
             return;
         }
