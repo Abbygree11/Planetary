@@ -3,6 +3,7 @@ package dev.planetary.mixin;
 import dev.planetary.gravity.PlanetEntityCollision;
 import dev.planetary.gravity.PlanetEntityControl;
 import dev.planetary.gravity.PlanetEntityGeometry;
+import dev.planetary.gravity.PlanetEntityMotion;
 import dev.planetary.gravity.PlanetEntityOrientation;
 import dev.planetary.gravity.PlanetGravityEntity;
 import dev.planetary.gravity.PlanetGravityRuntime;
@@ -72,6 +73,18 @@ public abstract class EntityGravityMixin
     public abstract boolean onGround();
 
     @Shadow
+    public boolean horizontalCollision;
+
+    @Shadow
+    public boolean verticalCollision;
+
+    @Shadow
+    public boolean verticalCollisionBelow;
+
+    @Shadow
+    public boolean minorHorizontalCollision;
+
+    @Shadow
     private float eyeHeight;
 
     @Shadow
@@ -82,6 +95,10 @@ public abstract class EntityGravityMixin
 
     @Unique
     private PlanetFace planetary$preferredGravityFace;
+
+    @Unique
+    private PlanetEntityMotion.CollisionResult
+            planetary$lastCollisionResult;
 
     @Override
     public Optional<PlanetGravityFrame> planetary$gravityFrame() {
@@ -348,6 +365,8 @@ public abstract class EntityGravityMixin
             Vec3 worldMovement,
             CallbackInfoReturnable<Vec3> cir
     ) {
+        planetary$lastCollisionResult = null;
+
         Optional<PlanetGravityFrame> frameOptional =
                 planetary$gravityFrame();
         if (frameOptional.isEmpty()
@@ -355,16 +374,72 @@ public abstract class EntityGravityMixin
             return;
         }
 
+        PlanetGravityFrame frame = frameOptional.get();
         Entity self = (Entity) (Object) this;
-        cir.setReturnValue(
+        Vec3 actualMovement =
                 PlanetEntityCollision.collide(
                         self,
                         worldMovement,
                         getBoundingBox(),
                         level(),
-                        frameOptional.get(),
+                        frame,
                         maxUpStep(),
                         onGround()
+                );
+
+        planetary$lastCollisionResult =
+                PlanetEntityMotion.classify(
+                        worldMovement,
+                        actualMovement,
+                        frame
+                );
+
+        cir.setReturnValue(actualMovement);
+    }
+
+    @Redirect(
+            method = "move(Lnet/minecraft/world/entity/MoverType;Lnet/minecraft/world/phys/Vec3;)V",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/world/entity/Entity;setOnGroundWithMovement(ZLnet/minecraft/world/phys/Vec3;)V"
+            )
+    )
+    private void planetary$setOnGroundFromLocalCollision(
+            Entity entity,
+            boolean vanillaOnGround,
+            Vec3 movement
+    ) {
+        PlanetEntityMotion.CollisionResult result =
+                planetary$lastCollisionResult;
+
+        if (result == null) {
+            entity.setOnGroundWithMovement(
+                    vanillaOnGround,
+                    movement
+            );
+            return;
+        }
+
+        this.horizontalCollision =
+                result.horizontalCollision();
+        this.verticalCollision =
+                result.verticalCollision();
+        this.verticalCollisionBelow =
+                result.verticalCollisionBelow();
+
+        if (!this.horizontalCollision) {
+            this.minorHorizontalCollision = false;
+        }
+
+        PlanetFrameVector actualLocal =
+                result.actualLocal();
+
+        entity.setOnGroundWithMovement(
+                result.verticalCollisionBelow(),
+                new Vec3(
+                        actualLocal.x(),
+                        actualLocal.y(),
+                        actualLocal.z()
                 )
         );
     }
