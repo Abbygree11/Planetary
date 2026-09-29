@@ -24,7 +24,10 @@
     "ServerLevelMixin",
     "FallingBlockGravityMixin",
     "FallingBlockEntityGravityMixin",
-    "MoveControlGravityMixin"
+    "MoveControlGravityMixin",
+    "GroundPathNavigationGravityMixin",
+    "PathNavigationGravityMixin",
+    "PathGravityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

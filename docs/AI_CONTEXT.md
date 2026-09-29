@@ -59,9 +59,10 @@ Working on all faces:
 5. Mob AI:
    before d165339 mobs repeatedly jumped on side faces.
    d165339 localized MoveControl target deltas.
-   current report: mobs spin/rotate instead of walking.
-   Root cause is GroundPathNavigation/WalkNodeEvaluator still assuming XZ horizontal and Y vertical.
-   Next fix should be Planet-aware NodeEvaluator/navigation, not more random MoveControl patches.
+   user then reported mobs spin/rotate instead of walking.
+   PlanetWalkNodeEvaluator + navigation/path anchor mixins now implement a first local-floor pathfinder:
+   four tangent neighbors, local support, one-block step up/down and physical edge crossing.
+   Awaiting user verification; richer vanilla door/hazard/rail semantics are not yet ported.
 6. Internal mining across gravity boundary is very disorienting.
    Physics is conceptually correct, but UX needs stronger hysteresis/camera/input transition assist.
 
@@ -84,14 +85,13 @@ Blocks:
 - avoid per-block hacks when a general boundary transform can solve the class
 
 Mob navigation:
-- PlanetWalkNodeEvaluator
-- for every node select gravity frame at that physical position
-- four neighbors are local N/S/E/W mapped to world directions
-- support = candidate.relative(local DOWN)
-- stepping uses local UP
-- edge crossing naturally changes frame
-- Path target anchor ~= cellCenter - localUp*0.5
-- follow-path distance tests use local frame
+- PlanetWalkNodeEvaluator is now implemented as a first-pass land evaluator.
+- per-node gravity frame chooses local N/S/E/W tangent neighbors.
+- support is candidate.relative(local DOWN); local UP/DOWN handle one-block steps.
+- edge crossing naturally changes frame.
+- Path entity target anchor uses cellCenter - localUp*0.5.
+- PathNavigation follow distance is measured in the mob local frame.
+- still TODO: diagonals, complete doors/fences/rails/hazard/water semantics and large-mob node volume handling.
 
 ## Recent commits
 d165339 local gravity for falling blocks + first MoveControl patch
