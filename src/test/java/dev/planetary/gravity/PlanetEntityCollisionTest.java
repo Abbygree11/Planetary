@@ -75,6 +75,41 @@ final class PlanetEntityCollisionTest {
     }
 
     @Test
+    void collisionTowardCoreCountsAsGroundOnEveryFace() {
+        for (PlanetFace face : PlanetFace.values()) {
+            PlanetGravityFrame frame =
+                    new PlanetGravityFrame(face);
+            var down = frame.worldDown();
+
+            Vec3 requested = new Vec3(
+                    down.x() * 0.3D,
+                    down.y() * 0.3D,
+                    down.z() * 0.3D
+            );
+
+            PlanetEntityMotion.CollisionResult result =
+                    PlanetEntityMotion.classify(
+                            requested,
+                            Vec3.ZERO,
+                            frame
+                    );
+
+            assertTrue(
+                    result.verticalCollision(),
+                    face.toString()
+            );
+            assertTrue(
+                    result.verticalCollisionBelow(),
+                    face.toString()
+            );
+            assertFalse(
+                    result.horizontalCollision(),
+                    face.toString()
+            );
+        }
+    }
+
+    @Test
     void tangentialCollisionStaysHorizontalInLocalFrame() {
         PlanetGravityFrame frame =
                 new PlanetGravityFrame(PlanetFace.POS_X);
