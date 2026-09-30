@@ -123,7 +123,8 @@ public abstract class PathNavigationGravityMixin {
                 pos.relative(
                         PlanetBlockGravity.localDown(
                                 this.mob.level(),
-                                pos
+                                pos,
+                                frame.get().face()
                         )
                 );
 

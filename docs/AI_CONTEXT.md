@@ -25,6 +25,7 @@ Goal is normal BiomeSource/NeoForge biome pipeline compatibility, including Terr
 
 Dedicated world:
 - selectable Planet preset works
+- legacy automatic Overworld debug planet/gravity fallback is DISABLED; ordinary Overworld must remain vanilla
 - PlanetChunkGenerator registered
 - initial test planet radius 48, core (0,128,0)
 - one bedrock core, stone interior, grass shell
@@ -62,6 +63,11 @@ Working on all faces:
    DirectGravityParticleMixin now covers the vanilla direct-gravity particle
    classes with one hook. Awaiting verification of water/drop particles.
 5. Mob AI:
+   IMPORTANT performance fix: GroundPathNavigation previously activated custom
+   PlanetWalkNodeEvaluator for every mob in any level that merely had a gravity
+   binding. In the legacy debug Overworld only the player had gravity, yet all
+   Overworld mobs got custom A*. Hooks now use findFor(mob), and automatic
+   Overworld debug binding is disabled.
    before d165339 mobs repeatedly jumped on side faces.
    d165339 localized MoveControl target deltas.
    user then reported mobs spin/rotate instead of walking.
@@ -108,6 +114,7 @@ Mob navigation:
 - still TODO: other AI target generators, diagonals, complete doors/fences/rails/hazard/water semantics and large-mob node volume handling.
 
 ## Recent commits
+CURRENT: legacy Overworld debug auto-attach disabled; navigation hooks require findFor(mob).
 d165339 local gravity for falling blocks + first MoveControl patch
 844008f dimension type light-provider JSON fix
 a1696da selectable Planet preset

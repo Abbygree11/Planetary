@@ -35,7 +35,7 @@ public abstract class GroundPathNavigationGravityMixin
             int maxVisitedNodes,
             CallbackInfoReturnable<PathFinder> cir
     ) {
-        if (PlanetGravityRuntime.find(this.level).isEmpty()) {
+        if (PlanetGravityRuntime.findFor(this.mob).isEmpty()) {
             return;
         }
 
@@ -62,7 +62,7 @@ public abstract class GroundPathNavigationGravityMixin
             int accuracy,
             CallbackInfoReturnable<Path> cir
     ) {
-        if (PlanetGravityRuntime.find(this.level).isEmpty()) {
+        if (PlanetGravityRuntime.findFor(this.mob).isEmpty()) {
             return;
         }
 
@@ -82,7 +82,7 @@ public abstract class GroundPathNavigationGravityMixin
     private void planetary$usePhysicalAnchor(
             CallbackInfoReturnable<net.minecraft.world.phys.Vec3> cir
     ) {
-        if (PlanetGravityRuntime.find(this.level).isPresent()) {
+        if (PlanetGravityRuntime.findFor(this.mob).isPresent()) {
             cir.setReturnValue(this.mob.position());
         }
     }

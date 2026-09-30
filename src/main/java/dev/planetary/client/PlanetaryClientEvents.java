@@ -1,7 +1,6 @@
 package dev.planetary.client;
 
 import dev.planetary.PlanetaryMod;
-import dev.planetary.debug.PlanetDebugWorld;
 import dev.planetary.gravity.PlanetGravityRuntime;
 import dev.planetary.worldgen.PlanetWorldKeys;
 import dev.planetary.worldgen.PlanetWorldSettings;
@@ -14,7 +13,9 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 
 /**
- * Client half of the temporary real-block debug planet harness.
+ * Client binding for the dedicated Planet world.
+ *
+ * <p>The legacy automatic Overworld debug gravity binding is disabled.</p>
  */
 @EventBusSubscriber(
         modid = PlanetaryMod.MOD_ID,
@@ -43,33 +44,21 @@ public final class PlanetaryClientEvents {
                         )
                         .isPresent();
 
-        if (planetWorld) {
-            PlanetGravityRuntime.bind(
-                    level,
-                    PlanetWorldSettings.gravityField()
-            );
-
-            player.displayClientMessage(
-                    Component.literal(
-                            "[Planetary] Dedicated Planet gravity attached."
-                    ),
-                    false
-            );
-        } else {
-            PlanetGravityRuntime.bind(
-                    level,
-                    PlanetDebugWorld.gravityField(),
-                    PlanetGravityRuntime.Activation.ALWAYS,
-                    PlanetDebugWorld::isGravityTestEntity
-            );
-
-            player.displayClientMessage(
-                    Component.literal(
-                            "[Planetary] Client debug gravity attached."
-                    ),
-                    false
-            );
+        if (!planetWorld) {
+            return;
         }
+
+        PlanetGravityRuntime.bind(
+                level,
+                PlanetWorldSettings.gravityField()
+        );
+
+        player.displayClientMessage(
+                Component.literal(
+                        "[Planetary] Dedicated Planet gravity attached."
+                ),
+                false
+        );
     }
 
     @SubscribeEvent

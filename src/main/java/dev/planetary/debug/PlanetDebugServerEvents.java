@@ -7,15 +7,17 @@ import dev.planetary.worldgen.PlanetWorldSettings;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
 
 /**
- * Temporary server-side harness for the first playable real-block planet.
+ * Dedicated Planet world lifecycle.
+ *
+ * <p>The old automatic Overworld debug harness is intentionally disabled.
+ * Planet gravity must never be attached to an ordinary Overworld merely
+ * because the mod is present.</p>
  */
 @EventBusSubscriber(modid = PlanetaryMod.MOD_ID)
 public final class PlanetDebugServerEvents {
@@ -48,77 +50,40 @@ public final class PlanetDebugServerEvents {
         }
 
         ServerLevel level = player.serverLevel();
-
-        if (level.getChunkSource().getGenerator()
-                instanceof PlanetChunkGenerator) {
-            PlanetGravityRuntime.bind(
-                    level,
-                    PlanetWorldSettings.gravityField()
-            );
-
-            if (player.getAbilities().flying) {
-                player.getAbilities().flying = false;
-                player.onUpdateAbilities();
-            }
-
-            player.sendSystemMessage(
-                    Component.literal(
-                            "[Planetary] Dedicated Planet world active. "
-                                    + "Core: "
-                                    + PlanetWorldSettings.CORE_X
-                                    + ", "
-                                    + PlanetWorldSettings.CORE_Y
-                                    + ", "
-                                    + PlanetWorldSettings.CORE_Z
-                                    + "; diameter: "
-                                    + PlanetWorldSettings.DIAMETER
-                    )
-            );
+        if (!(level.getChunkSource().getGenerator()
+                instanceof PlanetChunkGenerator)) {
             return;
         }
 
-        if (!level.dimension().equals(Level.OVERWORLD)) {
-            player.sendSystemMessage(
-                    Component.literal(
-                            "[Planetary] Debug planet is currently enabled "
-                                    + "only in the Overworld."
-                    )
-            );
-            return;
-        }
-
-        PlanetDebugWorld.attach(level);
+        PlanetGravityRuntime.bind(
+                level,
+                PlanetWorldSettings.gravityField()
+        );
 
         if (player.getAbilities().flying) {
             player.getAbilities().flying = false;
             player.onUpdateAbilities();
         }
 
-        Vec3 spawn = PlanetDebugWorld.playerSpawn();
-        player.teleportTo(
-                level,
-                spawn.x,
-                spawn.y,
-                spawn.z,
-                0.0F,
-                0.0F
-        );
-        player.setDeltaMovement(Vec3.ZERO);
-        player.fallDistance = 0.0F;
-
         player.sendSystemMessage(
                 Component.literal(
-                        "[Planetary] Real debug planet enabled. Core: "
-                                + PlanetDebugWorld.CORE_POS.toShortString()
-                                + ", diameter: "
-                                + PlanetDebugWorld.DIAMETER
-                                + ". Walk to an edge to test gravity."
+                        "[Planetary] Dedicated Planet world active. "
+                                + "Core: "
+                                + PlanetWorldSettings.CORE_X
+                                + ", "
+                                + PlanetWorldSettings.CORE_Y
+                                + ", "
+                                + PlanetWorldSettings.CORE_Z
+                                + "; diameter: "
+                                + PlanetWorldSettings.DIAMETER
                 )
         );
     }
 
     @SubscribeEvent
-    public static void onLevelUnload(LevelEvent.Unload event) {
+    public static void onLevelUnload(
+            LevelEvent.Unload event
+    ) {
         if (!(event.getLevel() instanceof ServerLevel level)) {
             return;
         }
@@ -129,8 +94,6 @@ public final class PlanetDebugServerEvents {
                     level,
                     PlanetWorldSettings.gravityField()
             );
-        } else {
-            PlanetDebugWorld.detach(level);
         }
     }
 }
