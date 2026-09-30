@@ -56,18 +56,23 @@ Working on all faces:
    Sand now physically falls in Planet gravity.
    ParticleGravityMixin rotates base Particle gravity toward local DOWN.
    User verified block-breaking particles now fall correctly.
-   DripParticle overrides tick(), so DripParticleGravityMixin separately rotates
-   water/lava/honey/dripstone drop acceleration. Initial version crashed because
-   it shadowed inherited Particle fields; now it uses ParticleGravityAccessor.
-   Awaiting verification.
+   Base Particle gravity is local and block-breaking particles are verified.
+   DripParticle-only handling was insufficient: WaterDropParticle and several
+   other classes also override tick() and execute yd -= gravity directly.
+   DirectGravityParticleMixin now covers the vanilla direct-gravity particle
+   classes with one hook. Awaiting verification of water/drop particles.
 5. Mob AI:
    before d165339 mobs repeatedly jumped on side faces.
    d165339 localized MoveControl target deltas.
    user then reported mobs spin/rotate instead of walking.
    PlanetWalkNodeEvaluator makes normal mobs walk correctly on side faces.
    User verified ordinary walking now works, but mobs spin at gravity-zone boundaries.
-   Tie nodes now preserve the mob's current gravity face as preferred when selecting
-   path frame/support/waypoint frame. Awaiting boundary verification.
+   Tie nodes preserve the mob's current gravity face, but user still observed
+   spinning at gravity-zone boundaries. Root cause also includes vanilla
+   RandomStrollGoal/LandRandomPos choosing targets in global XZ/Y.
+   RandomStrollGoalGravityMixin now chooses local tangent targets and projects
+   them to the same cube shell, so random walking can wrap across an edge.
+   Awaiting boundary verification.
 6. Internal mining across gravity boundary is very disorienting.
    Physics is conceptually correct, but UX needs stronger hysteresis/camera/input transition assist.
 
@@ -81,7 +86,8 @@ GroundPathNavigation/PathNavigation/WalkNodeEvaluator use below/above, Plane.HOR
 ## Preferred next architecture
 Particles:
 - ParticleGravityMixin handles classes that use Particle.tick().
-- DripParticleGravityMixin handles DripParticle's independent yd -= gravity tick.
+- DirectGravityParticleMixin handles vanilla classes that override tick() and
+  independently execute yd -= gravity (including DripParticle/WaterDropParticle).
 - local-down collision/onGround classification is still future work if visible settling/collision artifacts remain.
 
 Blocks:
@@ -97,7 +103,9 @@ Mob navigation:
 - edge crossing naturally changes frame.
 - Path entity target anchor uses cellCenter - localUp*0.5.
 - PathNavigation follow distance is measured in the mob local frame.
-- still TODO: diagonals, complete doors/fences/rails/hazard/water semantics and large-mob node volume handling.
+- RandomStrollGoal/WaterAvoidingRandomStrollGoal now use a local tangent target
+  projected onto the same Chebyshev shell instead of vanilla global XZ/Y RandomPos.
+- still TODO: other AI target generators, diagonals, complete doors/fences/rails/hazard/water semantics and large-mob node volume handling.
 
 ## Recent commits
 d165339 local gravity for falling blocks + first MoveControl patch

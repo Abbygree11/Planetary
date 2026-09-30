@@ -10,8 +10,8 @@
     "PlayerRendererGravityMixin",
     "ScreenEffectRendererGravityMixin",
     "ParticleGravityMixin",
-    "DripParticleGravityMixin",
-    "ParticleGravityAccessor"
+    "ParticleGravityAccessor",
+    "DirectGravityParticleMixin"
   ],
   "mixins": [
     "BlockCapabilityMixin",
@@ -29,7 +29,9 @@
     "MoveControlGravityMixin",
     "GroundPathNavigationGravityMixin",
     "PathNavigationGravityMixin",
-    "PathGravityMixin"
+    "PathGravityMixin",
+    "RandomStrollGoalAccessor",
+    "RandomStrollGoalGravityMixin"
   ],
   "injectors": {
     "defaultRequire": 1
