@@ -10,7 +10,8 @@
     "PlayerRendererGravityMixin",
     "ScreenEffectRendererGravityMixin",
     "ParticleGravityMixin",
-    "DripParticleGravityMixin"
+    "DripParticleGravityMixin",
+    "ParticleGravityAccessor"
   ],
   "mixins": [
     "BlockCapabilityMixin",

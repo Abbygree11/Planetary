@@ -3,11 +3,8 @@ package dev.planetary.mixin;
 import dev.planetary.gravity.PlanetBlockGravity;
 import dev.planetary.topology.PlanetGravityFrame;
 import dev.planetary.topology.PlanetVector;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.DripParticle;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -21,31 +18,6 @@ import java.util.Optional;
  */
 @Mixin(DripParticle.class)
 public abstract class DripParticleGravityMixin {
-    @Shadow
-    @Final
-    protected ClientLevel level;
-
-    @Shadow
-    protected double x;
-
-    @Shadow
-    protected double y;
-
-    @Shadow
-    protected double z;
-
-    @Shadow
-    protected double xd;
-
-    @Shadow
-    protected double yd;
-
-    @Shadow
-    protected double zd;
-
-    @Shadow
-    protected float gravity;
-
     @Inject(
             method = "tick",
             at = @At("HEAD")
@@ -53,32 +25,48 @@ public abstract class DripParticleGravityMixin {
     private void planetary$rotateDripGravity(
             CallbackInfo ci
     ) {
-        if (this.gravity == 0.0F) {
+        ParticleGravityAccessor particle =
+                (ParticleGravityAccessor) (Object) this;
+
+        float gravity = particle.planetary$getGravity();
+        if (gravity == 0.0F) {
             return;
         }
 
         Optional<PlanetGravityFrame> frame =
                 PlanetBlockGravity.frameAt(
-                        this.level,
-                        this.x,
-                        this.y,
-                        this.z
+                        particle.planetary$getLevel(),
+                        particle.planetary$getX(),
+                        particle.planetary$getY(),
+                        particle.planetary$getZ()
                 );
 
         if (frame.isEmpty()) {
             return;
         }
 
-        double acceleration = (double) this.gravity;
+        double acceleration = (double) gravity;
 
         // DripParticle.tick() is about to do: yd -= gravity.
         // Cancel that term, then apply the same acceleration along local DOWN.
-        this.yd += acceleration;
+        particle.planetary$setYd(
+                particle.planetary$getYd()
+                        + acceleration
+        );
 
         PlanetVector down = frame.get().worldDown();
 
-        this.xd += down.x() * acceleration;
-        this.yd += down.y() * acceleration;
-        this.zd += down.z() * acceleration;
+        particle.planetary$setXd(
+                particle.planetary$getXd()
+                        + down.x() * acceleration
+        );
+        particle.planetary$setYd(
+                particle.planetary$getYd()
+                        + down.y() * acceleration
+        );
+        particle.planetary$setZd(
+                particle.planetary$getZd()
+                        + down.z() * acceleration
+        );
     }
 }

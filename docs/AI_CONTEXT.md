@@ -57,7 +57,9 @@ Working on all faces:
    ParticleGravityMixin rotates base Particle gravity toward local DOWN.
    User verified block-breaking particles now fall correctly.
    DripParticle overrides tick(), so DripParticleGravityMixin separately rotates
-   water/lava/honey/dripstone drop acceleration. Awaiting verification.
+   water/lava/honey/dripstone drop acceleration. Initial version crashed because
+   it shadowed inherited Particle fields; now it uses ParticleGravityAccessor.
+   Awaiting verification.
 5. Mob AI:
    before d165339 mobs repeatedly jumped on side faces.
    d165339 localized MoveControl target deltas.
