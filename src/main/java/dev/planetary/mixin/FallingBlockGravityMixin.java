@@ -1,9 +1,13 @@
 package dev.planetary.mixin;
 
 import dev.planetary.gravity.PlanetBlockGravity;
+import dev.planetary.gravity.PlanetParticleSpawn;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.Level;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.level.block.FallingBlock;
@@ -24,6 +28,45 @@ public abstract class FallingBlockGravityMixin {
     protected abstract void falling(
             FallingBlockEntity entity
     );
+
+    @Inject(
+            method = "animateTick",
+            at = @At("HEAD"),
+            cancellable = true
+    )
+    private void planetary$animateLocalDust(
+            BlockState state,
+            Level level,
+            BlockPos pos,
+            RandomSource random,
+            CallbackInfo ci
+    ) {
+        Direction down =
+                PlanetBlockGravity.localDown(level, pos);
+
+        if (down == Direction.DOWN) {
+            return;
+        }
+
+        if (random.nextInt(16) == 0) {
+            BlockPos below = pos.relative(down);
+            if (FallingBlock.isFree(
+                    level.getBlockState(below)
+            )) {
+                PlanetParticleSpawn.spawnOnLocalDownFace(
+                        level,
+                        pos,
+                        random,
+                        new BlockParticleOption(
+                                ParticleTypes.FALLING_DUST,
+                                state
+                        )
+                );
+            }
+        }
+
+        ci.cancel();
+    }
 
     @Inject(
             method = "tick",

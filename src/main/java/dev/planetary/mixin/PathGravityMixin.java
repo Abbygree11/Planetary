@@ -2,8 +2,9 @@ package dev.planetary.mixin;
 
 import dev.planetary.gravity.PlanetBlockGravity;
 import dev.planetary.gravity.PlanetGravityEntity;
+import dev.planetary.gravity.PlanetPathGeometry;
+import dev.planetary.topology.PlanetFace;
 import dev.planetary.topology.PlanetGravityFrame;
-import dev.planetary.topology.PlanetVector;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.pathfinder.Node;
 import net.minecraft.world.level.pathfinder.Path;
@@ -55,17 +56,18 @@ public abstract class PathGravityMixin {
             return;
         }
 
-        PlanetVector up =
-                frame.get().worldUp();
+        PlanetFace currentFace =
+                entity instanceof PlanetGravityEntity gravityEntity
+                        ? gravityEntity.planetary$gravityFace().orElse(null)
+                        : null;
 
         cir.setReturnValue(
-                new Vec3(
-                        node.x + 0.5D
-                                - up.x() * 0.5D,
-                        node.y + 0.5D
-                                - up.y() * 0.5D,
-                        node.z + 0.5D
-                                - up.z() * 0.5D
+                PlanetPathGeometry.nodeAnchor(
+                        node.x,
+                        node.y,
+                        node.z,
+                        frame.get(),
+                        currentFace
                 )
         );
     }

@@ -11,7 +11,9 @@
     "ScreenEffectRendererGravityMixin",
     "ParticleGravityMixin",
     "ParticleGravityAccessor",
-    "DirectGravityParticleMixin"
+    "DirectGravityParticleMixin",
+    "FallingDustParticleGravityMixin",
+    "ClientLevelFluidDripGravityMixin"
   ],
   "mixins": [
     "BlockCapabilityMixin",

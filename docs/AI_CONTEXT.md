@@ -55,13 +55,16 @@ Working on all faces:
 4. Falling blocks:
    d165339 changed support/landing to local DOWN.
    Sand now physically falls in Planet gravity.
+   FallingBlock.animateTick now emits FALLING_DUST from local-DOWN face.
+   FallingDustParticle now accelerates/caps terminal speed along local DOWN.
    ParticleGravityMixin rotates base Particle gravity toward local DOWN.
    User verified block-breaking particles now fall correctly.
    Base Particle gravity is local and block-breaking particles are verified.
    DripParticle-only handling was insufficient: WaterDropParticle and several
    other classes also override tick() and execute yd -= gravity directly.
-   DirectGravityParticleMixin now covers the vanilla direct-gravity particle
-   classes with one hook. Awaiting verification of water/drop particles.
+   DirectGravityParticleMixin covers gravity-backed override tick classes.
+   ClientLevel fluid drip source now redirects below() to local DOWN and, for
+   ordinary full blocks, emits from the block's local-DOWN face.
 5. Mob AI:
    IMPORTANT performance fix: GroundPathNavigation previously activated custom
    PlanetWalkNodeEvaluator for every mob in any level that merely had a gravity
@@ -76,9 +79,12 @@ Working on all faces:
    Tie nodes preserve the mob's current gravity face, but user still observed
    spinning at gravity-zone boundaries. Root cause also includes vanilla
    RandomStrollGoal/LandRandomPos choosing targets in global XZ/Y.
-   RandomStrollGoalGravityMixin now chooses local tangent targets and projects
-   them to the same cube shell, so random walking can wrap across an edge.
-   Awaiting boundary verification.
+   RandomStroll targets are local tangent/same-shell, but entities still stopped
+   at the actual edge because a side-face waypoint lies exactly on the surface
+   before entity center crosses gravity hysteresis.
+   Path node anchors now add a temporary 0.35-block outward overshoot while the
+   next node belongs to another face; once entity face changes, anchor returns
+   to the normal surface. Awaiting edge-crossing verification.
 6. Internal mining across gravity boundary is very disorienting.
    Physics is conceptually correct, but UX needs stronger hysteresis/camera/input transition assist.
 
