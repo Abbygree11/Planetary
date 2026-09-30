@@ -140,3 +140,12 @@ Vanilla 1.21.1 NeoForm sources inspected through WhosLucid/CobbleLib.
 GravityChanger does not solve our complete block/fluid/worldgen layer.
 
 Update this file whenever architecture, verified behavior or active bugs materially change.
+
+
+## Execution process update
+Canonical roadmap: docs/IMPLEMENTATION_PLAN.md
+Fluid research baseline: docs/research/FLUIDS_1_21_1.md
+Do not resume symptom-by-symptom runtime patching. Each subsystem now requires
+source research + architecture + tests + acceptance matrix before implementation.
+Current fluid drip runtime mixin is deliberately disabled until the full fluid
+phase because its Redirect failed in ClientLevel.doAnimateTick.
