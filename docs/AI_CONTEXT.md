@@ -149,3 +149,8 @@ Do not resume symptom-by-symptom runtime patching. Each subsystem now requires
 source research + architecture + tests + acceptance matrix before implementation.
 Current fluid drip runtime mixin is deliberately disabled until the full fluid
 phase because its Redirect failed in ClientLevel.doAnimateTick.
+
+Block-frame research baseline: docs/research/BLOCK_FRAME_1_21_1.md
+Key discovery: BlockStateBase caches collision/support data without pos/frame, so
+canonical local state caches must remain untouched; position-aware APIs adapt
+shape/directions at the boundary.
