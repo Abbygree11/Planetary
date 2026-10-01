@@ -12,6 +12,38 @@ For every phase:
 6. Run the acceptance matrix on +Y, -Y, X, Z, edge and (when relevant) corner.
 7. Only then mark the phase verified and update AI_CONTEXT.md.
 
+## Cross-cutting gravity/local-frame audit [MANDATORY]
+
+Master audit: `docs/research/GRAVITY_IMPACT_AUDIT_1_21_1.md`
+
+This audit is a gate above every numbered phase. Gravity changes are not limited
+to player falling and block UP/DOWN. Before closing the project, the following
+families must all have an explicit PHYSICAL-vs-LOCAL policy and acceptance
+coverage:
+
+- block placement/state properties/neighbor traversal/support/shapes
+- redstone/signals/neighbor notifications
+- NeoForge sided item/fluid/energy capabilities
+- entity collision/step/onGround/fall/pose
+- living movement, swimming, climbing, elytra and forces
+- projectiles, raycasts, eye/view vectors and interaction
+- AI/navigation/look/body controls
+- particles
+- static block models, BERs and accelerated/custom renderers
+- vehicles, rails, pistons, passengers, leash/dismount
+- client/server movement prediction and floating validation
+- spawning
+- environment/weather/skylight/heightmaps
+- worldgen/growth/structures
+- external coordinate systems such as physics ships/contraptions
+- public Planet Frame API for mod integrations
+
+Compatibility rule:
+do NOT globally redefine BlockPos, Direction, Axis or raw XYZ. Adapt stable
+Minecraft/NeoForge boundaries first. Mods that use standard boundaries should
+inherit Planet behavior automatically; mods doing their own raw world-axis math
+may require a small integration adapter.
+
 ## Status legend
 - DONE: user verified in game or deterministic tests fully cover the item.
 - PARTIAL: architecture exists and some behavior is verified, but the phase is not closed.
@@ -71,7 +103,11 @@ Implemented foundation:
 
 Still need:
 - runtime level -> field resolver wrapper
-
+- public/shared frame API boundary for runtime and mod integrations
+- physical hit-side -> canonical local hit-side helper
+- canonical sided-capability re-audit against PlanetBlockStateFrame
+- Vec3 direction/vector and normal conversion helpers
+- external-frame composition contract for ship/contraption integrations
 - rotated face/property helpers beyond Direction and Direction.Axis
 
 Critical design rule:
@@ -233,6 +269,20 @@ Acceptance:
 
 ## Phase 7 — other entity subsystems [PLANNED]
 
+### Cross-cutting entity/interaction additions
+
+The master gravity audit makes the following mandatory here, even when their
+code lives outside Entity subclasses:
+- Entity.move collision/step/onGround/fall semantics
+- eye position/view/up vectors and picking
+- projectile launch/deflection
+- generic force/knockback semantics
+- passenger/leash/attachment/dismount
+- client/server prediction and floating validation
+- body-local render orientation
+- world-ray vs local-hit-side distinction
+
+
 Separate research/implementation gates for:
 - swimming and fluid movement
 - climbing
@@ -246,6 +296,43 @@ Separate research/implementation gates for:
 - knockback/explosions where world-vector assumptions matter
 
 Do not mark generic "entities" done from player walking alone.
+
+## Phase 7A — signals, automation and interaction [PLANNED]
+
+Detailed source audit required for:
+- SignalGetter and redstone signal-side conventions
+- RedStoneWireBlock, diode/repeater/comparator, observer, torches, levers,
+  buttons, pressure plates, sculk/target/tripwire and rail signals
+- neighbor notification Direction sets
+- physical BlockHitResult vs canonical local hit-side semantics
+- Level.clip / Entity.pick / ProjectileUtil
+- NeoForge sided BlockCapability and EntityCapability
+- BlockCapabilityCache side/context behavior
+
+Acceptance:
+- vanilla redstone around all six faces and across an edge
+- sided item/fluid/energy capability on side and bottom faces
+- capability at exact gravity edge
+- one Create-like directional machine/pipe stress test
+- raycast/interaction side remains correct while placement state is local
+
+## Phase 7B — client/server frame consistency and environment [PLANNED]
+
+Audit:
+- LocalPlayer prediction
+- ServerGamePacketListenerImpl movement/floating validation
+- teleport corrections and rotation sync
+- entity/body render frame
+- spawn placement
+- precipitation/weather
+- skylight/sky visibility/heightmaps
+- environment rules that should remain physical-world rather than gravity-local
+
+Acceptance:
+- no rubber-band/floating false positives during side/bottom movement
+- ray/camera/server interaction agree
+- spawning policy documented and tested
+- weather/sky/light semantics explicitly chosen rather than inherited by accident
 
 ## Phase 8 — real terrain/biome generation [PARTIAL foundation]
 
@@ -288,6 +375,19 @@ Acceptance:
 - modded structure can opt/configure policy
 
 ## Phase 10 — mod compatibility [PARTIAL foundation]
+
+Compatibility classes:
+- automatic: standard Minecraft/NeoForge boundaries
+- mostly automatic: mods delegating to vanilla helpers/subclasses
+- integration needed: mods performing direct semantic XYZ/Direction math
+- external-frame integration: physics ships/contraptions
+
+Required public foundation:
+- one Planet Frame API used by Planetary itself and compat modules
+- position vs direction/vector vs normal vs shape transforms kept distinct
+- frame composition for external moving coordinate spaces
+- no global context-sensitive patch of BlockPos/Direction
+
 
 Targets:
 - TerraBlender / Biomes O' Plenty biome pipeline

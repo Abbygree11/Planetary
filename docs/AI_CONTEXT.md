@@ -241,3 +241,35 @@ traversal semantics and must not be used for canonical BlockState support.
 The zero-gravity core keeps no traversal/gravity face but has canonical POS_Y
 BlockState orientation so neighboring support queries can terminate there.
 No runtime support mixin is installed yet.
+
+
+## Master gravity-impact audit
+The authoritative cross-cutting checklist is
+docs/research/GRAVITY_IMPACT_AUDIT_1_21_1.md.
+
+Planetary must be treated as a local-coordinate/frame layer over the ordinary
+physical Minecraft XYZ world, not as a collection of gravity patches.
+
+Four frame concepts are now explicit:
+1. canonical BlockState frame: position-only, path-independent;
+2. traversal chart: path-dependent at seams/corners;
+3. entity/body frame: entity-position dependent/hysteretic;
+4. external moving frame: ships/contraptions, composed through physical world.
+
+Do NOT globally redefine BlockPos, Direction, Axis or raw XYZ. Prefer stable
+Minecraft/NeoForge boundaries so mods using standard APIs inherit behavior.
+Direct third-party world-axis math may require explicit integration.
+
+The master audit now covers blocks, redstone, capabilities, collision, entity
+movement, projectiles/raycast, AI, particles, rendering, vehicles, networking,
+spawning, environment/weather/skylight, worldgen, commands and external physics
+coordinate systems.
+
+Create 1.21.1 is a compatibility stress case because it combines NeoForge sided
+capabilities (good generic boundary) with direct Direction/BlockPos/Axis math
+(requires further generic adapter research or explicit compat).
+
+Valkyrien Skies is a reference for frame composition: position, direction,
+AABB/collision, raycast, camera and particles are transformed separately.
+Planet external-frame integration should compose external-local <-> world <->
+Planet-local rather than make the coordinate systems compete.
