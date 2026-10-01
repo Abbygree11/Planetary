@@ -279,7 +279,7 @@ final class PlanetBlockFrameContextTest {
             if (!step.crossedGravityBoundary()) {
                 assertEquals(
                         local.getOpposite(),
-                        step.targetLocalSideTowardSource(),
+                        step.targetTraversalSideTowardSource(),
                         local.toString()
                 );
             }
