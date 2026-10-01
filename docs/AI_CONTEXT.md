@@ -161,3 +161,11 @@ After every code/runtime/worldgen change, always provide the user with a
 numbered verification checklist. Include exact run command, expected result for
 each check, edge/gravity-boundary cases when relevant, and regression checks for
 previously working behavior. Never finish a fix with only "run and test".
+
+
+## Phase 1 active
+Added physical PlanetBlockFrameContext / PlanetBlockStep foundation.
+Runtime seam semantics are intentionally distinct from old virtual face-atlas
+alias semantics: entering an edge BlockPos transports the chart immediately;
+continued movement folds around the adjacent physical cube face.
+No runtime mixins use this API yet.

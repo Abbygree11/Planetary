@@ -293,3 +293,23 @@ Runtime smoke tests only after pure suite:
 - door/trapdoor
 - pointed dripstone
 - a modded directional block
+
+
+## 14. Physical BlockPos seam semantics (implemented foundation)
+
+Important distinction discovered during Phase 1:
+the older PlanetBlockTopology / PlanetTopology face grid has alias semantics at
+an edge: crossing maps the boundary cell to the corresponding boundary cell in
+the next face chart. That is correct for the virtual/canonical face topology,
+but a runtime physical BlockPos operation needs ordinary one-block adjacency.
+
+PlanetBlockFrameContext therefore uses the gravity field plus FaceTransform:
+- when a step ENTERS a shared edge BlockPos, the target chart is immediately
+  transported to the adjacent face;
+- the next continued local step moves along the adjacent face;
+- when a source context is already on the shared edge in the old chart, the
+  requested outward step folds immediately using the target frame;
+- no duplicate physical alias block is introduced.
+
+The existing FaceTransform remains authoritative for orientation transport.
+PlanetBlockFrameContext only adds physical BlockPos stepping semantics.

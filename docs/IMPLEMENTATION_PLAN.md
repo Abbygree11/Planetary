@@ -40,7 +40,7 @@ Required before closing:
 - no progressive client/server tick degradation
 - record a known-good baseline commit in AI_CONTEXT.md
 
-## Phase 1 — local block/topology kernel [PLANNED, highest priority]
+## Phase 1 — local block/topology kernel [PARTIAL, active]
 
 Goal: define ONE authoritative way for vanilla-local block operations to map to
 physical world positions/directions.
@@ -51,8 +51,15 @@ Existing useful pieces:
 - PlanetBlockTopology / PlanetTopology / FaceTransform
 - PlanetSidedQueryFrame for sided NeoForge capabilities
 
-Need:
-- PlanetBlockFrameContext(level, pos, preferredFace)
+Implemented foundation:
+- PlanetBlockFrameContext(field, physical BlockPos, preferredFace)
+- PlanetBlockStep with physical direction, target frame and transported local direction
+- 24 directed edge-entry/fold transitions covered by tests
+- edge step + transported opposite is tested reversible
+
+Still need:
+- runtime level -> field resolver wrapper
+
 - local Direction -> physical Direction
 - physical Direction -> local Direction
 - seam-aware local neighbor step; MUST NOT be equivalent to raw pos.relative()
