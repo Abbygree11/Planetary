@@ -311,3 +311,20 @@ correct post-invalidation lookup.
 The six probe targets are STONE blocks one block outward from the core so they
 remain in the central loaded area. This probe is diagnostic only and adds no
 standard item/fluid/energy gameplay capability.
+
+
+## Standard NeoForge capability acceptance
+PlanetCapabilityDiagnostics now also registers the 1.21.1 standard block
+capabilities on STONE using ItemStackHandler, FluidTank and EnergyStorage.
+Each provider deliberately returns a handler only for canonical local UP.
+
+Runtime login acceptance checks every gravity face: the physical side mapping to
+local UP must return the exact handler for item/fluid/energy, while the opposite
+physical side (local DOWN) must return null. This gives 36 standard capability
+checks in addition to the 36 generic side-echo mappings and BlockCapabilityCache
+invalidation test.
+
+After this passes, generic NeoForge sided capability adaptation is considered
+established; the remaining capability task is a real third-party pipe/machine
+stress case, especially code that may choose its target with raw
+BlockPos.relative(localFacing) before querying a capability.

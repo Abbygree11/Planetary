@@ -144,10 +144,31 @@ positions stay in the central loaded chunk area and do not depend on surface
 render/simulation distance.
 
 A successful login prints:
-[Planetary] Capability probe passed: 36 side mappings, 1 cache invalidation.
+[Planetary] Capability probe passed: 36 generic side mappings,
+36 standard item/fluid/energy checks, 1 cache invalidation.
 
-The probe is diagnostic-only. The capability id is planetary:internal_side_echo
-and adds no item/fluid/energy/gameplay behavior.
+The custom side-echo probe is diagnostic-only. The capability id is
+planetary:internal_side_echo.
+
+The same diagnostic class also registers providers for the three standard
+NeoForge 1.21.1 block capabilities on STONE:
+- Capabilities.ItemHandler.BLOCK -> ItemStackHandler;
+- Capabilities.FluidHandler.BLOCK -> FluidTank;
+- Capabilities.EnergyStorage.BLOCK -> EnergyStorage.
+
+These providers deliberately expose their handler ONLY on canonical local UP.
+For each of the six gravity faces runtime acceptance:
+1. computes the physical world side corresponding to canonical local UP;
+2. queries each standard capability from that physical side and requires the
+   exact registered handler;
+3. queries from the opposite physical side (canonical local DOWN) and requires
+   null.
+
+That is 6 faces x 3 capability kinds x 2 side outcomes = 36 standard capability
+checks through the real NeoForge provider dispatcher.
+
+The diagnostic handlers are isolated test objects; they do not store gameplay
+data used by the Planet world.
 
 ## 9. Acceptance still required
 
@@ -161,9 +182,8 @@ Pure tests:
 Runtime:
 - no BlockCapability mixin application error;
 - diagnostic provider completes 36 physical->local side mappings;
+- standard ItemHandler/FluidHandler/EnergyStorage providers each accept
+  physical-local-UP and reject physical-local-DOWN on all six gravity faces;
 - BlockCapabilityCache keeps the physical target and survives invalidation;
 - exact edge/corner target BlockPos is not silently moved;
-- one standard item capability;
-- one fluid capability;
-- one energy capability;
 - one third-party pipe/machine stress case.

@@ -110,7 +110,7 @@ Implemented runtime/compat foundation:
 
 Still need:
 - physical hit-side -> canonical local hit-side helper
-- standard item/fluid/energy capability smoke tests after diagnostic sided-provider acceptance
+- third-party pipe/machine stress test after standard item/fluid/energy capability acceptance
 - Vec3 direction/vector and normal conversion helpers
 - external-frame composition contract for ship/contraption integrations
 - rotated face/property helpers beyond Direction and Direction.Axis
@@ -126,6 +126,7 @@ Acceptance:
 - edge traversal has no alias physical cell; exact corners preserve 4 logical tangent transitions over 3 physical target cells
 - sided NeoForge capability provider receives canonical local side while physical target BlockPos remains unchanged
 - diagnostic capability provider: 36 six-face side mappings + BlockCapabilityCache invalidation
+- standard item/fluid/energy providers: local-UP accept + local-DOWN reject on all six faces
 
 ## Phase 2 — block placement, survival and updates [PLANNED]
 

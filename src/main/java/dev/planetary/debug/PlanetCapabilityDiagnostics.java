@@ -14,7 +14,11 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.energy.EnergyStorage;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.items.ItemStackHandler;
 
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -38,6 +42,13 @@ public final class PlanetCapabilityDiagnostics {
                     Direction.class
             );
 
+    private static final ItemStackHandler ITEM_HANDLER =
+            new ItemStackHandler(1);
+    private static final FluidTank FLUID_HANDLER =
+            new FluidTank(1000);
+    private static final EnergyStorage ENERGY_HANDLER =
+            new EnergyStorage(1000);
+
     private PlanetCapabilityDiagnostics() {
     }
 
@@ -49,6 +60,36 @@ public final class PlanetCapabilityDiagnostics {
         event.registerBlock(
                 SIDE_ECHO,
                 (level, pos, state, blockEntity, side) -> side,
+                Blocks.STONE
+        );
+
+        /*
+         * Standard NeoForge capability probes are deliberately local-UP-only.
+         * A physical query succeeds only if Planet's generic capability
+         * boundary reframes that physical side to canonical local UP.
+         */
+        event.registerBlock(
+                Capabilities.ItemHandler.BLOCK,
+                (level, pos, state, blockEntity, side) ->
+                        side == Direction.UP
+                                ? ITEM_HANDLER
+                                : null,
+                Blocks.STONE
+        );
+        event.registerBlock(
+                Capabilities.FluidHandler.BLOCK,
+                (level, pos, state, blockEntity, side) ->
+                        side == Direction.UP
+                                ? FLUID_HANDLER
+                                : null,
+                Blocks.STONE
+        );
+        event.registerBlock(
+                Capabilities.EnergyStorage.BLOCK,
+                (level, pos, state, blockEntity, side) ->
+                        side == Direction.UP
+                                ? ENERGY_HANDLER
+                                : null,
                 Blocks.STONE
         );
     }
@@ -119,6 +160,12 @@ public final class PlanetCapabilityDiagnostics {
             }
         }
 
+        int standardCapabilityChecks =
+                verifyStandardCapabilities(
+                        level,
+                        field
+                );
+
         BlockPos cacheTarget =
                 oneBlockFromCore(
                         field,
@@ -183,9 +230,109 @@ public final class PlanetCapabilityDiagnostics {
 
         return new Result(
                 sideChecks,
+                standardCapabilityChecks,
                 invalidations.get(),
                 cacheExpectedLocal
         );
+    }
+
+    private static int verifyStandardCapabilities(
+            ServerLevel level,
+            PlanetGravityField field
+    ) {
+        int checks = 0;
+
+        for (PlanetFace face : PlanetFace.values()) {
+            BlockPos target =
+                    oneBlockFromCore(
+                            field,
+                            face
+                    );
+
+            Direction physicalLocalUp =
+                    PlanetBlockRuntime.localSideToPhysical(
+                            level,
+                            target,
+                            Direction.UP
+                    ).orElseThrow();
+            Direction physicalLocalDown =
+                    physicalLocalUp.getOpposite();
+
+            Object itemFromUp =
+                    level.getCapability(
+                            Capabilities.ItemHandler.BLOCK,
+                            target,
+                            physicalLocalUp
+                    );
+            Object fluidFromUp =
+                    level.getCapability(
+                            Capabilities.FluidHandler.BLOCK,
+                            target,
+                            physicalLocalUp
+                    );
+            Object energyFromUp =
+                    level.getCapability(
+                            Capabilities.EnergyStorage.BLOCK,
+                            target,
+                            physicalLocalUp
+                    );
+
+            if (itemFromUp != ITEM_HANDLER) {
+                throw new IllegalStateException(
+                        "Item capability local-UP mapping failed on "
+                                + face
+                );
+            }
+            if (fluidFromUp != FLUID_HANDLER) {
+                throw new IllegalStateException(
+                        "Fluid capability local-UP mapping failed on "
+                                + face
+                );
+            }
+            if (energyFromUp != ENERGY_HANDLER) {
+                throw new IllegalStateException(
+                        "Energy capability local-UP mapping failed on "
+                                + face
+                );
+            }
+
+            checks += 3;
+
+            if (level.getCapability(
+                    Capabilities.ItemHandler.BLOCK,
+                    target,
+                    physicalLocalDown
+            ) != null) {
+                throw new IllegalStateException(
+                        "Item capability must reject local DOWN on "
+                                + face
+                );
+            }
+            if (level.getCapability(
+                    Capabilities.FluidHandler.BLOCK,
+                    target,
+                    physicalLocalDown
+            ) != null) {
+                throw new IllegalStateException(
+                        "Fluid capability must reject local DOWN on "
+                                + face
+                );
+            }
+            if (level.getCapability(
+                    Capabilities.EnergyStorage.BLOCK,
+                    target,
+                    physicalLocalDown
+            ) != null) {
+                throw new IllegalStateException(
+                        "Energy capability must reject local DOWN on "
+                                + face
+                );
+            }
+
+            checks += 3;
+        }
+
+        return checks;
     }
 
     private static BlockPos oneBlockFromCore(
@@ -206,6 +353,7 @@ public final class PlanetCapabilityDiagnostics {
 
     public record Result(
             int sideChecks,
+            int standardCapabilityChecks,
             int cacheInvalidations,
             Direction cachedProviderSide
     ) {
