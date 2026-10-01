@@ -295,3 +295,19 @@ Important limitation: this boundary cannot safely repair a third-party mod that
 already chose the wrong target by doing raw BlockPos.relative(localFacing).
 That belongs to explicit neighbor-API/integration work; never globally patch
 BlockPos.relative.
+
+
+## Capability runtime acceptance probe
+PlanetCapabilityDiagnostics registers private capability
+planetary:internal_side_echo on STONE. The provider returns the Direction it
+actually receives.
+
+Dedicated Planet player login now verifies 36 real sided dispatches (6 faces x
+6 physical Direction values) through ServerLevel.getCapability and
+BlockCapabilityMixin, then creates a real BlockCapabilityCache, invalidates the
+same physical target position and requires exactly one listener callback plus a
+correct post-invalidation lookup.
+
+The six probe targets are STONE blocks one block outward from the core so they
+remain in the central loaded area. This probe is diagnostic only and adds no
+standard item/fluid/energy gameplay capability.

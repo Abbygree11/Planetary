@@ -124,7 +124,32 @@ PlanetGravityRuntime.findAt.
 Future runtime mixins and compat modules should use this instead of each
 selecting their own field/face policy.
 
-## 8. Acceptance still required
+## 8. Runtime acceptance probe
+
+PlanetCapabilityDiagnostics registers a private internal sided capability on
+STONE. Its provider returns the Direction context it actually receives.
+
+On dedicated Planet player login the probe:
+- checks all 6 canonical faces x all 6 physical Direction values = 36 real
+  ServerLevel.getCapability -> BlockCapability mixin -> provider dispatches;
+- compares every provider result with PlanetBlockRuntime.physicalSideToLocal;
+- creates a real BlockCapabilityCache at a POS_X stone block;
+- performs the first cached lookup;
+- calls ServerLevel.invalidateCapabilities on the SAME physical target BlockPos;
+- requires exactly one invalidation-listener notification;
+- queries the cache again and requires the same canonical-local provider side.
+
+Probe blocks are the six STONE cells one block outward from the core, so all
+positions stay in the central loaded chunk area and do not depend on surface
+render/simulation distance.
+
+A successful login prints:
+[Planetary] Capability probe passed: 36 side mappings, 1 cache invalidation.
+
+The probe is diagnostic-only. The capability id is planetary:internal_side_echo
+and adds no item/fluid/energy/gameplay behavior.
+
+## 9. Acceptance still required
 
 Pure tests:
 - runtime field activation uses block center;
@@ -135,9 +160,8 @@ Pure tests:
 
 Runtime:
 - no BlockCapability mixin application error;
-- POS_Y capability behavior unchanged;
-- side/bottom face provider sees canonical-local side;
-- BlockCapabilityCache returns same provider result before/after invalidation;
+- diagnostic provider completes 36 physical->local side mappings;
+- BlockCapabilityCache keeps the physical target and survives invalidation;
 - exact edge/corner target BlockPos is not silently moved;
 - one standard item capability;
 - one fluid capability;

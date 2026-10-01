@@ -60,6 +60,21 @@ public final class PlanetDebugServerEvents {
                 PlanetWorldSettings.gravityField()
         );
 
+        PlanetCapabilityDiagnostics.Result capabilityProbe =
+                PlanetCapabilityDiagnostics.verify(
+                        level
+                );
+
+        player.sendSystemMessage(
+                Component.literal(
+                        "[Planetary] Capability probe passed: "
+                                + capabilityProbe.sideChecks()
+                                + " side mappings, "
+                                + capabilityProbe.cacheInvalidations()
+                                + " cache invalidation."
+                )
+        );
+
         if (player.getAbilities().flying) {
             player.getAbilities().flying = false;
             player.onUpdateAbilities();
