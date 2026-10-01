@@ -85,6 +85,26 @@ public final class PlanetBlockRuntime {
                 );
     }
 
+    public static Optional<PlanetBlockNeighborQuery> neighbor(
+            Level level,
+            BlockPos sourcePos,
+            Direction sourceLocalDirection
+    ) {
+        Objects.requireNonNull(
+                sourceLocalDirection,
+                "sourceLocalDirection"
+        );
+
+        return fieldAt(level, sourcePos)
+                .flatMap(field ->
+                        PlanetBlockNeighborQuery.resolve(
+                                field,
+                                sourcePos,
+                                sourceLocalDirection
+                        )
+                );
+    }
+
     public static Optional<PlanetBlockSupportQuery> supportQuery(
             Level level,
             BlockPos sourcePos,

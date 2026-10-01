@@ -328,3 +328,25 @@ After this passes, generic NeoForge sided capability adaptation is considered
 established; the remaining capability task is a real third-party pipe/machine
 stress case, especially code that may choose its target with raw
 BlockPos.relative(localFacing) before querying a capability.
+
+
+## Public local-neighbor API / Create-like stress harness
+PlanetBlockNeighborQuery is now the neutral canonical one-step neighbor
+primitive. PlanetBlockSupportQuery delegates to it so support and generic
+mod-neighbor semantics cannot diverge.
+
+Public dev.planetary.api.PlanetFrameApi exposes canonicalBlockFace,
+localSideToPhysical, physicalSideToLocal and localNeighbor. localNeighbor accepts
+a canonical LOCAL Direction and returns the physical adjacent target plus
+physical direction, target canonical face/side and boundary flag.
+
+PlanetCompatibilityDiagnostics runs 36 local-neighbor checks on login and counts
+how often the common foreign-mod pattern source.relative(localDirection) would
+choose a different physical target. Such mismatches are expected on rotated
+faces and are evidence that BlockPos must remain physical.
+
+Create 1.21.1 source audit found this direct-neighbor pattern in many systems,
+including pump, fan/nozzle, gantry, redstone link, smart observer, packager and
+deployer code. Standard capabilities are automatically covered, but these
+direct calls need PlanetFrameApi through a generic callback or optional compat
+mixin.

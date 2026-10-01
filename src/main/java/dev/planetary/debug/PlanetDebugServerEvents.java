@@ -65,6 +65,19 @@ public final class PlanetDebugServerEvents {
                         level
                 );
 
+        PlanetCompatibilityDiagnostics.Result compatibilityProbe =
+                PlanetCompatibilityDiagnostics.verify(level);
+
+        player.sendSystemMessage(
+                Component.literal(
+                        "[Planetary] Frame API probe passed: "
+                                + compatibilityProbe.neighborChecks()
+                                + " local-neighbor checks, "
+                                + compatibilityProbe.rawRelativeMismatches()
+                                + " raw BlockPos.relative mismatches detected."
+                )
+        );
+
         player.sendSystemMessage(
                 Component.literal(
                         "[Planetary] Capability probe passed: "

@@ -738,11 +738,43 @@ Do not global-patch BlockPos/Direction to fix this class.
 Valkyrien-Skies-like ships/contraptions require explicit frame composition and
 usually collision/raycast/render integration.
 
+## 33.5 Create-like direct-neighbor stress finding
+
+Create 1.21.1 contains many representative direct-neighbor patterns:
+- worldPosition.relative(getBlockState().getValue(FACING));
+- pos.relative(direction);
+- Direction.Plane.HORIZONTAL loops;
+- placement code using BlockPlaceContext.getNearestLookingDirections.
+
+Examples found in pump, fan/nozzle, gantry, redstone link, smart observer,
+packager, deployer and other subsystems.
+
+This confirms compatibility class C: standard capability-side reframing is not
+enough when a mod chooses its target BlockPos with a canonical-local Direction
+before the capability/query boundary.
+
+PlanetFrameApi.localNeighbor is the first public integration primitive for this
+case. It returns the physical adjacent target, physical direction, source/target
+canonical faces, target canonical local side toward source, and boundary flag.
+
+The runtime compatibility probe compares this API with raw
+BlockPos.relative(localDirection) on all six faces. Mismatches are EXPECTED on
+rotated frames and demonstrate why BlockPos must remain physical rather than be
+globally patched.
+
+Actual Create compatibility remains a later optional integration module; this
+generic API is intentionally not Create-specific.
+
 ## 34. Public Planet Frame API target
 
 Planetary itself and compat modules should consume the SAME API.
 
-Candidate public surface:
+Implemented initial public surface:
+- PlanetFrameApi.canonicalBlockFace;
+- localSideToPhysical / physicalSideToLocal;
+- localNeighbor with physical target + target canonical side.
+
+Candidate extensions:
 - canonical block-state frame by Level + BlockPos;
 - traversal context with preferred chart;
 - entity frame;

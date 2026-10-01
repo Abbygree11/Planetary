@@ -127,6 +127,8 @@ Acceptance:
 - sided NeoForge capability provider receives canonical local side while physical target BlockPos remains unchanged
 - diagnostic capability provider: 36 six-face side mappings + BlockCapabilityCache invalidation
 - standard item/fluid/energy providers: local-UP accept + local-DOWN reject on all six faces
+- public PlanetFrameApi local-neighbor primitive
+- Create-like raw BlockPos.relative(local FACING) stress harness across all six faces
 
 ## Phase 2 — block placement, survival and updates [PLANNED]
 

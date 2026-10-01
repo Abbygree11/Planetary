@@ -167,6 +167,52 @@ final class PlanetBlockRuntimeTest {
     }
 
     @Test
+    void neutralNeighborAndSupportQueryShareTheSamePhysicalResolution() {
+        Level level = mock(Level.class);
+        PlanetGravityRuntime.bind(level, FIELD);
+
+        try {
+            BlockPos source =
+                    new BlockPos(
+                            CORE.x() + 20,
+                            CORE.y() + 20,
+                            CORE.z()
+                    );
+
+            PlanetBlockNeighborQuery neighbor =
+                    PlanetBlockRuntime.neighbor(
+                            level,
+                            source,
+                            Direction.DOWN
+                    ).orElseThrow();
+            PlanetBlockSupportQuery support =
+                    PlanetBlockRuntime.supportQuery(
+                            level,
+                            source,
+                            Direction.DOWN
+                    ).orElseThrow();
+
+            assertEquals(
+                    neighbor.physicalDirection(),
+                    support.physicalDirectionToSupport()
+            );
+            assertEquals(
+                    neighbor.targetPos(),
+                    support.supportPos()
+            );
+            assertEquals(
+                    neighbor.targetLocalSideTowardSource(),
+                    support.supportLocalSideTowardSource()
+            );
+        } finally {
+            PlanetGravityRuntime.unbind(
+                    level,
+                    FIELD
+            );
+        }
+    }
+
+    @Test
     void supportQueryUsesSameRuntimeFieldResolver() {
         Level level = mock(Level.class);
         PlanetGravityRuntime.bind(level, FIELD);

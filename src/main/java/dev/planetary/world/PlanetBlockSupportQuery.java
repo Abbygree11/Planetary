@@ -90,70 +90,18 @@ public record PlanetBlockSupportQuery(
             BlockPos sourcePos,
             Direction sourceLocalDirectionToSupport
     ) {
-        Objects.requireNonNull(field, "field");
-        Objects.requireNonNull(sourcePos, "sourcePos");
-        Objects.requireNonNull(
-                sourceLocalDirectionToSupport,
-                "sourceLocalDirectionToSupport"
-        );
-
-        Optional<PlanetBlockStateFrame> sourceState =
-                PlanetBlockStateFrame.resolve(
-                        field,
-                        sourcePos
-                );
-        if (sourceState.isEmpty()) {
-            return Optional.empty();
-        }
-
-        PlanetBlockStateFrame source =
-                sourceState.get();
-
-        Optional<PlanetBlockFrameContext> traversal =
-                PlanetBlockFrameContext.resolve(
-                        field,
-                        sourcePos,
-                        source.face()
-                );
-        if (traversal.isEmpty()) {
-            /*
-             * The core has a canonical BlockState frame but no gravity/traversal
-             * chart. A local support direction is therefore undefined there.
-             */
-            return Optional.empty();
-        }
-
-        PlanetBlockStep step =
-                traversal.get().step(
-                        sourceLocalDirectionToSupport
-                );
-
-        Optional<PlanetBlockStateFrame> supportState =
-                PlanetBlockStateFrame.resolve(
-                        field,
-                        step.target().pos()
-                );
-        if (supportState.isEmpty()) {
-            return Optional.empty();
-        }
-
-        PlanetBlockStateFrame support =
-                supportState.get();
-
-        Direction supportSide =
-                support.worldToLocal(
-                        step.physicalDirection()
-                                .getOpposite()
-                );
-
-        return Optional.of(
+        return PlanetBlockNeighborQuery.resolve(
+                field,
+                sourcePos,
+                sourceLocalDirectionToSupport
+        ).map(neighbor ->
                 new PlanetBlockSupportQuery(
-                        source,
-                        sourceLocalDirectionToSupport,
-                        step.physicalDirection(),
-                        support,
-                        supportSide,
-                        step.crossedGravityBoundary()
+                        neighbor.sourceStateFrame(),
+                        neighbor.sourceLocalDirection(),
+                        neighbor.physicalDirection(),
+                        neighbor.targetStateFrame(),
+                        neighbor.targetLocalSideTowardSource(),
+                        neighbor.crossedTraversalBoundary()
                 )
         );
     }
