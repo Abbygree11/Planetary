@@ -380,7 +380,7 @@ final class PlanetBlockFrameContextTest {
     }
 
     @Test
-    void tangentStepsAreFourDistinctPhysicalNeighborsAtEveryThreeFaceCorner() {
+    void tangentStepsAtThreeFaceCornerKeepFourLogicalTransitionsButThreePhysicalTargets() {
         for (PlanetFace face : PlanetFace.values()) {
             for (int eastSign : new int[]{-1, 1}) {
                 for (int southSign : new int[]{-1, 1}) {
@@ -415,11 +415,20 @@ final class PlanetBlockFrameContextTest {
                                     + southSign
                     );
 
-                    Set<BlockPos> targets =
+                    Set<BlockPos> physicalTargets =
+                            new HashSet<>();
+                    Set<String> chartTargets =
                             new HashSet<>();
 
                     for (PlanetBlockStep step : steps) {
-                        targets.add(step.target().pos());
+                        physicalTargets.add(
+                                step.target().pos()
+                        );
+                        chartTargets.add(
+                                step.target().pos()
+                                        + "@"
+                                        + step.target().face()
+                        );
 
                         assertEquals(
                                 source.pos().relative(
@@ -431,14 +440,91 @@ final class PlanetBlockFrameContextTest {
                         );
                     }
 
+                    /*
+                     * A cube vertex has three physical surface edges. Relative
+                     * to one preferred face there are still four logical local
+                     * tangent directions, but the two outward directions fold
+                     * onto the same physical edge block through different
+                     * target charts.
+                     */
+                    assertEquals(
+                            3,
+                            physicalTargets.size(),
+                            face + " corner physical valence"
+                    );
                     assertEquals(
                             4,
-                            targets.size(),
-                            face + " corner must expose four unique tangent neighbors"
+                            chartTargets.size(),
+                            face + " corner logical chart valence"
+                    );
+
+                    Direction outwardEastWest =
+                            eastSign > 0
+                                    ? Direction.EAST
+                                    : Direction.WEST;
+                    Direction outwardNorthSouth =
+                            southSign > 0
+                                    ? Direction.SOUTH
+                                    : Direction.NORTH;
+
+                    PlanetBlockStep firstOutward =
+                            stepFor(
+                                    steps,
+                                    outwardEastWest
+                            );
+                    PlanetBlockStep secondOutward =
+                            stepFor(
+                                    steps,
+                                    outwardNorthSouth
+                            );
+
+                    assertEquals(
+                            firstOutward.target().pos(),
+                            secondOutward.target().pos(),
+                            face + " corner outward fold"
+                    );
+                    assertEquals(
+                            firstOutward.physicalDirection(),
+                            secondOutward.physicalDirection(),
+                            face + " corner common physical edge"
+                    );
+
+                    assertEquals(
+                            PlanetTopology.edgeTransform(
+                                    face,
+                                    PlanetVanillaDirection.fromVanilla(
+                                            outwardEastWest
+                                    )
+                            ).targetFace(),
+                            firstOutward.target().face(),
+                            face + " first outward chart"
+                    );
+                    assertEquals(
+                            PlanetTopology.edgeTransform(
+                                    face,
+                                    PlanetVanillaDirection.fromVanilla(
+                                            outwardNorthSouth
+                                    )
+                            ).targetFace(),
+                            secondOutward.target().face(),
+                            face + " second outward chart"
                     );
                 }
             }
         }
+    }
+
+    private static PlanetBlockStep stepFor(
+            List<PlanetBlockStep> steps,
+            Direction localDirection
+    ) {
+        return steps.stream()
+                .filter(step ->
+                        step.localDirection()
+                                == localDirection
+                )
+                .findFirst()
+                .orElseThrow();
     }
 
     @Test

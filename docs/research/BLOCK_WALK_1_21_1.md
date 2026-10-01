@@ -87,12 +87,31 @@ The current context's preferred face remains authoritative for interpreting the
 four LOCAL tangent directions. Each tangent step must still land on exactly one
 ordinary physical adjacent BlockPos.
 
+Corner topology is singular in the discrete physical grid.
+
+At an exact three-face cube corner, the current preferred face still has four
+logical local tangent directions, but a cube vertex has only three physical
+surface edges. The two local directions that point outward through the two
+incident face edges fold onto the SAME next physical BlockPos along the third
+physical cube edge.
+
+They are not the same logical traversal state:
+- both transitions have the same target BlockPos and physicalDirection;
+- each carries a different target PlanetFace/chart;
+- subsequent transported traversal can therefore differ.
+
+The correct distinction is:
+- physical-neighbor identity: BlockPos;
+- chart-aware traversal identity: (BlockPos, PlanetFace).
+
 Acceptance:
-- at all 6 faces x 4 local corners, tangentSteps returns four distinct physical
-  neighbors;
+- at all 6 faces x 4 local corners, tangentSteps returns four logical steps;
+- those four steps occupy exactly three physical target BlockPos values;
+- they occupy four distinct (BlockPos, PlanetFace) traversal states;
+- the two outward directions converge to one physical target but select the
+  two different adjacent target faces;
 - each target is exactly source.pos.relative(step.physicalDirection());
-- outward tangent steps may switch to the corresponding adjacent face;
-- no alias/duplicate corner cell is introduced.
+- no extra/alias physical block is invented.
 
 ## 5. Multi-edge straight-walk acceptance
 

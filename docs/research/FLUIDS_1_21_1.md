@@ -270,6 +270,25 @@ target frame + transported local direction.
 
 The operation must be deterministic for all 24 directed cube-edge transitions.
 
+### Exact-corner deduplication rule
+
+A three-face cube corner is a special discrete topology case. Four local
+tangent directions exist in the preferred chart, but the two outward tangent
+steps converge onto one physical BlockPos while carrying different target
+PlanetFace values.
+
+Fluid code must distinguish two use cases:
+- physical-cell operations such as source-neighbor counting, block mutation and
+  tick scheduling must deduplicate by physical BlockPos so one cell is not
+  counted or scheduled twice;
+- chart-aware recursive traversal such as slope search may need to preserve
+  (BlockPos, PlanetFace) as the search state, because the same physical cell
+  reached through two corner routes can have different transported directions
+  and therefore different continuations.
+
+Do not blindly convert tangentSteps().size() into a physical neighbor count at
+a corner.
+
 ## 14. Fluid acceptance matrix
 
 At minimum test each on POS_Y, NEG_Y, one X face, one Z face, and an edge:

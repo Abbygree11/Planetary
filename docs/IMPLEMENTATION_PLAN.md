@@ -62,7 +62,7 @@ Implemented foundation:
 - local Direction.Axis <-> physical Direction.Axis helpers
 - target-local side-toward-source mapping on PlanetBlockStep for support/capability queries
 - ordered straight local walk across multiple gravity-boundary crossings
-- four seam-aware local tangent steps, including three-face corner uniqueness
+- four seam-aware local tangent steps with explicit three-face corner singularity semantics
 - explicit decision to reject unordered local offset(dx,dy,dz) as path-ambiguous
 
 Still need:
@@ -80,7 +80,7 @@ Acceptance:
 - transform round-trip for all 6 faces x all 6 Direction values
 - seam step tests for all 24 directed cube-edge transitions
 - VoxelShape rotation tests for asymmetric shapes
-- no duplicate/missing neighbor at edge/corner
+- edge traversal has no alias physical cell; exact corners preserve 4 logical tangent transitions over 3 physical target cells
 - sided NeoForge capability direction remains correct across seams
 
 ## Phase 2 — block placement, survival and updates [PLANNED]

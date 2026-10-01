@@ -202,7 +202,11 @@ the cubic shell is path-dependent after frame transport at edges.
 PlanetBlockFrameContext.walk(direction, steps) is the authoritative ordered
 multi-step primitive: every step continues with transportedDirection.
 tangentSteps() returns NORTH/SOUTH/WEST/EAST as four independent seam-aware
-PlanetBlockStep values. Tests cover zero-step identity, a deterministic
-two-edge walk plus exact reverse, and four unique physical tangent neighbors at
-all 24 face-local three-face corners. See docs/research/BLOCK_WALK_1_21_1.md.
-No runtime mixin uses these APIs yet.
+PlanetBlockStep values. Exact three-face corners are a deliberate singularity:
+four logical tangent transitions map to three physical BlockPos targets; the
+two outward transitions share one physical target but keep different target
+PlanetFace charts. Physical-cell algorithms must dedupe by BlockPos when
+appropriate, while chart-aware traversal may need (BlockPos, PlanetFace).
+Tests cover zero-step identity, a deterministic two-edge walk plus exact
+reverse, and this corner rule on all 24 face-local corners. See
+docs/research/BLOCK_WALK_1_21_1.md. No runtime mixin uses these APIs yet.
