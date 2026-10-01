@@ -156,7 +156,13 @@ public final class PlanetGravityField {
         );
 
         if (best == 0L) {
-            return Optional.empty();
+            /*
+             * Gravity is undefined in the single core block, but BlockState
+             * orientation still needs one deterministic frame. POS_Y is the
+             * vanilla-compatible canonical fallback for state/shape/support
+             * semantics only; candidateFaces() intentionally remains empty.
+             */
+            return Optional.of(PlanetFace.POS_Y);
         }
 
         if (ax >= ay && ax >= az) {

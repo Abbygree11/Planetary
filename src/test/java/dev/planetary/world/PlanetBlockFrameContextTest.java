@@ -224,7 +224,7 @@ final class PlanetBlockFrameContextTest {
                         );
 
                 Direction targetSide =
-                        step.targetLocalSideTowardSource();
+                        step.targetTraversalSideTowardSource();
 
                 /*
                  * Entering a shared edge cell moves physically along the

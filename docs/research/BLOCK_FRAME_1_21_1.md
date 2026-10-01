@@ -200,7 +200,7 @@ Implemented pure side/axis foundation:
   inventing signed-axis semantics;
 - PlanetBlockFrameContext exposes the same axis conversion beside Direction
   conversion and shape rotation;
-- PlanetBlockStep.targetLocalSideTowardSource converts the physical side back
+- PlanetBlockStep.targetTraversalSideTowardSource converts the physical side back
   toward the source into the target block's local frame;
 - geometric target side and transported traversal direction are deliberately
   different concepts at a seam. On every directed edge entry, the physical
@@ -226,6 +226,58 @@ Ordered traversal decision:
   complete PlanetBlockStep values;
 - detailed rationale and corner acceptance live in
   docs/research/BLOCK_WALK_1_21_1.md.
+
+## 6.5 Canonical support-query contract
+
+Exact 1.21.1 source flow inspected:
+
+BlockBehaviour.BlockStateBase.isFaceSturdy(level, pos, direction, supportType):
+- if the state has a cache, reads cache.isFaceSturdy(direction, supportType);
+- otherwise delegates to supportType.isSupporting(state, level, pos, direction).
+
+BlockStateBase.Cache precomputes one boolean per Direction x SupportType using
+the canonical BlockState support shape. The cache has no position/frame.
+
+SupportType semantics:
+- FULL checks whether the requested face of getBlockSupportShape is full;
+- CENTER checks the center support footprint on that requested face;
+- RIGID checks the rigid perimeter footprint on that requested face.
+
+Therefore Planet code MUST NOT rotate/rebuild SupportType or mutate the vanilla
+cache. It must reframe the requested support Direction into the canonical local
+frame of the physical support block.
+
+Representative vanilla callers:
+- BaseTorchBlock: support neighbor is local DOWN, then canSupportCenter asks the
+  support block's UP face;
+- WallTorchBlock: support neighbor is FACING.opposite(), support side is FACING;
+- LadderBlock: same neighbor/face pattern as wall torch;
+- PointedDripstoneBlock: support neighbor is TIP_DIRECTION.opposite(), then asks
+  the support block's TIP_DIRECTION face (or accepts matching pointed dripstone).
+
+Those simple opposite-face identities only hold while source and support share
+one canonical frame. At an exact Planet gravity edge/corner they may differ.
+
+PlanetBlockSupportQuery.resolve(field, sourcePos, localDirectionToSupport):
+1. resolves the source canonical PlanetBlockStateFrame;
+2. creates a traversal context using that canonical source face as preferred
+   chart;
+3. performs one seam-aware step toward the support neighbor;
+4. resolves the support block's own canonical PlanetBlockStateFrame;
+5. converts physicalDirection.opposite() into that support canonical frame.
+
+The returned supportLocalSideTowardSource is the Direction runtime adapters
+should pass to isFaceSturdy/canSupportCenter.
+
+Important distinction:
+PlanetBlockStep.targetTraversalSideTowardSource() is explicitly traversal-chart
+semantics and MUST NOT be substituted for the canonical support side.
+
+Core policy:
+- gravity/traversal remains undefined in the single center core block;
+- BlockState orientation still needs to be deterministic there, so the core
+  canonical BlockState frame is POS_Y;
+- support traversal may terminate at the core, but cannot originate from it.
 
 ## 7. Pointed dripstone as a representative block
 

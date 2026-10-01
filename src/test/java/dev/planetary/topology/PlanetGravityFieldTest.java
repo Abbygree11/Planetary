@@ -114,6 +114,33 @@ final class PlanetGravityFieldTest {
     }
 
     @Test
+    void coreHasCanonicalPosYBlockStateFrameButNoGravityCandidate() {
+        assertTrue(
+                FIELD.candidateFaces(
+                        CORE.x(),
+                        CORE.y(),
+                        CORE.z()
+                ).isEmpty()
+        );
+        assertEquals(
+                PlanetFace.POS_Y,
+                FIELD.selectCanonicalBlockFace(
+                        CORE.x(),
+                        CORE.y(),
+                        CORE.z()
+                ).orElseThrow()
+        );
+        assertTrue(
+                FIELD.selectBlockFace(
+                        CORE.x(),
+                        CORE.y(),
+                        CORE.z(),
+                        PlanetFace.POS_Y
+                ).isEmpty()
+        );
+    }
+
+    @Test
     void canonicalBlockTiePolicyIsExplicitXThenYThenZ() {
         assertEquals(
                 PlanetFace.POS_X,

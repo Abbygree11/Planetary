@@ -66,11 +66,12 @@ Implemented foundation:
 - explicit decision to reject unordered local offset(dx,dy,dz) as path-ambiguous
 - traversal chart separated from canonical position-only BlockState frame
 - explicit canonical block tie policy: X axis, then Y, then Z
+- canonical seam-aware support-neighbor/face resolution via PlanetBlockSupportQuery
+- deterministic POS_Y BlockState-frame fallback for the zero-gravity core block
 
 Still need:
 - runtime level -> field resolver wrapper
 
-- local UP/DOWN support lookup
 - rotated face/property helpers beyond Direction and Direction.Axis
 
 Critical design rule:

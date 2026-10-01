@@ -49,11 +49,15 @@ public record PlanetBlockStep(
     }
 
     /**
-     * Local side of the target block that physically faces back toward the
-     * source block. This is the side to use for target-side support,
-     * capability and survival queries after the physical neighbor step.
+     * Side of the target block that physically faces the source, expressed in
+     * the target TRAVERSAL chart.
+     *
+     * <p>Do not use this as a canonical BlockState support/capability side on
+     * an exact edge or corner. Those queries must reframe the physical side
+     * through {@link PlanetBlockStateFrame} because traversal charts are
+     * path-dependent.</p>
      */
-    public Direction targetLocalSideTowardSource() {
+    public Direction targetTraversalSideTowardSource() {
         return target.worldToLocal(
                 physicalDirection.getOpposite()
         );

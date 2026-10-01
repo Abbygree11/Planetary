@@ -224,3 +224,20 @@ tie priority, matching zero-hysteresis entity selection without a preferred
 face. PlanetBlockFrameContext no longer exposes rotateShape or axis-property
 helpers; those live on PlanetBlockStateFrame. No runtime mixin uses the new
 state frame yet.
+
+
+## Phase 1 canonical support query
+Minecraft 1.21.1 BlockStateBase caches isFaceSturdy per Direction x
+SupportType in canonical state space. SupportType FULL/CENTER/RIGID therefore
+remain vanilla; Planet only reframes the queried side.
+
+PlanetBlockSupportQuery resolves source canonical state frame -> seam-aware
+physical neighbor step -> support canonical state frame -> support local side
+toward source. Exact edges/corners can legitimately turn source local DOWN into
+a tangent support side such as local EAST on the support block.
+
+PlanetBlockStep.targetTraversalSideTowardSource is now named explicitly as
+traversal semantics and must not be used for canonical BlockState support.
+The zero-gravity core keeps no traversal/gravity face but has canonical POS_Y
+BlockState orientation so neighboring support queries can terminate there.
+No runtime support mixin is installed yet.
