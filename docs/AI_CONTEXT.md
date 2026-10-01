@@ -273,3 +273,25 @@ Valkyrien Skies is a reference for frame composition: position, direction,
 AABB/collision, raycast, camera and particles are transformed separately.
 Planet external-frame integration should compose external-local <-> world <->
 Planet-local rather than make the coordinate systems compete.
+
+
+## Phase 1 runtime block resolver and capability boundary
+PlanetBlockRuntime is now the shared runtime entry point for block semantics. It
+resolves PlanetGravityRuntime activation at the physical BlockPos center and
+then exposes canonical BlockState frame, traversal context, support query and
+physical/local side conversion.
+
+Dedicated Planet worlds use ordinary physical BlockPos. NeoForge
+BlockCapability queries MUST keep their queried target position unchanged.
+BlockCapabilityMixin now converts only non-null physical Direction context into
+the target block's canonical local BlockState side before provider dispatch.
+
+This matches NeoForge's target-block + context contract and is compatible with
+BlockCapabilityCache: cache/invalidation positions remain physical. The old
+PlanetSidedQueryFrame position canonicalization is retained only for the legacy
+virtual-atlas prototype.
+
+Important limitation: this boundary cannot safely repair a third-party mod that
+already chose the wrong target by doing raw BlockPos.relative(localFacing).
+That belongs to explicit neighbor-API/integration work; never globally patch
+BlockPos.relative.

@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
- * Canonicalizes sided block queries such as NeoForge block capabilities.
+ * Legacy virtual-atlas canonicalization for sided block queries.
  *
  * <p>At a planet seam, a mod commonly computes the target as
  * {@code source.relative(direction)} and passes {@code direction.getOpposite()}
@@ -17,9 +17,10 @@ import java.util.function.Supplier;
  * in the source face's guard frame, so the raw opposite direction is not
  * necessarily the target block's local side.</p>
  *
- * <p>This class converts both values into the canonical frame of the queried
- * target block. It is intentionally generic and contains no dependency on any
- * particular pipe/cable mod.</p>
+ * <p>The dedicated physical Planet world no longer uses this class to decide
+ * BlockState side semantics. Runtime physical queries go through
+ * {@link PlanetBlockRuntime} / {@link PlanetBlockStateFrame}; this class is
+ * retained for the old virtual-atlas compatibility path and its tests.</p>
  */
 public final class PlanetSidedQueryFrame {
     private static final ThreadLocal<Integer> REENTRY_PERMITS =

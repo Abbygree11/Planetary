@@ -1,0 +1,145 @@
+# Research: NeoForge 1.21.1 sided capabilities in Planet frames
+
+Status: physical-Planet runtime boundary implemented; cache runtime smoke test
+still required.
+
+## 1. NeoForge contract
+
+BlockCapability queries identify:
+- the physical Level;
+- the physical BlockPos being queried;
+- optional already-known BlockState / BlockEntity;
+- an additional context.
+
+For createSided capabilities the context is nullable Direction. NeoForge
+documentation uses this Direction as the side from which the target block is
+queried.
+
+Providers receive the same target block identity plus context.
+
+BlockCapabilityCache stores:
+- physical Level;
+- physical target BlockPos;
+- query context;
+and re-runs the capability query when its cached value is needed.
+
+Capability invalidation is registered by physical BlockPos.
+
+## 2. Planet physical-world rule
+
+The physical queried BlockPos is authoritative.
+
+DO NOT move/reroute a physical Planet capability query to another BlockPos just
+because the Direction has local semantics. Doing so would violate NeoForge's
+target-block contract for direct queries and cached queries.
+
+Instead:
+1. keep Level unchanged;
+2. keep queried physical BlockPos unchanged;
+3. keep supplied BlockState / BlockEntity unchanged;
+4. when context is a non-null Direction, resolve the target's canonical
+   PlanetBlockStateFrame;
+5. convert PHYSICAL context side -> target canonical LOCAL side;
+6. dispatch providers once with that canonical local side.
+
+Null context remains null.
+
+On POS_Y the conversion is identity.
+
+## 3. Why this helps mod compatibility
+
+Providers for sided item/fluid/energy/custom capabilities commonly switch on
+Direction to choose input/output/storage faces.
+
+Planet BlockState Direction values are canonical LOCAL semantics. Passing the
+provider a canonical-local side therefore keeps capability side logic aligned
+with FACING/AXIS/state semantics on all six gravity faces.
+
+This applies generically to standard NeoForge capabilities without knowing the
+pipe/cable/machine mod.
+
+## 4. Important limitation: target-position math is upstream
+
+A capability boundary cannot safely reinterpret the physical BlockPos supplied
+by the caller.
+
+If a third-party block performs:
+    target = source.relative(localFacing)
+and treats localFacing as Planet-local even though BlockPos.relative is physical
+XYZ, it may select the wrong physical block BEFORE the capability query.
+
+The BlockCapability boundary must not guess that a different target was
+intended. That direct world-axis math belongs to compatibility class C in the
+master gravity-impact audit and needs either:
+- a safe higher-level neighbor adapter boundary; or
+- an integration adapter for that mod/subsystem.
+
+This is preferable to globally patching BlockPos.relative, which would corrupt
+genuinely physical callers.
+
+## 5. Legacy virtual atlas
+
+The older PlanetLevelBridge / PlanetWorldAccess prototype represents one
+logical block through canonical/guard-space virtual BlockPos aliases.
+
+For that model only, PlanetSidedQueryFrame may canonicalize an alias to another
+vanilla BlockPos representing the SAME logical block.
+
+That fallback remains temporarily because legacy tests and storage code still
+exist.
+
+When it redirects an alias, BlockCapabilityMixin must fetch BlockState and
+BlockEntity for the canonical target instead of forwarding objects supplied for
+the alias.
+
+The dedicated Planet world uses ordinary physical BlockPos and does not use
+this alias path.
+
+## 6. BlockCapabilityCache consequences
+
+Physical Planet:
+- cache position remains unchanged;
+- invalidation position remains unchanged;
+- cache context can stay physical because every actual provider lookup passes
+  through the same capability boundary and is reframed there.
+
+Therefore no physical-world position canonicalization is required in
+ServerLevel.invalidateCapabilities/registerCapabilityListener.
+
+The existing ServerLevel virtual-atlas canonicalization remains legacy-only.
+
+## 7. Shared runtime resolver
+
+PlanetBlockRuntime is the shared block-frame runtime boundary:
+- fieldAt(level, pos);
+- stateFrameAt(level, pos);
+- traversalAt(level, pos[, preferredFace]);
+- supportQuery(level, pos, localDirection);
+- physicalSideToLocal;
+- localSideToPhysical.
+
+It resolves activation at the physical block CENTER via
+PlanetGravityRuntime.findAt.
+
+Future runtime mixins and compat modules should use this instead of each
+selecting their own field/face policy.
+
+## 8. Acceptance still required
+
+Pure tests:
+- runtime field activation uses block center;
+- canonical state frame at corner;
+- side round-trip on six faces;
+- traversal preferred chart remains separate from state frame;
+- runtime support query uses the same field.
+
+Runtime:
+- no BlockCapability mixin application error;
+- POS_Y capability behavior unchanged;
+- side/bottom face provider sees canonical-local side;
+- BlockCapabilityCache returns same provider result before/after invalidation;
+- exact edge/corner target BlockPos is not silently moved;
+- one standard item capability;
+- one fluid capability;
+- one energy capability;
+- one third-party pipe/machine stress case.

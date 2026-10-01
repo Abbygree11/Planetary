@@ -101,11 +101,16 @@ Implemented foundation:
 - canonical seam-aware support-neighbor/face resolution via PlanetBlockSupportQuery
 - deterministic POS_Y BlockState-frame fallback for the zero-gravity core block
 
+Implemented runtime/compat foundation:
+- PlanetBlockRuntime as shared Level + physical BlockPos -> active field/frame boundary
+- block activation evaluated at the physical block center
+- physical capability Direction -> canonical local BlockState side
+- dedicated physical capability queries keep the queried BlockPos authoritative
+- legacy virtual-atlas capability alias routing retained only as fallback
+
 Still need:
-- runtime level -> field resolver wrapper
-- public/shared frame API boundary for runtime and mod integrations
 - physical hit-side -> canonical local hit-side helper
-- canonical sided-capability re-audit against PlanetBlockStateFrame
+- BlockCapabilityCache runtime/invalidation smoke tests
 - Vec3 direction/vector and normal conversion helpers
 - external-frame composition contract for ship/contraption integrations
 - rotated face/property helpers beyond Direction and Direction.Axis
@@ -119,7 +124,7 @@ Acceptance:
 - seam step tests for all 24 directed cube-edge transitions
 - VoxelShape rotation tests for asymmetric shapes
 - edge traversal has no alias physical cell; exact corners preserve 4 logical tangent transitions over 3 physical target cells
-- sided NeoForge capability direction remains correct across seams
+- sided NeoForge capability provider receives canonical local side while physical target BlockPos remains unchanged
 
 ## Phase 2 — block placement, survival and updates [PLANNED]
 
