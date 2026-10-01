@@ -198,8 +198,9 @@ This is a prerequisite for fluids and edge-aware block behavior.
 Implemented pure side/axis foundation:
 - PlanetVanillaDirection converts Direction.Axis in both directions without
   inventing signed-axis semantics;
-- PlanetBlockFrameContext exposes the same axis conversion beside Direction
-  conversion and shape rotation;
+- PlanetBlockStateFrame exposes canonical state Direction/Axis conversion and
+  shape rotation; PlanetBlockFrameContext keeps only traversal Direction
+  conversion;
 - PlanetBlockStep.targetTraversalSideTowardSource converts the physical side back
   toward the source into the target block's local frame;
 - geometric target side and transported traversal direction are deliberately
@@ -379,25 +380,41 @@ opposite() blindly.
 Redstone is a separate acceptance group; do not declare block-frame complete
 after only visual blocks work.
 
-## 12. Phase-1 pure API proposal
+## 12. Phase-1 pure API as implemented
 
+Traversal/topology:
 PlanetBlockFrameContext:
-- frame
+- traversal frame
 - localToWorld(Direction)
 - worldToLocal(Direction)
 - step(Direction local)
-- offset(local dx,dy,dz)
-- rotateShape(localShape)
-- maybe inverseRotateShape
+- walk(Direction local, steps)
+- tangentSteps()
 
 PlanetBlockStep:
-- sourcePos/sourceFrame
+- source traversal context
 - localDirection
-- physicalDirection at source boundary
-- targetPos/targetFrame
+- physicalDirection
+- target traversal context
 - transportedDirection
+- targetTraversalSideTowardSource() for traversal semantics only
 
-Exact names may change, but one object should own these semantics.
+Canonical physical BlockState semantics:
+PlanetBlockStateFrame:
+- position-only canonical frame
+- local/world Direction
+- local/world Direction.Axis
+- rotateShape(localShape)
+
+Support:
+PlanetBlockSupportQuery:
+- starts from the source canonical state frame
+- resolves one seam-aware physical support neighbor
+- resolves the support block's canonical state frame
+- exposes supportLocalSideTowardSource for vanilla support checks
+
+There is intentionally no unordered local offset(dx,dy,dz): compound local
+surface displacement is path-dependent after crossing cube edges.
 
 ## 13. Tests before runtime mixins
 
@@ -405,10 +422,10 @@ Pure tests:
 - all 6 faces x 6 directions round trip
 - all 24 directed cube edge transitions
 - repeated step across edge then inverse step returns source
-- multi-step offset across two edges
+- ordered straight walk across two edges
 - asymmetric VoxelShape rotation on all faces
 - support side local/world mapping
-- no ambiguity at edge/corner with explicit preferred face
+- traversal/state-frame distinction at exact edge/corner ties
 
 Runtime smoke tests only after pure suite:
 - full grass cube texture orientation
