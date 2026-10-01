@@ -129,6 +129,17 @@ Test with asymmetric shapes:
 
 Do not allocate rotated shape trees on every collision query.
 
+Implemented Phase-1 pure shape foundation:
+- PlanetVoxelShapeRotation.localToWorld rotates every source AABB around
+  block center (0.5, 0.5, 0.5) through PlanetGravityFrame;
+- POS_Y is an identity fast path;
+- non-POS_Y local->world results are weak-key cached per canonical
+  VoxelShape + PlanetFace;
+- worldToLocal provides the inverse transform without globally caching
+  transient physical query shapes;
+- tests cover one explicitly expected asymmetric box on all six faces,
+  multi-box unions, coordinates outside [0,1], round-trip, and cache reuse.
+
 ## 6. Support / survival / neighbor directions
 
 Many blocks implement canSurvive/updateShape using:

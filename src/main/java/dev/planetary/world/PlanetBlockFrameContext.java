@@ -8,6 +8,7 @@ import dev.planetary.topology.PlanetGravityFrame;
 import dev.planetary.topology.PlanetTopology;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -100,6 +101,21 @@ public final class PlanetBlockFrameContext {
                         worldDirection,
                         "worldDirection"
                 )
+        );
+    }
+
+    /**
+     * Rotates a canonical local-Y-up block shape into this physical frame.
+     */
+    public VoxelShape rotateShape(
+            VoxelShape localShape
+    ) {
+        return PlanetVoxelShapeRotation.localToWorld(
+                Objects.requireNonNull(
+                        localShape,
+                        "localShape"
+                ),
+                face()
         );
     }
 

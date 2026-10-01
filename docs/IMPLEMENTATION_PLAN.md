@@ -56,6 +56,8 @@ Implemented foundation:
 - PlanetBlockStep with physical direction, target frame and transported local direction
 - 24 directed edge-entry/fold transitions covered by tests
 - edge step + transported opposite is tested reversible
+- cached six-face VoxelShape rotation around block center
+- inverse physical -> local VoxelShape transform for deterministic round-trip tests
 
 Still need:
 - runtime level -> field resolver wrapper
@@ -67,7 +69,6 @@ Still need:
 - local offset across multiple edge crossings
 - local UP/DOWN support lookup
 - local tangent four-neighbor iteration
-- local AABB/VoxelShape rotation around block center
 - rotated face/axis helpers
 - deterministic tie policy at gravity boundaries
 

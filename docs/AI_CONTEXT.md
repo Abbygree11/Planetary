@@ -169,3 +169,13 @@ Runtime seam semantics are intentionally distinct from old virtual face-atlas
 alias semantics: entering an edge BlockPos transports the chart immediately;
 continued movement folds around the adjacent physical cube face.
 No runtime mixins use this API yet.
+
+
+## Phase 1 shape rotation foundation
+Added pure cached VoxelShape orientation support after physical block stepping.
+PlanetVoxelShapeRotation treats vanilla shapes as canonical local-Y-up,
+rotates AABB components around the block center through PlanetGravityFrame,
+and caches local->world variants by weak canonical shape key + PlanetFace.
+POS_Y returns the original shape. worldToLocal exists for inverse conversion
+and round-trip verification. PlanetBlockFrameContext.rotateShape delegates to
+the same authoritative transform. No runtime shape mixin uses it yet.
