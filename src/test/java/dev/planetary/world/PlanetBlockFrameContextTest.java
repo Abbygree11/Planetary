@@ -12,7 +12,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -280,6 +282,161 @@ final class PlanetBlockFrameContextTest {
                         step.targetLocalSideTowardSource(),
                         local.toString()
                 );
+            }
+        }
+    }
+
+    @Test
+    void zeroStepWalkPreservesContextAndDirection() {
+        PlanetBlockFrameContext source =
+                contextAt(
+                        physical(
+                                PlanetFace.POS_Z,
+                                SHELL,
+                                3,
+                                -2
+                        ),
+                        PlanetFace.POS_Z
+                );
+
+        PlanetBlockWalk walk =
+                source.walk(Direction.NORTH, 0);
+
+        assertEquals(source.pos(), walk.target().pos());
+        assertEquals(source.face(), walk.target().face());
+        assertEquals(
+                Direction.NORTH,
+                walk.transportedDirection()
+        );
+        assertEquals(0, walk.gravityBoundaryCrossings());
+        assertFalse(walk.crossedGravityBoundary());
+    }
+
+    @Test
+    void straightWalkCrossesTwoEdgesAndTransportsDirectionTwice() {
+        PlanetBlockFrameContext source =
+                contextAt(
+                        oneBeforeEdge(
+                                PlanetFace.POS_Y,
+                                PlanetDirection.EAST,
+                                0
+                        ),
+                        PlanetFace.POS_Y
+                );
+
+        int steps = 1 + 2 * SHELL;
+
+        PlanetBlockWalk walk =
+                source.walk(
+                        Direction.EAST,
+                        steps
+                );
+
+        assertEquals(
+                new BlockPos(
+                        CORE.x() + SHELL,
+                        CORE.y() - SHELL,
+                        CORE.z()
+                ),
+                walk.target().pos()
+        );
+        assertEquals(
+                PlanetFace.NEG_Y,
+                walk.target().face()
+        );
+        assertEquals(
+                Direction.WEST,
+                walk.transportedDirection()
+        );
+        assertEquals(
+                2,
+                walk.gravityBoundaryCrossings()
+        );
+        assertTrue(walk.crossedGravityBoundary());
+
+        PlanetBlockWalk reverse =
+                walk.target().walk(
+                        walk.transportedDirection()
+                                .getOpposite(),
+                        steps
+                );
+
+        assertEquals(
+                source.pos(),
+                reverse.target().pos()
+        );
+        assertEquals(
+                source.face(),
+                reverse.target().face()
+        );
+        assertEquals(
+                Direction.WEST,
+                reverse.transportedDirection()
+        );
+        assertEquals(
+                2,
+                reverse.gravityBoundaryCrossings()
+        );
+    }
+
+    @Test
+    void tangentStepsAreFourDistinctPhysicalNeighborsAtEveryThreeFaceCorner() {
+        for (PlanetFace face : PlanetFace.values()) {
+            for (int eastSign : new int[]{-1, 1}) {
+                for (int southSign : new int[]{-1, 1}) {
+                    PlanetBlockFrameContext source =
+                            contextAt(
+                                    physical(
+                                            face,
+                                            SHELL,
+                                            eastSign * SHELL,
+                                            southSign * SHELL
+                                    ),
+                                    face
+                            );
+
+                    List<PlanetBlockStep> steps =
+                            source.tangentSteps();
+
+                    assertEquals(
+                            List.of(
+                                    Direction.NORTH,
+                                    Direction.SOUTH,
+                                    Direction.WEST,
+                                    Direction.EAST
+                            ),
+                            steps.stream()
+                                    .map(
+                                            PlanetBlockStep::localDirection
+                                    )
+                                    .toList(),
+                            face + " corner "
+                                    + eastSign + "/"
+                                    + southSign
+                    );
+
+                    Set<BlockPos> targets =
+                            new HashSet<>();
+
+                    for (PlanetBlockStep step : steps) {
+                        targets.add(step.target().pos());
+
+                        assertEquals(
+                                source.pos().relative(
+                                        step.physicalDirection()
+                                ),
+                                step.target().pos(),
+                                face + " / "
+                                        + step.localDirection()
+                        );
+                    }
+
+                    assertEquals(
+                            4,
+                            targets.size(),
+                            face + " corner must expose four unique tangent neighbors"
+                    );
+                }
             }
         }
     }

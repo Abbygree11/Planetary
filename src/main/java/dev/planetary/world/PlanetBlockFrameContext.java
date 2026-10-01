@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -140,6 +141,70 @@ public final class PlanetBlockFrameContext {
                         "localShape"
                 ),
                 face()
+        );
+    }
+
+    /**
+     * Continues one local direction for an ordered number of one-block steps.
+     *
+     * <p>After each seam crossing the direction returned by the previous step
+     * is used in the new frame. This makes the path well-defined across any
+     * number of cube edges.</p>
+     */
+    public PlanetBlockWalk walk(
+            Direction localDirection,
+            int steps
+    ) {
+        Objects.requireNonNull(
+                localDirection,
+                "localDirection"
+        );
+        if (steps < 0) {
+            throw new IllegalArgumentException(
+                    "steps must be >= 0"
+            );
+        }
+
+        PlanetBlockFrameContext current = this;
+        Direction currentDirection = localDirection;
+        int boundaryCrossings = 0;
+
+        for (int i = 0; i < steps; i++) {
+            PlanetBlockStep step =
+                    current.step(currentDirection);
+
+            current = step.target();
+            currentDirection =
+                    step.transportedDirection();
+
+            if (step.crossedGravityBoundary()) {
+                boundaryCrossings++;
+            }
+        }
+
+        return new PlanetBlockWalk(
+                this,
+                localDirection,
+                steps,
+                current,
+                currentDirection,
+                boundaryCrossings
+        );
+    }
+
+    /**
+     * Returns the four local tangent neighbors in stable
+     * NORTH, SOUTH, WEST, EAST order.
+     *
+     * <p>Each result is a complete seam-aware physical step and may therefore
+     * target another gravity frame.</p>
+     */
+    public List<PlanetBlockStep> tangentSteps() {
+        return List.of(
+                step(Direction.NORTH),
+                step(Direction.SOUTH),
+                step(Direction.WEST),
+                step(Direction.EAST)
         );
     }
 

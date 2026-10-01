@@ -61,15 +61,16 @@ Implemented foundation:
 - local Direction <-> physical Direction for all six gravity frames
 - local Direction.Axis <-> physical Direction.Axis helpers
 - target-local side-toward-source mapping on PlanetBlockStep for support/capability queries
+- ordered straight local walk across multiple gravity-boundary crossings
+- four seam-aware local tangent steps, including three-face corner uniqueness
+- explicit decision to reject unordered local offset(dx,dy,dz) as path-ambiguous
 
 Still need:
 - runtime level -> field resolver wrapper
 
 - seam-aware local neighbor step; MUST NOT be equivalent to raw pos.relative()
   at a gravity/cube edge
-- local offset across multiple edge crossings
 - local UP/DOWN support lookup
-- local tangent four-neighbor iteration
 - rotated face/property helpers beyond Direction and Direction.Axis
 - deterministic tie policy at gravity boundaries
 

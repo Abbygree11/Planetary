@@ -192,3 +192,17 @@ the source is local DOWN; transportedDirection is the tangent direction for
 continued seam-aware traversal. This distinction is the pure foundation for
 isFaceSturdy/support-side logic and future physical sided-query adapters. No
 new runtime mixins were added.
+
+
+## Phase 1 ordered block traversal
+Generic local offset(dx,dy,dz) is intentionally NOT part of the kernel.
+Unlike vanilla Euclidean BlockPos displacement, compound local displacement on
+the cubic shell is path-dependent after frame transport at edges.
+
+PlanetBlockFrameContext.walk(direction, steps) is the authoritative ordered
+multi-step primitive: every step continues with transportedDirection.
+tangentSteps() returns NORTH/SOUTH/WEST/EAST as four independent seam-aware
+PlanetBlockStep values. Tests cover zero-step identity, a deterministic
+two-edge walk plus exact reverse, and four unique physical tangent neighbors at
+all 24 face-local three-face corners. See docs/research/BLOCK_WALK_1_21_1.md.
+No runtime mixin uses these APIs yet.

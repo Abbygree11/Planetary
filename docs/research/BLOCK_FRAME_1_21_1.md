@@ -183,6 +183,16 @@ Important:
 raw pos.relative(localToWorld(frame, dir)) is valid only while the operation
 stays within one chart. At an edge, topology transport must be explicit.
 
+Ordered traversal decision:
+- do NOT add a generic local offset(dx,dy,dz): compound local displacement is
+  path-dependent once an axis crosses a curved cube edge;
+- PlanetBlockFrameContext.walk(direction, steps) repeatedly consumes
+  transportedDirection and is therefore well-defined across multiple seams;
+- tangentSteps() exposes the four independent local cardinal neighbors as
+  complete PlanetBlockStep values;
+- detailed rationale and corner acceptance live in
+  docs/research/BLOCK_WALK_1_21_1.md.
+
 ## 7. Pointed dripstone as a representative block
 
 PointedDripstoneBlock demonstrates almost every issue:
