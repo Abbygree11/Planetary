@@ -185,7 +185,10 @@ the same authoritative transform. No runtime shape mixin uses it yet.
 Added Direction.Axis local<->world conversion using the same PlanetGravityFrame
 basis as signed Direction conversion. PlanetBlockFrameContext delegates both.
 PlanetBlockStep.targetLocalSideTowardSource now exposes the target block's
-canonical local side that physically faces the source; across an edge this is
-the opposite of transportedDirection, not blindly physicalDirection.opposite
-interpreted as local. This is the pure foundation for isFaceSturdy,
-capability-side and survival adapters. No new runtime mixins were added.
+canonical local side that physically faces the source. Important: this is NOT
+the opposite of transportedDirection at an edge. Edge entry physically travels
+along the adjacent face's local UP axis, so the target geometric face toward
+the source is local DOWN; transportedDirection is the tangent direction for
+continued seam-aware traversal. This distinction is the pure foundation for
+isFaceSturdy/support-side logic and future physical sided-query adapters. No
+new runtime mixins were added.

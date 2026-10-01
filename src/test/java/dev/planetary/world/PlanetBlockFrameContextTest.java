@@ -199,7 +199,7 @@ final class PlanetBlockFrameContextTest {
     }
 
     @Test
-    void targetSideTowardSourceMatchesTransportedOppositeAcrossEveryEdge() {
+    void enteringEveryEdgeFacesTheSourceThroughTargetLocalDown() {
         int transitions = 0;
 
         for (PlanetFace face : PlanetFace.values()) {
@@ -221,10 +221,35 @@ final class PlanetBlockFrameContextTest {
                                 PlanetVanillaDirection.toVanilla(edge)
                         );
 
+                Direction targetSide =
+                        step.targetLocalSideTowardSource();
+
+                /*
+                 * Entering a shared edge cell moves physically along the
+                 * adjacent face's local UP axis. Therefore the geometric face
+                 * of the target block that points back to the source is local
+                 * DOWN. This is deliberately NOT the same concept as the
+                 * transported horizontal direction used to continue walking
+                 * around the cube.
+                 */
                 assertEquals(
-                        step.transportedDirection()
+                        Direction.DOWN,
+                        targetSide,
+                        face + " / " + edge
+                );
+                assertEquals(
+                        step.physicalDirection()
                                 .getOpposite(),
-                        step.targetLocalSideTowardSource(),
+                        step.target().localToWorld(targetSide),
+                        face + " / " + edge
+                );
+                assertEquals(
+                        source.pos(),
+                        step.target().pos().relative(
+                                step.target().localToWorld(
+                                        targetSide
+                                )
+                        ),
                         face + " / " + edge
                 );
             }

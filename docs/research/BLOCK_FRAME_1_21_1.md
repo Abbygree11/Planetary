@@ -168,9 +168,16 @@ Implemented pure side/axis foundation:
   conversion and shape rotation;
 - PlanetBlockStep.targetLocalSideTowardSource converts the physical side back
   toward the source into the target block's local frame;
-- on all 24 directed edge entries that target side equals the opposite of the
-  transported continuation direction. This is the value later support,
-  capability and survival adapters must pass to canonical local block logic.
+- geometric target side and transported traversal direction are deliberately
+  different concepts at a seam. On every directed edge entry, the physical
+  step enters the adjacent face along that face's local UP axis, so the target
+  face looking back at the source is local DOWN;
+- transportedDirection instead describes how the requested tangent direction
+  continues after folding around the cube. Its opposite is useful for a
+  seam-aware reverse traversal, but MUST NOT be used as the target block's
+  geometric support/capability face;
+- later support/survival adapters should use the geometric target-local side
+  when asking canonical block-state face questions.
 
 Important:
 raw pos.relative(localToWorld(frame, dir)) is valid only while the operation
