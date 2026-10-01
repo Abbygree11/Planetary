@@ -312,3 +312,30 @@ Especially avoid:
 - recursive searches without vanilla-equivalent distance limits
 - rebuilding rotated models/shapes every frame instead of caching six variants
 - duplicate scheduled fluid/block ticks caused by both vanilla and custom paths
+
+
+## Mandatory post-change verification format
+
+After EVERY runtime change, fix, refactor that can affect behavior, or meaningful
+worldgen change, the assistant must give the user a concrete numbered checklist
+of what to verify in game/build.
+
+The checklist must:
+1. start with the exact command to run when applicable:
+   `git pull && .\test.ps1 && .\run-client.ps1`
+2. list each behavior separately, one item per check
+3. state the expected result for each item
+4. include regression checks for behavior that was working before if the change
+   could plausibly affect it
+5. include edge/boundary checks when gravity/topology is involved
+6. distinguish build/startup checks from gameplay checks
+7. avoid vague instructions such as "check that it works"
+
+Example structure:
+- Build/startup
+- Primary fix
+- Edge case
+- Regression check
+- Performance check (when relevant)
+
+This rule is part of the development process and must survive chat/context resets.

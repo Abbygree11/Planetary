@@ -154,3 +154,10 @@ Block-frame research baseline: docs/research/BLOCK_FRAME_1_21_1.md
 Key discovery: BlockStateBase caches collision/support data without pos/frame, so
 canonical local state caches must remain untouched; position-aware APIs adapt
 shape/directions at the boundary.
+
+
+## Mandatory workflow rule: post-change checks
+After every code/runtime/worldgen change, always provide the user with a
+numbered verification checklist. Include exact run command, expected result for
+each check, edge/gravity-boundary cases when relevant, and regression checks for
+previously working behavior. Never finish a fix with only "run and test".
