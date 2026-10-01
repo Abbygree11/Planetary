@@ -68,8 +68,6 @@ Implemented foundation:
 Still need:
 - runtime level -> field resolver wrapper
 
-- seam-aware local neighbor step; MUST NOT be equivalent to raw pos.relative()
-  at a gravity/cube edge
 - local UP/DOWN support lookup
 - rotated face/property helpers beyond Direction and Direction.Axis
 - deterministic tie policy at gravity boundaries
