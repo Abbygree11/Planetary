@@ -179,3 +179,13 @@ and caches local->world variants by weak canonical shape key + PlanetFace.
 POS_Y returns the original shape. worldToLocal exists for inverse conversion
 and round-trip verification. PlanetBlockFrameContext.rotateShape delegates to
 the same authoritative transform. No runtime shape mixin uses it yet.
+
+
+## Phase 1 local side and axis foundation
+Added Direction.Axis local<->world conversion using the same PlanetGravityFrame
+basis as signed Direction conversion. PlanetBlockFrameContext delegates both.
+PlanetBlockStep.targetLocalSideTowardSource now exposes the target block's
+canonical local side that physically faces the source; across an edge this is
+the opposite of transportedDirection, not blindly physicalDirection.opposite
+interpreted as local. This is the pure foundation for isFaceSturdy,
+capability-side and survival adapters. No new runtime mixins were added.

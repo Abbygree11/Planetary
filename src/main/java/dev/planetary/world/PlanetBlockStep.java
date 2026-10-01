@@ -47,4 +47,15 @@ public record PlanetBlockStep(
             );
         }
     }
+
+    /**
+     * Local side of the target block that physically faces back toward the
+     * source block. This is the side to use for target-side support,
+     * capability and survival queries after the physical neighbor step.
+     */
+    public Direction targetLocalSideTowardSource() {
+        return target.worldToLocal(
+                physicalDirection.getOpposite()
+        );
+    }
 }

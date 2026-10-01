@@ -84,6 +84,57 @@ public final class PlanetVanillaDirection {
         return toVanilla(frame.localDirectionOf(axis));
     }
 
+    /**
+     * Converts a vanilla axis interpreted in local block coordinates into the
+     * corresponding physical world axis. Axis sign is intentionally ignored:
+     * local X means the EAST/WEST line, local Y the UP/DOWN line and local Z
+     * the SOUTH/NORTH line.
+     */
+    public static Direction.Axis localAxisToWorld(
+            PlanetGravityFrame frame,
+            Direction.Axis localAxis
+    ) {
+        Objects.requireNonNull(frame, "frame");
+        Objects.requireNonNull(localAxis, "localAxis");
+
+        return localToWorld(
+                frame,
+                positiveDirection(localAxis)
+        ).getAxis();
+    }
+
+    /**
+     * Converts a physical world axis into the canonical local block axis.
+     */
+    public static Direction.Axis worldAxisToLocal(
+            PlanetGravityFrame frame,
+            Direction.Axis worldAxis
+    ) {
+        Objects.requireNonNull(frame, "frame");
+        Objects.requireNonNull(worldAxis, "worldAxis");
+
+        for (Direction.Axis localAxis : Direction.Axis.values()) {
+            if (localAxisToWorld(frame, localAxis) == worldAxis) {
+                return localAxis;
+            }
+        }
+
+        throw new IllegalArgumentException(
+                "World axis is not part of frame "
+                        + frame + ": " + worldAxis
+        );
+    }
+
+    private static Direction positiveDirection(
+            Direction.Axis axis
+    ) {
+        return switch (axis) {
+            case X -> Direction.EAST;
+            case Y -> Direction.UP;
+            case Z -> Direction.SOUTH;
+        };
+    }
+
     private static Direction worldDirection(
             PlanetVector axis
     ) {

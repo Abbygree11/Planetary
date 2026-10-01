@@ -161,6 +161,17 @@ Result should include:
 
 This is a prerequisite for fluids and edge-aware block behavior.
 
+Implemented pure side/axis foundation:
+- PlanetVanillaDirection converts Direction.Axis in both directions without
+  inventing signed-axis semantics;
+- PlanetBlockFrameContext exposes the same axis conversion beside Direction
+  conversion and shape rotation;
+- PlanetBlockStep.targetLocalSideTowardSource converts the physical side back
+  toward the source into the target block's local frame;
+- on all 24 directed edge entries that target side equals the opposite of the
+  transported continuation direction. This is the value later support,
+  capability and survival adapters must pass to canonical local block logic.
+
 Important:
 raw pos.relative(localToWorld(frame, dir)) is valid only while the operation
 stays within one chart. At an edge, topology transport must be explicit.

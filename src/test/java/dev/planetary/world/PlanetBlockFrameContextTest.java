@@ -199,6 +199,67 @@ final class PlanetBlockFrameContextTest {
     }
 
     @Test
+    void targetSideTowardSourceMatchesTransportedOppositeAcrossEveryEdge() {
+        int transitions = 0;
+
+        for (PlanetFace face : PlanetFace.values()) {
+            for (PlanetDirection edge : HORIZONTAL) {
+                transitions++;
+
+                PlanetBlockFrameContext source =
+                        contextAt(
+                                oneBeforeEdge(
+                                        face,
+                                        edge,
+                                        4
+                                ),
+                                face
+                        );
+
+                PlanetBlockStep step =
+                        source.step(
+                                PlanetVanillaDirection.toVanilla(edge)
+                        );
+
+                assertEquals(
+                        step.transportedDirection()
+                                .getOpposite(),
+                        step.targetLocalSideTowardSource(),
+                        face + " / " + edge
+                );
+            }
+        }
+
+        assertEquals(24, transitions);
+    }
+
+    @Test
+    void targetSideTowardSourceIsOrdinaryOppositeInsideOneFace() {
+        PlanetBlockFrameContext source =
+                contextAt(
+                        physical(
+                                PlanetFace.POS_Y,
+                                SHELL,
+                                0,
+                                0
+                        ),
+                        PlanetFace.POS_Y
+                );
+
+        for (Direction local : Direction.values()) {
+            PlanetBlockStep step = source.step(local);
+
+            if (!step.crossedGravityBoundary()) {
+                assertEquals(
+                        local.getOpposite(),
+                        step.targetLocalSideTowardSource(),
+                        local.toString()
+                );
+            }
+        }
+    }
+
+    @Test
     void edgeStepAndTransportedOppositeStepAreExactlyReversible() {
         for (PlanetFace face : PlanetFace.values()) {
             for (PlanetDirection edge : HORIZONTAL) {

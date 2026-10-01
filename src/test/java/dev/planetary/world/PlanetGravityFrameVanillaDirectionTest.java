@@ -65,4 +65,106 @@ final class PlanetGravityFrameVanillaDirectionTest {
                 )
         );
     }
+
+    @Test
+    void vanillaAxesRoundTripThroughEveryGravityFrame() {
+        for (PlanetFace face : PlanetFace.values()) {
+            PlanetGravityFrame frame =
+                    new PlanetGravityFrame(face);
+
+            for (Direction.Axis local : Direction.Axis.values()) {
+                Direction.Axis world =
+                        PlanetVanillaDirection.localAxisToWorld(
+                                frame,
+                                local
+                        );
+                Direction.Axis roundTrip =
+                        PlanetVanillaDirection.worldAxisToLocal(
+                                frame,
+                                world
+                        );
+
+                assertEquals(
+                        local,
+                        roundTrip,
+                        face + " / " + local
+                );
+            }
+        }
+    }
+
+    @Test
+    void axisPermutationsMatchTheSixFaceFrames() {
+        assertAxes(
+                PlanetFace.POS_Y,
+                Direction.Axis.X,
+                Direction.Axis.Y,
+                Direction.Axis.Z
+        );
+        assertAxes(
+                PlanetFace.NEG_Y,
+                Direction.Axis.X,
+                Direction.Axis.Y,
+                Direction.Axis.Z
+        );
+        assertAxes(
+                PlanetFace.POS_X,
+                Direction.Axis.Y,
+                Direction.Axis.X,
+                Direction.Axis.Z
+        );
+        assertAxes(
+                PlanetFace.NEG_X,
+                Direction.Axis.Y,
+                Direction.Axis.X,
+                Direction.Axis.Z
+        );
+        assertAxes(
+                PlanetFace.POS_Z,
+                Direction.Axis.X,
+                Direction.Axis.Z,
+                Direction.Axis.Y
+        );
+        assertAxes(
+                PlanetFace.NEG_Z,
+                Direction.Axis.X,
+                Direction.Axis.Z,
+                Direction.Axis.Y
+        );
+    }
+
+    private static void assertAxes(
+            PlanetFace face,
+            Direction.Axis expectedWorldX,
+            Direction.Axis expectedWorldY,
+            Direction.Axis expectedWorldZ
+    ) {
+        PlanetGravityFrame frame =
+                new PlanetGravityFrame(face);
+
+        assertEquals(
+                expectedWorldX,
+                PlanetVanillaDirection.localAxisToWorld(
+                        frame,
+                        Direction.Axis.X
+                ),
+                face + " local X"
+        );
+        assertEquals(
+                expectedWorldY,
+                PlanetVanillaDirection.localAxisToWorld(
+                        frame,
+                        Direction.Axis.Y
+                ),
+                face + " local Y"
+        );
+        assertEquals(
+                expectedWorldZ,
+                PlanetVanillaDirection.localAxisToWorld(
+                        frame,
+                        Direction.Axis.Z
+                ),
+                face + " local Z"
+        );
+    }
 }

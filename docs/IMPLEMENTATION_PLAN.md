@@ -58,18 +58,19 @@ Implemented foundation:
 - edge step + transported opposite is tested reversible
 - cached six-face VoxelShape rotation around block center
 - inverse physical -> local VoxelShape transform for deterministic round-trip tests
+- local Direction <-> physical Direction for all six gravity frames
+- local Direction.Axis <-> physical Direction.Axis helpers
+- target-local side-toward-source mapping on PlanetBlockStep for support/capability queries
 
 Still need:
 - runtime level -> field resolver wrapper
 
-- local Direction -> physical Direction
-- physical Direction -> local Direction
 - seam-aware local neighbor step; MUST NOT be equivalent to raw pos.relative()
   at a gravity/cube edge
 - local offset across multiple edge crossings
 - local UP/DOWN support lookup
 - local tangent four-neighbor iteration
-- rotated face/axis helpers
+- rotated face/property helpers beyond Direction and Direction.Axis
 - deterministic tie policy at gravity boundaries
 
 Critical design rule:

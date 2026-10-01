@@ -104,6 +104,30 @@ public final class PlanetBlockFrameContext {
         );
     }
 
+    public Direction.Axis localAxisToWorld(
+            Direction.Axis localAxis
+    ) {
+        return PlanetVanillaDirection.localAxisToWorld(
+                frame,
+                Objects.requireNonNull(
+                        localAxis,
+                        "localAxis"
+                )
+        );
+    }
+
+    public Direction.Axis worldAxisToLocal(
+            Direction.Axis worldAxis
+    ) {
+        return PlanetVanillaDirection.worldAxisToLocal(
+                frame,
+                Objects.requireNonNull(
+                        worldAxis,
+                        "worldAxis"
+                )
+        );
+    }
+
     /**
      * Rotates a canonical local-Y-up block shape into this physical frame.
      */
