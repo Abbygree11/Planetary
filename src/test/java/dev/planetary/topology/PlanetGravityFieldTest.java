@@ -114,6 +114,63 @@ final class PlanetGravityFieldTest {
     }
 
     @Test
+    void canonicalBlockTiePolicyIsExplicitXThenYThenZ() {
+        assertEquals(
+                PlanetFace.POS_X,
+                FIELD.selectCanonicalBlockFace(
+                        110,
+                        80,
+                        30
+                ).orElseThrow()
+        );
+        assertEquals(
+                PlanetFace.NEG_X,
+                FIELD.selectCanonicalBlockFace(
+                        -90,
+                        80,
+                        30
+                ).orElseThrow()
+        );
+        assertEquals(
+                PlanetFace.POS_Y,
+                FIELD.selectCanonicalBlockFace(
+                        10,
+                        80,
+                        130
+                ).orElseThrow()
+        );
+        assertEquals(
+                PlanetFace.NEG_Y,
+                FIELD.selectCanonicalBlockFace(
+                        10,
+                        -120,
+                        -70
+                ).orElseThrow()
+        );
+        assertEquals(
+                PlanetFace.POS_X,
+                FIELD.selectCanonicalBlockFace(
+                        110,
+                        80,
+                        130
+                ).orElseThrow()
+        );
+    }
+
+    @Test
+    void invalidPreferredTraversalFaceFallsBackToCanonicalBlockFace() {
+        assertEquals(
+                PlanetFace.POS_X,
+                FIELD.selectBlockFace(
+                        110,
+                        80,
+                        130,
+                        PlanetFace.NEG_Z
+                ).orElseThrow()
+        );
+    }
+
+    @Test
     void entityGravitySwitchesAsItsCenterCrossesTheDiagonalPlane() {
         double cx = CORE.centerX();
         double cy = CORE.centerY();

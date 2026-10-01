@@ -127,8 +127,65 @@ public final class PlanetGravityField {
     }
 
     /**
-     * Chooses one block gravity face while preserving a preferred face on an
-     * exact boundary whenever possible.
+     * Chooses the canonical frame of one physical block from position alone.
+     *
+     * <p>Exact gravity ties use the same explicit axis priority as
+     * {@link #selectEntityFace(double, double, double, PlanetFace, double)}
+     * with no preferred face and zero hysteresis: X, then Y, then Z. Sign only
+     * selects the positive/negative face of that winning axis.</p>
+     *
+     * <p>This canonical choice is for physical BlockState orientation,
+     * collision/outline shapes and other properties that must not depend on
+     * the traversal path used to reach the block.</p>
+     */
+    public Optional<PlanetFace> selectCanonicalBlockFace(
+            int blockX,
+            int blockY,
+            int blockZ
+    ) {
+        long dx = (long) blockX - core.x();
+        long dy = (long) blockY - core.y();
+        long dz = (long) blockZ - core.z();
+
+        long ax = Math.abs(dx);
+        long ay = Math.abs(dy);
+        long az = Math.abs(dz);
+        long best = Math.max(
+                ax,
+                Math.max(ay, az)
+        );
+
+        if (best == 0L) {
+            return Optional.empty();
+        }
+
+        if (ax >= ay && ax >= az) {
+            return Optional.of(
+                    dx >= 0
+                            ? PlanetFace.POS_X
+                            : PlanetFace.NEG_X
+            );
+        }
+        if (ay >= az) {
+            return Optional.of(
+                    dy >= 0
+                            ? PlanetFace.POS_Y
+                            : PlanetFace.NEG_Y
+            );
+        }
+
+        return Optional.of(
+                dz >= 0
+                        ? PlanetFace.POS_Z
+                        : PlanetFace.NEG_Z
+        );
+    }
+
+    /**
+     * Chooses a traversal chart for one block while preserving a preferred
+     * valid face on an exact boundary. If the preferred chart is not valid,
+     * the position-only canonical block face is used as the deterministic
+     * fallback.
      */
     public Optional<PlanetFace> selectBlockFace(
             int blockX,
@@ -146,7 +203,11 @@ public final class PlanetGravityField {
             return Optional.of(preferred);
         }
 
-        return Optional.of(candidates.iterator().next());
+        return selectCanonicalBlockFace(
+                blockX,
+                blockY,
+                blockZ
+        );
     }
 
     /**

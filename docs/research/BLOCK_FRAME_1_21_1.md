@@ -83,6 +83,40 @@ Research gate before implementation:
 catalog direct getClickedFace() consumers, because some use it for state
 orientation and others for physical adjacency.
 
+## 3.5 Traversal chart vs canonical BlockState frame
+
+A physical edge/corner BlockPos can belong to multiple gravity regions. That
+creates two distinct concepts which MUST NOT share one implicit face value:
+
+1. traversal chart
+   - path-dependent;
+   - preserves the preferred face while it remains mathematically valid;
+   - used by PlanetBlockFrameContext.step/walk and transportedDirection;
+   - the same physical edge block may validly be represented in either adjacent
+     chart.
+
+2. canonical BlockState frame
+   - position-only and path-independent;
+   - used for interpreting directional BlockState properties, collision/outline
+     shapes, support faces and later baked-model orientation;
+   - the same physical BlockPos must always resolve to the same frame.
+
+PlanetGravityField.selectCanonicalBlockFace uses explicit tie priority X, then
+Y, then Z. This matches selectEntityFace with no preferred face and zero
+hysteresis and replaces the previous accidental reliance on EnumSet iteration.
+
+PlanetBlockStateFrame owns canonical state semantics:
+- local/world Direction;
+- local/world Direction.Axis;
+- rotateShape.
+
+PlanetBlockFrameContext remains the traversal/topology chart and no longer owns
+shape/axis-property helpers.
+
+This split is required before runtime shape/support mixins. Otherwise the same
+edge BlockState could expose different physical geometry depending on which
+neighbor/path initiated the query.
+
 ## 4. BlockState shape caching
 
 BlockBehaviour.BlockStateBase.Cache precomputes/caches data for a BlockState:

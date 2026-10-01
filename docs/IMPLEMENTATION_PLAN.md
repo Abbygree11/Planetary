@@ -64,13 +64,14 @@ Implemented foundation:
 - ordered straight local walk across multiple gravity-boundary crossings
 - four seam-aware local tangent steps with explicit three-face corner singularity semantics
 - explicit decision to reject unordered local offset(dx,dy,dz) as path-ambiguous
+- traversal chart separated from canonical position-only BlockState frame
+- explicit canonical block tie policy: X axis, then Y, then Z
 
 Still need:
 - runtime level -> field resolver wrapper
 
 - local UP/DOWN support lookup
 - rotated face/property helpers beyond Direction and Direction.Axis
-- deterministic tie policy at gravity boundaries
 
 Critical design rule:
 Vanilla blockstate directions are interpreted as LOCAL semantics in Planet space.

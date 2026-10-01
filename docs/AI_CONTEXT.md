@@ -210,3 +210,17 @@ appropriate, while chart-aware traversal may need (BlockPos, PlanetFace).
 Tests cover zero-step identity, a deterministic two-edge walk plus exact
 reverse, and this corner rule on all 24 face-local corners. See
 docs/research/BLOCK_WALK_1_21_1.md. No runtime mixin uses these APIs yet.
+
+
+## Phase 1 canonical BlockState frame
+Traversal chart and physical BlockState orientation are now separate concepts.
+PlanetBlockFrameContext is path-dependent and may preserve either valid chart
+on an exact edge/corner for reversible topology traversal. PlanetBlockStateFrame
+is position-only and canonical for state properties, shapes and future support/
+render queries.
+
+PlanetGravityField.selectCanonicalBlockFace uses an explicit X -> Y -> Z axis
+tie priority, matching zero-hysteresis entity selection without a preferred
+face. PlanetBlockFrameContext no longer exposes rotateShape or axis-property
+helpers; those live on PlanetBlockStateFrame. No runtime mixin uses the new
+state frame yet.

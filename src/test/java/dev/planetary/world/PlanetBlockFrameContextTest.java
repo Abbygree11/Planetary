@@ -635,6 +635,14 @@ final class PlanetBlockFrameContextTest {
                         PlanetFace.POS_X
                 ).face()
         );
+
+        assertEquals(
+                PlanetFace.POS_X,
+                PlanetBlockStateFrame.resolve(
+                        FIELD,
+                        edge
+                ).orElseThrow().face()
+        );
     }
 
     @Test
