@@ -214,6 +214,57 @@ final class PlanetFrameApiTest {
     }
 
     @Test
+    void localHorizontalDirectionReframesBodyDirectionToTargetFrame() {
+        Level level = mock(Level.class);
+        Player player = mock(
+                Player.class,
+                withSettings().extraInterfaces(
+                        PlanetGravityEntity.class
+                )
+        );
+        BlockPlaceContext context =
+                mock(BlockPlaceContext.class);
+        PlanetGravityRuntime.bind(level, FIELD);
+
+        try {
+            BlockPos target =
+                    new BlockPos(R, 100, 0);
+
+            when(context.getLevel()).thenReturn(level);
+            when(context.getClickedPos()).thenReturn(target);
+            when(context.getClickedFace()).thenReturn(Direction.EAST);
+            when(context.getClickLocation())
+                    .thenReturn(Vec3.atCenterOf(target));
+            when(context.getPlayer()).thenReturn(player);
+            when(context.getHorizontalDirection())
+                    .thenReturn(Direction.NORTH);
+            when(context.replacingClickedOnBlock())
+                    .thenReturn(true);
+
+            when(player.getViewXRot(1.0F)).thenReturn(0.0F);
+            when(player.getViewYRot(1.0F)).thenReturn(180.0F);
+            when(((PlanetGravityEntity) player)
+                    .planetary$gravityFrame())
+                    .thenReturn(
+                            java.util.Optional.of(
+                                    new PlanetGravityFrame(
+                                            PlanetFace.POS_X
+                                    )
+                            )
+                    );
+
+            assertEquals(
+                    Direction.NORTH,
+                    PlanetFrameApi.localHorizontalDirection(
+                            context
+                    ).orElseThrow()
+            );
+        } finally {
+            PlanetGravityRuntime.unbind(level, FIELD);
+        }
+    }
+
+    @Test
     void playerlessNearestDirectionsAreNotGuessed() {
         Level level = mock(Level.class);
         BlockPlaceContext context =

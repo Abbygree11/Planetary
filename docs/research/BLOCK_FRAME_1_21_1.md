@@ -455,3 +455,15 @@ PlanetBlockFrameContext therefore uses the gravity field plus FaceTransform:
 
 The existing FaceTransform remains authoritative for orientation transport.
 PlanetBlockFrameContext only adds physical BlockPos stepping semantics.
+
+
+## Runtime support/update boundary
+
+Detailed call-flow and implementation decisions now live in:
+docs/research/SUPPORT_UPDATES_1_21_1.md
+
+Critical invariant:
+- updateShape Direction / neighborPos are physical world geometry;
+- FACING/FACE and support directions are canonical local state semantics;
+- runtime adapters identify support changes by resolved physical supportPos,
+  not by comparing physical Direction directly with local properties.

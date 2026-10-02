@@ -70,8 +70,23 @@ public final class PlanetDebugServerEvents {
                         player
                 );
 
+        PlanetSupportDiagnostics.Result supportProbe =
+                PlanetSupportDiagnostics.verify(
+                        level
+                );
+
         PlanetCompatibilityDiagnostics.Result compatibilityProbe =
                 PlanetCompatibilityDiagnostics.verify(level);
+
+        player.sendSystemMessage(
+                Component.literal(
+                        "[Planetary] Support probe passed: "
+                                + supportProbe.survivalChecks()
+                                + " survival checks, "
+                                + supportProbe.updateChecks()
+                                + " updateShape checks."
+                )
+        );
 
         player.sendSystemMessage(
                 Component.literal(

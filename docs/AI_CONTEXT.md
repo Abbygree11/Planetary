@@ -398,3 +398,32 @@ without placing blocks. Successful login prints the placement-probe message.
 
 Shapes/models are still Phase 3; canonical local state can therefore be correct
 while the physical rendered/collision orientation is not yet rotated.
+
+
+## Phase 2 support/update runtime adapters
+Detailed research: docs/research/SUPPORT_UPDATES_1_21_1.md.
+
+PlanetBlockSupportRuntime is the shared LevelReader -> Planet support bridge. It
+activates only for actual bound Level instances and delegates support geometry to
+PlanetBlockSupportQuery.
+
+Runtime adapters now cover:
+- BaseTorchBlock local-DOWN support;
+- WallTorchBlock local FACING support + local placement;
+- RedstoneWallTorchBlock updateShape (its signal math remains Phase 7A);
+- LadderBlock local placement/support/updateShape with water tick preservation;
+- FaceAttachedHorizontalDirectionalBlock static canAttach, placement and
+  updateShape, benefiting lever/button and subclasses that inherit the base
+  behavior.
+
+The key update invariant is physical neighborPos vs resolved physical supportPos.
+Do not compare updateShape's physical Direction directly with canonical local
+FACING/FACE.
+
+PlanetFrameApi.localHorizontalDirection converts player body-local horizontal
+orientation through physical world into target canonical local frame, with a
+horizontal fallback from reframed nearest-looking order at exact frame changes.
+
+PlanetSupportDiagnostics performs 30 real canSurvive + 30 real updateShape
+checks across all six faces using interior cells two blocks from core and does
+not mutate the world.

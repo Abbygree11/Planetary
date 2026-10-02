@@ -162,8 +162,22 @@ Implemented first runtime placement adapters:
 - SlabBlock TOP/BOTTOM and replacement checks from local face + local hit Y
 - runtime diagnostic: 108 real vanilla getStateForPlacement checks across six faces
 
+Implemented first runtime support/update adapters:
+- PlanetBlockSupportRuntime shared canonical support bridge
+- BaseTorchBlock local-DOWN canSurvive/updateShape
+- WallTorchBlock placement/support/updateShape
+- RedstoneWallTorchBlock support update (signal semantics still Phase 7A)
+- LadderBlock placement/support/updateShape + water tick preservation
+- FaceAttachedHorizontalDirectionalBlock placement/canAttach/updateShape
+- runtime diagnostic: 30 survival + 30 updateShape checks across six faces
+
+Detailed support research:
+- docs/research/SUPPORT_UPDATES_1_21_1.md
+
 Acceptance examples:
 - runtime login placement probe reports 108 vanilla state checks
+- runtime login support probe reports 30 survival + 30 updateShape checks
+- breaking the actual local support removes standing/wall torch, ladder and lever
 - standing torch on every gravity face
 - wall torch relative to local wall
 - ladder, door, trapdoor, bed

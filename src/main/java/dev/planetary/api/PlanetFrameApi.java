@@ -189,6 +189,65 @@ public final class PlanetFrameApi {
         return Optional.of(List.of(directions));
     }
 
+    public static Optional<Direction> localHorizontalDirection(
+            BlockPlaceContext context
+    ) {
+        Objects.requireNonNull(context, "context");
+
+        Player player = context.getPlayer();
+        if (player == null) {
+            return Optional.empty();
+        }
+
+        Optional<PlacementFrame> placementOptional =
+                placementFrame(context);
+        if (placementOptional.isEmpty()) {
+            return Optional.empty();
+        }
+
+        if (!(player instanceof PlanetGravityEntity gravityEntity)) {
+            return Optional.empty();
+        }
+
+        Optional<PlanetGravityFrame> playerFrameOptional =
+                gravityEntity.planetary$gravityFrame();
+        if (playerFrameOptional.isEmpty()) {
+            return Optional.empty();
+        }
+
+        PlanetGravityFrame targetFrame =
+                new PlanetGravityFrame(
+                        placementOptional.get().targetFace()
+                );
+
+        Direction bodyLocal =
+                context.getHorizontalDirection();
+        Direction physical =
+                PlanetVanillaDirection.localToWorld(
+                        playerFrameOptional.get(),
+                        bodyLocal
+                );
+        Direction targetLocal =
+                PlanetVanillaDirection.worldToLocal(
+                        targetFrame,
+                        physical
+                );
+
+        if (targetLocal.getAxis().isHorizontal()) {
+            return Optional.of(targetLocal);
+        }
+
+        return localNearestLookingDirections(context)
+                .flatMap(directions ->
+                        directions.stream()
+                                .filter(direction ->
+                                        direction.getAxis()
+                                                .isHorizontal()
+                                )
+                                .findFirst()
+                );
+    }
+
     public static Optional<BlockNeighbor> localNeighbor(
             Level level,
             BlockPos sourcePos,
