@@ -36,7 +36,11 @@
     "HopperBlockPlacementMixin",
     "RotatedPillarBlockPlacementMixin",
     "SlabBlockPlacementMixin",
-    "RedstoneWallTorchSupportMixin"
+    "RedstoneWallTorchSupportMixin",
+    "BaseTorchBlockSupportMixin",
+    "FaceAttachedHorizontalDirectionalBlockSupportMixin",
+    "LadderBlockSupportMixin",
+    "WallTorchBlockSupportMixin"
   ],
   "injectors": {
     "defaultRequire": 1
