@@ -427,3 +427,38 @@ horizontal fallback from reframed nearest-looking order at exact frame changes.
 PlanetSupportDiagnostics performs 30 real canSurvive + 30 real updateShape
 checks across all six faces using interior cells two blocks from core and does
 not mutate the world.
+
+
+## Phase 2 support acceptance verified
+User verified in-game support removal after 333cbf9: standing torch, wall torch,
+ladder and lever on rotated faces survive with their real local support and are
+removed when that physical support block is broken. Existing movement and probes
+remained healthy.
+
+## Phase 3 first physical VoxelShape boundary
+Detailed research: docs/research/SHAPES_1_21_1.md.
+
+Vanilla BlockState shape APIs nest, so rotating every RETURN independently would
+double/triple-transform default/dynamic shapes. PlanetBlockShapeRuntime now uses
+a ThreadLocal query depth and only the outermost physical query rotates.
+
+Physical shape APIs in this patch:
+- getShape, both overloads
+- getCollisionShape, both overloads
+- getVisualShape
+- getInteractionShape
+
+Canonical-only scopes:
+- getBlockSupportShape
+- getOcclusionShape
+
+Those canonical-only scopes suppress nested getShape rotation and preserve the
+already verified canonical isFaceSturdy/support contract.
+
+PlanetVoxelShapeRotation preserves Shapes.block and empty instances exactly so
+BlockCollisions keeps its full-cube identity fast path.
+
+PlanetShapeDiagnostics checks all six faces: rotated slab outline/collision/
+visual, canonical support+occlusion, rotated hopper interaction shape and full
+stone collision identity. Baked-model rendering/culling is intentionally not
+rotated yet.

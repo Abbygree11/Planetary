@@ -75,8 +75,25 @@ public final class PlanetDebugServerEvents {
                         level
                 );
 
+        PlanetShapeDiagnostics.Result shapeProbe =
+                PlanetShapeDiagnostics.verify(
+                        level
+                );
+
         PlanetCompatibilityDiagnostics.Result compatibilityProbe =
                 PlanetCompatibilityDiagnostics.verify(level);
+
+        player.sendSystemMessage(
+                Component.literal(
+                        "[Planetary] Shape probe passed: "
+                                + shapeProbe.physicalChecks()
+                                + " physical shape checks, "
+                                + shapeProbe.canonicalChecks()
+                                + " canonical support/occlusion checks, "
+                                + shapeProbe.identityChecks()
+                                + " full-block identity checks."
+                )
+        );
 
         player.sendSystemMessage(
                 Component.literal(

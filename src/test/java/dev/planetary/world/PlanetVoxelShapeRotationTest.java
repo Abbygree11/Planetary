@@ -140,6 +140,47 @@ final class PlanetVoxelShapeRotationTest {
     }
 
     @Test
+    void invariantSingletonShapesKeepVanillaIdentityOnEveryFace() {
+        VoxelShape full = Shapes.block();
+        VoxelShape empty = Shapes.empty();
+
+        for (PlanetFace face : PlanetFace.values()) {
+            assertSame(
+                    full,
+                    PlanetVoxelShapeRotation.localToWorld(
+                            full,
+                            face
+                    ),
+                    face + " full"
+            );
+            assertSame(
+                    empty,
+                    PlanetVoxelShapeRotation.localToWorld(
+                            empty,
+                            face
+                    ),
+                    face + " empty"
+            );
+            assertSame(
+                    full,
+                    PlanetVoxelShapeRotation.worldToLocal(
+                            full,
+                            face
+                    ),
+                    face + " inverse full"
+            );
+            assertSame(
+                    empty,
+                    PlanetVoxelShapeRotation.worldToLocal(
+                            empty,
+                            face
+                    ),
+                    face + " inverse empty"
+            );
+        }
+    }
+
+    @Test
     void repeatedLocalToWorldRotationReusesCachedInstance() {
         VoxelShape source = Shapes.or(
                 Shapes.box(

@@ -49,7 +49,13 @@ public final class PlanetVoxelShapeRotation {
         Objects.requireNonNull(localShape, "localShape");
         Objects.requireNonNull(face, "face");
 
-        if (face == PlanetFace.POS_Y) {
+        /*
+         * Preserve vanilla singleton fast paths. BlockCollisions in particular
+         * checks shape identity against Shapes.block().
+         */
+        if (face == PlanetFace.POS_Y
+                || localShape == Shapes.block()
+                || localShape.isEmpty()) {
             return localShape;
         }
 
@@ -85,7 +91,9 @@ public final class PlanetVoxelShapeRotation {
         Objects.requireNonNull(worldShape, "worldShape");
         Objects.requireNonNull(face, "face");
 
-        if (face == PlanetFace.POS_Y) {
+        if (face == PlanetFace.POS_Y
+                || worldShape == Shapes.block()
+                || worldShape.isEmpty()) {
             return worldShape;
         }
 

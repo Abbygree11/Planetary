@@ -170,6 +170,8 @@ Implemented first runtime support/update adapters:
 - LadderBlock placement/support/updateShape + water tick preservation
 - FaceAttachedHorizontalDirectionalBlock placement/canAttach/updateShape
 - runtime diagnostic: 30 survival + 30 updateShape checks across six faces
+- manual support-removal acceptance verified by user for standing torch,
+  wall torch, ladder and lever on rotated faces
 
 Detailed support research:
 - docs/research/SUPPORT_UPDATES_1_21_1.md
@@ -186,7 +188,16 @@ Acceptance examples:
 - blocks survive/remove when LOCAL support changes
 - behavior remains vanilla on POS_Y
 
-## Phase 3 — block collision/selection/render frame [PLANNED]
+## Phase 3 — block collision/selection/render frame [PARTIAL, active]
+
+Implemented first physical shape boundary:
+- BlockStateBase outline/collision/visual/interaction shapes rotate canonical
+  local -> physical on the outermost bound-Level query
+- nested shape queries use a ThreadLocal scope to prevent double/triple rotation
+- getBlockSupportShape and getOcclusionShape remain canonical for now
+- Shapes.block()/empty preserve vanilla singleton fast paths
+- runtime diagnostic: 36 physical + 12 canonical + 6 full-block identity checks
+- detailed research: docs/research/SHAPES_1_21_1.md
 
 Research targets:
 - BlockState shape accessors
