@@ -1,8 +1,11 @@
 package dev.planetary.api;
 
+import dev.planetary.gravity.PlanetGravityEntity;
 import dev.planetary.topology.PlanetFace;
+import dev.planetary.topology.PlanetGravityFrame;
 import dev.planetary.world.PlanetBlockNeighborQuery;
 import dev.planetary.world.PlanetBlockRuntime;
+import dev.planetary.world.PlanetVanillaDirection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
@@ -121,6 +124,43 @@ public final class PlanetFrameApi {
 
         Direction[] directions =
                 Direction.orderedByNearest(player);
+
+        /*
+         * orderedByNearest is expressed in the player's BODY-local frame.
+         * Placement properties belong to the TARGET block's canonical frame.
+         * They normally match on a face interior but can differ at an exact
+         * gravity edge, so re-express every candidate through physical world
+         * Direction before applying target-local placement rules.
+         */
+        if (!(player instanceof PlanetGravityEntity gravityEntity)) {
+            return Optional.empty();
+        }
+
+        Optional<PlanetGravityFrame> playerFrameOptional =
+                gravityEntity.planetary$gravityFrame();
+        if (playerFrameOptional.isEmpty()) {
+            return Optional.empty();
+        }
+
+        PlanetGravityFrame playerFrame =
+                playerFrameOptional.get();
+        PlanetGravityFrame targetFrame =
+                new PlanetGravityFrame(
+                        placementOptional.get().targetFace()
+                );
+
+        for (int i = 0; i < directions.length; i++) {
+            Direction physical =
+                    PlanetVanillaDirection.localToWorld(
+                            playerFrame,
+                            directions[i]
+                    );
+            directions[i] =
+                    PlanetVanillaDirection.worldToLocal(
+                            targetFrame,
+                            physical
+                    );
+        }
 
         if (!context.replacingClickedOnBlock()) {
             Direction preferred =

@@ -32,7 +32,10 @@
     "PathNavigationGravityMixin",
     "PathGravityMixin",
     "RandomStrollGoalAccessor",
-    "RandomStrollGoalGravityMixin"
+    "RandomStrollGoalGravityMixin",
+    "HopperBlockPlacementMixin",
+    "RotatedPillarBlockPlacementMixin",
+    "SlabBlockPlacementMixin"
   ],
   "injectors": {
     "defaultRequire": 1

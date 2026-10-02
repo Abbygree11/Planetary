@@ -1,7 +1,7 @@
 # Research: block placement / hit-frame semantics in Minecraft 1.21.1
 
-Status: Phase-2 foundation; pure placement-frame API implemented, no placement
-runtime mixin installed yet.
+Status: Phase-2 foundation + first runtime placement adapters implemented;
+runtime acceptance pending user verification.
 
 Target: Minecraft 1.21.1 / NeoForge 21.1.215.
 
@@ -118,9 +118,15 @@ Direction.orderedByNearest(player) directly reads player view pitch/yaw and
 returns vanilla Direction values.
 
 In Planet runtime entity yaw/pitch are body-local and are transported when the
-gravity face changes. Therefore the base Direction.orderedByNearest(player)
-ordering already represents LOCAL orientation semantics for interactive Planet
-placement.
+gravity face changes. Direction.orderedByNearest(player) therefore starts in the
+PLAYER BODY-local frame. On a face interior that normally matches the target
+block frame, but at an exact gravity edge the player's preferred/hysteretic
+body frame can differ from the target block's position-only canonical frame.
+
+PlanetFrameApi.localNearestLookingDirections therefore re-expresses every
+candidate:
+    player local -> physical Direction -> target canonical local
+before applying BlockPlaceContext's reorder rule.
 
 However BlockPlaceContext.getNearestLookingDirections has a second rule when
 replaceClicked=false:
@@ -247,3 +253,53 @@ Required before any placement runtime mixin:
 - player-less nearest-looking helper deliberately has no inferred result.
 
 Runtime acceptance will be added with the first placement mixin.
+
+
+## 13. First runtime adapters
+
+Implemented as narrowly scoped semantic adapters:
+
+RotatedPillarBlockPlacementMixin
+- getStateForPlacement only;
+- physical hit remains unchanged;
+- stores AXIS = localClickedFace.axis.
+
+HopperBlockPlacementMixin
+- getStateForPlacement only;
+- stores FACING from localClickedFace.opposite;
+- preserves vanilla rule that any local vertical output becomes local DOWN;
+- ENABLED remains true as in vanilla default placement.
+
+SlabBlockPlacementMixin
+- getStateForPlacement uses local clicked face + localHitOffset.y;
+- canBeReplaced uses the same local semantic values for slab stacking;
+- physical target/fluid lookup remains vanilla physical geometry.
+
+Why Slab was chosen before stairs/trapdoor:
+- it exercises the local-hit-half problem directly;
+- it has no stair neighbor-shape graph and no trapdoor redstone dependency;
+- failures can therefore be attributed to placement-frame semantics rather than
+  yet-unadapted update/redstone subsystems.
+
+## 14. Runtime diagnostic
+
+PlanetPlacementDiagnostics performs real vanilla getStateForPlacement calls
+without mutating the world.
+
+Coverage:
+- 6 canonical faces;
+- 6 local clicked directions;
+- RotatedPillar AXIS;
+- Hopper FACING;
+- Slab TOP/BOTTOM with both lower/upper local Y samples across horizontal
+  directions.
+
+Total: 108 runtime state checks through the actual mixins.
+
+A successful dedicated Planet login prints:
+[Planetary] Placement probe passed: 108 vanilla state checks.
+
+Important:
+this verifies stored canonical BlockState semantics only. Runtime rotated
+collision/model rendering is Phase 3, so a side-face slab/log/hopper may still
+LOOK physically wrong until shape/model adapters are connected.

@@ -377,3 +377,24 @@ Player-less DirectionalPlaceContext is intentionally not inferred and must be
 audited separately for dispenser/falling-block paths.
 
 No placement runtime mixin is installed yet.
+
+
+## First Phase-2 runtime placement adapters
+Mixins now adapt RotatedPillarBlock, HopperBlock and SlabBlock placement.
+
+RotatedPillar AXIS and Hopper FACING are stored as canonical LOCAL BlockState
+semantics derived from PlanetBlockPlacementFrame. Slab placement and replacement
+use local clicked face plus localHitOffset.y, so TOP/BOTTOM is no longer tied to
+physical world Y.
+
+PlanetFrameApi.localNearestLookingDirections was corrected for exact edges:
+Direction.orderedByNearest(player) is player-body-local, so each result is now
+re-expressed player-local -> physical -> target-canonical-local before the
+non-replacing clicked-face reorder.
+
+PlanetPlacementDiagnostics invokes the real vanilla getStateForPlacement methods
+for log/hopper/slab over 6 faces x 6 local clicked directions = 108 state checks
+without placing blocks. Successful login prints the placement-probe message.
+
+Shapes/models are still Phase 3; canonical local state can therefore be correct
+while the physical rendered/collision orientation is not yet rotated.

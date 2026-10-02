@@ -134,7 +134,7 @@ Acceptance:
 - public PlanetFrameApi local-neighbor primitive
 - Create-like raw BlockPos.relative(local FACING) stress harness across all six faces
 
-## Phase 2 — block placement, survival and updates [PLANNED]
+## Phase 2 — block placement, survival and updates [PARTIAL, active]
 
 Research targets before implementation:
 - UseOnContext
@@ -156,7 +156,14 @@ and mods also use them for physical neighbor/ray geometry.
 Detailed placement research:
 - docs/research/PLACEMENT_1_21_1.md
 
+Implemented first runtime placement adapters:
+- RotatedPillarBlock AXIS from canonical local clicked face
+- HopperBlock FACING from canonical local clicked face
+- SlabBlock TOP/BOTTOM and replacement checks from local face + local hit Y
+- runtime diagnostic: 108 real vanilla getStateForPlacement checks across six faces
+
 Acceptance examples:
+- runtime login placement probe reports 108 vanilla state checks
 - standing torch on every gravity face
 - wall torch relative to local wall
 - ladder, door, trapdoor, bed

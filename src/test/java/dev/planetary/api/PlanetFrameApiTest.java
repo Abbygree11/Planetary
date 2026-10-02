@@ -1,9 +1,11 @@
 package dev.planetary.api;
 
+import dev.planetary.gravity.PlanetGravityEntity;
 import dev.planetary.gravity.PlanetGravityRuntime;
 import dev.planetary.topology.PlanetCore;
 import dev.planetary.topology.PlanetFace;
 import dev.planetary.topology.PlanetGravityField;
+import dev.planetary.topology.PlanetGravityFrame;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
@@ -20,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.withSettings;
 
 final class PlanetFrameApiTest {
     private static final int R = 20;
@@ -110,7 +113,12 @@ final class PlanetFrameApiTest {
     @Test
     void interactiveNearestDirectionsReorderUsingLocalClickedFace() {
         Level level = mock(Level.class);
-        Player player = mock(Player.class);
+        Player player = mock(
+                Player.class,
+                withSettings().extraInterfaces(
+                        PlanetGravityEntity.class
+                )
+        );
         BlockPlaceContext context =
                 mock(BlockPlaceContext.class);
         PlanetGravityRuntime.bind(level, FIELD);
@@ -130,6 +138,15 @@ final class PlanetFrameApiTest {
 
             when(player.getViewXRot(1.0F)).thenReturn(0.0F);
             when(player.getViewYRot(1.0F)).thenReturn(0.0F);
+            when(((PlanetGravityEntity) player)
+                    .planetary$gravityFrame())
+                    .thenReturn(
+                            java.util.Optional.of(
+                                    new PlanetGravityFrame(
+                                            PlanetFace.POS_X
+                                    )
+                            )
+                    );
 
             List<Direction> directions =
                     PlanetFrameApi.localNearestLookingDirections(
@@ -138,6 +155,58 @@ final class PlanetFrameApiTest {
 
             // POS_X: physical EAST is local UP, so its opposite is local DOWN.
             assertEquals(Direction.DOWN, directions.get(0));
+            assertEquals(6, new HashSet<>(directions).size());
+        } finally {
+            PlanetGravityRuntime.unbind(level, FIELD);
+        }
+    }
+
+    @Test
+    void nearestLookingDirectionsReframePlayerBodyToTargetCanonicalFrame() {
+        Level level = mock(Level.class);
+        Player player = mock(
+                Player.class,
+                withSettings().extraInterfaces(
+                        PlanetGravityEntity.class
+                )
+        );
+        BlockPlaceContext context =
+                mock(BlockPlaceContext.class);
+        PlanetGravityRuntime.bind(level, FIELD);
+
+        try {
+            BlockPos target =
+                    new BlockPos(R, 100, 0);
+
+            when(context.getLevel()).thenReturn(level);
+            when(context.getClickedPos()).thenReturn(target);
+            when(context.getClickedFace()).thenReturn(Direction.EAST);
+            when(context.getClickLocation())
+                    .thenReturn(Vec3.atCenterOf(target));
+            when(context.getPlayer()).thenReturn(player);
+            when(context.replacingClickedOnBlock())
+                    .thenReturn(true);
+
+            // Looking straight up in a POS_Y body frame.
+            when(player.getViewXRot(1.0F)).thenReturn(-90.0F);
+            when(player.getViewYRot(1.0F)).thenReturn(0.0F);
+            when(((PlanetGravityEntity) player)
+                    .planetary$gravityFrame())
+                    .thenReturn(
+                            java.util.Optional.of(
+                                    new PlanetGravityFrame(
+                                            PlanetFace.POS_Y
+                                    )
+                            )
+                    );
+
+            List<Direction> directions =
+                    PlanetFrameApi.localNearestLookingDirections(
+                            context
+                    ).orElseThrow();
+
+            // POS_Y local UP = physical UP = POS_X target local WEST.
+            assertEquals(Direction.WEST, directions.get(0));
             assertEquals(6, new HashSet<>(directions).size());
         } finally {
             PlanetGravityRuntime.unbind(level, FIELD);

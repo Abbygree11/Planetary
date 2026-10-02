@@ -65,8 +65,21 @@ public final class PlanetDebugServerEvents {
                         level
                 );
 
+        PlanetPlacementDiagnostics.Result placementProbe =
+                PlanetPlacementDiagnostics.verify(
+                        player
+                );
+
         PlanetCompatibilityDiagnostics.Result compatibilityProbe =
                 PlanetCompatibilityDiagnostics.verify(level);
+
+        player.sendSystemMessage(
+                Component.literal(
+                        "[Planetary] Placement probe passed: "
+                                + placementProbe.stateChecks()
+                                + " vanilla state checks."
+                )
+        );
 
         player.sendSystemMessage(
                 Component.literal(
