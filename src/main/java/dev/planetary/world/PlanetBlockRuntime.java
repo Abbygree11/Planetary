@@ -85,6 +85,32 @@ public final class PlanetBlockRuntime {
                 );
     }
 
+    public static Optional<PlanetBlockPlacementFrame> placementFrame(
+            Level level,
+            BlockPos targetPos,
+            Direction physicalClickedFace,
+            net.minecraft.world.phys.Vec3 worldClickLocation
+    ) {
+        Objects.requireNonNull(
+                physicalClickedFace,
+                "physicalClickedFace"
+        );
+        Objects.requireNonNull(
+                worldClickLocation,
+                "worldClickLocation"
+        );
+
+        return fieldAt(level, targetPos)
+                .flatMap(field ->
+                        PlanetBlockPlacementFrame.resolve(
+                                field,
+                                targetPos,
+                                physicalClickedFace,
+                                worldClickLocation
+                        )
+                );
+    }
+
     public static Optional<PlanetBlockNeighborQuery> neighbor(
             Level level,
             BlockPos sourcePos,

@@ -6,13 +6,20 @@ import dev.planetary.topology.PlanetFace;
 import dev.planetary.topology.PlanetGravityField;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
+
+import java.util.HashSet;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 final class PlanetFrameApiTest {
     private static final int R = 20;
@@ -50,6 +57,115 @@ final class PlanetFrameApiTest {
             assertEquals(
                     Direction.EAST,
                     neighbor.physicalDirection()
+            );
+        } finally {
+            PlanetGravityRuntime.unbind(level, FIELD);
+        }
+    }
+
+    @Test
+    void placementFrameConvertsPhysicalHitFaceAndLocalHitCoordinates() {
+        Level level = mock(Level.class);
+        PlanetGravityRuntime.bind(level, FIELD);
+
+        try {
+            BlockPos target =
+                    new BlockPos(R, 100, 0);
+
+            PlanetFrameApi.PlacementFrame placement =
+                    PlanetFrameApi.placementFrame(
+                            level,
+                            target,
+                            Direction.EAST,
+                            new Vec3(
+                                    target.getX() + 0.8D,
+                                    target.getY() + 0.8D,
+                                    target.getZ() + 0.3D
+                            )
+                    ).orElseThrow();
+
+            assertEquals(PlanetFace.POS_X, placement.targetFace());
+            assertEquals(Direction.UP, placement.localClickedFace());
+            assertTrue(placement.localHitUpperHalf());
+            assertEquals(
+                    0.2D,
+                    placement.localHitOffset().x,
+                    1.0E-9D
+            );
+            assertEquals(
+                    0.8D,
+                    placement.localHitOffset().y,
+                    1.0E-9D
+            );
+            assertEquals(
+                    0.3D,
+                    placement.localHitOffset().z,
+                    1.0E-9D
+            );
+        } finally {
+            PlanetGravityRuntime.unbind(level, FIELD);
+        }
+    }
+
+    @Test
+    void interactiveNearestDirectionsReorderUsingLocalClickedFace() {
+        Level level = mock(Level.class);
+        Player player = mock(Player.class);
+        BlockPlaceContext context =
+                mock(BlockPlaceContext.class);
+        PlanetGravityRuntime.bind(level, FIELD);
+
+        try {
+            BlockPos target =
+                    new BlockPos(R, 100, 0);
+
+            when(context.getLevel()).thenReturn(level);
+            when(context.getClickedPos()).thenReturn(target);
+            when(context.getClickedFace()).thenReturn(Direction.EAST);
+            when(context.getClickLocation())
+                    .thenReturn(Vec3.atCenterOf(target));
+            when(context.getPlayer()).thenReturn(player);
+            when(context.replacingClickedOnBlock())
+                    .thenReturn(false);
+
+            when(player.getViewXRot(1.0F)).thenReturn(0.0F);
+            when(player.getViewYRot(1.0F)).thenReturn(0.0F);
+
+            List<Direction> directions =
+                    PlanetFrameApi.localNearestLookingDirections(
+                            context
+                    ).orElseThrow();
+
+            // POS_X: physical EAST is local UP, so its opposite is local DOWN.
+            assertEquals(Direction.DOWN, directions.get(0));
+            assertEquals(6, new HashSet<>(directions).size());
+        } finally {
+            PlanetGravityRuntime.unbind(level, FIELD);
+        }
+    }
+
+    @Test
+    void playerlessNearestDirectionsAreNotGuessed() {
+        Level level = mock(Level.class);
+        BlockPlaceContext context =
+                mock(BlockPlaceContext.class);
+        PlanetGravityRuntime.bind(level, FIELD);
+
+        try {
+            BlockPos target =
+                    new BlockPos(R, 100, 0);
+
+            when(context.getLevel()).thenReturn(level);
+            when(context.getClickedPos()).thenReturn(target);
+            when(context.getClickedFace()).thenReturn(Direction.EAST);
+            when(context.getClickLocation())
+                    .thenReturn(Vec3.atCenterOf(target));
+            when(context.getPlayer()).thenReturn(null);
+
+            assertTrue(
+                    PlanetFrameApi.localNearestLookingDirections(
+                            context
+                    ).isEmpty()
             );
         } finally {
             PlanetGravityRuntime.unbind(level, FIELD);

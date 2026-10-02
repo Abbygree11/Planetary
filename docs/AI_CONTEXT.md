@@ -350,3 +350,30 @@ including pump, fan/nozzle, gantry, redstone link, smart observer, packager and
 deployer code. Standard capabilities are automatically covered, but these
 direct calls need PlanetFrameApi through a generic callback or optional compat
 mixin.
+
+
+## Phase 2 placement-frame foundation
+Detailed research: docs/research/PLACEMENT_1_21_1.md.
+
+BlockHitResult direction/location and BlockPlaceContext physical target BlockPos
+remain PHYSICAL. They cannot be globally converted because the same getters are
+also used for real neighbor geometry.
+
+PlanetBlockPlacementFrame resolves semantic placement values in the TARGET
+block's canonical state frame:
+- physicalClickedFace -> localClickedFace;
+- physical world click location -> localHitOffset inside the block.
+
+The local hit offset is required for stairs/trapdoors and other code that
+currently uses world clickLocation.y to choose local top/bottom.
+
+PlanetFrameApi exposes placementFrame(...) and interactive
+localNearestLookingDirections(context). Current Planet entity yaw/pitch are
+body-local, so Direction.orderedByNearest(player) already produces local
+orientation ordering; the API fixes BlockPlaceContext's non-replacing reorder
+to use localClickedFace.opposite instead of the physical hit face.
+
+Player-less DirectionalPlaceContext is intentionally not inferred and must be
+audited separately for dispenser/falling-block paths.
+
+No placement runtime mixin is installed yet.

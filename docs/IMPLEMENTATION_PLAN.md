@@ -108,8 +108,12 @@ Implemented runtime/compat foundation:
 - dedicated physical capability queries keep the queried BlockPos authoritative
 - legacy virtual-atlas capability alias routing retained only as fallback
 
+Implemented placement-frame foundation:
+- physical hit-side -> target canonical local hit-side
+- physical world click point -> canonical local hit offset
+- interactive local nearest-looking reorder without mutating BlockHitResult
+
 Still need:
-- physical hit-side -> canonical local hit-side helper
 - third-party pipe/machine stress test after standard item/fluid/energy capability acceptance
 - Vec3 direction/vector and normal conversion helpers
 - external-frame composition contract for ship/contraption integrations
@@ -144,8 +148,13 @@ Research targets before implementation:
 - waterlogged SimpleWaterloggedBlock behavior
 
 Implementation target:
-adapt placement context and neighbor/support queries at framework boundaries,
-not one mixin per block where avoidable.
+keep BlockHitResult/target BlockPos physical and adapt only semantic orientation
+reads through PlanetBlockPlacementFrame / PlanetFrameApi. Do not globally
+override BlockPlaceContext.getClickedFace or getClickLocation because vanilla
+and mods also use them for physical neighbor/ray geometry.
+
+Detailed placement research:
+- docs/research/PLACEMENT_1_21_1.md
 
 Acceptance examples:
 - standing torch on every gravity face
