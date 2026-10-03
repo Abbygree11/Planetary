@@ -1,8 +1,11 @@
 package dev.planetary.world;
 
 import dev.planetary.api.PlanetFrameApi;
+import dev.planetary.gravity.PlanetGravityEntity;
+import dev.planetary.topology.PlanetGravityFrame;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DoorBlock;
@@ -60,16 +63,55 @@ public final class PlanetPlacementRuntime {
     public static Optional<Direction> localVerticalDirection(
             BlockPlaceContext context
     ) {
-        return PlanetFrameApi.localNearestLookingDirections(
-                context
-        ).flatMap(directions ->
-                directions.stream()
-                        .filter(direction ->
-                                direction.getAxis()
-                                        == Direction.Axis.Y
-                        )
-                        .findFirst()
-        );
+        Objects.requireNonNull(context, "context");
+
+        Player player =
+                context.getPlayer();
+        if (player == null
+                || !(player instanceof PlanetGravityEntity gravityEntity)) {
+            return Optional.empty();
+        }
+
+        Optional<PlanetFrameApi.PlacementFrame> placementOptional =
+                PlanetFrameApi.placementFrame(
+                        context
+                );
+        Optional<PlanetGravityFrame> playerFrameOptional =
+                gravityEntity.planetary$gravityFrame();
+
+        if (placementOptional.isEmpty()
+                || playerFrameOptional.isEmpty()) {
+            return Optional.empty();
+        }
+
+        PlanetGravityFrame targetFrame =
+                new PlanetGravityFrame(
+                        placementOptional.get()
+                                .targetFace()
+                );
+
+        for (Direction bodyLocal :
+                Direction.orderedByNearest(player)) {
+            Direction physical =
+                    PlanetVanillaDirection.localToWorld(
+                            playerFrameOptional.get(),
+                            bodyLocal
+                    );
+            Direction targetLocal =
+                    PlanetVanillaDirection.worldToLocal(
+                            targetFrame,
+                            physical
+                    );
+
+            if (targetLocal.getAxis()
+                    == Direction.Axis.Y) {
+                return Optional.of(
+                        targetLocal
+                );
+            }
+        }
+
+        return Optional.empty();
     }
 
     public static Optional<DoorHingeSide> doorHinge(
