@@ -18,6 +18,7 @@ import net.neoforged.neoforge.client.model.data.ModelData;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
@@ -32,8 +33,15 @@ import java.util.WeakHashMap;
  * returned quad geometry/normals back into PHYSICAL world axes.</p>
  */
 public final class PlanetBakedModelRotation {
-    private static final Map<BakedModel, EnumMap<PlanetFace, BakedModel>>
-            MODEL_CACHE = new WeakHashMap<>();
+    /*
+     * Wrapper -> originalModel is a strong reference. Values therefore also
+     * need to be weak; otherwise a WeakHashMap key would be kept alive through
+     * its own value.
+     */
+    private static final Map<
+            BakedModel,
+            EnumMap<PlanetFace, WeakReference<BakedModel>>
+            > MODEL_CACHE = new WeakHashMap<>();
 
     private static final Map<BakedQuad, EnumMap<PlanetFace, BakedQuad>>
             QUAD_CACHE = new WeakHashMap<>();
@@ -64,22 +72,37 @@ public final class PlanetBakedModelRotation {
         }
 
         synchronized (MODEL_CACHE) {
-            return MODEL_CACHE
-                    .computeIfAbsent(
+            EnumMap<PlanetFace, WeakReference<BakedModel>> byFace =
+                    MODEL_CACHE.computeIfAbsent(
                             model,
                             ignored ->
                                     new EnumMap<>(
                                             PlanetFace.class
                                     )
-                    )
-                    .computeIfAbsent(
-                            face,
-                            ignored ->
-                                    new OrientedModel(
-                                            model,
-                                            face
-                                    )
                     );
+
+            WeakReference<BakedModel> reference =
+                    byFace.get(face);
+            BakedModel oriented =
+                    reference == null
+                            ? null
+                            : reference.get();
+
+            if (oriented == null) {
+                oriented =
+                        new OrientedModel(
+                                model,
+                                face
+                        );
+                byFace.put(
+                        face,
+                        new WeakReference<>(
+                                oriented
+                        )
+                );
+            }
+
+            return oriented;
         }
     }
 
