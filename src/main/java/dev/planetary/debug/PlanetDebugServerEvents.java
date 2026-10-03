@@ -80,8 +80,23 @@ public final class PlanetDebugServerEvents {
                         level
                 );
 
+        PlanetStandingWallPlacementDiagnostics.Result standingWallProbe =
+                PlanetStandingWallPlacementDiagnostics.verify(
+                        player
+                );
+
         PlanetCompatibilityDiagnostics.Result compatibilityProbe =
                 PlanetCompatibilityDiagnostics.verify(level);
+
+        player.sendSystemMessage(
+                Component.literal(
+                        "[Planetary] Standing/wall placement probe passed: "
+                                + standingWallProbe.standingChecks()
+                                + " standing checks, "
+                                + standingWallProbe.wallChecks()
+                                + " wall checks."
+                )
+        );
 
         player.sendSystemMessage(
                 Component.literal(

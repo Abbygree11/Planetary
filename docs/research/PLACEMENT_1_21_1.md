@@ -303,3 +303,61 @@ Important:
 this verifies stored canonical BlockState semantics only. Runtime rotated
 collision/model rendering is Phase 3, so a side-face slab/log/hopper may still
 LOOK physically wrong until shape/model adapters are connected.
+
+
+## 15. StandingAndWallBlockItem variant selection
+
+Runtime acceptance after the first Phase-2 placement/support adapters exposed a
+separate item-level bug: torch support and wall-torch BlockState semantics were
+correct, but the ITEM still chose standing vs wall using vanilla
+BlockPlaceContext.getNearestLookingDirections.
+
+Exact vanilla flow:
+StandingAndWallBlockItem.getPlacementState:
+1. precomputes wallBlock.getStateForPlacement(context);
+2. iterates context.getNearestLookingDirections();
+3. skips attachmentDirection.opposite;
+4. if direction == attachmentDirection, tries the standing block;
+5. otherwise tries the wall block;
+6. keeps vanilla canPlace + isUnobstructed checks.
+
+For TORCH / SOUL_TORCH / REDSTONE_TORCH and coral fans,
+attachmentDirection = Direction.DOWN. In Planet semantics this is canonical
+LOCAL DOWN.
+
+Therefore the loop directions must also be target-canonical LOCAL. Feeding raw
+vanilla/world ordering mixes frames and produces exactly the observed behavior:
+on rotated faces floor clicks can choose wall variants and wall clicks can choose
+standing variants depending on physical axis and neighboring support.
+
+Implementation:
+StandingAndWallBlockItemMixin redirects only the single
+BlockPlaceContext.getNearestLookingDirections invocation inside
+getPlacementState to PlanetFrameApi.localNearestLookingDirections.
+
+Everything else remains vanilla:
+- physical clicked/target BlockPos;
+- wallBlock.getStateForPlacement;
+- standing block getStateForPlacement;
+- canPlace/canSurvive;
+- obstruction checks;
+- subclass behavior.
+
+Outside Planet, or when PlanetFrameApi cannot classify the context, the redirect
+falls back to the original vanilla method.
+
+This is intentionally a generic item boundary rather than a TorchItem special
+case, so modded StandingAndWallBlockItem subclasses inherit the same local-frame
+variant selection.
+
+Runtime diagnostic:
+PlanetStandingWallPlacementDiagnostics deliberately selects a target surrounded
+by valid stone supports. For every PlanetFace:
+- local floor click must still choose standing TORCH even though wall placement
+  is also possible;
+- four local wall clicks must choose WALL_TORCH with matching canonical local
+  FACING.
+
+Coverage:
+- 6 standing checks;
+- 24 wall checks.

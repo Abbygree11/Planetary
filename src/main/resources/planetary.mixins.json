@@ -41,7 +41,8 @@
     "FaceAttachedHorizontalDirectionalBlockSupportMixin",
     "LadderBlockSupportMixin",
     "WallTorchBlockSupportMixin",
-    "BlockStateShapeMixin"
+    "BlockStateShapeMixin",
+    "StandingAndWallBlockItemMixin"
   ],
   "injectors": {
     "defaultRequire": 1

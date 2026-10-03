@@ -161,6 +161,9 @@ Implemented first runtime placement adapters:
 - HopperBlock FACING from canonical local clicked face
 - SlabBlock TOP/BOTTOM and replacement checks from local face + local hit Y
 - runtime diagnostic: 108 real vanilla getStateForPlacement checks across six faces
+- StandingAndWallBlockItem standing/wall variant selection uses target-local
+  nearest-direction ordering
+- runtime diagnostic: 6 standing + 24 wall variant-selection checks
 
 Implemented first runtime support/update adapters:
 - PlanetBlockSupportRuntime shared canonical support bridge

@@ -462,3 +462,23 @@ PlanetShapeDiagnostics checks all six faces: rotated slab outline/collision/
 visual, canonical support+occlusion, rotated hopper interaction shape and full
 stone collision identity. Baked-model rendering/culling is intentionally not
 rotated yet.
+
+
+## StandingAndWallBlockItem placement fix
+User verified Phase-3 slab shapes and ladder behavior, but found torch item
+variant selection wrong on rotated faces: floor clicks could place wall torch,
+wall clicks could place standing torch, with face-dependent behavior.
+
+Root cause is item-level, not support/shape:
+StandingAndWallBlockItem.getPlacementState still iterated raw
+BlockPlaceContext.getNearestLookingDirections while attachmentDirection=DOWN is
+canonical local semantics.
+
+StandingAndWallBlockItemMixin now redirects only that direction-order call to
+PlanetFrameApi.localNearestLookingDirections, preserving all physical geometry,
+canPlace/canSurvive and obstruction logic. Outside Planet it falls back to
+vanilla.
+
+PlanetStandingWallPlacementDiagnostics tests a deliberately multi-supported
+"hole" target on all six faces: 6 local-floor clicks must choose standing torch
+and 24 local-wall clicks must choose wall torch with matching local FACING.
