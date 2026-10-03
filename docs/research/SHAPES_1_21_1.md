@@ -1,6 +1,7 @@
 # Research: runtime block VoxelShape boundary in Minecraft 1.21.1
 
-Status: first Phase-3 shape adapter implemented; runtime acceptance pending.
+Status: first Phase-3 shape adapter implemented; user verified rotated slab
+selection/outline in game.
 
 Target: Minecraft 1.21.1 / NeoForge 21.1.215.
 
@@ -117,8 +118,8 @@ Login counts:
 ## 8. Deliberate limitations
 
 Not solved here:
-- physical face occlusion/culling/AO
-- baked model orientation
+- static baked-model/culling handled by docs/research/RENDERING_1_21_1.md
+- BlockEntityRenderer/custom renderer orientation
 - block entity renderers
 - neighbor-dependent state shape selection that itself uses raw world-axis
   neighbor math
@@ -135,3 +136,11 @@ normal to local UP/DOWN.
 The baked model is not rotated yet. Model and outline/collision may therefore
 visibly disagree; that mismatch is expected and proves the shape and model
 layers are independent.
+
+
+## 10. Manual acceptance update
+
+User verified after the shape patch that side-face slab selection outline is
+physically correct. This confirms the outermost shape-query rotation in real
+client interaction. Static model rendering is the next independent layer and is
+documented in RENDERING_1_21_1.md.

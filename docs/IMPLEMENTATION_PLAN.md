@@ -202,15 +202,24 @@ Implemented first physical shape boundary:
 - runtime diagnostic: 36 physical + 12 canonical + 6 full-block identity checks
 - detailed research: docs/research/SHAPES_1_21_1.md
 
-Research targets:
-- BlockState shape accessors
-- collision / outline / occlusion / support shapes
-- BlockRenderDispatcher
-- ModelBlockRenderer
-- baked model quads and quad facing
-- chunk rebuild/model-data path
-- face culling, AO/light neighbor sampling
+Implemented first static baked-model/render-culling boundary:
+- cached BakedModel wrapper per original model x PlanetFace
+- cached transformed BakedQuad per original quad x PlanetFace
+- physical renderer side -> canonical local getQuads side
+- NeoForge QuadTransformers rotates positions + packed normals
+- final BakedQuad.direction is re-expressed in physical frame
+- ModelData/RenderType/AO/render passes remain delegated through BakedModelWrapper
+- frame-aware Block.shouldRenderFace path with source+target canonical local sides
+- dedicated thread-local occlusion LRU because vanilla cache lacks gravity frame
+- exact seam culling unit test
+- detailed research: docs/research/RENDERING_1_21_1.md
+
+Still open / research targets:
+- physical directional shade/environment-light policy
+- model offset vectors
 - BlockEntityRenderer orientation
+- Flywheel/custom accelerated rendering integration
+- fluid renderer
 
 Implementation target:
 cache rotated shapes and rotated baked-model views for the six gravity frames.

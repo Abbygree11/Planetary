@@ -494,3 +494,35 @@ The diagnostic now uses the real registered Items.TORCH and invokes its
 protected getPlacementState through StandingAndWallBlockItemAccessor (@Invoker).
 No new Item/Block is constructed after registry freeze. The production
 StandingAndWallBlockItemMixin behavior is unchanged.
+
+
+## Phase 3 static baked-model + culling boundary
+Detailed research: docs/research/RENDERING_1_21_1.md.
+
+User verified that the rotated VoxelShape selection outline is correct in game.
+
+Static MODEL rendering now uses a cached oriented BakedModel view supplied at
+the extended NeoForge ModelBlockRenderer.tesselateBlock boundary. The wrapper
+keeps ModelData/RenderType and all BakedModelWrapper delegated extensions.
+
+Renderer physical side -> source canonical local side before original
+getQuads. Returned quads use NeoForge QuadTransformers to rotate vertex
+positions and packed normals around block center, then receive a physical
+BakedQuad.direction. Original registered models/quads are never mutated.
+
+Caches:
+- weak original BakedModel -> six face views;
+- weak original BakedQuad -> six physical quad views.
+
+Block.shouldRenderFace receives physical world geometry but canonical BlockState
+semantics. Client culling is therefore intercepted in Planet space and converts
+the physical source/target faces independently into each block's canonical
+local frame. A custom thread-local 2048-entry LRU uses both local sides in its
+key because vanilla's state-pair + one-Direction cache cannot distinguish
+gravity frames.
+
+Exact seam unit coverage uses POS_X source -> physical WEST -> POS_Y target:
+source local side DOWN while target side toward source is local EAST.
+
+Still separate: BER/Flywheel/custom renderers, model offsets, fluid rendering,
+and the policy for directional shade/environment lighting.
