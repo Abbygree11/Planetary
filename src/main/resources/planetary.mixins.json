@@ -45,7 +45,10 @@
     "WallTorchBlockSupportMixin",
     "BlockStateShapeMixin",
     "StandingAndWallBlockItemMixin",
-    "StandingAndWallBlockItemAccessor"
+    "StandingAndWallBlockItemAccessor",
+    "SpreadingSnowyDirtBlockGravityMixin",
+    "SnowyDirtBlockGravityMixin",
+    "FenceBlockGravityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

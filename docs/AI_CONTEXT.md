@@ -526,3 +526,47 @@ source local side DOWN while target side toward source is local EAST.
 
 Still separate: BER/Flywheel/custom renderers, model offsets, fluid rendering,
 and the policy for directional shade/environment lighting.
+
+
+## 2026-10-04 broad runtime acceptance findings
+After static baked-model/culling work, user performed a broad manual sweep.
+
+Confirmed good:
+- slab shape/model broadly correct away from exact seams;
+- ladder placement/behavior correct;
+- fences/gates basic placement orientation correct;
+- pointed dripstone falling behavior already follows local gravity.
+
+Observed open issues:
+- grass generated correctly but random-ticked back to dirt / failed to spread on
+  all faces except +Y;
+- grass side overlay differs by face and side-face shading is suspicious;
+- slabs behave ambiguously on exact gravity edges;
+- torch flame/smoke sprite emission origin is not local-frame aware;
+- fence gets unwanted physical +Y arms;
+- door and pressure plate placement fails;
+- pointed dripstone cannot be placed where expected even though falling is local;
+- bed placement is misoriented;
+- thrown potions and arrows still accelerate in global -Y;
+- fluids still spread using global gravity.
+
+These observations are now explicit roadmap items rather than isolated bugs.
+
+## Local grass growth + fence connection pass
+Detailed research: docs/research/GROWTH_CONNECTIONS_1_21_1.md.
+
+SpreadingSnowyDirtBlock natural tick now treats canonical local UP as "above"
+for survival, light occlusion, water, brightness and SNOWY checks.
+
+PlanetGrowthTopology defines the ONLY growth-specific compound random offset:
+local Y segment -> local Z -> local X, using transported traversal at seams.
+This does not weaken the project-wide rule that generic unordered local
+offset(dx,dy,dz) is forbidden.
+
+SnowyDirtBlock placement/update also tracks local UP.
+
+FenceBlock N/E/S/W are canonical local properties. Placement resolves four
+PlanetBlockNeighborQuery tangent neighbors. updateShape matches physical
+neighborPos against those logical queries rather than trusting physical
+Direction.Plane.HORIZONTAL; this is seam/corner safe and preserves target-local
+sturdy/gate direction semantics.

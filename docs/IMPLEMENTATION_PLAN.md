@@ -179,6 +179,24 @@ Implemented first runtime support/update adapters:
 Detailed support research:
 - docs/research/SUPPORT_UPDATES_1_21_1.md
 
+Implemented local growth/cross-neighbor pass:
+- SpreadingSnowyDirtBlock natural survival/spread uses canonical local UP and
+  explicit seam-aware growth topology
+- SnowyDirtBlock SNOWY placement/update follows local UP
+- FenceBlock N/E/S/W placement/update uses four seam-aware local tangent
+  neighbors instead of world horizontal directions
+- detailed research: docs/research/GROWTH_CONNECTIONS_1_21_1.md
+
+Runtime findings from 2026-10-04 acceptance:
+- grass random-tick decay/spread wrong outside +Y -> addressed by local growth pass
+- fence unwanted physical +Y arms -> addressed by local connection pass
+- exact-edge slab placement still needs player-body-vs-canonical policy
+- torch flame/smoke emission origin remains world-axis
+- door, pressure plate, pointed dripstone and bed placement remain open
+- thrown potions/arrows still use global projectile gravity
+- fluids still use global FlowingFluid topology
+- grass side-overlay and side-face shadows need render follow-up
+
 Acceptance examples:
 - runtime login placement probe reports 108 vanilla state checks
 - runtime login support probe reports 30 survival + 30 updateShape checks
