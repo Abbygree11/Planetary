@@ -4,8 +4,11 @@ import dev.planetary.topology.PlanetFace;
 import dev.planetary.topology.PlanetFrameVector;
 import dev.planetary.topology.PlanetGravityFrame;
 import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.model.IQuadTransformer;
 import org.junit.jupiter.api.Test;
 
@@ -105,6 +108,85 @@ final class PlanetBakedModelRotationTest {
                 );
             }
         }
+    }
+
+    @Test
+    void grassSurfaceAtTwoFaceSeamUsesTopQuadOnBothOutwardFaces() {
+        BakedModel original =
+                mock(BakedModel.class);
+        TextureAtlasSprite sprite =
+                mock(TextureAtlasSprite.class);
+        BlockState state =
+                net.minecraft.world.level.block.Blocks.GRASS_BLOCK
+                        .defaultBlockState();
+        RandomSource random =
+                RandomSource.create(123L);
+
+        BakedQuad top =
+                quad(
+                        new float[][] {
+                                {0.0F, 1.0F, 0.0F},
+                                {0.0F, 1.0F, 1.0F},
+                                {1.0F, 1.0F, 1.0F},
+                                {1.0F, 1.0F, 0.0F}
+                        },
+                        Direction.UP,
+                        sprite
+                );
+
+        org.mockito.Mockito.when(
+                original.getQuads(
+                        state,
+                        Direction.UP,
+                        random
+                )
+        ).thenReturn(
+                java.util.List.of(top)
+        );
+
+        BakedModel seam =
+                PlanetBakedModelRotation.orientForBlock(
+                        original,
+                        state,
+                        PlanetFace.POS_X,
+                        java.util.Set.of(
+                                PlanetFace.POS_X,
+                                PlanetFace.POS_Z
+                        )
+                );
+
+        java.util.List<BakedQuad> xOutward =
+                seam.getQuads(
+                        state,
+                        Direction.EAST,
+                        random
+                );
+        java.util.List<BakedQuad> zOutward =
+                seam.getQuads(
+                        state,
+                        Direction.SOUTH,
+                        random
+                );
+
+        assertEquals(
+                Direction.EAST,
+                xOutward.getFirst()
+                        .getDirection()
+        );
+        assertEquals(
+                Direction.SOUTH,
+                zOutward.getFirst()
+                        .getDirection()
+        );
+
+        org.mockito.Mockito.verify(
+                original,
+                org.mockito.Mockito.times(2)
+        ).getQuads(
+                state,
+                Direction.UP,
+                random
+        );
     }
 
     private static BakedQuad quad(

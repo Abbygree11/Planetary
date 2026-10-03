@@ -230,6 +230,8 @@ Implemented first static baked-model/render-culling boundary:
 - frame-aware Block.shouldRenderFace path with source+target canonical local sides
 - dedicated thread-local occlusion LRU because vanilla cache lacks gravity frame
 - exact seam culling unit test
+- grass/mycelium surface seam rendering: every ambiguous outward candidate face
+  uses the model's canonical local-UP quad, without changing BlockState frame
 - detailed research: docs/research/RENDERING_1_21_1.md
 
 Still open / research targets:

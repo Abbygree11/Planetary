@@ -49,9 +49,14 @@ public abstract class ModelBlockRendererPlanetMixin {
                         pos
                 )
                 .map(frame ->
-                        PlanetBakedModelRotation.orient(
+                        PlanetBakedModelRotation.orientForBlock(
                                 model,
-                                frame.face()
+                                state,
+                                frame.face(),
+                                PlanetClientRenderFrame.candidateFacesAt(
+                                        level,
+                                        pos
+                                )
                         )
                 )
                 .orElse(model);

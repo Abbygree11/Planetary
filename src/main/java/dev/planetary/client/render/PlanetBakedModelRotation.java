@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.block.SpreadingSnowyDirtBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.model.BakedModelWrapper;
 import net.neoforged.neoforge.client.model.IQuadTransformer;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.WeakHashMap;
 
 /**
@@ -45,6 +47,11 @@ public final class PlanetBakedModelRotation {
 
     private static final Map<BakedQuad, EnumMap<PlanetFace, BakedQuad>>
             QUAD_CACHE = new WeakHashMap<>();
+
+    private static final Map<
+            BakedModel,
+            Map<SurfaceSeamKey, WeakReference<BakedModel>>
+            > SURFACE_SEAM_MODEL_CACHE = new WeakHashMap<>();
 
     private static final EnumMap<PlanetFace, IQuadTransformer>
             TRANSFORMERS = new EnumMap<>(PlanetFace.class);
@@ -103,6 +110,64 @@ public final class PlanetBakedModelRotation {
             }
 
             return oriented;
+        }
+    }
+
+    public static BakedModel orientForBlock(
+            BakedModel model,
+            BlockState state,
+            PlanetFace canonicalFace,
+            Set<PlanetFace> candidateFaces
+    ) {
+        BakedModel canonical =
+                orient(
+                        model,
+                        canonicalFace
+                );
+
+        if (!(state.getBlock()
+                instanceof SpreadingSnowyDirtBlock)
+                || candidateFaces.size() <= 1) {
+            return canonical;
+        }
+
+        SurfaceSeamKey key =
+                new SurfaceSeamKey(
+                        canonicalFace,
+                        faceMask(candidateFaces)
+                );
+
+        synchronized (SURFACE_SEAM_MODEL_CACHE) {
+            Map<SurfaceSeamKey, WeakReference<BakedModel>> bySeam =
+                    SURFACE_SEAM_MODEL_CACHE.computeIfAbsent(
+                            model,
+                            ignored ->
+                                    new java.util.HashMap<>()
+                    );
+
+            WeakReference<BakedModel> reference =
+                    bySeam.get(key);
+            BakedModel seamModel =
+                    reference == null
+                            ? null
+                            : reference.get();
+
+            if (seamModel == null) {
+                seamModel =
+                        new SurfaceSeamModel(
+                                model,
+                                canonicalFace,
+                                candidateFaces
+                        );
+                bySeam.put(
+                        key,
+                        new WeakReference<>(
+                                seamModel
+                        )
+                );
+            }
+
+            return seamModel;
         }
     }
 
@@ -235,6 +300,227 @@ public final class PlanetBakedModelRotation {
         return new Transformation(
                 aroundCenter
         );
+    }
+
+    private static int faceMask(
+            Set<PlanetFace> faces
+    ) {
+        int mask = 0;
+        for (PlanetFace face : faces) {
+            mask |= 1 << face.ordinal();
+        }
+        return mask;
+    }
+
+    private static PlanetFace outwardCandidate(
+            Set<PlanetFace> candidates,
+            Direction physicalSide
+    ) {
+        for (PlanetFace candidate : candidates) {
+            Direction outward =
+                    PlanetVanillaDirection.localToWorld(
+                            new PlanetGravityFrame(candidate),
+                            Direction.UP
+                    );
+            if (outward == physicalSide) {
+                return candidate;
+            }
+        }
+
+        return null;
+    }
+
+    private static List<BakedQuad> surfaceSeamQuads(
+            BakedModel originalModel,
+            BlockState state,
+            Direction physicalSide,
+            RandomSource random,
+            PlanetFace canonicalFace,
+            Set<PlanetFace> candidates
+    ) {
+        if (physicalSide == null) {
+            return rotateQuads(
+                    originalModel.getQuads(
+                            state,
+                            null,
+                            random
+                    ),
+                    canonicalFace
+            );
+        }
+
+        PlanetFace outward =
+                outwardCandidate(
+                        candidates,
+                        physicalSide
+                );
+
+        if (outward != null) {
+            return rotateQuads(
+                    originalModel.getQuads(
+                            state,
+                            Direction.UP,
+                            random
+                    ),
+                    outward
+            );
+        }
+
+        Direction localSide =
+                PlanetVanillaDirection.worldToLocal(
+                        new PlanetGravityFrame(
+                                canonicalFace
+                        ),
+                        physicalSide
+                );
+
+        return rotateQuads(
+                originalModel.getQuads(
+                        state,
+                        localSide,
+                        random
+                ),
+                canonicalFace
+        );
+    }
+
+    private static List<BakedQuad> surfaceSeamQuads(
+            BakedModel originalModel,
+            BlockState state,
+            Direction physicalSide,
+            RandomSource random,
+            ModelData modelData,
+            RenderType renderType,
+            PlanetFace canonicalFace,
+            Set<PlanetFace> candidates
+    ) {
+        if (physicalSide == null) {
+            return rotateQuads(
+                    originalModel.getQuads(
+                            state,
+                            null,
+                            random,
+                            modelData,
+                            renderType
+                    ),
+                    canonicalFace
+            );
+        }
+
+        PlanetFace outward =
+                outwardCandidate(
+                        candidates,
+                        physicalSide
+                );
+
+        if (outward != null) {
+            return rotateQuads(
+                    originalModel.getQuads(
+                            state,
+                            Direction.UP,
+                            random,
+                            modelData,
+                            renderType
+                    ),
+                    outward
+            );
+        }
+
+        Direction localSide =
+                PlanetVanillaDirection.worldToLocal(
+                        new PlanetGravityFrame(
+                                canonicalFace
+                        ),
+                        physicalSide
+                );
+
+        return rotateQuads(
+                originalModel.getQuads(
+                        state,
+                        localSide,
+                        random,
+                        modelData,
+                        renderType
+                ),
+                canonicalFace
+        );
+    }
+
+    private static final class SurfaceSeamModel
+            extends BakedModelWrapper<BakedModel> {
+        private final PlanetFace canonicalFace;
+        private final Set<PlanetFace> candidates;
+
+        private SurfaceSeamModel(
+                BakedModel originalModel,
+                PlanetFace canonicalFace,
+                Set<PlanetFace> candidates
+        ) {
+            super(originalModel);
+            this.canonicalFace = canonicalFace;
+            this.candidates =
+                    Set.copyOf(candidates);
+        }
+
+        @Override
+        public List<BakedQuad> getQuads(
+                @Nullable BlockState state,
+                @Nullable Direction physicalSide,
+                RandomSource rand
+        ) {
+            if (state == null) {
+                return originalModel.getQuads(
+                        null,
+                        physicalSide,
+                        rand
+                );
+            }
+
+            return surfaceSeamQuads(
+                    originalModel,
+                    state,
+                    physicalSide,
+                    rand,
+                    canonicalFace,
+                    candidates
+            );
+        }
+
+        @Override
+        public List<BakedQuad> getQuads(
+                @Nullable BlockState state,
+                @Nullable Direction physicalSide,
+                RandomSource rand,
+                ModelData extraData,
+                @Nullable RenderType renderType
+        ) {
+            if (state == null) {
+                return originalModel.getQuads(
+                        null,
+                        physicalSide,
+                        rand,
+                        extraData,
+                        renderType
+                );
+            }
+
+            return surfaceSeamQuads(
+                    originalModel,
+                    state,
+                    physicalSide,
+                    rand,
+                    extraData,
+                    renderType,
+                    canonicalFace,
+                    candidates
+            );
+        }
+    }
+
+    private record SurfaceSeamKey(
+            PlanetFace canonicalFace,
+            int candidateMask
+    ) {
     }
 
     private static final class OrientedModel

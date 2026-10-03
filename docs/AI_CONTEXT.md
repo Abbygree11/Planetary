@@ -570,3 +570,25 @@ PlanetBlockNeighborQuery tangent neighbors. updateShape matches physical
 neighborPos against those logical queries rather than trusting physical
 Direction.Plane.HORIZONTAL; this is seam/corner safe and preserves target-local
 sturdy/gate direction semantics.
+
+
+## Grass shared-edge green-rim diagnosis/fix
+User verified grass growth and fence topology were otherwise correct but a green
+rim remained:
+- +/-Z on every boundary;
+- -Y only where adjacent to +/-X.
+
+The pattern exactly matches canonical tie order X -> Y -> Z, proving the rim is
+not random culling. One shared edge BlockPos has one canonical BlockState frame,
+while grass physically exposes two cube-surface normals.
+
+Do not change canonical tie order; that would only move the defect and destabilize
+directional state semantics.
+
+Client static-model rendering now has a narrow surface seam rule for
+SpreadingSnowyDirtBlock (GrassBlock/MyceliumBlock): every physical side that is
+the outward UP of one candidate face uses the original model's local-UP quad
+rotated through that candidate face. Other sides still use the one canonical
+frame. At cube corners this naturally supports three outward surface faces.
+
+Collision/support/placement/state frames remain untouched.

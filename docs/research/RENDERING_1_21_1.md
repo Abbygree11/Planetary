@@ -236,3 +236,43 @@ Regression:
 - selection/collision remain correct;
 - torch/ladder/lever support removal remains correct;
 - movement/edge traversal remains unchanged.
+
+
+## 13. Grass/mycelium shared-edge surface rendering
+
+Manual acceptance exposed a deterministic green side-overlay rim:
+- +/-Z showed it on every face boundary;
+- -Y showed it only against +/-X.
+
+This exactly matches the canonical BlockState tie order X -> Y -> Z.
+
+Example:
+- a POS_Z/POS_X shared edge block is canonically POS_X;
+- its POS_X outward side gets the local-UP grass top;
+- its POS_Z outward side is interpreted as a canonical side and therefore gets
+  grass_block_side + its green overlay.
+
+Changing canonical tie priority cannot solve this: it only moves the artifact to
+the other adjacent face and would destabilize BlockState semantics.
+
+A shared cube-edge surface cell physically has two outward surface normals (and
+a cube-corner cell has three), while a normal grass/mycelium model has one
+canonical local UP.
+
+Render-only rule:
+- canonical BlockState/collision/support frame stays unchanged;
+- for SpreadingSnowyDirtBlock only, when candidateFaces.size > 1:
+  - if the PHYSICAL side being requested equals local UP of any candidate face,
+    query the original model's LOCAL UP quads;
+  - rotate those UP quads using that candidate face;
+  - all other sides continue through the canonical frame.
+
+Therefore a grass edge has green top on both outward cube surfaces and a grass
+corner on all three outward surfaces, without giving slabs/logs/fences or modded
+directional blocks multiple semantic orientations.
+
+The seam wrapper is cached by original BakedModel + canonical face + candidate
+face mask, with weak values so resource/model reloads remain collectible.
+
+This is intentionally a surface-material rendering rule, not a new generic
+BlockState frame policy.
