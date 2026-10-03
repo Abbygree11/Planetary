@@ -592,3 +592,28 @@ rotated through that candidate face. Other sides still use the one canonical
 frame. At cube corners this naturally supports three outward surface faces.
 
 Collision/support/placement/state frames remain untouched.
+
+
+## Multi-block/support placement pass
+Detailed research: docs/research/MULTIBLOCK_PLACEMENT_1_21_1.md.
+
+Pressure plates now use local DOWN for support/update and rotate their thin
+entity-trigger AABB into physical world coordinates. Direct signal-side and
+neighbor-notification redstone semantics remain Phase 7A.
+
+Door placement now uses target-local horizontal FACING, local-UP second half,
+local left/right hinge topology and local X/Z hit offsets. Upper FACING is
+reframed into its own canonical frame. Survival/update use local DOWN/UP pair
+positions. Door redstone neighborChanged remains open.
+
+Bed placement now uses local FACING for FOOT->HEAD physical topology and reframes
+HEAD FACING into the head cell's canonical frame. Pair update uses physical
+neighborPos resolved from local FACING. Bed BER/sleep/dismount/bounce are still
+separate.
+
+Pointed dripstone manual placement, support, thickness and local vertical
+updateShape are adapted. Natural growth, fluid/cauldron vertical scans, drip
+particles and chain-fall scanning are explicitly not claimed complete.
+
+PlanetPlacementRuntime adds the reusable multi-block invariant:
+source local direction -> physical Direction -> target canonical local direction.

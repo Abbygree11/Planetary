@@ -5,6 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SupportType;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Objects;
@@ -52,6 +53,26 @@ public final class PlanetBlockSupportRuntime {
                 level,
                 query.supportPos(),
                 query.supportLocalSideTowardSource()
+        );
+    }
+
+    public static boolean canSupportRigid(
+            LevelReader level,
+            PlanetBlockSupportQuery query
+    ) {
+        Objects.requireNonNull(level, "level");
+        Objects.requireNonNull(query, "query");
+
+        BlockState support =
+                level.getBlockState(
+                        query.supportPos()
+                );
+
+        return support.isFaceSturdy(
+                level,
+                query.supportPos(),
+                query.supportLocalSideTowardSource(),
+                SupportType.RIGID
         );
     }
 

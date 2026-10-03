@@ -187,12 +187,21 @@ Implemented local growth/cross-neighbor pass:
   neighbors instead of world horizontal directions
 - detailed research: docs/research/GROWTH_CONNECTIONS_1_21_1.md
 
+Implemented multi-block/support placement pass:
+- pressure plates: local-DOWN survival/update + rotated trigger AABB
+- doors: local FACING, hinge, upper-half placement, survival and pair updates
+- beds: local FOOT->HEAD topology, target-frame FACING and pair updates
+- pointed dripstone: local vertical placement/support/thickness/update
+- shared source-local -> physical -> target-local direction reframe helper
+- detailed research: docs/research/MULTIBLOCK_PLACEMENT_1_21_1.md
+
 Runtime findings from 2026-10-04 acceptance:
 - grass random-tick decay/spread wrong outside +Y -> addressed by local growth pass
 - fence unwanted physical +Y arms -> addressed by local connection pass
 - exact-edge slab placement still needs player-body-vs-canonical policy
 - torch flame/smoke emission origin remains world-axis
-- door, pressure plate, pointed dripstone and bed placement remain open
+- door, pressure plate, pointed dripstone and bed placement -> addressed by
+  multi-block/support placement pass; gameplay/render follow-ups remain
 - thrown potions/arrows still use global projectile gravity
 - fluids still use global FlowingFluid topology
 - grass side-overlay and side-face shadows need render follow-up

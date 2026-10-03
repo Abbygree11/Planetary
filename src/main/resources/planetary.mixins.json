@@ -48,7 +48,15 @@
     "StandingAndWallBlockItemAccessor",
     "SpreadingSnowyDirtBlockGravityMixin",
     "SnowyDirtBlockGravityMixin",
-    "FenceBlockGravityMixin"
+    "FenceBlockGravityMixin",
+    "BasePressurePlateBlockAccessor",
+    "WeightedPressurePlateBlockAccessor",
+    "BasePressurePlateBlockGravityMixin",
+    "PressurePlateBlockTriggerGravityMixin",
+    "WeightedPressurePlateBlockTriggerGravityMixin",
+    "DoorBlockGravityMixin",
+    "BedBlockGravityMixin",
+    "PointedDripstoneBlockGravityMixin"
   ],
   "injectors": {
     "defaultRequire": 1
