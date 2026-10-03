@@ -2,6 +2,7 @@ package dev.planetary.debug;
 
 import dev.planetary.api.PlanetFrameApi;
 import dev.planetary.gravity.PlanetGravityRuntime;
+import dev.planetary.mixin.StandingAndWallBlockItemAccessor;
 import dev.planetary.topology.PlanetFace;
 import dev.planetary.topology.PlanetGravityField;
 import dev.planetary.topology.PlanetGravityFrame;
@@ -10,10 +11,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -31,9 +30,6 @@ import java.util.Objects;
  * behavior without modifying the world.</p>
  */
 public final class PlanetStandingWallPlacementDiagnostics {
-    private static final ProbeTorchItem PROBE =
-            new ProbeTorchItem();
-
     private PlanetStandingWallPlacementDiagnostics() {
     }
 
@@ -58,7 +54,7 @@ public final class PlanetStandingWallPlacementDiagnostics {
                     );
 
             BlockState standing =
-                    PROBE.select(
+                    select(
                             contextFor(
                                     player,
                                     target,
@@ -85,7 +81,7 @@ public final class PlanetStandingWallPlacementDiagnostics {
                             Direction.EAST
                     }) {
                 BlockState wall =
-                        PROBE.select(
+                        select(
                                 contextFor(
                                         player,
                                         target,
@@ -196,24 +192,13 @@ public final class PlanetStandingWallPlacementDiagnostics {
         );
     }
 
-    private static final class ProbeTorchItem
-            extends StandingAndWallBlockItem {
-        private ProbeTorchItem() {
-            super(
-                    Blocks.TORCH,
-                    Blocks.WALL_TORCH,
-                    new Item.Properties(),
-                    Direction.DOWN
-            );
-        }
-
-        private BlockState select(
-                BlockPlaceContext context
-        ) {
-            return super.getPlacementState(
-                    context
-            );
-        }
+    private static BlockState select(
+            BlockPlaceContext context
+    ) {
+        return ((StandingAndWallBlockItemAccessor) (Object) Items.TORCH)
+                .planetary$invokeGetPlacementState(
+                        context
+                );
     }
 
     public record Result(

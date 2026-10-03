@@ -42,7 +42,8 @@
     "LadderBlockSupportMixin",
     "WallTorchBlockSupportMixin",
     "BlockStateShapeMixin",
-    "StandingAndWallBlockItemMixin"
+    "StandingAndWallBlockItemMixin",
+    "StandingAndWallBlockItemAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

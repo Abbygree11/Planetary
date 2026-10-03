@@ -482,3 +482,15 @@ vanilla.
 PlanetStandingWallPlacementDiagnostics tests a deliberately multi-supported
 "hole" target on all six faces: 6 local-floor clicks must choose standing torch
 and 24 local-wall clicks must choose wall torch with matching local FACING.
+
+
+## Standing/wall diagnostic registry-freeze fix
+The first standing/wall diagnostic incorrectly constructed a new
+StandingAndWallBlockItem lazily on player login. Minecraft registries are
+already frozen at that point, so Item construction threw
+IllegalStateException: Registry is already frozen.
+
+The diagnostic now uses the real registered Items.TORCH and invokes its
+protected getPlacementState through StandingAndWallBlockItemAccessor (@Invoker).
+No new Item/Block is constructed after registry freeze. The production
+StandingAndWallBlockItemMixin behavior is unchanged.
