@@ -86,7 +86,10 @@ Vanilla manual placement assumes:
 - updateShape only reacts to physical UP/DOWN.
 
 Planet policy:
-- initial vertical look is taken from local nearest-looking order;
+- initial vertical look preserves vanilla raw-look semantics: raw
+  Direction.orderedByNearest(player) is reframed body-local -> physical ->
+  target-local, then the first target-local Y direction is chosen; clicked-face
+  placement reorder is intentionally not used;
 - TIP_DIRECTION remains canonical local UP/DOWN;
 - support and both vertical neighbors use PlanetBlockNeighborQuery;
 - when a neighbor is in another canonical frame, a source local direction is
