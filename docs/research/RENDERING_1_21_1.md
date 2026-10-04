@@ -276,3 +276,32 @@ face mask, with weak values so resource/model reloads remain collectible.
 
 This is intentionally a surface-material rendering rule, not a new generic
 BlockState frame policy.
+
+
+## 14. Bed BER and pointed-dripstone offset follow-up
+
+2026-10-04 acceptance exposed two render paths not covered by the first baked
+model adapter.
+
+BedRenderer is a BlockEntityRenderer. Its renderPiece path applies fixed vanilla
+world-axis transforms and therefore bypasses PlanetBakedModelRotation entirely.
+BedRendererGravityMixin now wraps the vanilla bed renderer in a canonical-local
+to physical block-center transform. Vanilla still owns bed texture, HEAD/FOOT
+model parts and local FACING.
+
+PointedDripstoneBlock uses vanilla OffsetType.XZ. The vanilla offset seed is
+derived from BlockPos.x/z. On normal gravity, a vertical chain keeps world x/z
+constant, so every segment receives the same displacement. On +/-X or +/-Z
+Planet faces, LOCAL vertical changes physical X or Z, so raw vanilla seeding
+gave every segment a different offset and visually split one chain.
+
+PlanetBlockOffsetRuntime re-expresses physical BlockPos in the canonical local
+integer frame before evaluating the vanilla XZ offset. Local X/Z therefore stay
+constant while moving along local Y. The static renderer then rotates that
+canonical offset into physical world axes. PointedDripstoneBlock.getShape uses
+the same canonical seed before the existing outer physical VoxelShape rotation,
+so visible model and outline keep the same displacement.
+
+This pass is intentionally narrow to pointed dripstone. A generic policy for
+arbitrary modded offset callbacks still needs a separate audit because custom
+offset functions may inspect BlockGetter and BlockPos themselves.

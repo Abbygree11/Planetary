@@ -728,3 +728,34 @@ same seed/worldgen inputs so approaching a region does not change its surface.
 Current active runtime stage remains Phase 2 multi-block placement acceptance:
 pressure plate, door, bed and pointed dripstone from commits 3d49fd3/2decb8e.
 Those gameplay changes are still awaiting the user's manual verification.
+
+
+## 2026-10-04 multi-block acceptance follow-up
+Manual acceptance after the multi-block pass:
+- pressure plate placement, physical trigger and support: PASS;
+- bed visible geometry on rotated gravity disagreed with its state/collision;
+- pointed dripstone placement worked, but chains visually split and unsupported
+  stalactites fell as delayed individual pieces without reliable damage;
+- redstone wire topology and piston extension remain wrong on rotated faces.
+
+Exact 1.21.1 root causes:
+- BedRenderer bypasses ModelBlockRenderer and applies fixed vanilla world-axis
+  transforms.
+- PointedDripstone OffsetType.XZ seeds from physical BlockPos.x/z. Local vertical
+  on +/-X or +/-Z changes one of those coordinates, randomizing each segment.
+- PointedDripstoneBlock.spawnFallingStalactite scans raw Direction.DOWN and only
+  the reached TIP/TIP_MERGE receives FallingBlockEntity.setHurtsEntities. On a
+  rotated face the chain scan stopped after the root.
+
+Runtime follow-up commit 398b334:
+- BedRendererGravityMixin applies canonical-local -> physical block-center
+  rotation around vanilla BedRenderer;
+- PlanetBlockOffsetRuntime provides canonical-local integer seed coordinates;
+- pointed dripstone model and shape offsets now use local X/Z seed semantics;
+- PlanetDripstoneFalling reproduces the vanilla one-tick chain fall through
+  local DOWN and preserves terminal-tip setHurtsEntities(size, 40).
+
+Redstone/piston intentionally remain unpatched here. They are cross-cutting:
+wire horizontal/up/down topology, signal-side conventions, PistonStructureResolver
+movement, MovingPistonBlockEntity and moving-piston rendering all need one
+coherent Phase 7A/piston pass rather than a one-off Direction substitution.

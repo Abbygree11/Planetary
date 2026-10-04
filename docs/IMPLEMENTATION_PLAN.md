@@ -188,10 +188,12 @@ Implemented local growth/cross-neighbor pass:
 - detailed research: docs/research/GROWTH_CONNECTIONS_1_21_1.md
 
 Implemented multi-block/support placement pass:
-- pressure plates: local-DOWN survival/update + rotated trigger AABB
+- pressure plates: local-DOWN survival/update + rotated trigger AABB (manual acceptance PASS)
 - doors: local FACING, hinge, upper-half placement, survival and pair updates
 - beds: local FOOT->HEAD topology, target-frame FACING and pair updates
 - pointed dripstone: local vertical placement/support/thickness/update
+- unsupported stalactite chain scan follows local DOWN in one tick and preserves
+  vanilla terminal-tip falling damage setup
 - shared source-local -> physical -> target-local direction reframe helper
 - detailed research: docs/research/MULTIBLOCK_PLACEMENT_1_21_1.md
 
@@ -204,6 +206,15 @@ Runtime findings from 2026-10-04 acceptance:
   multi-block/support placement pass; gameplay/render follow-ups remain
 - thrown potions/arrows still use global projectile gravity
 - fluids still use global FlowingFluid topology
+- pressure plate placement/trigger/support manually accepted
+- redstone wire only connects correctly in world-axis-compatible cases; piston
+  extension/moving geometry is wrong on rotated faces -> confirmed Phase 7A /
+  piston moving-block research item, not a placement hotfix
+- bed visible BER geometry disagreed with its rotated state/collision -> first
+  BedRenderer local-frame adapter implemented
+- dripstone visual chain split from world-XZ random offset seeding and unsupported
+  stalactites fell in delayed pieces -> canonical local-XZ seed + local chain-fall
+  adapter implemented
 - grass side-overlay and side-face shadows need render follow-up
 
 Acceptance examples:
@@ -245,8 +256,8 @@ Implemented first static baked-model/render-culling boundary:
 
 Still open / research targets:
 - physical directional shade/environment-light policy
-- model offset vectors
-- BlockEntityRenderer orientation
+- model offset vectors (pointed-dripstone local X/Z seed + physical offset first adapter implemented)
+- BlockEntityRenderer orientation (BedRenderer first adapter implemented; generic BER policy still open)
 - Flywheel/custom accelerated rendering integration
 - fluid renderer
 

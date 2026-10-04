@@ -1,7 +1,8 @@
 # Research: local multi-block placement families in Minecraft 1.21.1
 
-Status: first pressure-plate / door / bed / pointed-dripstone placement adapters
-implemented; runtime acceptance pending.
+Status: pressure-plate placement/trigger manually accepted; first door/bed/
+pointed-dripstone adapters implemented; bed BER and local falling-stalactite
+follow-up added after runtime acceptance.
 
 Target: Minecraft 1.21.1 / NeoForge 21.1.215.
 
@@ -164,3 +165,33 @@ Pointed dripstone:
 - extend a chain;
 - thickness updates after adding/removing adjacent local-vertical pieces;
 - support loss schedules the existing local falling behavior.
+
+
+## 9. Runtime acceptance findings and stalactite falling follow-up
+
+2026-10-04 manual acceptance:
+- pressure plate local placement, triggering and support behavior passed;
+- bed physical state/collision and visual model disagreed on rotated faces;
+- pointed dripstone could be placed, but chains rendered as visually separated
+  pieces and support loss produced staggered independent falling pieces with no
+  reliable falling-stalactite damage;
+- redstone wire topology and piston extension were also wrong on rotated faces.
+  Those belong to Phase 7A / piston moving-block work and are intentionally not
+  patched inside the placement pass.
+
+Exact vanilla falling call flow:
+- PointedDripstoneBlock.tick;
+- spawnFallingStalactite starts at the unsupported root;
+- while TIP_DIRECTION == DOWN, every consecutive piece becomes a
+  FallingBlockEntity in one tick;
+- the scan advances with raw Direction.DOWN;
+- the TIP/TIP_MERGE entity receives setHurtsEntities(size, 40), with size
+  derived from stalactite length and vanilla minimum 6.
+
+On a rotated Planet face raw world DOWN stopped after the first root piece.
+Remaining segments then lost support and fell on later ticks independently, and
+that root pass never reached the tip that owns the damage setup.
+
+PlanetDripstoneFalling now preserves the vanilla algorithm but advances through
+PlanetBlockRuntime.neighbor(..., local DOWN). Chain distance is counted in local
+steps and the terminal tip keeps vanilla setHurtsEntities semantics.
