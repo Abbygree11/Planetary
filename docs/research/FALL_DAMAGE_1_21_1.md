@@ -1,6 +1,6 @@
 # Research: local fall damage in Minecraft 1.21.1
 
-Status: active investigation after manual failure on rotated gravity.
+Status: player path fixed and manually verified; falling-block spawn-anchor fix pending manual acceptance.
 
 Target: Minecraft 1.21.1 / NeoForge 21.1.215.
 
@@ -170,3 +170,82 @@ Pointed dripstone:
 - health decreases with falling-stalactite damage source.
 
 Diagnostics must be removed/reduced after the exact dripstone failure is found.
+
+
+## 9. Runtime result after server-player fix
+
+Manual verification after 8f73253:
+- ordinary player fall damage on rotated gravity: PASS;
+- falling pointed-dripstone damage against the player: PASS.
+
+This confirms:
+- ServerPlayer local packet-delta adaptation is correct;
+- FallingBlockEntity fallDistance accumulation is correct;
+- pointed-dripstone terminal tip is armed with hurtEntities=true;
+- FallingBlockEntity.causeFallDamage is reached with a positive fall distance.
+
+A remaining case failed:
+a creeper standing centered in a one-block hole was not damaged.
+
+Trace:
+    causeFallDamage
+    arg=8.834728
+    hurtEntities=true
+    perDistance=6.0
+    max=40
+    onGround=true
+    eligibleTargets=0
+    nearbyLiving1=1
+
+Therefore the damage scalar/predicate are not the problem. The mob is alive and
+nearby, but its AABB does not intersect the falling-tip AABB at the exact damage
+moment.
+
+## 10. FallingBlockEntity spawn anchor root cause
+
+Vanilla FallingBlockEntity.fall constructs the entity at:
+
+    (blockX + 0.5, blockY, blockZ + 0.5)
+
+This is not the block center. It is the center of the source block's WORLD-DOWN
+face, which is exactly the correct "feet"/local-origin anchor under normal
+gravity.
+
+Planet rotates the entity AABB so its vanilla local Y becomes Planet local UP.
+On a side face, physical world Y is then a tangent axis. Keeping constructor Y
+at the integer block boundary leaves the falling entity displaced by 0.5 block
+along that tangent.
+
+The captured failing AABB exposed this directly:
+    y = 158.51 .. 159.49
+    center y = 159.0
+
+For a falling block whose local vertical is physical X/Z, physical Y should be a
+centered tangent coordinate N + 0.5, not N.
+
+General invariant:
+
+    fallingBlockAnchor =
+        sourceBlockCenter
+        + 0.5 * physical(local DOWN)
+
+Examples:
+- local DOWN = world DOWN -> vanilla (x+0.5, y, z+0.5)
+- local DOWN = WEST       -> (x, y+0.5, z+0.5)
+- local DOWN = EAST       -> (x+1, y+0.5, z+0.5)
+- local DOWN = NORTH      -> (x+0.5, y+0.5, z)
+- local DOWN = SOUTH      -> (x+0.5, y+0.5, z+1)
+- local DOWN = world UP   -> (x+0.5, y+1, z+0.5)
+
+This is a generic FallingBlockEntity spawn-boundary issue, not a dripstone
+special case. Sand, gravel, anvils and modded FallingBlock users benefit too.
+
+Commit 4cfff7c:
+- adds PlanetFallingBlockSpawn;
+- rewrites FallingBlockEntity constructor coordinates inside static fall(...)
+  before the entity is added to the level;
+- keeps vanilla exactly unchanged for world DOWN;
+- removes temporary pointed-dripstone FallTrace diagnostics;
+- adds six-direction unit coverage for the anchor formula.
+
+Manual acceptance is still required before closing this issue.

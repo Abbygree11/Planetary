@@ -810,3 +810,32 @@ Next runtime patch:
   causeFallDamage hurtEntities/damage/AABB/eligible-target counts.
 
 Interpret logs using docs/research/FALL_DAMAGE_1_21_1.md.
+
+
+## Falling-block spawn anchor diagnosis after 8f73253
+Manual verification:
+- player fall damage now PASS;
+- falling pointed-dripstone damages player PASS;
+- creeper centered in a one-block hole was not damaged.
+
+Diagnostic line:
+eligibleTargets=0, nearbyLiving1=1 with hurtEntities=true and positive
+fallDistance. This proved the remaining issue was exact entity AABB overlap.
+
+Root cause:
+FallingBlockEntity.fall vanilla constructor anchor is
+(x+0.5, y, z+0.5), i.e. center of WORLD-DOWN face. Planet rotates the AABB but
+previously did not rotate/generalize that anchor. On side gravity this leaves the
+falling entity shifted by 0.5 block along a local tangent axis.
+
+Generic invariant now implemented in 4cfff7c:
+    anchor = source block center + 0.5 * physical(local DOWN)
+
+FallingBlockEntityGravityMixin modifies constructor arguments inside static
+fall(...) before addFreshEntity. World-DOWN remains byte-for-byte equivalent in
+position. The fix applies to pointed dripstone, sand, gravel, anvils and other
+FallingBlockEntity users.
+
+Temporary FallTrace diagnostics were removed. Manual acceptance pending:
+centered mob in 1x1 hole should be hit; falling sand/gravel/anvil should remain
+centered on rotated faces.

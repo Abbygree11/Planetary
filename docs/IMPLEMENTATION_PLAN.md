@@ -895,3 +895,17 @@ pointed-dripstone failure is NOT being patched speculatively. Temporary focused
 FallTrace diagnostics record terminal-tip arming, local fallDistance accumulation,
 landing state, hurtEntities and exact/nearby target AABB counts. Remove or reduce
 these traces once the failing gate is identified.
+
+
+### Falling-block spawn-anchor follow-up
+Fall-damage diagnostics identified a generic spawn geometry bug after player and
+player-target dripstone damage passed.
+
+Vanilla FallingBlockEntity.fall anchors at the center of WORLD-DOWN block face.
+On rotated gravity that produced a 0.5-block tangent offset. FallingBlockEntity
+creation now uses the center of LOCAL-DOWN face instead:
+source center + 0.5 * physical(local DOWN).
+
+This is generic for dripstone/sand/gravel/anvils. Temporary FallTrace logging was
+removed after identifying the failing gate. Manual mob-hit and falling-block
+alignment acceptance remains pending.
