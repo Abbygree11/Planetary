@@ -13,6 +13,7 @@
     "ParticleGravityAccessor",
     "DirectGravityParticleMixin",
     "FallingDustParticleGravityMixin",
+    "TorchParticleGravityMixin",
     "ModelBlockRendererPlanetMixin",
     "BlockRenderCullingMixin",
     "BedRendererGravityMixin",
