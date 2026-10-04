@@ -918,3 +918,15 @@ and mob hits, but sand/anvils still visibly shifted by 0.5 block while falling.
 FallingBlockRenderer has independent world-DOWN assumptions. A client adapter now
 derives its render BlockPos and PoseStack translation from the same local-DOWN
 anchor invariant as FallingBlockEntity physics. Runtime acceptance pending.
+
+
+### Block break particle +Y drift
+Manual acceptance after falling-block closure found TerrainParticle destruction
+sprites drifting toward physical +Y on +/-X and +/-Z.
+
+Exact cause: generic Particle construction and Particle.setPower contain a
+hard-coded +0.1 world-Y "upward" velocity bias. The radial block-destroy impulse
+is already physical and is intentionally left unchanged.
+
+ParticleGravityMixin now converts that +0.1 semantic UP bias to local UP and
+generalizes setPower around localUP*0.1. Runtime acceptance pending.

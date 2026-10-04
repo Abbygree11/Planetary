@@ -859,3 +859,32 @@ Renderer invariant mirrors physical spawn:
 FallingBlockRendererGravityMixin changes only client render BlockPos and
 PoseStack translation. Do not move the entity again; physical anchor/collision/
 damage from 4cfff7c are already correct.
+
+
+## Block-destroy particle physical +Y drift
+After falling blocks were accepted, user found block destruction particles on
++/-X and +/-Z consistently displaced/drifting toward physical +Y.
+
+Exact source:
+ParticleEngine.destroy samples the physical rotated VoxelShape and passes a
+radial physical velocity into TerrainParticle. TerrainParticle delegates to the
+generic Particle velocity constructor.
+
+Particle(ClientLevel,x,y,z,xd,yd,zd) normalizes/randomizes velocity and then
+unconditionally adds +0.1 to yd. Particle.setPower also preserves a world-Y
+baseline via (yd - 0.1)*power + 0.1.
+
+The semantic mistake is therefore the generic UP bias, not destroy sampling.
+
+Implemented:
+- PlanetParticleMotion.rotateVanillaUpBias:
+  remove world +Y 0.1 and add local UP * 0.1;
+- PlanetParticleMotion.scaleAroundLocalUpBias:
+  bias + (velocity-bias)*power;
+- ParticleGravityMixin applies those at the generic constructor and setPower
+  boundaries, while +Y/POS_Y stays vanilla.
+
+Do not rotate ParticleEngine.destroy's radial velocity; it is physical geometry.
+
+Still open: Particle.move onGround/stoppedByCollision world-Y semantics and
+emitter-specific origins (notably torch flame/smoke).

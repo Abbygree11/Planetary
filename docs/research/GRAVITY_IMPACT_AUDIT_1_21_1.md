@@ -836,3 +836,38 @@ For every subsystem record:
 
 This file is the top-level audit. Per-subsystem research files contain detailed
 call graphs and implementation decisions.
+
+
+### Particle initial UP bias follow-up (2026-10-04)
+
+Manual acceptance found block-destroy TerrainParticle sprites on +/-X and +/-Z
+systematically drifting toward physical +Y.
+
+Exact vanilla root cause is in the generic Particle velocity constructor:
+after normalizing its supplied/random velocity it always executes a semantic
+upward kick by adding +0.1 to yd.
+
+Particle.setPower has the same hidden world-UP convention:
+    xd *= power
+    yd = (yd - 0.1) * power + 0.1
+    zd *= power
+
+ParticleEngine.destroy itself is not the bug:
+- destroy positions are sampled from the already physical BlockState VoxelShape;
+- the supplied d4/d5/d6 velocity is a physical radial vector away from the
+  sampled block cell and should remain physical.
+
+Planet policy:
+- preserve the physical radial/random velocity;
+- replace only the vanilla world-UP +0.1 bias with local UP * 0.1;
+- generalize setPower as:
+      bias = localUP * 0.1
+      result = bias + (velocity - bias) * power
+
+This is implemented at the generic Particle boundary so TerrainParticle destroy
+and crack effects inherit it without a block-particle special case.
+
+Still open in the broader particle audit:
+- Particle.move world-Y onGround/stoppedByCollision classification;
+- class-specific emission origins such as torch smoke/flame;
+- weather and other custom spawn helpers.
