@@ -980,3 +980,37 @@ policy separately.
 Torch/redstone particle emission is therefore accepted for ordinary face-local
 positions. Exact-edge visual placement remains deferred to the common block-edge
 mechanism.
+
+
+## 2026-10-04 generic Particle.move/tick local-axis pass
+After torch emitters were manually accepted away from exact edges, Phase 4
+continued with the base Particle physics boundary.
+
+Exact vanilla issue:
+- collision clipping is correctly physical XYZ;
+- semantic consequences were not:
+  - stoppedByCollision used blocked world Y;
+  - onGround used blocked negative world Y;
+  - collision zeroed world X/Z velocity;
+  - base tick speedUpWhenYMotionIsBlocked checked y==yo and scaled world X/Z;
+  - onGround friction scaled world X/Z.
+
+Implemented in 809516a:
+- Particle.move still runs vanilla collision geometry unchanged;
+- requested/actual displacement are re-expressed in Planet local frame after
+  movement;
+- local DOWN collision determines onGround;
+- local vertical blocking determines stoppedByCollision;
+- only collided local tangent X/Z velocity components are zeroed;
+- base tick physical-X/Z 1.1/0.7 effects are algebraically undone and reapplied
+  to local X/Z;
+- scalar friction remains vanilla;
+- POS_Y stays vanilla;
+- pure tests cover all six faces plus local tangent/ground cases.
+
+Detailed source audit: docs/research/PARTICLES_1_21_1.md.
+
+Runtime acceptance is pending. Do not claim Phase 4 complete afterward: direct
+custom-tick particles (for example DragonBreath/Bubble/world-XZ current logic),
+remaining emitter helpers, weather and fluid-coupled particles still require
+their owning audits.
