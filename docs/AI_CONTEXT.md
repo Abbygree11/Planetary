@@ -888,3 +888,38 @@ Do not rotate ParticleEngine.destroy's radial velocity; it is physical geometry.
 
 Still open: Particle.move onGround/stoppedByCollision world-Y semantics and
 emitter-specific origins (notably torch flame/smoke).
+
+
+## 2026-10-04 torch particle emitter follow-up
+Manual acceptance of the previous block-destroy particle fix:
+- destruction/crack sprites no longer drift toward physical +Y on rotated faces;
+- ebad1e1 local-UP launch-bias correction is PASS.
+
+Next Phase 4 source audit separated particle MOTION from particle EMISSION.
+
+Exact vanilla emitter assumptions:
+- TorchBlock.animateTick spawns smoke/flame at block center + world UP * 0.2;
+- WallTorchBlock.animateTick spawns at block center + world UP * 0.22
+  + FACING.opposite() * 0.27 in world X/Z.
+
+Planet policy:
+- TorchBlock/WallTorchBlock FACING and vertical meaning are canonical LOCAL;
+- keep particle type/count/velocity vanilla;
+- transform only the block-local emitter offset into physical world XYZ.
+
+Implemented:
+- PlanetParticleEmitter pure local-offset -> physical Vec3 helper;
+- standing torch offset local (0, +0.2, 0);
+- wall torch offset local UP * 0.22 + local FACING.opposite() * 0.27;
+- TorchParticleGravityMixin modifies only Level.addParticle XYZ arguments;
+- POS_Y invocation remains untouched;
+- PlanetParticleEmitterTest covers all six faces and all four wall facings;
+- detailed audit: docs/research/PARTICLES_1_21_1.md.
+
+Manual runtime acceptance is pending for standing and wall torches on all faces
+and at one gravity edge.
+
+Do not close Phase 4 after this. The next generic particle item is
+Particle.move/tick: onGround, stoppedByCollision, vertical-block detection and
+ground friction are still expressed in physical world-Y/world-XZ rather than
+the selected local gravity frame.
