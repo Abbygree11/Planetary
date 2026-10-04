@@ -14,7 +14,8 @@
     "DirectGravityParticleMixin",
     "FallingDustParticleGravityMixin",
     "ModelBlockRendererPlanetMixin",
-    "BlockRenderCullingMixin"
+    "BlockRenderCullingMixin",
+    "BedRendererGravityMixin"
   ],
   "mixins": [
     "BlockCapabilityMixin",

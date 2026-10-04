@@ -1,11 +1,16 @@
 package dev.planetary.mixin;
 
 import dev.planetary.world.PlanetBlockNeighborQuery;
+import dev.planetary.world.PlanetBlockOffsetRuntime;
 import dev.planetary.world.PlanetBlockRuntime;
+import dev.planetary.world.PlanetDripstoneFalling;
 import dev.planetary.world.PlanetDripstonePlacement;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
@@ -13,9 +18,13 @@ import net.minecraft.world.level.block.PointedDripstoneBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DripstoneThickness;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Optional;
@@ -31,62 +40,42 @@ public abstract class PointedDripstoneBlockGravityMixin {
             BlockPlaceContext context,
             CallbackInfoReturnable<BlockState> cir
     ) {
-        Level level =
-                context.getLevel();
-        BlockPos pos =
-                context.getClickedPos();
+        Level level = context.getLevel();
+        BlockPos pos = context.getClickedPos();
 
-        if (PlanetBlockRuntime.stateFrameAt(
-                level,
-                pos
-        ).isEmpty()) {
+        if (PlanetBlockRuntime.stateFrameAt(level, pos).isEmpty()) {
             return;
         }
 
         Optional<Direction> tipOptional =
-                PlanetDripstonePlacement
-                        .initialTipDirection(
-                                context
-                        );
+                PlanetDripstonePlacement.initialTipDirection(context);
 
         if (tipOptional.isEmpty()) {
             cir.setReturnValue(null);
             return;
         }
 
-        Direction tip =
-                tipOptional.get();
-        boolean mergeTips =
-                !context.isSecondaryUseActive();
+        Direction tip = tipOptional.get();
+        boolean mergeTips = !context.isSecondaryUseActive();
 
         DripstoneThickness thickness =
-                PlanetDripstonePlacement
-                        .calculateThickness(
-                                level,
-                                pos,
-                                tip,
-                                mergeTips
-                        );
+                PlanetDripstonePlacement.calculateThickness(
+                        level,
+                        pos,
+                        tip,
+                        mergeTips
+                );
 
         PointedDripstoneBlock self =
-                (PointedDripstoneBlock)
-                        (Object) this;
+                (PointedDripstoneBlock) (Object) this;
 
         cir.setReturnValue(
                 self.defaultBlockState()
-                        .setValue(
-                                PointedDripstoneBlock.TIP_DIRECTION,
-                                tip
-                        )
-                        .setValue(
-                                PointedDripstoneBlock.THICKNESS,
-                                thickness
-                        )
+                        .setValue(PointedDripstoneBlock.TIP_DIRECTION, tip)
+                        .setValue(PointedDripstoneBlock.THICKNESS, thickness)
                         .setValue(
                                 PointedDripstoneBlock.WATERLOGGED,
-                                level.getFluidState(pos)
-                                        .getType()
-                                        == Fluids.WATER
+                                level.getFluidState(pos).getType() == Fluids.WATER
                         )
         );
     }
@@ -103,22 +92,16 @@ public abstract class PointedDripstoneBlockGravityMixin {
             CallbackInfoReturnable<Boolean> cir
     ) {
         if (!(reader instanceof Level level)
-                || PlanetBlockRuntime.stateFrameAt(
-                        level,
-                        pos
-                ).isEmpty()) {
+                || PlanetBlockRuntime.stateFrameAt(level, pos).isEmpty()) {
             return;
         }
 
         cir.setReturnValue(
-                PlanetDripstonePlacement
-                        .isValidPlacement(
-                                level,
-                                pos,
-                                state.getValue(
-                                        PointedDripstoneBlock.TIP_DIRECTION
-                                )
-                        )
+                PlanetDripstonePlacement.isValidPlacement(
+                        level,
+                        pos,
+                        state.getValue(PointedDripstoneBlock.TIP_DIRECTION)
+                )
         );
     }
 
@@ -137,47 +120,26 @@ public abstract class PointedDripstoneBlockGravityMixin {
             CallbackInfoReturnable<BlockState> cir
     ) {
         if (!(accessor instanceof Level level)
-                || PlanetBlockRuntime.stateFrameAt(
-                        level,
-                        pos
-                ).isEmpty()) {
+                || PlanetBlockRuntime.stateFrameAt(level, pos).isEmpty()) {
             return;
         }
 
-        if (state.getValue(
-                PointedDripstoneBlock.WATERLOGGED
-        )) {
+        if (state.getValue(PointedDripstoneBlock.WATERLOGGED)) {
             accessor.scheduleTick(
                     pos,
                     Fluids.WATER,
-                    Fluids.WATER.getTickDelay(
-                            accessor
-                    )
+                    Fluids.WATER.getTickDelay(accessor)
             );
         }
 
         Optional<PlanetBlockNeighborQuery> up =
-                PlanetBlockRuntime.neighbor(
-                        level,
-                        pos,
-                        Direction.UP
-                );
+                PlanetBlockRuntime.neighbor(level, pos, Direction.UP);
         Optional<PlanetBlockNeighborQuery> down =
-                PlanetBlockRuntime.neighbor(
-                        level,
-                        pos,
-                        Direction.DOWN
-                );
+                PlanetBlockRuntime.neighbor(level, pos, Direction.DOWN);
 
         boolean verticalNeighbor =
-                up.map(query ->
-                        query.targetPos()
-                                .equals(neighborPos)
-                ).orElse(false)
-                        || down.map(query ->
-                        query.targetPos()
-                                .equals(neighborPos)
-                ).orElse(false);
+                up.map(query -> query.targetPos().equals(neighborPos)).orElse(false)
+                        || down.map(query -> query.targetPos().equals(neighborPos)).orElse(false);
 
         if (!verticalNeighbor) {
             cir.setReturnValue(state);
@@ -185,9 +147,7 @@ public abstract class PointedDripstoneBlockGravityMixin {
         }
 
         Direction tip =
-                state.getValue(
-                        PointedDripstoneBlock.TIP_DIRECTION
-                );
+                state.getValue(PointedDripstoneBlock.TIP_DIRECTION);
         Direction supportDirection =
                 tip.getOpposite();
 
@@ -199,31 +159,17 @@ public abstract class PointedDripstoneBlockGravityMixin {
                 );
 
         PointedDripstoneBlock self =
-                (PointedDripstoneBlock)
-                        (Object) this;
+                (PointedDripstoneBlock) (Object) this;
 
         if (support.isPresent()
-                && support.get()
-                        .targetPos()
-                        .equals(neighborPos)
-                && !PlanetDripstonePlacement
-                .isValidPlacement(
-                        level,
-                        pos,
-                        tip
-                )) {
+                && support.get().targetPos().equals(neighborPos)
+                && !PlanetDripstonePlacement.isValidPlacement(level, pos, tip)) {
             if (tip != Direction.DOWN
-                    || !accessor.getBlockTicks()
-                    .hasScheduledTick(
-                            pos,
-                            self
-                    )) {
+                    || !accessor.getBlockTicks().hasScheduledTick(pos, self)) {
                 accessor.scheduleTick(
                         pos,
                         self,
-                        tip == Direction.DOWN
-                                ? 2
-                                : 1
+                        tip == Direction.DOWN ? 2 : 1
                 );
             }
 
@@ -232,21 +178,108 @@ public abstract class PointedDripstoneBlockGravityMixin {
         }
 
         boolean merged =
-                state.getValue(
-                        PointedDripstoneBlock.THICKNESS
-                ) == DripstoneThickness.TIP_MERGE;
+                state.getValue(PointedDripstoneBlock.THICKNESS)
+                        == DripstoneThickness.TIP_MERGE;
 
         cir.setReturnValue(
                 state.setValue(
                         PointedDripstoneBlock.THICKNESS,
-                        PlanetDripstonePlacement
-                                .calculateThickness(
-                                        level,
-                                        pos,
-                                        tip,
-                                        merged
-                                )
+                        PlanetDripstonePlacement.calculateThickness(
+                                level,
+                                pos,
+                                tip,
+                                merged
+                        )
                 )
         );
+    }
+
+    @Inject(
+            method = "getShape(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/phys/shapes/CollisionContext;)Lnet/minecraft/world/phys/shapes/VoxelShape;",
+            at = @At("RETURN"),
+            cancellable = true
+    )
+    private void planetary$canonicalDripstoneOffset(
+            BlockState state,
+            BlockGetter getter,
+            BlockPos pos,
+            CollisionContext context,
+            CallbackInfoReturnable<VoxelShape> cir
+    ) {
+        if (!(getter instanceof Level level)) {
+            return;
+        }
+
+        PlanetBlockRuntime
+                .stateFrameAt(
+                        level,
+                        pos
+                )
+                .ifPresent(frame -> {
+                    Vec3 vanillaOffset =
+                            state.getOffset(
+                                    getter,
+                                    pos
+                            );
+                    Vec3 canonicalOffset =
+                            PlanetBlockOffsetRuntime
+                                    .canonicalOffset(
+                                            state,
+                                            getter,
+                                            pos,
+                                            frame.face()
+                                    );
+
+                    cir.setReturnValue(
+                            cir.getReturnValue()
+                                    .move(
+                                            canonicalOffset.x - vanillaOffset.x,
+                                            0.0D,
+                                            canonicalOffset.z - vanillaOffset.z
+                                    )
+                    );
+                });
+    }
+
+    @Inject(
+            method = "tick(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/BlockPos;Lnet/minecraft/util/RandomSource;)V",
+            at = @At("HEAD"),
+            cancellable = true
+    )
+    private void planetary$localFallingChain(
+            BlockState state,
+            ServerLevel level,
+            BlockPos pos,
+            RandomSource random,
+            CallbackInfo ci
+    ) {
+        if (PlanetBlockRuntime.stateFrameAt(level, pos).isEmpty()) {
+            return;
+        }
+
+        Direction tip =
+                state.getValue(
+                        PointedDripstoneBlock.TIP_DIRECTION
+                );
+
+        if (tip == Direction.UP
+                && !PlanetDripstonePlacement.isValidPlacement(
+                        level,
+                        pos,
+                        tip
+                )) {
+            level.destroyBlock(
+                    pos,
+                    true
+            );
+        } else {
+            PlanetDripstoneFalling.spawnFallingStalactite(
+                    state,
+                    level,
+                    pos
+            );
+        }
+
+        ci.cancel();
     }
 }
