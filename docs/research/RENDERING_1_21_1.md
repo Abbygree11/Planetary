@@ -305,3 +305,41 @@ so visible model and outline keep the same displacement.
 This pass is intentionally narrow to pointed dripstone. A generic policy for
 arbitrary modded offset callbacks still needs a separate audit because custom
 offset functions may inspect BlockGetter and BlockPos themselves.
+
+
+## 15. FallingBlockRenderer local anchor
+
+After the generic FallingBlockEntity spawn anchor was corrected to the center of
+the source block's LOCAL-DOWN face, manual acceptance showed sand/anvils still
+visually sliding by 0.5 block when they became entities.
+
+Exact vanilla FallingBlockRenderer assumptions:
+- render block pos:
+  BlockPos.containing(entity.x, entity.boundingBox.maxY, entity.z)
+- model translation:
+  poseStack.translate(-0.5, 0.0, -0.5)
+
+Both assume Entity.position is the center of the block's WORLD-DOWN face.
+
+Planet's physical entity anchor is:
+    anchor = sourceCellCenter + 0.5 * physical(local DOWN)
+
+Renderer geometry therefore uses:
+    cellCenter = anchor - 0.5 * physical(local DOWN)
+
+    renderTranslation =
+        -0.5 * physical(local DOWN)
+        - (0.5, 0.5, 0.5)
+
+For world DOWN this reduces exactly to vanilla (-0.5, 0, -0.5).
+
+FallingBlockRendererGravityMixin adapts only:
+- renderer-local BlockPos used for model/frame/light sampling;
+- PoseStack translation of the unit block cell.
+
+It does not move the entity or alter collision, landing or damage.
+
+Moving-block model orientation still goes through the ordinary ModelBlockRenderer
+Planet adapter using the corrected render BlockPos. Exact gravity-seam
+entity-frame vs canonical-block-frame interpolation remains a separate
+transition/rendering concern.

@@ -909,3 +909,12 @@ source center + 0.5 * physical(local DOWN).
 This is generic for dripstone/sand/gravel/anvils. Temporary FallTrace logging was
 removed after identifying the failing gate. Manual mob-hit and falling-block
 alignment acceptance remains pending.
+
+
+### FallingBlockRenderer anchor alignment
+Manual acceptance after the physical falling-block anchor fix confirmed damage
+and mob hits, but sand/anvils still visibly shifted by 0.5 block while falling.
+
+FallingBlockRenderer has independent world-DOWN assumptions. A client adapter now
+derives its render BlockPos and PoseStack translation from the same local-DOWN
+anchor invariant as FallingBlockEntity physics. Runtime acceptance pending.

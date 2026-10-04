@@ -839,3 +839,23 @@ FallingBlockEntity users.
 Temporary FallTrace diagnostics were removed. Manual acceptance pending:
 centered mob in 1x1 hole should be hit; falling sand/gravel/anvil should remain
 centered on rotated faces.
+
+
+## FallingBlockRenderer follow-up after 4cfff7c
+User verified falling-block/dripstone damage and mob hits now work. Remaining
+issue is visual: sand and anvils shift by 0.5 block on entity conversion and
+appear to snap while falling through a hole.
+
+Exact vanilla FallingBlockRenderer:
+- samples BlockPos from (entity.x, entity.boundingBox.maxY, entity.z);
+- translates model by (-0.5, 0, -0.5).
+
+Those are valid only when Entity.position is the center of WORLD-DOWN face.
+
+Renderer invariant mirrors physical spawn:
+    cellCenter = entityAnchor - 0.5 * physical(local DOWN)
+    translation = -0.5 * physical(local DOWN) - (0.5,0.5,0.5)
+
+FallingBlockRendererGravityMixin changes only client render BlockPos and
+PoseStack translation. Do not move the entity again; physical anchor/collision/
+damage from 4cfff7c are already correct.

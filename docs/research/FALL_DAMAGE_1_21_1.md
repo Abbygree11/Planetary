@@ -249,3 +249,23 @@ Commit 4cfff7c:
 - adds six-direction unit coverage for the anchor formula.
 
 Manual acceptance is still required before closing this issue.
+
+
+## 11. Renderer follow-up after physical anchor fix
+
+Manual acceptance of 4cfff7c:
+- falling-block / pointed-dripstone damage: PASS;
+- mobs are damaged correctly;
+- physical falling behavior works;
+- sand and anvils visually shift by half a block when converting from block to
+  FallingBlockEntity and then appear to snap while travelling through a hole.
+
+This is renderer-only. FallingBlockRenderer still assumes the entity anchor is
+the center of a WORLD-DOWN face and uses world-Y-specific BlockPos/translation.
+
+Client fix:
+- keep the correct physical entity anchor unchanged;
+- derive render cell center from anchor - 0.5 * localDown;
+- derive model translation from
+  -0.5 * localDown - (0.5,0.5,0.5);
+- preserve exact vanilla values on +Y/world-DOWN.
