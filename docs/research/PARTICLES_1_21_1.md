@@ -69,16 +69,22 @@ zero initial velocity are otherwise already correct.
 
 Vanilla wall torch computes:
 
-    center
-    + 0.22 * world UP
-    + 0.27 * FACING.opposite() in world X/Z
+    d0 = pos.x + 0.5
+    d1 = pos.y + 0.7
+    d2 = pos.z + 0.5
+    emitter = (d0,d1,d2)
+              + world UP * 0.22
+              + FACING.opposite() * 0.27
 
-Planet block-state FACING is canonical LOCAL orientation. Therefore the correct
-physical emitter is:
+The first implementation incorrectly treated +0.22 as the whole center-relative
+vertical offset. That dropped the existing +0.20 from y+0.7.
 
-    center
-    + physical(local UP) * 0.22
-    + physical(local FACING.opposite()) * 0.27
+Relative to block center the real semantic offset is therefore:
+
+    local UP * 0.42
+    + local FACING.opposite() * 0.27
+
+Planet block-state FACING is canonical LOCAL orientation.
 
 No block position, BlockState property or registered model is mutated.
 
@@ -90,6 +96,12 @@ emitter offsets around a block center into physical Vec3 positions.
 TorchParticleGravityMixin intercepts only the XYZ arguments of the two
 Level.addParticle calls in TorchBlock/WallTorchBlock.animateTick.
 
+The corrected implementation no longer reconstructs torch constants at all.
+It takes the final coordinates vanilla has already computed, subtracts the block
+center, interprets that complete delta as LOCAL coordinates, and rotates the
+delta into physical world XYZ. This preserves y+0.7, the wall +0.22 term and any
+future vanilla arithmetic without duplicating it.
+
 Why this boundary:
 - keeps vanilla particle option/type unchanged;
 - keeps vanilla particle count unchanged;
@@ -99,16 +111,25 @@ Why this boundary:
 - automatically covers normal and soul standing/wall torches because both use
   the same TorchBlock/WallTorchBlock code path.
 
-Redstone torches are intentionally not included here. Their signal behavior is
-part of Phase 7A and their random-display particle geometry will be audited with
-that subsystem rather than mixing redstone semantics into the normal torch pass.
+Redstone signal behavior remains Phase 7A, but particle emission is independent
+of signal propagation and is now adapted here.
+
+RedstoneTorchBlock.animateTick uses center + local UP*0.2 plus independent
+random +/-0.1 offsets. RedstoneWallTorchBlock additionally uses the same wall
++0.22 and FACING.opposite()*0.27 terms as the ordinary wall torch.
+
+RedstoneTorchParticleGravityMixin uses the same final-coordinate transform as
+ordinary torches. Because it transforms the already sampled vanilla coordinates,
+it consumes no extra random numbers and preserves the exact random jitter.
 
 ## Tests
 
 PlanetParticleEmitterTest covers:
 - standing torch local-UP offset on all six faces;
+- wall torch full center-relative +0.42 local-UP offset on all six faces;
 - wall torch four horizontal FACING values on all six faces;
 - exact POS_Y coordinates equal vanilla;
+- a representative sampled redstone-wall emitter with jitter;
 - invalid vertical wall FACING rejected.
 
 ## Manual acceptance
