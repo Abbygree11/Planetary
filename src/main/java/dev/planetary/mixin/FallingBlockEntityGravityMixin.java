@@ -1,39 +1,66 @@
 package dev.planetary.mixin;
 
 import dev.planetary.gravity.PlanetBlockGravity;
+import dev.planetary.gravity.PlanetFallingBlockSpawn;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.item.FallingBlockEntity;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.util.List;
-import java.util.function.Predicate;
+import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 /**
- * Falling-block local gravity and focused pointed-dripstone damage diagnostics.
+ * Falling-block local gravity semantics.
  */
 @Mixin(FallingBlockEntity.class)
 public abstract class FallingBlockEntityGravityMixin {
-    @Shadow
-    private BlockState blockState;
+    /**
+     * Vanilla constructs a falling block at (x + 0.5, y, z + 0.5), i.e. at
+     * the center of the source block's physical world-DOWN face.
+     *
+     * <p>Generalize that anchor to the center of the source block's local-DOWN
+     * face before the entity is added to the level. This keeps its entity
+     * position, rotated AABB and rendered block centered on the same physical
+     * source cell on every Planet face.</p>
+     */
+    @ModifyArgs(
+            method = "fall(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)Lnet/minecraft/world/entity/item/FallingBlockEntity;",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/world/entity/item/FallingBlockEntity;<init>(Lnet/minecraft/world/level/Level;DDDLnet/minecraft/world/level/block/state/BlockState;)V"
+            )
+    )
+    private static void planetary$anchorOnLocalDownFace(
+            Args args,
+            Level level,
+            BlockPos sourcePos,
+            BlockState state
+    ) {
+        Direction down =
+                PlanetBlockGravity.localDown(
+                        level,
+                        sourcePos
+                );
 
-    @Shadow
-    private boolean hurtEntities;
+        if (down == Direction.DOWN) {
+            return;
+        }
 
-    @Shadow
-    private float fallDamagePerDistance;
+        Vec3 anchor =
+                PlanetFallingBlockSpawn.anchor(
+                        sourcePos,
+                        down
+                );
 
-    @Shadow
-    private int fallDamageMax;
+        args.set(1, anchor.x);
+        args.set(2, anchor.y);
+        args.set(3, anchor.z);
+    }
 
     @Redirect(
             method = "tick",
@@ -53,61 +80,6 @@ public abstract class FallingBlockEntityGravityMixin {
                         self.level(),
                         pos
                 )
-        );
-    }
-
-    @Inject(
-            method = "causeFallDamage(FFLnet/minecraft/world/damagesource/DamageSource;)Z",
-            at = @At("HEAD")
-    )
-    private void planetary$tracePointedDripstoneDamage(
-            float fallDistance,
-            float damageMultiplier,
-            DamageSource damageSource,
-            CallbackInfoReturnable<Boolean> cir
-    ) {
-        if (!blockState.is(Blocks.POINTED_DRIPSTONE)) {
-            return;
-        }
-
-        FallingBlockEntity self =
-                (FallingBlockEntity) (Object) this;
-        if (self.level().isClientSide) {
-            return;
-        }
-
-        Predicate<Entity> eligiblePredicate =
-                EntitySelector.NO_CREATIVE_OR_SPECTATOR
-                        .and(
-                                EntitySelector.LIVING_ENTITY_STILL_ALIVE
-                        );
-
-        List<Entity> eligibleTargets =
-                self.level().getEntities(
-                        self,
-                        self.getBoundingBox(),
-                        eligiblePredicate
-                );
-
-        List<Entity> nearbyLiving =
-                self.level().getEntities(
-                        self,
-                        self.getBoundingBox().inflate(1.0D),
-                        EntitySelector.LIVING_ENTITY_STILL_ALIVE
-                );
-
-        System.out.println(
-                "[Planetary/FallTrace] causeFallDamage"
-                        + " id=" + self.getId()
-                        + " arg=" + fallDistance
-                        + " multiplier=" + damageMultiplier
-                        + " hurtEntities=" + hurtEntities
-                        + " perDistance=" + fallDamagePerDistance
-                        + " max=" + fallDamageMax
-                        + " onGround=" + self.onGround()
-                        + " bb=" + self.getBoundingBox()
-                        + " eligibleTargets=" + eligibleTargets.size()
-                        + " nearbyLiving1=" + nearbyLiving.size()
         );
     }
 }

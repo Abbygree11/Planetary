@@ -56,15 +56,6 @@ public final class PlanetDripstoneFalling {
                         VANILLA_MAX_DAMAGE
                 );
 
-                System.out.println(
-                        "[Planetary/FallTrace] armedDripstoneTip"
-                                + " id=" + falling.getId()
-                                + " root=" + startPos
-                                + " tip=" + currentPos
-                                + " chainDistance=" + localDistance
-                                + " damagePerDistance=" + size
-                                + " damageMax=" + VANILLA_MAX_DAMAGE
-                );
                 break;
             }
 
