@@ -960,3 +960,23 @@ Manual acceptance pending after commits b25439d..7c499be:
 - compare multiple depths toward the core on the same gravity face;
 - exact-edge placement;
 - +Y remains vanilla.
+
+
+## 2026-10-04 torch emitter acceptance PASS
+User manually verified after the corrected full-offset transform:
+- ordinary standing/wall torch particles: PASS on rotated faces;
+- soul torch variants: PASS;
+- redstone standing/wall torch particles: PASS;
+- depth-dependent drift toward local DOWN is gone.
+
+Remaining visible mismatch exists only exactly on a gravity edge.
+
+Do NOT patch that in torch-specific code. This is the already-known generic
+exact-edge policy problem: one physical BlockPos may admit multiple gravity-face
+charts, while BlockState semantics intentionally use one position-only canonical
+frame. The roadmap already tracks exact-edge placement/player-body-vs-canonical
+policy separately.
+
+Torch/redstone particle emission is therefore accepted for ordinary face-local
+positions. Exact-edge visual placement remains deferred to the common block-edge
+mechanism.
