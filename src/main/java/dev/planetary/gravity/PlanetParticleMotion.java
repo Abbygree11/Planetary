@@ -1,5 +1,6 @@
 package dev.planetary.gravity;
 
+import dev.planetary.topology.PlanetFrameVector;
 import dev.planetary.topology.PlanetGravityFrame;
 import dev.planetary.topology.PlanetVector;
 import net.minecraft.world.phys.Vec3;
@@ -7,10 +8,13 @@ import net.minecraft.world.phys.Vec3;
 import java.util.Objects;
 
 /**
- * Local-UP semantics for the hard-coded +0.1 vertical bias in Particle.
+ * Local-frame semantics for generic vanilla Particle motion.
  */
 public final class PlanetParticleMotion {
     public static final double VANILLA_UP_BIAS = 0.1D;
+    private static final double STOP_EPSILON = 1.0E-5D;
+    private static final double VANILLA_BLOCKED_SPEED_UP = 1.1D;
+    private static final double VANILLA_GROUND_FRICTION = 0.7D;
 
     private PlanetParticleMotion() {
     }
@@ -66,5 +70,197 @@ public final class PlanetParticleMotion {
                 velocity.subtract(bias)
                         .scale(power)
         );
+    }
+
+    /**
+     * Reinterprets Particle.move collision response in the gravity-local frame.
+     *
+     * <p>Collision clipping itself remains ordinary physical XYZ. Only the
+     * semantic consequences are local:
+     * - local Y collision while moving DOWN means onGround;
+     * - a fully blocked local-Y move means stoppedByCollision;
+     * - collisions on local X/Z zero those tangent velocity components;
+     * - a collision on local Y does not zero gravity-axis velocity, matching
+     *   vanilla's treatment of world Y.</p>
+     */
+    public static CollisionSemantics collisionSemantics(
+            Vec3 requestedWorldMovement,
+            Vec3 actualWorldMovement,
+            Vec3 velocityBeforeMove,
+            PlanetGravityFrame frame
+    ) {
+        Objects.requireNonNull(
+                requestedWorldMovement,
+                "requestedWorldMovement"
+        );
+        Objects.requireNonNull(
+                actualWorldMovement,
+                "actualWorldMovement"
+        );
+        Objects.requireNonNull(
+                velocityBeforeMove,
+                "velocityBeforeMove"
+        );
+        Objects.requireNonNull(frame, "frame");
+
+        PlanetFrameVector requested =
+                toLocal(frame, requestedWorldMovement);
+        PlanetFrameVector actual =
+                toLocal(frame, actualWorldMovement);
+        PlanetFrameVector velocity =
+                toLocal(frame, velocityBeforeMove);
+
+        boolean xCollision =
+                differs(requested.x(), actual.x());
+        boolean yCollision =
+                differs(requested.y(), actual.y());
+        boolean zCollision =
+                differs(requested.z(), actual.z());
+
+        PlanetFrameVector correctedLocalVelocity =
+                new PlanetFrameVector(
+                        xCollision ? 0.0D : velocity.x(),
+                        velocity.y(),
+                        zCollision ? 0.0D : velocity.z()
+                );
+
+        Vec3 correctedWorldVelocity =
+                toWorld(frame, correctedLocalVelocity);
+
+        boolean stoppedByCollision =
+                Math.abs(requested.y()) >= STOP_EPSILON
+                        && Math.abs(actual.y()) < STOP_EPSILON;
+
+        return new CollisionSemantics(
+                yCollision && requested.y() < 0.0D,
+                stoppedByCollision,
+                correctedWorldVelocity,
+                requested,
+                actual
+        );
+    }
+
+    /**
+     * Corrects the two axis-dependent effects performed by Particle.tick after
+     * move(): speedUpWhenYMotionIsBlocked and onGround friction.
+     *
+     * <p>Vanilla has already multiplied physical X/Z when this method is called.
+     * Undo those physical-axis multipliers, then apply the same multipliers to
+     * local X/Z. The ordinary scalar friction applied to all three axes is not
+     * touched.</p>
+     */
+    public static Vec3 correctBaseTickAxisEffects(
+            Vec3 vanillaVelocityAfterTick,
+            PlanetGravityFrame frame,
+            boolean vanillaBlockedSpeedUpApplied,
+            boolean localBlockedSpeedUpRequired,
+            boolean onGround
+    ) {
+        Objects.requireNonNull(
+                vanillaVelocityAfterTick,
+                "vanillaVelocityAfterTick"
+        );
+        Objects.requireNonNull(frame, "frame");
+
+        Vec3 neutral = vanillaVelocityAfterTick;
+
+        if (vanillaBlockedSpeedUpApplied) {
+            neutral = new Vec3(
+                    neutral.x / VANILLA_BLOCKED_SPEED_UP,
+                    neutral.y,
+                    neutral.z / VANILLA_BLOCKED_SPEED_UP
+            );
+        }
+
+        if (onGround) {
+            neutral = new Vec3(
+                    neutral.x / VANILLA_GROUND_FRICTION,
+                    neutral.y,
+                    neutral.z / VANILLA_GROUND_FRICTION
+            );
+        }
+
+        PlanetFrameVector local =
+                toLocal(frame, neutral);
+
+        double localX = local.x();
+        double localY = local.y();
+        double localZ = local.z();
+
+        if (localBlockedSpeedUpRequired) {
+            localX *= VANILLA_BLOCKED_SPEED_UP;
+            localZ *= VANILLA_BLOCKED_SPEED_UP;
+        }
+
+        if (onGround) {
+            localX *= VANILLA_GROUND_FRICTION;
+            localZ *= VANILLA_GROUND_FRICTION;
+        }
+
+        return toWorld(
+                frame,
+                new PlanetFrameVector(
+                        localX,
+                        localY,
+                        localZ
+                )
+        );
+    }
+
+    public static boolean hasNoLocalVerticalDisplacement(
+            Vec3 worldDisplacement,
+            PlanetGravityFrame frame
+    ) {
+        Objects.requireNonNull(
+                worldDisplacement,
+                "worldDisplacement"
+        );
+        Objects.requireNonNull(frame, "frame");
+
+        return toLocal(frame, worldDisplacement)
+                .y() == 0.0D;
+    }
+
+    private static PlanetFrameVector toLocal(
+            PlanetGravityFrame frame,
+            Vec3 world
+    ) {
+        return frame.worldToLocal(
+                new PlanetFrameVector(
+                        world.x,
+                        world.y,
+                        world.z
+                )
+        );
+    }
+
+    private static Vec3 toWorld(
+            PlanetGravityFrame frame,
+            PlanetFrameVector local
+    ) {
+        PlanetFrameVector world =
+                frame.localToWorld(local);
+
+        return new Vec3(
+                world.x(),
+                world.y(),
+                world.z()
+        );
+    }
+
+    private static boolean differs(
+            double expected,
+            double actual
+    ) {
+        return Double.compare(expected, actual) != 0;
+    }
+
+    public record CollisionSemantics(
+            boolean onGround,
+            boolean stoppedByCollision,
+            Vec3 correctedWorldVelocity,
+            PlanetFrameVector requestedLocal,
+            PlanetFrameVector actualLocal
+    ) {
     }
 }
