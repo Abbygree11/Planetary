@@ -292,12 +292,16 @@ Implemented, acceptance/audit pending:
 - standing/wall redstone torch visual particle origins use canonical local frame (manual PASS away from exact edges)
 - exact-edge torch emitter mismatch is deferred to the generic player/body-vs-canonical BlockState edge policy; do not special-case torch geometry
 
+Implemented, runtime acceptance pending:
+- Particle.move local vertical collision/onGround/stoppedByCollision semantics
+- local X/Z collision velocity response
+- base Particle.tick local ground friction and speedUpWhenYMotionIsBlocked
+
 Still open:
-- complete direct-gravity particle subclass audit
-- Particle.move/tick local vertical collision, onGround, stoppedByCollision and
-  ground-friction semantics
+- complete direct-gravity / custom-tick particle subclass audit
 - emission helpers such as ParticleUtils.spawnParticleBelow use world Y
 - remaining weather/custom emitter origin audit
+- fluid-specific particle topology/render coupling belongs with Phase 5
 
 Close only after:
 - sand/gravel/anvil on each face
