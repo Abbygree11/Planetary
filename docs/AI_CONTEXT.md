@@ -923,3 +923,40 @@ Do not close Phase 4 after this. The next generic particle item is
 Particle.move/tick: onGround, stoppedByCollision, vertical-block detection and
 ground friction are still expressed in physical world-Y/world-XZ rather than
 the selected local gravity frame.
+
+
+## 2026-10-04 torch emitter acceptance correction
+Manual screenshots after the first torch-emitter pass found:
+- redstone torch particles still followed physical +Y;
+- ordinary/soul wall-torch flame particles sat too far toward local DOWN on all
+  rotated faces; the visual mismatch became especially obvious deeper toward the
+  core.
+
+Exact source re-check found a concrete arithmetic error in the first adapter:
+WallTorchBlock.animateTick first sets d1 = pos.y + 0.7, then adds another +0.22.
+Relative to the block center y+0.5, the full semantic local-UP offset is +0.42,
+not +0.22. The first PlanetParticleEmitter implementation dropped +0.20.
+
+Architecture correction:
+- do not reconstruct vanilla emitter constants in the mixin;
+- intercept the final XYZ already computed by vanilla;
+- subtract physical block center;
+- interpret that complete numeric delta as canonical LOCAL coordinates;
+- rotate only that delta through the block PlanetGravityFrame.
+
+This preserves the exact ordinary-wall +0.42 rise and also preserves random
+jitter without consuming extra RNG.
+
+RedstoneTorchBlock and RedstoneWallTorchBlock have separate animateTick methods,
+so the normal TorchBlock adapter never touched them. Added
+RedstoneTorchParticleGravityMixin using the same final-coordinate transform.
+This changes only visual particle origin; redstone signal-side/topology behavior
+remains Phase 7A.
+
+Manual acceptance pending after commits b25439d..7c499be:
+- ordinary standing + wall torch particles on all six faces;
+- soul standing + wall torch particles;
+- redstone standing + wall torch particles;
+- compare multiple depths toward the core on the same gravity face;
+- exact-edge placement;
+- +Y remains vanilla.
