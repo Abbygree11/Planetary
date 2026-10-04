@@ -21,9 +21,9 @@ import java.util.Optional;
 /**
  * Reorients standing/wall torch flame and smoke emitter positions.
  *
- * <p>The particle type, velocity and vanilla call count are untouched. Only the
- * world-space XYZ origin is replaced by the same vanilla offset interpreted in
- * the block's canonical LOCAL frame.</p>
+ * <p>Vanilla has already calculated the complete emitter coordinates when this
+ * hook runs. Their delta from the block center is semantic LOCAL geometry, so
+ * preserve it exactly and only rotate that delta into physical world XYZ.</p>
  */
 @Mixin({
         TorchBlock.class,
@@ -56,27 +56,14 @@ public abstract class TorchParticleGravityMixin {
             return;
         }
 
-        PlanetGravityFrame frame =
-                frameOptional.get();
-
-        Vec3 emitter;
-        if (state.getBlock()
-                instanceof WallTorchBlock) {
-            emitter =
-                    PlanetParticleEmitter.wallTorch(
-                            pos,
-                            frame,
-                            state.getValue(
-                                    WallTorchBlock.FACING
-                            )
-                    );
-        } else {
-            emitter =
-                    PlanetParticleEmitter.standingTorch(
-                            pos,
-                            frame
-                    );
-        }
+        Vec3 emitter =
+                PlanetParticleEmitter.transformVanillaLocalEmitter(
+                        pos,
+                        frameOptional.get(),
+                        (double) args.get(1),
+                        (double) args.get(2),
+                        (double) args.get(3)
+                );
 
         args.set(1, emitter.x);
         args.set(2, emitter.y);
