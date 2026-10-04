@@ -202,7 +202,10 @@ Runtime findings from 2026-10-04 acceptance:
 - fence unwanted physical +Y arms -> addressed by local connection pass
 - exact-edge slab placement still needs player-body-vs-canonical policy
 - torch flame/smoke emission origin -> local-frame TorchBlock/WallTorchBlock
-  emitter adapter implemented; manual acceptance pending
+  emitter adapter implemented; first manual pass exposed missing vanilla +0.20
+  wall rise, now corrected by rotating vanilla's complete computed offset
+- redstone torch particle emitters now use the same local-frame transform;
+  redstone signal behavior remains Phase 7A
 - door, pressure plate, pointed dripstone and bed placement -> addressed by
   multi-block/support placement pass; gameplay/render follow-ups remain
 - thrown potions/arrows still use global projectile gravity
@@ -286,6 +289,7 @@ Implemented, acceptance/audit pending:
 - FallingDustParticle acceleration and terminal-speed clamp use local DOWN
 - direct-gravity particle subclass first-pass adapter
 - standing/wall normal+soul torch flame/smoke origins use canonical local frame
+- standing/wall redstone torch visual particle origins use canonical local frame
 
 Still open:
 - complete direct-gravity particle subclass audit
