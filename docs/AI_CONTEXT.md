@@ -617,3 +617,40 @@ particles and chain-fall scanning are explicitly not claimed complete.
 
 PlanetPlacementRuntime adds the reusable multi-block invariant:
 source local direction -> physical Direction -> target canonical local direction.
+
+
+## Planned transition-comfort / underground-navigation work
+User explicitly requested smoother gravity-zone transitions and called out
+underground mining as particularly disorienting.
+
+Do not treat this as merely a camera lerp at the exact seam.
+
+Phase 11 now requires research of two distinct layers:
+1. a pre-transition visual frame that begins bending the camera/horizon before
+   the exact tie plane;
+2. a possible ENTITY-only continuous gravity frame in a configurable transition
+   band, while block/state semantics remain discrete canonical PlanetFace frames.
+
+Promising architecture:
+    blocks = discrete canonical frames
+    player/entity transition frame = continuous near a boundary
+
+A continuous entity frame would derive from the two strongest competing face
+scores and smoothly blend their UP vectors, with a transported tangent/forward
+basis. Camera, movement and possibly physical acceleration should consume the
+same frame if this approach survives collision/client-server research.
+
+Underground is a separate acceptance gate:
+- straight 1x2 tunnel through internal gravity boundaries;
+- no visible horizon required to understand the bend;
+- stronger hysteresis/orientation inertia to avoid oscillation;
+- preserve forward heading through the bend;
+- block targeting must remain physical/correct while the body frame rotates;
+- optional subtle environmental cue may indicate the upcoming bend;
+- cave widening is only optional worldgen polish, never the underlying fix.
+
+Also evaluate an optional mild perspective/horizon distortion toward the upcoming
+face, increasing before the boundary. It must be disableable and a reduced-motion
+mode must exist.
+
+No runtime change was made for this planning update.

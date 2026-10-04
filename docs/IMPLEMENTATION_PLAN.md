@@ -494,15 +494,129 @@ Rules:
 - preserve NeoForge hooks rather than reimplementing them
 - document incompatibility when a mod directly assumes global Y in custom code
 
-## Phase 11 — transition UX and polish [PLANNED]
+## Phase 11 — transition comfort, underground navigation and polish [PLANNED]
 
-After correctness:
-- mining through internal gravity boundary
-- camera pivot around feet/support point
-- input continuity during transition
-- tuned hysteresis by entity size/use case
-- optional generated cave widening near boundaries
+Goal:
+crossing a gravity-zone boundary must feel like a continuous bend of local space,
+not an instantaneous 90-degree camera/world snap. This applies both on the outer
+surface edge and to internal zone boundaries encountered while mining underground.
+
+Do NOT solve this as only a camera animation after the gravity face has already
+changed. Research and compare two layers:
+
+### 11A — pre-transition visual frame
+
+Before the actual zone boundary, define a configurable transition band measured
+by distance to the nearest competing gravity face / tie plane.
+
+Candidate behavior:
+- camera/local horizon begins rotating BEFORE the exact boundary;
+- rotation strength grows smoothly as distance to the boundary approaches zero;
+- use quaternion/spherical interpolation between source and target entity frames;
+- pivot around the player's support/feet point rather than camera origin;
+- keep mouse/input continuous in the interpolated body-local frame;
+- no sudden yaw inversion when the dominant face changes;
+- transition rate should be limited by angular velocity/acceleration, not only a
+  fixed lerp per tick;
+- evaluate a subtle spatial cue toward the upcoming face (very mild perspective
+  warp, horizon bend, vignette/field cue, or none). Any distortion must be
+  optional and must not cause excessive motion sickness.
+
+Important:
+visual interpolation alone may hide but not solve a discrete physical gravity
+switch. It is therefore only one candidate layer, not automatically the final
+architecture.
+
+### 11B — continuous entity gravity frame near a boundary
+
+Research an ENTITY-only continuous gravity frame in a narrow transition region.
+
+Candidate mathematical policy:
+- ordinary block/state topology remains the existing six discrete canonical
+  PlanetFace frames;
+- determine the two strongest competing gravity-face scores for the entity
+  position;
+- outside the transition width, entity UP is exactly the dominant face UP;
+- inside the band, blend source/target UP vectors continuously using a smooth
+  curve;
+- derive a stable orthonormal entity frame from the blended UP plus transported
+  forward/tangent orientation;
+- physical acceleration, player movement frame, camera and entity pose may all
+  consume this same continuous entity frame;
+- block placement/support/collision queries must continue to resolve through
+  discrete canonical block frames.
+
+This separation is intentional:
+    block semantics = discrete/canonical
+    entity transition frame = potentially continuous
+
+Research risks before implementation:
+- diagonal gravity can make axis-aligned tunnel floor/wall contact ambiguous;
+- Entity.move/onGround/step logic must agree with the blended down vector;
+- client/server prediction must use the exact same blend;
+- jumping while mid-transition must not inject/lose velocity;
+- crossing back and forth around the tie plane must not oscillate;
+- exact cube corners have three competing faces and need an explicit policy;
+- vehicles/mobs/projectiles may need different transition widths or may initially
+  remain on discrete frames.
+
+### 11C — underground transition UX
+
+Underground transitions require their own acceptance, because there is no sky,
+horizon or visible planet edge to explain the orientation change.
+
+Research candidate aids:
+- start orientation blending several blocks before the internal gravity boundary;
+- stronger hysteresis/orientation inertia underground so small movements around
+  the tie plane do not repeatedly rotate the player;
+- preserve the player's forward heading through the bend using transported
+  tangent orientation rather than recomputing yaw from world axes;
+- optionally expose a subtle non-HUD environmental cue that indicates the
+  direction local DOWN/UP is beginning to bend;
+- consider slightly widening/generated smoothing of caves near known gravity
+  boundaries only as OPTIONAL worldgen polish, never as the correctness fix;
+- verify mining a straight 1x2 tunnel through a boundary without needing the
+  player to stop and manually re-orient.
+
+Do not silently move/teleport the player to hide the transition and do not alter
+the physical block grid.
+
+### Acceptance matrix
+
+Surface:
+- slowly walk toward every one of the 24 directed face transitions;
+- camera begins changing before the exact edge and reaches the target frame
+  without a visible snap;
+- sprint, jump and strafe across the transition;
+- reverse direction halfway through the blend;
+- stop exactly inside the transition band;
+- no camera roll discontinuity and no input inversion.
+
+Underground:
+- mine a straight 1x2 tunnel through each representative X/Y, X/Z and Y/Z
+  internal boundary;
+- continue holding forward while the local frame bends;
+- player can understand where floor/wall/ceiling are throughout the transition;
+- break/place blocks during the blend without targeting the wrong physical face;
+- no repeated 90-degree oscillation when moving one block back and forth near
+  the boundary;
+- test enclosed rooms where no sky/horizon is visible.
+
+Corner:
+- approach a three-face tie from several trajectories;
+- transition choice is deterministic and reversible;
+- no arbitrary full-spin camera path.
+
+Comfort/config:
+- transition width and maximum angular speed should be configurable;
+- optional visual distortion/cue can be disabled independently;
+- provide a reduced-motion mode with slower/no perspective distortion while
+  preserving orientation continuity.
+
+Other polish after correctness:
 - particles/sounds/screenshake local-frame polish
+- transition behavior for mobs/vehicles/projectiles after player solution is
+  stable
 
 ## Performance gate for every phase
 
