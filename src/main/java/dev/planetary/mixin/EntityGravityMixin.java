@@ -14,7 +14,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
@@ -94,6 +97,9 @@ public abstract class EntityGravityMixin
 
     @Shadow
     private boolean onGroundNoBlocks;
+
+    @Shadow
+    public float fallDistance;
 
     @Unique
     private static final double PLANETARY_FACE_HYSTERESIS =
@@ -643,6 +649,50 @@ public abstract class EntityGravityMixin
             Vec3 worldMovement
     ) {
         return planetary$toLocalWhenActive(worldMovement);
+    }
+
+    @Inject(
+            method = "checkFallDamage(DZLnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;)V",
+            at = @At("HEAD")
+    )
+    private void planetary$tracePointedDripstoneFallDistance(
+            double localVerticalMovement,
+            boolean grounded,
+            BlockState supportState,
+            BlockPos supportPos,
+            CallbackInfo ci
+    ) {
+        Entity self =
+                (Entity) (Object) this;
+
+        if (!(self instanceof FallingBlockEntity falling)
+                || !falling.getBlockState()
+                .is(Blocks.POINTED_DRIPSTONE)
+                || level().isClientSide) {
+            return;
+        }
+
+        PlanetEntityMotion.CollisionResult result =
+                planetary$lastCollisionResult;
+
+        System.out.println(
+                "[Planetary/FallTrace] checkFallDamage"
+                        + " id=" + self.getId()
+                        + " localDy=" + localVerticalMovement
+                        + " grounded=" + grounded
+                        + " fallDistanceBefore=" + fallDistance
+                        + " localVelocity=" + self.getDeltaMovement()
+                        + " supportPos=" + supportPos
+                        + " support=" + supportState
+                        + " requestedLocal="
+                        + (result == null
+                        ? "null"
+                        : result.requestedLocal())
+                        + " actualLocal="
+                        + (result == null
+                        ? "null"
+                        : result.actualLocal())
+        );
     }
 
     @ModifyArg(

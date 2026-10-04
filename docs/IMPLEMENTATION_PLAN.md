@@ -875,3 +875,23 @@ Example structure:
 - Performance check (when relevant)
 
 This rule is part of the development process and must survive chat/context resets.
+
+
+## Fall-damage investigation gate
+Detailed research: docs/research/FALL_DAMAGE_1_21_1.md.
+
+Manual acceptance showed both ordinary player fall damage and falling-stalactite
+damage still fail on rotated gravity after the first Entity.move fall-distance
+adapter.
+
+Research found ServerPlayer is a separate vanilla path:
+ServerPlayer.checkFallDamage is empty; ServerGamePacketListenerImpl calls
+ServerPlayer.doCheckFallDamage with PHYSICAL packet dx/dy/dz. The
+handleMovePlayer -> doCheckFallDamage boundary now reframes the whole delta into
+the player's local gravity frame.
+
+FallingBlockEntity uses ordinary Entity.checkFallDamage, so its remaining
+pointed-dripstone failure is NOT being patched speculatively. Temporary focused
+FallTrace diagnostics record terminal-tip arming, local fallDistance accumulation,
+landing state, hurtEntities and exact/nearby target AABB counts. Remove or reduce
+these traces once the failing gate is identified.

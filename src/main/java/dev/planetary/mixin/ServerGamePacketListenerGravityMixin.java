@@ -12,6 +12,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.ModifyArgs;
+import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 import java.util.Optional;
 
@@ -26,6 +28,44 @@ public abstract class ServerGamePacketListenerGravityMixin {
 
     @Shadow
     public ServerPlayer player;
+
+    @ModifyArgs(
+            method = "handleMovePlayer(Lnet/minecraft/network/protocol/game/ServerboundMovePlayerPacket;)V",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/server/level/ServerPlayer;doCheckFallDamage(DDDZ)V"
+            )
+    )
+    private void planetary$worldFallDeltaToLocal(
+            Args args
+    ) {
+        Optional<PlanetGravityFrame> frameOptional =
+                ((PlanetGravityEntity) player)
+                        .planetary$gravityFrame();
+
+        if (frameOptional.isEmpty()
+                || frameOptional.get().face()
+                == PlanetFace.POS_Y) {
+            return;
+        }
+
+        double dx = args.get(0);
+        double dy = args.get(1);
+        double dz = args.get(2);
+
+        PlanetFrameVector local =
+                frameOptional.get().worldToLocal(
+                        new PlanetFrameVector(
+                                dx,
+                                dy,
+                                dz
+                        )
+                );
+
+        args.set(0, local.x());
+        args.set(1, local.y());
+        args.set(2, local.z());
+    }
 
     @ModifyArg(
             method = "handleMovePlayer(Lnet/minecraft/network/protocol/game/ServerboundMovePlayerPacket;)V",

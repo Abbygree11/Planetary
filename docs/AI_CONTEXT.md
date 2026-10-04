@@ -779,3 +779,34 @@ dripstone-only damage hook. It should also restore ordinary fall-distance
 semantics for entities on rotated Planet faces. Manual verification is pending;
 do not mark the issue closed until both falling stalactite damage and ordinary
 player fall damage are checked.
+
+
+## Deep fall-damage investigation after c055319
+User verified that neither player fall damage nor falling pointed-dripstone
+damage was fixed by the previous generic Entity.move patch.
+
+Exact source research changed the diagnosis:
+
+1. ServerPlayer is NOT covered by Entity.move fall accounting.
+   ServerPlayer.checkFallDamage is intentionally empty in 1.21.1.
+   ServerGamePacketListenerImpl.handleMovePlayer calls
+   ServerPlayer.doCheckFallDamage with physical world packet dx/dy/dz.
+   doCheckFallDamage later passes its dy to parent checkFallDamage.
+   This is the proven root cause for player fall damage on rotated faces.
+
+2. GravityChanger 1.21 independently carries a dedicated ServerPlayer
+   fall-distance mixin for this reason, confirming the separate boundary.
+
+3. FallingBlockEntity does use ordinary Entity.checkFallDamage. NeoForge 1.21.1
+   does not replace that damage path. Since our generic local movement adapter
+   should be sufficient, do NOT add another speculative dripstone damage rule.
+
+Next runtime patch:
+- ServerGamePacketListenerGravityMixin reframes all three arguments of
+  ServerPlayer.doCheckFallDamage world -> local, so both support rewind and the
+  parent fall-distance call receive local movement.
+- temporary pointed-dripstone-only FallTrace diagnostics report:
+  armed terminal tip; checkFallDamage localDy/grounded/fallDistance; and
+  causeFallDamage hurtEntities/damage/AABB/eligible-target counts.
+
+Interpret logs using docs/research/FALL_DAMAGE_1_21_1.md.
