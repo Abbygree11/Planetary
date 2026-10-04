@@ -14,7 +14,7 @@ public final class PlanetParticleMotion {
     public static final double VANILLA_UP_BIAS = 0.1D;
     private static final double STOP_EPSILON = 1.0E-5D;
     private static final double VANILLA_BLOCKED_SPEED_UP = 1.1D;
-    private static final double VANILLA_GROUND_FRICTION = 0.7D;
+    private static final double VANILLA_GROUND_FRICTION = (double) 0.7F;
 
     private PlanetParticleMotion() {
     }
