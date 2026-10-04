@@ -433,8 +433,143 @@ Existing:
 - dedicated PlanetChunkGenerator
 - fixed plains test terrain
 
+### 8A — standard biome/worldgen composition
+
+Architectural rule:
+Planetary owns planet topology and the terrain-space adapter, but must NOT own a
+closed registry/list of biomes.
+
+Target pipeline:
+    standard/data-driven BiomeSource / climate selection
+        -> selected vanilla or modded Biome
+        -> Planet terrain density/surface
+        -> ordinary biome decoration/features/spawns where safe
+
+Keep standard Minecraft/NeoForge worldgen boundaries whenever possible:
+- BiomeSource remains pluggable/data-driven;
+- biome feature/decorations should continue through the ordinary biome pipeline;
+- biome colors, vegetation and mob spawn lists remain properties of the biome;
+- NeoForge/datapack biome additions should not require Planetary to enumerate
+  their biome IDs.
+
+Compatibility acceptance must happen EARLY, before Phase 8 is considered stable:
+- vanilla biome source;
+- TerraBlender-style biome composition;
+- Biomes O' Plenty;
+- Oh The Biomes We've Gone;
+- a representative datapack that adds biome features;
+- a representative modded structure/placed feature.
+
+World-type/profile composition:
+- Planet Normal
+- Planet Large Biomes
+- Planet Amplified
+
+These must remain Planet generators, not swap back to a vanilla ChunkGenerator.
+Large Biomes should primarily change climate/biome spatial scale.
+Amplified should primarily change relief/peak/erosion amplitudes while retaining
+Planet topology, macro geography and hydrology.
+
+Do not promise transparent compatibility with a mod/datapack that replaces the
+entire ChunkGenerator or performs custom global-Y terrain math. Those require a
+Planet terrain-profile adapter or explicit compatibility layer.
+
+### 8B — macro terrain / mean-elevation field
+
+Add a smooth, global Planet macro field that can bias the MEAN elevation of land
+toward face centers without creating six deterministic identical mountains.
+
+Requirements:
+- use one continuous planet-space function, not six disconnected per-face
+  functions;
+- no canonical-face/tie dependency in the macro field;
+- face-center bias only modulates statistical terrain baseline/amplitude;
+- continentalness, erosion, peaks and local noise remain capable of producing
+  oceans, plains or mountains anywhere;
+- exact edge/corner continuity is mandatory.
+
+Conceptual decomposition:
+    PlanetMacroField
+        + continentalness
+        + erosion
+        + peaks/weirdness
+        + local detail
+        -> BASE TERRAIN
+
+The macro dome must NOT directly determine shoreline or river height.
+
+### 8C — oceans and constant sea shell
+
+Decision:
+do NOT make ocean level follow the macro dome.
+
+Ocean sea level is one constant Planet elevation / cube-shell radius:
+    SEA_SHELL = constant
+
+Consequences:
+- within one gravity face, ocean surface is locally flat;
+- across a cube edge, the sea shell bends only at the same topological/gravity
+  transition as the planet itself;
+- no periodic one-block water staircase;
+- no special boat auto-step/lift hack;
+- no continuously sloped custom FluidState required.
+
+Land/coast behavior:
+- BASE TERRAIN is generated independently;
+- shoreline is where terrain intersects the constant sea shell;
+- optional coast shaping is LOCAL to a bounded coastal band;
+- never define all inland elevation as distance-from-ocean;
+- high-relief coasts may remain cliffs/fjords rather than being forced into a
+  giant smooth ramp.
+
+This prevents oceans from turning the whole continent into a single mound whose
+entire interior slopes toward water.
+
+### 8D — hydrology / rivers / lakes
+
+Hydrology is derived AFTER the base macro terrain exists.
+
+Required order:
+    BASE TERRAIN
+        -> slope/downhill/drainage analysis
+        -> drainage network / flow accumulation
+        -> river & lake selection
+        -> LOCAL channel/floodplain/canyon carving
+
+Critical rule:
+river distance must NOT be a global terrain-height function.
+A river locally modifies existing terrain; it does not force every block between
+two rivers to become a hill.
+
+Water-level policy:
+- no continuously sloped/one-block-step river surface as the default;
+- rivers use long piecewise-constant water-level reaches;
+- elevation drops are concentrated into intentional rapids, waterfalls, gorges
+  or cascades;
+- large navigable rivers prefer low-gradient routes and long flat reaches;
+- mountain streams are allowed to be non-navigable upstream;
+- lakes use their own constant local Planet-elevation levels;
+- deltas/lowland reaches converge toward the constant sea shell.
+
+Terrain response is local and classification-based:
+- small terrain/water difference -> ordinary channel / floodplain;
+- medium difference -> incised valley;
+- large difference -> canyon/gorge;
+- sharp elevation transition -> rapids/waterfall.
+
+River carving width/depth is bounded by river class and local context. If a
+proposed water level would require an absurd continent-wide trench, choose a
+different route/classification rather than dragging surrounding terrain down.
+
+Seams:
+- drainage/elevation calculations operate in PlanetGenerationSpace / Planet
+  elevation, never physical global Y;
+- rivers/lakes may cross gravity edges continuously;
+- the water surface at an edge uses the same Planet elevation on both faces.
+
+### 8E — caves, features and structures
+
 Need:
-- standard BiomeSource / climate integration
 - NoiseGeneratorSettings / RandomState compatibility
 - seamless terrain density in PlanetGenerationSpace
 - surface rules
@@ -448,9 +583,68 @@ six gravity pyramids are physics/local-frame regions, NOT six worldgen regions.
 Acceptance:
 - terrain/noise continuity across all edges
 - biome continuity across edges
+- macro mean elevation changes smoothly toward/away from face centers
+- ocean remains one constant sea shell; no artificial water staircase
+- lowland major river supports long boat-friendly flat reaches
+- steep river elevation loss becomes intentional rapids/waterfalls/canyons
+- river carving does not create repetitive hills between every pair of rivers
+- river/lake crosses representative gravity edge coherently
 - cave crosses edge as one cave
 - ore/feature crosses edge once, no duplicate generation
 - deterministic seed/reload behavior
+- BOP/BYG/TerraBlender-style biome composition acceptance before phase closure
+
+### 8F — far terrain / LOD rendering
+
+Goal:
+allow terrain visibility on the order of ~1000 blocks and potentially farther
+without loading/simulating all distant chunks as real Minecraft chunks.
+
+Do NOT implement this as "load a normal chunk and delete everything except the
+top 1-2 blocks". Avoid creating the expensive data in the first place.
+
+Distance layers should be conceptually separated:
+- near: ordinary full chunks, blocks, entities, fluids, ticks, block entities,
+  collision and full lighting;
+- mid: ordinary/static chunk rendering or moderately simplified terrain;
+- far: render-only Planet surface LOD with no simulation.
+
+Far representation should sample the SAME deterministic worldgen inputs but only
+what is visually necessary, e.g.:
+    FarSurfaceSample(
+        planetElevation,
+        surfaceMaterial,
+        underSurfaceMaterial,
+        biome,
+        coarse light/color
+    )
+
+Far LOD explicitly omits:
+- entities and AI;
+- block entities;
+- scheduled/random ticks;
+- fluids simulation;
+- collision;
+- caves/ores that are not visible from the exterior;
+- full per-block chunk storage.
+
+Preferred renderer architecture to research:
+- quadtree / geometry clipmap / concentric LOD rings;
+- progressively coarser surface sampling with distance;
+- mesh generation in PlanetGenerationSpace, seam-aware across cube edges;
+- lightweight impostors/coarse treatment for distant trees/structures only if
+  visually necessary;
+- shared seed/noise path with full chunks so approaching terrain converges to the
+  same surface without visible reshaping.
+
+Illustrative target, subject to profiling:
+- simulation: ~8-12 chunks;
+- full block rendering: ~16-24 chunks;
+- far surface LOD: ~64+ chunks (~1000+ blocks) with progressively coarser mesh.
+
+Performance acceptance must measure CPU generation, GPU triangles, memory,
+upload bandwidth and movement-induced remeshing. Far-distance targets are goals,
+not guarantees.
 
 ## Phase 9 — structures [PLANNED]
 
@@ -488,6 +682,22 @@ Targets:
 - modded FlowingFluid
 - pipes/cables/machines
 - custom entity navigation where possible
+
+
+Worldgen compatibility contract:
+- Planetary owns topology, PlanetGenerationSpace mapping, macro terrain
+  adaptation, sea-shell/hydrology seam policy and Planet-specific structure
+  safety;
+- Planetary does NOT own biome registries, biome colors, vegetation/spawn lists
+  or a hard-coded set of allowed mod biomes;
+- preserve standard BiomeSource + biome-decoration paths so biome mods/data packs
+  can compose where they use ordinary extension points;
+- test TerraBlender/Biomes O' Plenty/Oh The Biomes We've Gone during Phase 8,
+  not as an afterthought in Phase 10;
+- expose Normal/Large-Biomes/Amplified-like Planet terrain profiles through
+  data-driven codecs/settings;
+- complete ChunkGenerator replacements/custom global-Y terrain algorithms are
+  explicit compatibility work, not assumed automatic.
 
 Rules:
 - prefer vanilla/NeoForge extension points

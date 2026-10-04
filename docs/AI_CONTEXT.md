@@ -654,3 +654,77 @@ face, increasing before the boundary. It must be disableable and a reduced-motio
 mode must exist.
 
 No runtime change was made for this planning update.
+
+
+## Locked worldgen/far-terrain architecture decisions
+User approved the following long-term direction. Treat these as design
+constraints unless later runtime research disproves them.
+
+### Macro elevation
+Planet terrain may have a smooth global macro field that raises the statistical
+MEAN land elevation toward face centers. This is not six per-face mountains and
+must not depend on canonical face tie-breaking. Continentalness/erosion/peaks
+remain independent enough that oceans/plains/mountains can occur anywhere.
+
+### Ocean
+Ocean does NOT follow the macro dome. Sea level is one constant Planet
+elevation/cube-shell radius.
+
+Do not pursue:
+- a continuously sloped custom fluid surface;
+- a one-block sea staircase following the dome;
+- special boat "auto-climb water step" behavior.
+
+Land intersects the constant sea shell. Any coast smoothing is local to a
+bounded coastal band; interior terrain is not globally a function of distance to
+the ocean. Cliffs/fjords are valid high-relief coast types.
+
+### Rivers/hydrology
+Base terrain exists FIRST. Hydrology analyzes that terrain and chooses drainage
+routes, then modifies only a local neighborhood around channels.
+
+Never define world terrain height as distance to the nearest river. This avoids
+the artificial "hills between every river/ocean" landscape.
+
+River water is piecewise constant in Planet elevation over long reaches. Height
+loss is concentrated into intentional rapids/waterfalls/gorges/cascades.
+Large navigable rivers prefer low gradients/long flat reaches; mountain streams
+need not be navigable upstream. Lakes have constant local levels. Deltas converge
+to the constant sea shell.
+
+River carving is bounded/local:
+small difference -> channel/floodplain
+medium -> valley
+large -> canyon
+sharp drop -> waterfall/rapids
+
+### Biome/worldgen mod compatibility
+Planetary should keep standard/data-driven BiomeSource and ordinary biome
+decoration where possible. Planetary owns topology/terrain adaptation/hydrology,
+not a hard-coded biome registry.
+
+Phase 8 must test TerraBlender-style composition, Biomes O' Plenty, Oh The
+Biomes We've Gone and representative datapack/mod features early.
+
+Planet Normal / Large Biomes / Amplified should be Planet terrain profiles, not
+replacement vanilla generators. Mods that replace the entire ChunkGenerator or
+perform custom global-Y terrain math require explicit adapters and are not
+promised automatic compatibility.
+
+### Far terrain / LOD
+Goal: ~1000-block and potentially farther terrain visibility without full chunk
+simulation.
+
+Far terrain must NOT instantiate ordinary full chunks merely to retain top
+blocks. It should sample the deterministic Planet worldgen/surface representation
+directly and build render-only coarse meshes.
+
+Near world remains ordinary chunks. Far LOD has no entities, AI, block entities,
+ticks, collision, fluid simulation or invisible caves/ores. Research
+quadtree/geometry-clipmap LOD with progressively coarser sampling and seamless
+PlanetGenerationSpace edge stitching. Full and far terrain must derive from the
+same seed/worldgen inputs so approaching a region does not change its surface.
+
+Current active runtime stage remains Phase 2 multi-block placement acceptance:
+pressure plate, door, bed and pointed dripstone from commits 3d49fd3/2decb8e.
+Those gameplay changes are still awaiting the user's manual verification.
