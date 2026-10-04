@@ -22,6 +22,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -642,6 +643,27 @@ public abstract class EntityGravityMixin
             Vec3 worldMovement
     ) {
         return planetary$toLocalWhenActive(worldMovement);
+    }
+
+    @ModifyArg(
+            method = "move(Lnet/minecraft/world/entity/MoverType;Lnet/minecraft/world/phys/Vec3;)V",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/world/entity/Entity;checkFallDamage(DZLnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;)V"
+            ),
+            index = 0
+    )
+    private double planetary$localFallDistanceMovement(
+            double vanillaVerticalMovement
+    ) {
+        PlanetEntityMotion.CollisionResult result =
+                planetary$lastCollisionResult;
+
+        if (result == null) {
+            return vanillaVerticalMovement;
+        }
+
+        return result.actualLocal().y();
     }
 
     @Unique
