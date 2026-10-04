@@ -201,7 +201,8 @@ Runtime findings from 2026-10-04 acceptance:
 - grass random-tick decay/spread wrong outside +Y -> addressed by local growth pass
 - fence unwanted physical +Y arms -> addressed by local connection pass
 - exact-edge slab placement still needs player-body-vs-canonical policy
-- torch flame/smoke emission origin remains world-axis
+- torch flame/smoke emission origin -> local-frame TorchBlock/WallTorchBlock
+  emitter adapter implemented; manual acceptance pending
 - door, pressure plate, pointed dripstone and bed placement -> addressed by
   multi-block/support placement pass; gameplay/render follow-ups remain
 - thrown potions/arrows still use global projectile gravity
@@ -278,13 +279,20 @@ Acceptance:
 Already verified:
 - FallingBlock/FallingBlockEntity physical gravity mostly follows local DOWN
 - ordinary block-breaking particles follow local gravity
+- block-destroy particle local-UP launch-bias fix manually accepted after ebad1e1
+
+Implemented, acceptance/audit pending:
+- FallingBlock client animateTick emits from local DOWN
+- FallingDustParticle acceleration and terminal-speed clamp use local DOWN
+- direct-gravity particle subclass first-pass adapter
+- standing/wall normal+soul torch flame/smoke origins use canonical local frame
 
 Still open:
-- FallingBlock client animateTick emission must use local DOWN
-- FallingDustParticle has its own hard-coded yd -= 0.003 and terminal world-Y clamp
-- direct-gravity particle subclasses need complete audit
-- Particle.move onGround still classifies negative world-Y collision
+- complete direct-gravity particle subclass audit
+- Particle.move/tick local vertical collision, onGround, stoppedByCollision and
+  ground-friction semantics
 - emission helpers such as ParticleUtils.spawnParticleBelow use world Y
+- remaining weather/custom emitter origin audit
 
 Close only after:
 - sand/gravel/anvil on each face
