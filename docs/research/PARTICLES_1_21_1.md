@@ -147,3 +147,82 @@ Expected:
 - no duplicate smoke/flame;
 - +Y remains visually vanilla;
 - particle motion after spawn still follows existing local-particle behavior.
+
+
+## Generic Particle.move local collision semantics
+
+Exact vanilla Particle.move flow:
+1. save requested physical dx/dy/dz;
+2. clip the physical movement with Entity.collideBoundingBox;
+3. move the particle bounding box by the clipped physical vector;
+4. set stoppedByCollision when requested WORLD Y was non-trivial but clipped
+   WORLD Y became ~0;
+5. set onGround when WORLD Y was clipped while requested WORLD Y was negative;
+6. zero xd on physical-X collision;
+7. zero zd on physical-Z collision.
+
+Only step 2-3 are genuinely physical geometry. Steps 4-7 are semantic-axis
+decisions and must follow local gravity.
+
+Planet now lets vanilla perform collision clipping unchanged, then reconstructs
+requested and actual movement in the active PlanetGravityFrame:
+- local Y collision while requested local Y < 0 -> onGround;
+- requested local Y >= 1e-5 but actual local Y ~= 0 -> stoppedByCollision;
+- local X collision -> zero local X velocity;
+- local Z collision -> zero local Z velocity;
+- local Y collision does NOT zero local-Y velocity, matching vanilla world-Y
+  behavior.
+
+Because each Planet face basis is an axis-aligned signed permutation, converting
+requested/actual vectors between physical and local frames does not introduce a
+second collision solver or diagonal approximation.
+
+This generic move correction is also inherited by custom tick implementations
+that still call Particle.move, including vanilla falling dust, drip/water-drop,
+cherry and several smoke/water particles.
+
+## Particle.tick axis-dependent post-move behavior
+
+Base Particle.tick has two more world-axis assumptions after move:
+
+    if (speedUpWhenYMotionIsBlocked && y == yo)
+        xd *= 1.1;
+        zd *= 1.1;
+
+    if (onGround)
+        xd *= 0.7;
+        zd *= 0.7;
+
+The ordinary friction multiplier is scalar across all three axes and is already
+frame-independent.
+
+For rotated Planet faces the adapter:
+1. lets vanilla finish the base tick;
+2. detects whether vanilla applied its physical-X/Z speed-up/ground multipliers;
+3. algebraically removes only those physical-axis multipliers;
+4. transforms velocity into the local frame;
+5. applies the same 1.1 / 0.7 multipliers to local X/Z;
+6. transforms velocity back to physical XYZ.
+
+The local equivalent of y == yo is zero local-Y displacement during that tick.
+
+This avoids cancelling/reimplementing Particle.tick and preserves age, lifetime,
+friction, removal, subclass super.tick behavior and all non-axis-specific
+vanilla logic.
+
+## Known remaining class-specific particle audit
+
+Generic Particle.move/onGround is now adapted, but class-specific tick logic can
+still contain its own world-axis assumptions.
+
+Known examples from the 1.21.1 source sweep:
+- DragonBreathParticle has its own y == yo branch;
+- BubbleParticle directly accelerates +world Y;
+- some water/current particles derive horizontal swirl in world X/Z;
+- weather/rain particle spawning remains environment/world-axis work;
+- fluid-specific particles are ultimately tied to Phase 5 fluid topology;
+- exact gravity-edge frame selection remains the common edge-policy problem,
+  not a particle-specific offset fix.
+
+Do not mark Phase 4 closed until these remaining direct subclasses and emitter
+helpers are either adapted or explicitly assigned to their owning later phase.
