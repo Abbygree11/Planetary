@@ -41,7 +41,7 @@ final class PlanetParticleEmitterTest {
     }
 
     @Test
-    void wallTorchKeepsVanillaLocalOffsetsOnAllFaces() {
+    void wallTorchKeepsFullVanillaLocalOffsetsOnAllFaces() {
         Direction[] horizontal = {
                 Direction.NORTH,
                 Direction.SOUTH,
@@ -61,7 +61,7 @@ final class PlanetParticleEmitterTest {
                         expectedFromLocal(
                                 frame,
                                 support.getStepX() * 0.27D,
-                                0.22D,
+                                0.42D,
                                 support.getStepZ() * 0.27D
                         );
 
@@ -74,6 +74,43 @@ final class PlanetParticleEmitterTest {
                         expected
                 );
             }
+        }
+    }
+
+    @Test
+    void transformedVanillaEmitterPreservesExactSampledLocalOffsets() {
+        // Representative redstone-wall-torch sample:
+        // random jitter + support offset + full y+0.7+0.22 rise.
+        double localX = -0.27D + 0.06D;
+        double localY = 0.42D - 0.04D;
+        double localZ = 0.08D;
+
+        double vanillaX =
+                POS.getX() + 0.5D + localX;
+        double vanillaY =
+                POS.getY() + 0.5D + localY;
+        double vanillaZ =
+                POS.getZ() + 0.5D + localZ;
+
+        for (PlanetFace face : PlanetFace.values()) {
+            PlanetGravityFrame frame =
+                    new PlanetGravityFrame(face);
+
+            assertVec(
+                    PlanetParticleEmitter.transformVanillaLocalEmitter(
+                            POS,
+                            frame,
+                            vanillaX,
+                            vanillaY,
+                            vanillaZ
+                    ),
+                    expectedFromLocal(
+                            frame,
+                            localX,
+                            localY,
+                            localZ
+                    )
+            );
         }
     }
 
@@ -104,7 +141,7 @@ final class PlanetParticleEmitterTest {
                 ),
                 new Vec3(
                         10.23D,
-                        20.72D,
+                        20.92D,
                         30.5D
                 )
         );
