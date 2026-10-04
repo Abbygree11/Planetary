@@ -288,8 +288,9 @@ Implemented, acceptance/audit pending:
 - FallingBlock client animateTick emits from local DOWN
 - FallingDustParticle acceleration and terminal-speed clamp use local DOWN
 - direct-gravity particle subclass first-pass adapter
-- standing/wall normal+soul torch flame/smoke origins use canonical local frame
-- standing/wall redstone torch visual particle origins use canonical local frame
+- standing/wall normal+soul torch flame/smoke origins use canonical local frame (manual PASS away from exact edges)
+- standing/wall redstone torch visual particle origins use canonical local frame (manual PASS away from exact edges)
+- exact-edge torch emitter mismatch is deferred to the generic player/body-vs-canonical BlockState edge policy; do not special-case torch geometry
 
 Still open:
 - complete direct-gravity particle subclass audit
