@@ -759,3 +759,23 @@ Redstone/piston intentionally remain unpatched here. They are cross-cutting:
 wire horizontal/up/down topology, signal-side conventions, PistonStructureResolver
 movement, MovingPistonBlockEntity and moving-piston rendering all need one
 coherent Phase 7A/piston pass rather than a one-off Direction substitution.
+
+
+## Pending fall-distance verification after 4ec055f
+Runtime follow-up commit 4ec055f changes the Entity.move -> checkFallDamage
+boundary so vanilla receives the already-classified LOCAL vertical displacement
+(PlanetEntityMotion.CollisionResult.actualLocal.y) instead of depending on
+physical world-Y movement.
+
+Reason:
+FallingBlockEntity.setHurtsEntities was restored for pointed-dripstone tips, but
+falling-stalactite damage still did not occur on rotated faces. Vanilla
+FallingBlockEntity.causeFallDamage scales damage from Entity.fallDistance, which
+is accumulated by Entity.checkFallDamage from its vertical-movement argument.
+On side gravity, physical world-Y may be zero even during a real local fall.
+
+This is intentionally a generic entity fall-distance boundary, not a
+dripstone-only damage hook. It should also restore ordinary fall-distance
+semantics for entities on rotated Planet faces. Manual verification is pending;
+do not mark the issue closed until both falling stalactite damage and ordinary
+player fall damage are checked.
