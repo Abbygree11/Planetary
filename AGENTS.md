@@ -1,0 +1,267 @@
+# Planetary development protocol
+
+This file is the mandatory working agreement for every AI/coding session on
+Planetary.
+
+**Read this file before planning, researching, editing code, or proposing the
+next implementation step. Do not rely on chat memory as the source of truth.**
+
+Repository: `Abbygree11/Planetary`  
+Working branch: **`2.0` only**  
+Target: Minecraft **1.21.1**, NeoForge **21.1.215**, Java 21.
+
+Never write to `main`.
+
+## 1. Canonical project documents
+
+Each document has one job:
+
+- `AGENTS.md` — HOW development must be performed. This file is canonical for
+  process.
+- `docs/IMPLEMENTATION_PLAN.md` — WHAT remains to be built, phase ordering,
+  dependencies, status, acceptance gates and newly discovered work.
+- `docs/AI_CONTEXT.md` — continuity log: current architecture, verified
+  behavior, active bugs, important decisions, failed approaches and manual
+  acceptance results.
+- `docs/research/*.md` — detailed technical research for individual Minecraft
+  mechanisms/subsystems.
+
+If a new idea appears, an old idea is rejected, scope changes, a dependency is
+discovered, or a bug is reassigned to another subsystem/phase, update the
+roadmap in the relevant place. Do not leave plan changes only in chat or only in
+`AI_CONTEXT.md`.
+
+## 2. Mandatory start-of-session procedure
+
+At the beginning of every new chat/session:
+
+1. Read this file.
+2. Read the active/relevant sections of `docs/IMPLEMENTATION_PLAN.md`.
+3. Read the latest relevant parts of `docs/AI_CONTEXT.md`.
+4. Read the research document(s) for the subsystem being touched.
+5. Inspect the actual current `2.0` branch and recent relevant commits/files.
+6. Identify the last manually accepted/known-good behavior before changing
+   runtime code.
+
+GitHub/repository state wins over remembered chat context.
+
+Do not ask the user to repeat process rules that are already documented here.
+
+## 3. Roadmap discipline
+
+The roadmap is a living execution plan, not a wishlist.
+
+Before implementing anything, identify which phase/subsystem OWNS the behavior.
+
+When new information appears:
+
+- add newly discovered work to the correct phase;
+- update existing items when the intended architecture changes;
+- remove or rewrite rejected ideas instead of leaving contradictory plans;
+- record dependencies between phases;
+- distinguish implemented, pending acceptance, manually verified and rolled-back
+  work;
+- do not mark a runtime item DONE/PASS until acceptance actually happened.
+
+Do not fix a generic cross-cutting problem with a one-off special case in an
+unrelated subsystem merely because that is where it was first noticed. Record
+and defer it to the owning common mechanism when appropriate.
+
+Example: exact-edge block positioning is a generic block-frame/edge-policy
+problem, not a torch-specific offset problem.
+
+## 4. Research is mandatory BEFORE implementation
+
+Before implementing a non-trivial mechanic, feature, compatibility layer, or bug
+fix, perform detailed source research first.
+
+For Minecraft/NeoForge behavior this means, as applicable:
+
+- inspect the exact Minecraft 1.21.1 / NeoForge 21.1.215 source path;
+- trace the complete call flow, not only the first method containing the visible
+  symptom;
+- identify who owns the state and where it changes;
+- enumerate all hard-coded world-axis assumptions;
+- classify each assumption as PHYSICAL world geometry or LOCAL semantic
+  UP/DOWN/EAST/SOUTH/etc.;
+- inspect subclasses/alternate code paths that bypass the base implementation;
+- inspect client and server paths separately when both exist;
+- inspect renderer/physics/emitter paths separately when they are independent;
+- preserve RNG call count/order when random behavior is involved;
+- preserve vanilla/NeoForge hooks and extension points;
+- inspect edge/corner behavior when topology is relevant;
+- inspect existing Planetary adapters so the new fix composes with them.
+
+For a bug/regression:
+
+1. establish the last known-good accepted state;
+2. narrow the regression window;
+3. reproduce the exact vanilla/Planet call flow;
+4. explain why the root cause produces the observed symptom;
+5. only then edit runtime code.
+
+Do not patch the first plausible line and iterate ten times on symptoms.
+
+If the mechanism is substantial, create/update a focused
+`docs/research/<SUBSYSTEM>_1_21_1.md` note BEFORE or alongside implementation.
+The note should contain call flow, assumptions, chosen adaptation boundary,
+known alternate paths, risks, tests and manual acceptance criteria.
+
+Failed hypotheses and rejected designs are valuable research results: document
+why they failed so a future session does not repeat them.
+
+## 5. Implementation principles
+
+Prefer the smallest stable architectural boundary that fixes the whole owned
+mechanism.
+
+General rules:
+
+- preserve vanilla physical XYZ collision/world storage unless there is a proven
+  reason not to;
+- adapt semantic local-frame meaning at stable boundaries;
+- prefer pure transformation/helpers with unit tests over duplicated switch
+  tables;
+- never globally redefine `BlockPos`, `Direction`, axes or raw XYZ based on
+  hidden context;
+- preserve ordinary non-Planet worlds as vanilla/pass-through;
+- preserve NeoForge/vanilla extension points for mod compatibility;
+- do not mutate registered/shared models or states when a wrapper/adapter is
+  sufficient;
+- do not duplicate vanilla RNG or consume additional random values accidentally;
+- do not reimplement a large vanilla method when a narrow argument/result
+  adapter can preserve the rest;
+- avoid speculative changes to multiple independent mechanisms in one patch;
+- keep one coherent runtime hypothesis per patch when debugging.
+
+When a broad patch is not manually accepted, do not keep stacking fixes on top
+of it indefinitely. Stop, research the new evidence, and roll back to the last
+known-good state when that gives a cleaner base.
+
+## 6. Testing before runtime acceptance
+
+Add deterministic tests wherever the behavior can be represented without the
+game client:
+
+- frame transforms and round trips;
+- direction/shape mappings;
+- edge/seam math;
+- vanilla-equivalence on +Y;
+- all six gravity faces where relevant;
+- regression tests for previously found bugs.
+
+Tests must reproduce vanilla numeric details accurately, including float-vs-
+double behavior when it matters.
+
+A green unit test suite does NOT prove runtime behavior that depends on
+Minecraft rendering, collision timing, client/server interaction, worldgen,
+random ticks, etc.
+
+## 7. Manual acceptance is a hard gate
+
+Never claim runtime success merely because code compiles, unit tests pass, or a
+screenshot looks plausible.
+
+For runtime behavior, PASS requires either:
+
+- explicit user confirmation from in-game testing; or
+- a truly deterministic automated test that fully covers the runtime property.
+
+A screenshot may help diagnose a problem, but do not mark a runtime item PASS
+based only on your own visual interpretation if the user has not confirmed it.
+
+Use these status meanings consistently:
+
+- **IMPLEMENTED / acceptance pending** — code exists, user has not yet accepted
+  runtime behavior.
+- **PASS / verified** — user explicitly confirmed runtime behavior or complete
+  deterministic coverage exists.
+- **ROLLED BACK / rejected** — implementation was not accepted and is not the
+  active runtime design.
+- **PLANNED** — no stable runtime implementation yet.
+
+## 8. Mandatory post-change verification checklist
+
+After EVERY runtime-affecting change, meaningful fix/refactor, or worldgen
+change, give the user a numbered verification checklist.
+
+When applicable, begin with exactly:
+
+`git pull && .\test.ps1 && .\run-client.ps1`
+
+The checklist must:
+
+1. separate build/startup from gameplay checks;
+2. test the primary behavior;
+3. state the expected result for every check;
+4. include regression checks for behavior that previously worked;
+5. include +Y as the vanilla-equivalence baseline when gravity is involved;
+6. include all relevant rotated faces;
+7. include edge/corner cases when the mechanism owns them;
+8. include performance/smoke checks when appropriate;
+9. avoid vague wording such as "check that it works".
+
+The user previously requested this after every change; treat it as a permanent
+project rule.
+
+## 9. Regression and rollback procedure
+
+If the user reports a regression:
+
+1. do not declare the previous patch successful;
+2. record the failed acceptance result;
+3. compare against the last accepted behavior/commit;
+4. investigate the exact call path before editing again;
+5. prefer reverting an unaccepted broad patch over accumulating speculative
+   patch-on-patch corrections;
+6. preserve already accepted independent fixes;
+7. document the rejected approach and root cause in `AI_CONTEXT.md` and/or the
+   subsystem research note;
+8. update the roadmap if the architecture/status changed.
+
+Maintain a clear distinction between accepted baseline and experimental runtime
+work.
+
+## 10. Documentation after implementation
+
+Whenever project state materially changes, update the appropriate sources before
+ending the work:
+
+- roadmap: plan, ownership, dependencies and status;
+- AI_CONTEXT: architecture/continuity, current bug, acceptance/rejection,
+  important commit/state transitions;
+- research: source findings, precise mechanism, failed hypotheses, adaptation
+  boundary and acceptance matrix.
+
+Do not blindly duplicate the same prose everywhere. Keep each document focused
+on its role.
+
+## 11. Compatibility and performance gates
+
+Every phase must consider whether the change:
+
+- runs only when Planet behavior is active;
+- adds per-tick/per-frame allocations;
+- adds unbounded maps/caches;
+- performs repeated frame lookup unnecessarily;
+- causes duplicate vanilla + custom work;
+- breaks normal NeoForge hooks or mod interoperability;
+- rebuilds reusable geometry/models every frame;
+- introduces client/server disagreement.
+
+Prefer standard Minecraft/NeoForge boundaries so compatible mods inherit Planet
+semantics automatically. Raw custom world-axis math in third-party mods may need
+explicit integration; do not promise universal compatibility without evidence.
+
+## 12. Communication after a code change
+
+After committing a runtime change, tell the user concisely:
+
+- what root cause was found;
+- what architectural boundary changed;
+- what was intentionally NOT changed;
+- current `2.0` HEAD/commit when useful;
+- the mandatory numbered verification checklist.
+
+Do not say "fixed", "works", "build is successful" or mark a roadmap item PASS
+until the corresponding evidence actually exists.
