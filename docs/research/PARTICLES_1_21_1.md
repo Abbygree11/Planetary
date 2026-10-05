@@ -358,3 +358,23 @@ This is intentionally much narrower than the rejected generic collision pass:
 - no collision-solver changes.
 
 Destroy TerrainParticle dispersion remains a mandatory regression gate.
+
+
+## Diagnostic gate after sticky-stop hypothesis failed
+
+Manual testing showed that adding a narrow local equivalent of vanilla
+stoppedByCollision still did not remove the visible side/-Y slide.
+
+Do not infer another fix yet. Temporary runtime tracing now captures the exact
+TerrainParticle landing state and four subsequent tick returns.
+
+Required evidence before the next code change:
+- requested/actual local displacement at landing;
+- local vs vanilla onGround;
+- stoppedByCollision before/after Planet adaptation;
+- whether x/y/z continue changing after stoppedByCollision becomes true;
+- whether velocity changes without position changes.
+
+If position is already stationary while the user still perceives sliding, the
+remaining bug is not Particle.move physics and the next research target must be
+render interpolation/anchor rather than collision.
