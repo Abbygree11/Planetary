@@ -1,5 +1,9 @@
 # Planetary continuity
 
+> **MANDATORY FIRST READ:** `/AGENTS.md` is the canonical development process.
+> Every new AI/coding session must read it before using this continuity log,
+> researching or changing code.
+
 Repository: Abbygree11/Planetary
 Branch: 2.0 only. Never write main.
 Minecraft 1.21.1, NeoForge 21.1.215, Java 21, Gradle 8.12.
