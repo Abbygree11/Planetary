@@ -167,7 +167,6 @@ decisions and must follow local gravity.
 Planet now lets vanilla perform collision clipping unchanged, then reconstructs
 requested and actual movement in the active PlanetGravityFrame:
 - local Y collision while requested local Y < 0 -> onGround;
-- requested local Y >= 1e-5 but actual local Y ~= 0 -> stoppedByCollision;
 - local X collision -> zero local X velocity;
 - local Z collision -> zero local Z velocity;
 - local Y collision does NOT zero local-Y velocity, matching vanilla world-Y
@@ -176,6 +175,12 @@ requested and actual movement in the active PlanetGravityFrame:
 Because each Planet face basis is an axis-aligned signed permutation, converting
 requested/actual vectors between physical and local frames does not introduce a
 second collision solver or diagonal approximation.
+
+Particle.stoppedByCollision is deliberately left vanilla/physical. Source and
+runtime regression analysis showed it is not equivalent to a semantic gravity
+axis: it is a sticky short-circuit that prevents every later move() call. Destroy
+TerrainParticles are created inside the destroyed VoxelShape, so rotating this
+sticky condition to local Y can freeze the burst inside the source block.
 
 This generic move correction is also inherited by custom tick implementations
 that still call Particle.move, including vanilla falling dust, drip/water-drop,
@@ -226,3 +231,29 @@ Known examples from the 1.21.1 source sweep:
 
 Do not mark Phase 4 closed until these remaining direct subclasses and emitter
 helpers are either adapted or explicitly assigned to their owning later phase.
+
+
+## Destroy TerrainParticle regression after local move pass
+
+Manual acceptance immediately caught a regression: block-destroy particles no
+longer dispersed around the broken block and remained confined to its original
+volume.
+
+ParticleEngine.destroy explicitly samples particle origins from INSIDE the
+destroyed BlockState VoxelShape. TerrainParticle then relies on normal Particle
+motion to escape that volume.
+
+The first local-move implementation incorrectly reclassified
+Particle.stoppedByCollision using local Y. That field is sticky: once true,
+future Particle.move calls return immediately. For particles born inside a
+shape, a clipped local-Y component can therefore freeze the entire remaining
+motion.
+
+Correction:
+- local onGround remains frame-aware;
+- local tangent collision velocity response remains frame-aware;
+- local ground friction remains frame-aware;
+- stoppedByCollision is NOT rewritten and remains vanilla internal behavior.
+
+Architectural lesson: not every vanilla world-Y branch is semantic gravity.
+Classify the purpose of the field/control flow before rotating it.
