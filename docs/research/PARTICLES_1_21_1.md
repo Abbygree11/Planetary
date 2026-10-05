@@ -257,3 +257,22 @@ Correction:
 
 Architectural lesson: not every vanilla world-Y branch is semantic gravity.
 Classify the purpose of the field/control flow before rotating it.
+
+
+## Rollback note: generic move/tick adapter rejected in runtime
+
+The first generic local-axis Particle.move/tick adapter was not accepted.
+Even after leaving stoppedByCollision vanilla, manual testing still showed
+block-destroy TerrainParticles failing to disperse normally around the source
+block.
+
+Therefore the entire generic move/tick runtime patch was reverted to the last
+known-good particle state. Treat the previous local collision/friction design as
+research only, not current implementation.
+
+Redesign gate:
+1. reproduce vanilla destroy dispersion as a hard invariant;
+2. identify which post-move fields are semantic gravity and which are particle
+   engine implementation details;
+3. add a TerrainParticle-specific regression model/test where feasible;
+4. only then reintroduce shared local onGround/friction behavior.
