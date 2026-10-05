@@ -293,8 +293,11 @@ Implemented, acceptance/audit pending:
 - exact-edge torch emitter mismatch is deferred to the generic player/body-vs-canonical BlockState edge policy; do not special-case torch geometry
 
 Implemented, runtime acceptance pending:
-- Particle.move local vertical collision/onGround/stoppedByCollision semantics
+- Particle.move local vertical collision/onGround semantics
 - local X/Z collision velocity response
+- Particle.stoppedByCollision intentionally remains vanilla/physical after a
+  destroy-TerrainParticle regression proved it is a sticky internal short-circuit,
+  not a generic semantic gravity flag
 - base Particle.tick local ground friction and speedUpWhenYMotionIsBlocked
 
 Still open:
