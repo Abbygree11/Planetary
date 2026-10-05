@@ -276,3 +276,48 @@ Redesign gate:
    engine implementation details;
 3. add a TerrainParticle-specific regression model/test where feasible;
 4. only then reintroduce shared local onGround/friction behavior.
+
+
+## Narrow landing redesign after rollback
+
+Manual behavior in the known-good rollback state:
+- destroy fragments again disperse correctly;
+- local gravity acceleration is correct;
+- on side and -Y faces fragments continue sliding briefly after touching the
+  local floor, unlike +Y.
+
+This isolates the missing behavior to landing semantics rather than general
+Particle.move collision response.
+
+Vanilla Particle.move computes:
+
+    onGround = requestedY != actualY && requestedY < 0
+
+That is semantic gravity-Y. The safe local equivalent is therefore computed
+only AFTER vanilla has completed its physical collision solve:
+
+    requestedLocal = frame.worldToLocal(requestedWorld)
+    actualLocal    = frame.worldToLocal(actualWorld)
+    onGround       = requestedLocal.y != actualLocal.y
+                     && requestedLocal.y < 0
+
+Nothing else in Particle.move is rewritten.
+
+Particle.tick subsequently applies:
+
+    if (onGround) {
+        xd *= 0.7F;
+        zd *= 0.7F;
+    }
+
+For +/-Y, world X/Z already are the local ground tangents. For +/-X and +/-Z,
+the adapter algebraically removes that already-applied physical-X/Z multiplier
+and reapplies the exact 0.7F value to local X/Z.
+
+Explicitly NOT touched:
+- stoppedByCollision;
+- vanilla physical collision clipping;
+- vanilla physical-axis velocity zeroing;
+- speedUpWhenYMotionIsBlocked.
+
+The destroy burst is a mandatory regression gate for this narrower patch.
