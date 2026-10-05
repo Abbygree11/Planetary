@@ -9,16 +9,22 @@ import dev.planetary.topology.PlanetVector;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.TerrainParticle;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -62,7 +68,7 @@ public abstract class ParticleGravityMixin {
     protected int age;
 
     @Unique
-    private static int planetary$terrainLandingTraceBudget = 8;
+    private static int planetary$terrainLandingTraceBudget = 4;
 
     @Unique
     private int planetary$terrainTraceTicks;
@@ -71,13 +77,13 @@ public abstract class ParticleGravityMixin {
     private PlanetGravityFrame planetary$moveFrame;
 
     @Unique
-    private double planetary$moveStartX;
+    private double planetary$actualMoveX;
 
     @Unique
-    private double planetary$moveStartY;
+    private double planetary$actualMoveY;
 
     @Unique
-    private double planetary$moveStartZ;
+    private double planetary$actualMoveZ;
 
     @Unique
     private PlanetGravityFrame planetary$groundFrameThisTick;
@@ -246,9 +252,48 @@ public abstract class ParticleGravityMixin {
 
         this.planetary$moveFrame =
                 frameOptional.get();
-        this.planetary$moveStartX = this.x;
-        this.planetary$moveStartY = this.y;
-        this.planetary$moveStartZ = this.z;
+
+        // Default to the requested movement. If vanilla actually invokes its
+        // collision solver, the Redirect below replaces these with the exact
+        // clipped Vec3 returned by Entity.collideBoundingBox.
+        this.planetary$actualMoveX = requestedX;
+        this.planetary$actualMoveY = requestedY;
+        this.planetary$actualMoveZ = requestedZ;
+    }
+
+    @Redirect(
+            method = "move(DDD)V",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/world/entity/Entity;collideBoundingBox(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/phys/Vec3;Lnet/minecraft/world/phys/AABB;Lnet/minecraft/world/level/Level;Ljava/util/List;)Lnet/minecraft/world/phys/Vec3;"
+            )
+    )
+    private Vec3 planetary$captureExactCollisionResult(
+            Entity entity,
+            Vec3 requestedMovement,
+            AABB box,
+            Level level,
+            List<VoxelShape> collisions
+    ) {
+        Vec3 actualMovement =
+                Entity.collideBoundingBox(
+                        entity,
+                        requestedMovement,
+                        box,
+                        level,
+                        collisions
+                );
+
+        if (this.planetary$moveFrame != null) {
+            this.planetary$actualMoveX =
+                    actualMovement.x;
+            this.planetary$actualMoveY =
+                    actualMovement.y;
+            this.planetary$actualMoveZ =
+                    actualMovement.z;
+        }
+
+        return actualMovement;
     }
 
     @Inject(
@@ -277,9 +322,9 @@ public abstract class ParticleGravityMixin {
 
         Vec3 actual =
                 new Vec3(
-                        this.x - this.planetary$moveStartX,
-                        this.y - this.planetary$moveStartY,
-                        this.z - this.planetary$moveStartZ
+                        this.planetary$actualMoveX,
+                        this.planetary$actualMoveY,
+                        this.planetary$actualMoveZ
                 );
 
         boolean vanillaOnGround =
