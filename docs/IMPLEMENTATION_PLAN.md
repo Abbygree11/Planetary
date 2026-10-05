@@ -302,8 +302,9 @@ Redesigned after rollback, runtime acceptance pending:
 - replacement remains deliberately narrow: Particle.onGround is reclassified
   from requested/actual LOCAL Y after vanilla physical collision
 - base ground friction is moved from physical X/Z to local X/Z on side faces
-- after runtime showed residual sliding, the exact vanilla sticky landing stop is
-  reproduced ONLY for a confirmed fully-blocked LOCAL-DOWN landing
+- after runtime showed residual sliding, the exact vanilla sticky landing stop
+  was reproduced ONLY for a confirmed fully-blocked LOCAL-DOWN landing, but
+  manual acceptance still reports the slide; root cause remains open
 - head/tangent collisions, collision velocity zeroing and every other
   Particle.move behavior remain vanilla
 
