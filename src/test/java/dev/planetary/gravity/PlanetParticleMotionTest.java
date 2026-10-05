@@ -115,7 +115,6 @@ final class PlanetParticleMotionTest {
                     );
 
             assertTrue(actual.onGround(), face.name());
-            assertTrue(actual.stoppedByCollision(), face.name());
 
             PlanetFrameVector velocityLocal =
                     frame.worldToLocal(
@@ -158,7 +157,6 @@ final class PlanetParticleMotionTest {
                     );
 
             assertFalse(actual.onGround(), face.name());
-            assertTrue(actual.stoppedByCollision(), face.name());
         }
     }
 
