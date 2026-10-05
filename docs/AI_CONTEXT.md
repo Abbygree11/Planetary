@@ -1014,3 +1014,29 @@ Runtime acceptance is pending. Do not claim Phase 4 complete afterward: direct
 custom-tick particles (for example DragonBreath/Bubble/world-XZ current logic),
 remaining emitter helpers, weather and fluid-coupled particles still require
 their owning audits.
+
+
+## 2026-10-05 destroy-particle regression from stoppedByCollision
+Manual acceptance of the generic Particle.move pass found block-destroy
+TerrainParticles remained confined to the broken block instead of dispersing.
+
+Source check:
+ParticleEngine.destroy samples TerrainParticle origins from inside the destroyed
+VoxelShape.
+
+Root cause:
+the first local-axis move adapter rewrote Particle.stoppedByCollision from
+physical world-Y clipping to local-Y clipping. stoppedByCollision is sticky:
+future Particle.move() returns immediately once it becomes true. That is too
+strong to reinterpret generically for particles initially inside block shapes.
+
+Correction:
+- do NOT rewrite stoppedByCollision;
+- keep local onGround;
+- keep local tangent collision velocity zeroing;
+- keep local ground friction / blocked-vertical tangent speedup;
+- leave the sticky internal stop to vanilla.
+
+Manual re-acceptance required:
+block-destroy particles must again disperse outside the source block while
+retaining the previously fixed local-UP launch bias.
