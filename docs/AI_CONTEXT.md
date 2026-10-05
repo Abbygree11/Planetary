@@ -1040,3 +1040,27 @@ Correction:
 Manual re-acceptance required:
 block-destroy particles must again disperse outside the source block while
 retaining the previously fixed local-UP launch bias.
+
+
+## 2026-10-05 generic Particle.move/tick pass ROLLED BACK
+User rejected the destroy-particle result after the attempted stoppedByCollision
+correction: TerrainParticle fragments still failed to disperse radially around
+the broken block.
+
+Do not continue patching individual flags on top of that unaccepted runtime
+state. The entire generic Particle.move/tick runtime pass was rolled back to
+known-good commit 5f4ddde for:
+- PlanetParticleMotion.java
+- ParticleGravityMixin.java
+- PlanetParticleMotionTest.java
+
+Accepted particle work that remains intact:
+- local-UP constructor/setPower launch bias;
+- falling-dust dedicated gravity adapter;
+- ordinary/soul/redstone torch emitter transforms;
+- falling-block particle origin work.
+
+Next redesign requirement:
+start from vanilla ParticleEngine.destroy -> TerrainParticle -> Particle.tick/
+move as the acceptance reference. Any local onGround/collision/friction adapter
+must preserve destroy dispersion before being allowed to affect other particles.
