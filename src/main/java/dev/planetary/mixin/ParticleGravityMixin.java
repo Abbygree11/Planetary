@@ -69,10 +69,7 @@ public abstract class ParticleGravityMixin {
     private double planetary$moveStartZ;
 
     @Unique
-    private PlanetGravityFrame planetary$tickFrame;
-
-    @Unique
-    private boolean planetary$localMoveObservedThisTick;
+    private PlanetGravityFrame planetary$groundFrameThisTick;
 
     @Inject(
             method = "<init>(Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDD)V",
@@ -167,8 +164,7 @@ public abstract class ParticleGravityMixin {
     private void planetary$beginTick(
             CallbackInfo ci
     ) {
-        this.planetary$tickFrame = null;
-        this.planetary$localMoveObservedThisTick = false;
+        this.planetary$groundFrameThisTick = null;
 
         Optional<PlanetGravityFrame> frameOptional =
                 PlanetBlockGravity.frameAt(
@@ -186,7 +182,6 @@ public abstract class ParticleGravityMixin {
 
         PlanetGravityFrame frame =
                 frameOptional.get();
-        this.planetary$tickFrame = frame;
 
         if (this.gravity == 0.0F) {
             return;
@@ -283,8 +278,8 @@ public abstract class ParticleGravityMixin {
                         frame
                 );
 
-        if (this.planetary$tickFrame == frame) {
-            this.planetary$localMoveObservedThisTick = true;
+        if (this.onGround) {
+            this.planetary$groundFrameThisTick = frame;
         }
 
         this.planetary$moveFrame = null;
@@ -298,11 +293,10 @@ public abstract class ParticleGravityMixin {
             CallbackInfo ci
     ) {
         PlanetGravityFrame frame =
-                this.planetary$tickFrame;
+                this.planetary$groundFrameThisTick;
 
         try {
             if (frame == null
-                    || !this.planetary$localMoveObservedThisTick
                     || !this.onGround) {
                 return;
             }
@@ -321,8 +315,7 @@ public abstract class ParticleGravityMixin {
             this.yd = corrected.y;
             this.zd = corrected.z;
         } finally {
-            this.planetary$tickFrame = null;
-            this.planetary$localMoveObservedThisTick = false;
+            this.planetary$groundFrameThisTick = null;
         }
     }
 }
