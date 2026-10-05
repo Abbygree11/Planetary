@@ -244,12 +244,18 @@ final class PlanetParticleMotionTest {
                         0.25D
                 );
 
+        // Vanilla source uses a float literal: xd *= 0.7F / zd *= 0.7F.
+        // Compound assignment promotes that exact float value to double, so
+        // the test must not substitute the slightly different 0.7D.
+        double vanillaGroundFriction =
+                (double) 0.7F;
+
         // Simulate vanilla's wrong physical-X/Z ground multiplier first.
         Vec3 vanillaAfterGround =
                 new Vec3(
-                        neutral.x * 0.7D,
+                        neutral.x * vanillaGroundFriction,
                         neutral.y,
-                        neutral.z * 0.7D
+                        neutral.z * vanillaGroundFriction
                 );
 
         Vec3 corrected =
@@ -270,9 +276,17 @@ final class PlanetParticleMotionTest {
                         )
                 );
 
-        assertEquals(0.5D * 0.7D, local.x(), EPSILON);
+        assertEquals(
+                0.5D * vanillaGroundFriction,
+                local.x(),
+                EPSILON
+        );
         assertEquals(-0.4D, local.y(), EPSILON);
-        assertEquals(0.25D * 0.7D, local.z(), EPSILON);
+        assertEquals(
+                0.25D * vanillaGroundFriction,
+                local.z(),
+                EPSILON
+        );
     }
 
     @Test
