@@ -11,6 +11,7 @@ import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -19,12 +20,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.Optional;
 
 /**
- * Reorients vanilla particle gravity into the local Planet gravity frame.
- *
- * <p>Vanilla Particle.tick always applies {@code -Y} acceleration. At HEAD we
- * add the opposite +Y acceleration to cancel that upcoming term, then add the
- * same acceleration magnitude along Planet local DOWN. The original tick is
- * otherwise left intact.</p>
+ * Reorients only gravity-local Particle semantics while preserving vanilla
+ * physical collision internals.
  */
 @Mixin(Particle.class)
 public abstract class ParticleGravityMixin {
@@ -51,7 +48,31 @@ public abstract class ParticleGravityMixin {
     protected double zd;
 
     @Shadow
+    protected boolean onGround;
+
+    @Shadow
+    private boolean stoppedByCollision;
+
+    @Shadow
     protected float gravity;
+
+    @Unique
+    private PlanetGravityFrame planetary$moveFrame;
+
+    @Unique
+    private double planetary$moveStartX;
+
+    @Unique
+    private double planetary$moveStartY;
+
+    @Unique
+    private double planetary$moveStartZ;
+
+    @Unique
+    private PlanetGravityFrame planetary$tickFrame;
+
+    @Unique
+    private boolean planetary$localMoveObservedThisTick;
 
     @Inject(
             method = "<init>(Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDD)V",
@@ -143,14 +164,13 @@ public abstract class ParticleGravityMixin {
             method = "tick",
             at = @At("HEAD")
     )
-    private void planetary$rotateGravity(
+    private void planetary$beginTick(
             CallbackInfo ci
     ) {
-        if (this.gravity == 0.0F) {
-            return;
-        }
+        this.planetary$tickFrame = null;
+        this.planetary$localMoveObservedThisTick = false;
 
-        Optional<PlanetGravityFrame> frame =
+        Optional<PlanetGravityFrame> frameOptional =
                 PlanetBlockGravity.frameAt(
                         this.level,
                         this.x,
@@ -158,7 +178,17 @@ public abstract class ParticleGravityMixin {
                         this.z
                 );
 
-        if (frame.isEmpty()) {
+        if (frameOptional.isEmpty()
+                || frameOptional.get().face()
+                == PlanetFace.POS_Y) {
+            return;
+        }
+
+        PlanetGravityFrame frame =
+                frameOptional.get();
+        this.planetary$tickFrame = frame;
+
+        if (this.gravity == 0.0F) {
             return;
         }
 
@@ -166,14 +196,133 @@ public abstract class ParticleGravityMixin {
                 0.04D * (double) this.gravity;
 
         // Cancel the hard-coded vanilla -Y acceleration that tick() is about
-        // to apply.
+        // to apply, then add the same acceleration along local DOWN.
         this.yd += acceleration;
 
         PlanetVector down =
-                frame.get().worldDown();
+                frame.worldDown();
 
         this.xd += down.x() * acceleration;
         this.yd += down.y() * acceleration;
         this.zd += down.z() * acceleration;
+    }
+
+    @Inject(
+            method = "move(DDD)V",
+            at = @At("HEAD")
+    )
+    private void planetary$beginMove(
+            double requestedX,
+            double requestedY,
+            double requestedZ,
+            CallbackInfo ci
+    ) {
+        this.planetary$moveFrame = null;
+
+        // Preserve vanilla's sticky collision short-circuit exactly.
+        if (this.stoppedByCollision) {
+            return;
+        }
+
+        Optional<PlanetGravityFrame> frameOptional =
+                PlanetBlockGravity.frameAt(
+                        this.level,
+                        this.x,
+                        this.y,
+                        this.z
+                );
+
+        if (frameOptional.isEmpty()
+                || frameOptional.get().face()
+                == PlanetFace.POS_Y) {
+            return;
+        }
+
+        this.planetary$moveFrame =
+                frameOptional.get();
+        this.planetary$moveStartX = this.x;
+        this.planetary$moveStartY = this.y;
+        this.planetary$moveStartZ = this.z;
+    }
+
+    @Inject(
+            method = "move(DDD)V",
+            at = @At("RETURN")
+    )
+    private void planetary$finishMove(
+            double requestedX,
+            double requestedY,
+            double requestedZ,
+            CallbackInfo ci
+    ) {
+        PlanetGravityFrame frame =
+                this.planetary$moveFrame;
+
+        if (frame == null) {
+            return;
+        }
+
+        Vec3 requested =
+                new Vec3(
+                        requestedX,
+                        requestedY,
+                        requestedZ
+                );
+
+        Vec3 actual =
+                new Vec3(
+                        this.x - this.planetary$moveStartX,
+                        this.y - this.planetary$moveStartY,
+                        this.z - this.planetary$moveStartZ
+                );
+
+        this.onGround =
+                PlanetParticleMotion.isLocalGroundCollision(
+                        requested,
+                        actual,
+                        frame
+                );
+
+        if (this.planetary$tickFrame == frame) {
+            this.planetary$localMoveObservedThisTick = true;
+        }
+
+        this.planetary$moveFrame = null;
+    }
+
+    @Inject(
+            method = "tick",
+            at = @At("RETURN")
+    )
+    private void planetary$finishTick(
+            CallbackInfo ci
+    ) {
+        PlanetGravityFrame frame =
+                this.planetary$tickFrame;
+
+        try {
+            if (frame == null
+                    || !this.planetary$localMoveObservedThisTick
+                    || !this.onGround) {
+                return;
+            }
+
+            Vec3 corrected =
+                    PlanetParticleMotion.correctGroundFriction(
+                            new Vec3(
+                                    this.xd,
+                                    this.yd,
+                                    this.zd
+                            ),
+                            frame
+                    );
+
+            this.xd = corrected.x;
+            this.yd = corrected.y;
+            this.zd = corrected.z;
+        } finally {
+            this.planetary$tickFrame = null;
+            this.planetary$localMoveObservedThisTick = false;
+        }
     }
 }
