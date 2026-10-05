@@ -1143,3 +1143,40 @@ Use this to determine whether the visible slide is:
 - or a different render/interpolation path.
 
 Remove this diagnostic immediately after the failing gate is identified.
+
+
+## 2026-10-05 TerrainParticle landing root cause confirmed
+Runtime trace disproved the previous assumptions and exposed the exact bug.
+
+Example false LAND:
+    requestedLocal.y = -0.0024128631882789006
+    actualLocal.y    = -0.0024128631882760487
+
+Difference is ~2.8e-15. No collision occurred.
+
+Cause:
+Planetary reconstructed actual movement as:
+    particleNewPos - particleOldPos
+
+That subtraction introduces coordinate-rounding noise. Then
+isLocalGroundCollision used exact inequality, matching vanilla's source shape
+but NOT vanilla's data provenance. Vanilla compares requested movement against
+the exact clipped Vec3 returned directly by Entity.collideBoundingBox.
+
+Consequences of the bad reconstruction:
+- ordinary airborne ticks were marked onGround;
+- ground friction was applied in the air;
+- trace budget was consumed before true floor contact;
+- sticky local landing stop never triggered because actualLocal.y was not near 0;
+- visible motion diverged from +Y behavior.
+
+Correction in 77734b4:
+- Redirect only the Entity.collideBoundingBox invocation inside Particle.move;
+- call the exact same vanilla method and return its result unchanged;
+- capture that exact returned Vec3 for semantic post-processing;
+- if vanilla skips collision solving, actual movement defaults exactly to
+  requested movement;
+- no position-delta reconstruction and no epsilon heuristic.
+
+Temporary TerrainParticle trace remains capped for one acceptance pass and must
+be removed once behavior is confirmed.
