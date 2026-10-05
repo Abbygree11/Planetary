@@ -1,5 +1,6 @@
 package dev.planetary.gravity;
 
+import dev.planetary.topology.PlanetFrameVector;
 import dev.planetary.topology.PlanetGravityFrame;
 import dev.planetary.topology.PlanetVector;
 import net.minecraft.world.phys.Vec3;
@@ -7,10 +8,16 @@ import net.minecraft.world.phys.Vec3;
 import java.util.Objects;
 
 /**
- * Local-UP semantics for the hard-coded +0.1 vertical bias in Particle.
+ * Narrow local-frame adaptations for generic vanilla Particle motion.
+ *
+ * <p>Only semantics proven to represent gravity-local UP/DOWN are adapted
+ * here. Particle's internal collision short-circuit and velocity clipping stay
+ * vanilla/physical.</p>
  */
 public final class PlanetParticleMotion {
     public static final double VANILLA_UP_BIAS = 0.1D;
+    private static final double VANILLA_GROUND_FRICTION =
+            (double) 0.7F;
 
     private PlanetParticleMotion() {
     }
@@ -65,6 +72,121 @@ public final class PlanetParticleMotion {
         return bias.add(
                 velocity.subtract(bias)
                         .scale(power)
+        );
+    }
+
+    /**
+     * Exact local-frame equivalent of vanilla:
+     *
+     * <pre>
+     * onGround = requestedY != actualY && requestedY < 0
+     * </pre>
+     *
+     * <p>The collision solver itself remains completely vanilla and physical.
+     * We only reinterpret its requested/actual displacement after the move.</p>
+     */
+    public static boolean isLocalGroundCollision(
+            Vec3 requestedWorldMovement,
+            Vec3 actualWorldMovement,
+            PlanetGravityFrame frame
+    ) {
+        Objects.requireNonNull(
+                requestedWorldMovement,
+                "requestedWorldMovement"
+        );
+        Objects.requireNonNull(
+                actualWorldMovement,
+                "actualWorldMovement"
+        );
+        Objects.requireNonNull(frame, "frame");
+
+        PlanetFrameVector requested =
+                toLocal(frame, requestedWorldMovement);
+        PlanetFrameVector actual =
+                toLocal(frame, actualWorldMovement);
+
+        return Double.compare(
+                        requested.y(),
+                        actual.y()
+                ) != 0
+                && requested.y() < 0.0D;
+    }
+
+    /**
+     * Particle.tick has already applied vanilla ground friction to physical
+     * world X/Z. For side gravity those are not both local ground tangents.
+     *
+     * <p>Undo only that physical-X/Z multiplier and reapply the exact vanilla
+     * 0.7F multiplier to local X/Z. For +/-Y gravity the vanilla tangent plane
+     * already is world X/Z, so the velocity is returned unchanged.</p>
+     */
+    public static Vec3 correctGroundFriction(
+            Vec3 vanillaVelocityAfterGroundFriction,
+            PlanetGravityFrame frame
+    ) {
+        Objects.requireNonNull(
+                vanillaVelocityAfterGroundFriction,
+                "vanillaVelocityAfterGroundFriction"
+        );
+        Objects.requireNonNull(frame, "frame");
+
+        PlanetVector down = frame.worldDown();
+
+        if (down.y() != 0) {
+            return vanillaVelocityAfterGroundFriction;
+        }
+
+        Vec3 beforeVanillaGroundFriction =
+                new Vec3(
+                        vanillaVelocityAfterGroundFriction.x
+                                / VANILLA_GROUND_FRICTION,
+                        vanillaVelocityAfterGroundFriction.y,
+                        vanillaVelocityAfterGroundFriction.z
+                                / VANILLA_GROUND_FRICTION
+                );
+
+        PlanetFrameVector local =
+                toLocal(
+                        frame,
+                        beforeVanillaGroundFriction
+                );
+
+        return toWorld(
+                frame,
+                new PlanetFrameVector(
+                        local.x()
+                                * VANILLA_GROUND_FRICTION,
+                        local.y(),
+                        local.z()
+                                * VANILLA_GROUND_FRICTION
+                )
+        );
+    }
+
+    private static PlanetFrameVector toLocal(
+            PlanetGravityFrame frame,
+            Vec3 world
+    ) {
+        return frame.worldToLocal(
+                new PlanetFrameVector(
+                        world.x,
+                        world.y,
+                        world.z
+                )
+        );
+    }
+
+    private static Vec3 toWorld(
+            PlanetGravityFrame frame,
+            PlanetFrameVector local
+    ) {
+        PlanetFrameVector world =
+                frame.localToWorld(local);
+
+        return new Vec3(
+                world.x(),
+                world.y(),
+                world.z()
         );
     }
 }
