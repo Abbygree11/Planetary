@@ -292,13 +292,13 @@ Implemented, acceptance/audit pending:
 - standing/wall redstone torch visual particle origins use canonical local frame (manual PASS away from exact edges)
 - exact-edge torch emitter mismatch is deferred to the generic player/body-vs-canonical BlockState edge policy; do not special-case torch geometry
 
-Implemented, runtime acceptance pending:
-- Particle.move local vertical collision/onGround semantics
-- local X/Z collision velocity response
-- Particle.stoppedByCollision intentionally remains vanilla/physical after a
-  destroy-TerrainParticle regression proved it is a sticky internal short-circuit,
-  not a generic semantic gravity flag
-- base Particle.tick local ground friction and speedUpWhenYMotionIsBlocked
+Rolled back / needs redesign:
+- the first generic Particle.move/tick local-axis pass caused destroy
+  TerrainParticles to lose their normal radial dispersal and was fully reverted
+  to the last manually accepted particle runtime state
+- local onGround/collision/friction semantics must be reintroduced only after
+  preserving ParticleEngine.destroy/TerrainParticle behavior byte-for-byte at +Y
+  and rotationally equivalent on side faces
 
 Still open:
 - complete direct-gravity / custom-tick particle subclass audit
