@@ -302,9 +302,11 @@ Redesigned after rollback, runtime acceptance pending:
 - replacement remains deliberately narrow: Particle.onGround is reclassified
   from requested/actual LOCAL Y after vanilla physical collision
 - base ground friction is moved from physical X/Z to local X/Z on side faces
-- after runtime showed residual sliding, the exact vanilla sticky landing stop
-  was reproduced ONLY for a confirmed fully-blocked LOCAL-DOWN landing, but
-  manual acceptance still reports the slide; root cause remains open
+- residual sliding root cause found from runtime trace: actual movement was
+  reconstructed as newPos-oldPos, introducing ~1e-15 floating error, so ordinary
+  airborne motion was falsely classified as local-ground collision
+- landing now consumes the exact clipped Vec3 returned by vanilla
+  Entity.collideBoundingBox; runtime acceptance pending
 - head/tangent collisions, collision velocity zeroing and every other
   Particle.move behavior remain vanilla
 
