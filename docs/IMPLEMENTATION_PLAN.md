@@ -295,11 +295,13 @@ Implemented, acceptance/audit pending:
 Redesigned after rollback, runtime acceptance pending:
 - the first broad Particle.move/tick local-axis pass was rejected because it
   changed destroy TerrainParticle dispersion
-- replacement is deliberately narrow: only Particle.onGround is reclassified
+- replacement remains deliberately narrow: Particle.onGround is reclassified
   from requested/actual LOCAL Y after vanilla physical collision
 - base ground friction is moved from physical X/Z to local X/Z on side faces
-- stoppedByCollision, collision velocity zeroing and all other Particle.move
-  internals remain untouched
+- after runtime showed residual sliding, the exact vanilla sticky landing stop is
+  reproduced ONLY for a confirmed fully-blocked LOCAL-DOWN landing
+- head/tangent collisions, collision velocity zeroing and every other
+  Particle.move behavior remain vanilla
 
 Still open:
 - complete direct-gravity / custom-tick particle subclass audit
