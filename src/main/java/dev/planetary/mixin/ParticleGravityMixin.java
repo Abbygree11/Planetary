@@ -280,6 +280,18 @@ public abstract class ParticleGravityMixin {
 
         if (this.onGround) {
             this.planetary$groundFrameThisTick = frame;
+
+            // Reproduce only vanilla's sticky stop on a confirmed LOCAL-DOWN
+            // landing. Do not generalize stoppedByCollision to head/tangent
+            // collisions and do not alter collision velocity components.
+            if (PlanetParticleMotion
+                    .shouldStopAfterLocalGroundCollision(
+                            requested,
+                            actual,
+                            frame
+                    )) {
+                this.stoppedByCollision = true;
+            }
         }
 
         this.planetary$moveFrame = null;
