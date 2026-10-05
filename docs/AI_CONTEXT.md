@@ -1088,3 +1088,22 @@ New patch is intentionally narrower than the rejected generic move pass:
 Regression gate:
 ParticleEngine.destroy/TerrainParticle radial dispersion must remain unchanged.
 Manual acceptance pending.
+
+
+## 2026-10-05 residual particle slide diagnosis
+User verified the narrow landing pass preserved destroy dispersion, but side/-Y
+destroy fragments still slid briefly after touching the local floor.
+
+Exact cause:
++Y vanilla landing also sets Particle.stoppedByCollision because requested
+world-Y becomes fully blocked. That sticky flag prevents future move() calls.
+On side gravity, local vertical is world X/Z, so vanilla never sets it.
+
+New narrow adaptation:
+- only after confirmed local-ground contact;
+- only if requested local Y is downward and >=1e-5;
+- only if actual local Y is ~0;
+- set stoppedByCollision=true.
+
+No collision velocity components are rewritten. Head/tangent collisions keep
+vanilla behavior. This must again pass destroy radial-dispersion regression.
