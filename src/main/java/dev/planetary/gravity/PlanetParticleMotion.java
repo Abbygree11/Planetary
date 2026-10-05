@@ -12,7 +12,6 @@ import java.util.Objects;
  */
 public final class PlanetParticleMotion {
     public static final double VANILLA_UP_BIAS = 0.1D;
-    private static final double STOP_EPSILON = 1.0E-5D;
     private static final double VANILLA_BLOCKED_SPEED_UP = 1.1D;
     private static final double VANILLA_GROUND_FRICTION = (double) 0.7F;
 
@@ -78,10 +77,15 @@ public final class PlanetParticleMotion {
      * <p>Collision clipping itself remains ordinary physical XYZ. Only the
      * semantic consequences are local:
      * - local Y collision while moving DOWN means onGround;
-     * - a fully blocked local-Y move means stoppedByCollision;
      * - collisions on local X/Z zero those tangent velocity components;
      * - a collision on local Y does not zero gravity-axis velocity, matching
      *   vanilla's treatment of world Y.</p>
+     *
+     * <p>Particle.stoppedByCollision is intentionally NOT generalized here.
+     * It is a sticky internal movement short-circuit, not merely a gravity
+     * classification flag. In particular, block-destroy TerrainParticles are
+     * spawned inside the destroyed VoxelShape; converting that sticky flag to
+     * local Y can freeze their entire burst inside the source block.</p>
      */
     public static CollisionSemantics collisionSemantics(
             Vec3 requestedWorldMovement,
@@ -127,13 +131,8 @@ public final class PlanetParticleMotion {
         Vec3 correctedWorldVelocity =
                 toWorld(frame, correctedLocalVelocity);
 
-        boolean stoppedByCollision =
-                Math.abs(requested.y()) >= STOP_EPSILON
-                        && Math.abs(actual.y()) < STOP_EPSILON;
-
         return new CollisionSemantics(
                 yCollision && requested.y() < 0.0D,
-                stoppedByCollision,
                 correctedWorldVelocity,
                 requested,
                 actual
@@ -257,7 +256,6 @@ public final class PlanetParticleMotion {
 
     public record CollisionSemantics(
             boolean onGround,
-            boolean stoppedByCollision,
             Vec3 correctedWorldVelocity,
             PlanetFrameVector requestedLocal,
             PlanetFrameVector actualLocal
