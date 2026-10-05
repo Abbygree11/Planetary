@@ -94,6 +94,31 @@ final class PlanetParticleMotionTest {
 
 
     @Test
+    void identicalRequestedAndActualMovementIsNotGround() {
+        for (PlanetFace face : PlanetFace.values()) {
+            PlanetGravityFrame frame =
+                    new PlanetGravityFrame(face);
+
+            Vec3 movement =
+                    worldVector(
+                            frame,
+                            -0.08D,
+                            -0.02D,
+                            0.03D
+                    );
+
+            assertFalse(
+                    PlanetParticleMotion.isLocalGroundCollision(
+                            movement,
+                            movement,
+                            frame
+                    ),
+                    face.name()
+            );
+        }
+    }
+
+    @Test
     void localDownCollisionMeansGroundOnAllFaces() {
         for (PlanetFace face : PlanetFace.values()) {
             PlanetGravityFrame frame =
