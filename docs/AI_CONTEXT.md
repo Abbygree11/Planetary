@@ -1064,3 +1064,27 @@ Next redesign requirement:
 start from vanilla ParticleEngine.destroy -> TerrainParticle -> Particle.tick/
 move as the acceptance reference. Any local onGround/collision/friction adapter
 must preserve destroy dispersion before being allowed to affect other particles.
+
+
+## 2026-10-05 narrow particle landing pass
+After rollback, user confirmed a smaller remaining asymmetry:
+destroy fragments on side and -Y gravity fall correctly but slide along the
+local floor for a short time; +Y fragments settle immediately.
+
+Diagnosis:
+vanilla Particle.move still sets onGround only from blocked negative WORLD Y.
+Therefore rotated-face particles can physically land without entering vanilla
+ground-friction behavior.
+
+New patch is intentionally narrower than the rejected generic move pass:
+- capture requested and actual displacement around vanilla Particle.move;
+- overwrite ONLY onGround using local Y collision/downward intent;
+- do not alter stoppedByCollision;
+- do not alter vanilla collision velocity zeroing;
+- when base Particle.tick applies world-X/Z 0.7F ground friction, remap only that
+  multiplier to local X/Z on side faces;
+- +/-Y friction plane remains vanilla world X/Z.
+
+Regression gate:
+ParticleEngine.destroy/TerrainParticle radial dispersion must remain unchanged.
+Manual acceptance pending.
