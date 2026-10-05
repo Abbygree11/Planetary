@@ -1111,3 +1111,35 @@ New narrow adaptation:
 
 No collision velocity components are rewritten. Head/tangent collisions keep
 vanilla behavior. This must again pass destroy radial-dispersion regression.
+
+
+## 2026-10-05 TerrainParticle landing trace
+Manual acceptance after the narrow local stoppedByCollision landing patch:
+- destroy radial dispersion: still PASS;
+- residual side/-Y sliding after local-floor contact: STILL PRESENT.
+
+Therefore the stoppedByCollision hypothesis is not accepted as the root cause.
+
+Per AGENTS.md, no further speculative runtime patch should be stacked on top.
+Added a temporary capped TerrainParticle diagnostic in ParticleGravityMixin.
+
+The trace records, for up to 8 local-ground landings:
+- selected gravity face;
+- requested and actual LOCAL displacement;
+- vanilla onGround before Planet rewrite;
+- local onGround after rewrite;
+- vanilla stoppedByCollision before Planet write;
+- stoppedByCollision after the narrow local landing rule;
+- particle position/velocity at landing;
+- position/velocity/onGround/stopped for the next four tick returns.
+
+Expected log prefix:
+    [Planetary/ParticleTrace]
+
+Use this to determine whether the visible slide is:
+- missing local landing classification;
+- stoppedByCollision not being set;
+- position still changing despite sticky stop;
+- or a different render/interpolation path.
+
+Remove this diagnostic immediately after the failing gate is identified.
