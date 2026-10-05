@@ -1,5 +1,9 @@
 # Planetary 2.0 implementation roadmap
 
+> Development process is defined by `/AGENTS.md` and is mandatory.
+> This file owns scope, phase ordering, dependencies, status and acceptance
+> gates; it does not replace the process rules.
+
 This is the execution plan for Planetary. Treat it as a gate, not a wishlist.
 Do not start a phase by patching the first visible symptom.
 
