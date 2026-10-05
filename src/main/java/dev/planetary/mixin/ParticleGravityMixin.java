@@ -3,10 +3,12 @@ package dev.planetary.mixin;
 import dev.planetary.gravity.PlanetBlockGravity;
 import dev.planetary.gravity.PlanetParticleMotion;
 import dev.planetary.topology.PlanetFace;
+import dev.planetary.topology.PlanetFrameVector;
 import dev.planetary.topology.PlanetGravityFrame;
 import dev.planetary.topology.PlanetVector;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.TerrainParticle;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -55,6 +57,15 @@ public abstract class ParticleGravityMixin {
 
     @Shadow
     protected float gravity;
+
+    @Shadow
+    protected int age;
+
+    @Unique
+    private static int planetary$terrainLandingTraceBudget = 8;
+
+    @Unique
+    private int planetary$terrainTraceTicks;
 
     @Unique
     private PlanetGravityFrame planetary$moveFrame;
@@ -271,12 +282,19 @@ public abstract class ParticleGravityMixin {
                         this.z - this.planetary$moveStartZ
                 );
 
-        this.onGround =
+        boolean vanillaOnGround =
+                this.onGround;
+        boolean vanillaStoppedByCollision =
+                this.stoppedByCollision;
+
+        boolean localOnGround =
                 PlanetParticleMotion.isLocalGroundCollision(
                         requested,
                         actual,
                         frame
                 );
+
+        this.onGround = localOnGround;
 
         if (this.onGround) {
             this.planetary$groundFrameThisTick = frame;
@@ -292,6 +310,45 @@ public abstract class ParticleGravityMixin {
                     )) {
                 this.stoppedByCollision = true;
             }
+        }
+
+        if ((Object) this instanceof TerrainParticle
+                && localOnGround
+                && this.planetary$terrainTraceTicks == 0
+                && planetary$terrainLandingTraceBudget > 0) {
+            planetary$terrainLandingTraceBudget--;
+            this.planetary$terrainTraceTicks = 4;
+
+            PlanetFrameVector requestedLocal =
+                    frame.worldToLocal(
+                            new PlanetFrameVector(
+                                    requested.x,
+                                    requested.y,
+                                    requested.z
+                            )
+                    );
+            PlanetFrameVector actualLocal =
+                    frame.worldToLocal(
+                            new PlanetFrameVector(
+                                    actual.x,
+                                    actual.y,
+                                    actual.z
+                            )
+                    );
+
+            System.out.println(
+                    "[Planetary/ParticleTrace] LAND"
+                            + " face=" + frame.face()
+                            + " age=" + this.age
+                            + " reqLocal=" + requestedLocal
+                            + " actualLocal=" + actualLocal
+                            + " vanillaOnGround=" + vanillaOnGround
+                            + " localOnGround=" + this.onGround
+                            + " vanillaStopped=" + vanillaStoppedByCollision
+                            + " stoppedNow=" + this.stoppedByCollision
+                            + " pos=(" + this.x + "," + this.y + "," + this.z + ")"
+                            + " vel=(" + this.xd + "," + this.yd + "," + this.zd + ")"
+            );
         }
 
         this.planetary$moveFrame = null;
@@ -328,6 +385,19 @@ public abstract class ParticleGravityMixin {
             this.zd = corrected.z;
         } finally {
             this.planetary$groundFrameThisTick = null;
+
+            if ((Object) this instanceof TerrainParticle
+                    && this.planetary$terrainTraceTicks > 0) {
+                System.out.println(
+                        "[Planetary/ParticleTrace] TICK"
+                                + " age=" + this.age
+                                + " onGround=" + this.onGround
+                                + " stopped=" + this.stoppedByCollision
+                                + " pos=(" + this.x + "," + this.y + "," + this.z + ")"
+                                + " vel=(" + this.xd + "," + this.yd + "," + this.zd + ")"
+                );
+                this.planetary$terrainTraceTicks--;
+            }
         }
     }
 }
