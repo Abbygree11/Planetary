@@ -331,12 +331,9 @@ public abstract class ParticleGravityMixin {
 
         this.onGround = semantics.onGround();
 
-        // Vanilla makes this sticky only because move() returns immediately on
-        // later calls. We only reach this branch when it was false at HEAD, so
-        // overwrite a wrong physical-Y classification with the local result.
-        this.stoppedByCollision =
-                semantics.stoppedByCollision();
-
+        // Do not reinterpret stoppedByCollision. Unlike onGround it is a
+        // sticky internal short-circuit whose vanilla behavior is relied on by
+        // particles spawned inside block shapes (notably destroy TerrainParticle).
         this.planetary$moveFrame = null;
     }
 
