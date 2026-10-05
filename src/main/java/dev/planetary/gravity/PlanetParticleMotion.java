@@ -18,6 +18,8 @@ public final class PlanetParticleMotion {
     public static final double VANILLA_UP_BIAS = 0.1D;
     private static final double VANILLA_GROUND_FRICTION =
             (double) 0.7F;
+    private static final double VANILLA_STOP_EPSILON =
+            1.0E-5D;
 
     private PlanetParticleMotion() {
     }
@@ -110,6 +112,46 @@ public final class PlanetParticleMotion {
                         actual.y()
                 ) != 0
                 && requested.y() < 0.0D;
+    }
+
+    /**
+     * Local equivalent of vanilla's sticky vertical collision stop, restricted
+     * to a confirmed LOCAL-DOWN landing.
+     *
+     * <p>Vanilla sets stoppedByCollision when requested world-Y movement is
+     * non-trivial and the actual world-Y movement becomes ~0. On +Y ground
+     * contact this makes particles stop moving entirely on later ticks.
+     *
+     * <p>For rotated gravity we only reproduce that condition after the same
+     * movement has already been classified as a local ground collision. This
+     * deliberately excludes local-UP/head collisions and all tangent
+     * collisions.</p>
+     */
+    public static boolean shouldStopAfterLocalGroundCollision(
+            Vec3 requestedWorldMovement,
+            Vec3 actualWorldMovement,
+            PlanetGravityFrame frame
+    ) {
+        Objects.requireNonNull(
+                requestedWorldMovement,
+                "requestedWorldMovement"
+        );
+        Objects.requireNonNull(
+                actualWorldMovement,
+                "actualWorldMovement"
+        );
+        Objects.requireNonNull(frame, "frame");
+
+        PlanetFrameVector requested =
+                toLocal(frame, requestedWorldMovement);
+        PlanetFrameVector actual =
+                toLocal(frame, actualWorldMovement);
+
+        return requested.y() < 0.0D
+                && Math.abs(requested.y())
+                >= VANILLA_STOP_EPSILON
+                && Math.abs(actual.y())
+                < VANILLA_STOP_EPSILON;
     }
 
     /**
