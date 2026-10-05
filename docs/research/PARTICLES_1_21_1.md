@@ -378,3 +378,44 @@ Required evidence before the next code change:
 If position is already stationary while the user still perceives sliding, the
 remaining bug is not Particle.move physics and the next research target must be
 render interpolation/anchor rather than collision.
+
+
+## Exact collision-result capture: confirmed root cause
+
+The temporary TerrainParticle trace showed false landing classifications on age 1
+while particles were still freely moving.
+
+Representative values:
+
+    requestedLocal.y = -0.0024128631882789006
+    actualLocal.y    = -0.0024128631882760487
+
+The difference (~2.8e-15) came solely from reconstructing actual displacement as
+newPosition - oldPosition.
+
+Vanilla does NOT reconstruct displacement from particle positions. Particle.move
+receives the exact Vec3 returned by Entity.collideBoundingBox and assigns its
+components directly to the local movement variables before evaluating collision
+state.
+
+Therefore the correct adaptation boundary is the exact collision-result value,
+not particle positions and not an arbitrary epsilon.
+
+Implementation:
+- ParticleGravityMixin redirects only Entity.collideBoundingBox inside
+  Particle.move;
+- invokes Entity.collideBoundingBox unchanged;
+- stores the returned Vec3;
+- returns the same Vec3 to vanilla;
+- initializes captured actual movement to requested movement when vanilla never
+  invokes the collision solver;
+- local onGround/sticky-landing semantics consume that exact requested/actual
+  pair.
+
+This preserves vanilla collision geometry and avoids both floating reconstruction
+noise and tolerance heuristics.
+
+Acceptance gate:
+- destroy radial burst remains unchanged;
+- no false LAND traces during free flight;
+- side/-Y particles should settle like +Y after genuine local-floor contact.
