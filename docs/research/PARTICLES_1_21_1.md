@@ -321,3 +321,40 @@ Explicitly NOT touched:
 - speedUpWhenYMotionIsBlocked.
 
 The destroy burst is a mandatory regression gate for this narrower patch.
+
+
+## Residual side-face slide: vanilla sticky landing stop
+
+Runtime after the narrow onGround + local-friction patch:
+- destroy radial dispersion remained correct;
+- side/-Y particles still slid briefly after landing;
+- +Y particles did not.
+
+The remaining difference is vanilla Particle.stoppedByCollision.
+
+On +Y landing, the floor blocks requested WORLD-Y movement, so vanilla executes:
+
+    abs(requestedY) >= 1e-5
+    && abs(actualY) < 1e-5
+    -> stoppedByCollision = true
+
+That field is sticky; later Particle.move calls return immediately. Therefore +Y
+particles stop moving completely after a full landing instead of merely relying
+on 0.7F ground friction.
+
+On side gravity the local vertical axis is world X or Z, so the same floor
+contact never satisfies vanilla's world-Y stop predicate.
+
+Narrow Planet rule:
+- first require LOCAL-DOWN intent;
+- require requested local-Y magnitude >= 1e-5;
+- require actual local-Y magnitude < 1e-5;
+- only then set stoppedByCollision = true.
+
+This is intentionally much narrower than the rejected generic collision pass:
+- no local-UP/head sticky stop;
+- no tangent sticky stop;
+- no velocity-component rewriting;
+- no collision-solver changes.
+
+Destroy TerrainParticle dispersion remains a mandatory regression gate.
