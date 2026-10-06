@@ -40,9 +40,11 @@ At the beginning of every new chat/session:
 3. Read the latest relevant parts of `docs/AI_CONTEXT.md`.
 4. Read `docs/research/GRAVITY_MECHANISM_MAP_1_21_1.md` when the work can be
    affected by local gravity/frame semantics.
-5. Read the research document(s) for the subsystem being touched.
-6. Inspect the actual current `2.0` branch and recent relevant commits/files.
-7. Identify the last manually accepted/known-good behavior before changing
+5. Read `docs/research/PORTABILITY_STRATEGY.md` before designing a new runtime
+   mechanism or changing an integration boundary.
+6. Read the research document(s) for the subsystem being touched.
+7. Inspect the actual current `2.0` branch and recent relevant commits/files.
+8. Identify the last manually accepted/known-good behavior before changing
    runtime code.
 
 GitHub/repository state wins over remembered chat context.
@@ -109,6 +111,42 @@ Prefer this hierarchy:
                 -> class-specific adapter only when behavior is genuinely unique
 
 Do not call an object "done" because one of its mechanisms works.
+
+## 3B. Cross-version portability is a hard architecture gate
+
+Canonical strategy: `docs/research/PORTABILITY_STRATEGY.md`.
+
+Planetary is currently implemented for Minecraft 1.21.1 / NeoForge 21.1.215,
+but new work must be structured so newer Minecraft ports primarily replace thin
+integration adapters instead of rewriting core Planet semantics.
+
+Required dependency direction:
+
+    stable Planet semantic/core logic
+        <- Minecraft/NeoForge adapters
+            <- thin Mixins / hooks / entrypoints
+
+Rules:
+- keep topology/frame/graph/shape/entity semantic algorithms out of mixins when
+  practical;
+- mixins should collect vanilla context, call stable Planet helpers, adapt the
+  result and return to vanilla;
+- localize version-specific Minecraft implementation details;
+- prefer public/protected/NeoForge boundaries over private accessors and
+  ordinal/local-variable-dependent injections;
+- do not copy large vanilla methods when a narrow argument/result adapter can
+  preserve the original implementation;
+- when copying/reimplementing vanilla logic is unavoidable, isolate it as an
+  explicit version-sensitive hotspot and add vanilla-equivalence tests;
+- preserve codecs, capabilities, model extensions and other standard
+  Minecraft/NeoForge extension points;
+- Planet-owned persistent formats must be versioned/migratable;
+- pure semantic tests should survive a Minecraft version port with little or no
+  change.
+
+Before expanding a new runtime mechanism across many classes, verify that its
+core logic can remain unchanged if the exact vanilla hook/signature moves in a
+future Minecraft version.
 
 ## 4. Research is mandatory BEFORE implementation
 
