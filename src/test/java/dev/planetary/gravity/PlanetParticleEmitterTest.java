@@ -115,6 +115,32 @@ final class PlanetParticleEmitterTest {
     }
 
     @Test
+    void belowBlockRotatesVanillaBelowEmitterOnAllFaces() {
+        double sampleX = 0.2D;
+        double sampleZ = 0.8D;
+
+        for (PlanetFace face : PlanetFace.values()) {
+            PlanetGravityFrame frame =
+                    new PlanetGravityFrame(face);
+
+            assertVec(
+                    PlanetParticleEmitter.belowBlock(
+                            POS,
+                            frame,
+                            sampleX,
+                            sampleZ
+                    ),
+                    expectedFromLocal(
+                            frame,
+                            sampleX - 0.5D,
+                            -0.55D,
+                            sampleZ - 0.5D
+                    )
+            );
+        }
+    }
+
+    @Test
     void positiveYMatchesVanillaEmitterCoordinatesExactly() {
         PlanetGravityFrame frame =
                 new PlanetGravityFrame(
@@ -143,6 +169,20 @@ final class PlanetParticleEmitterTest {
                         10.23D,
                         20.92D,
                         30.5D
+                )
+        );
+
+        assertVec(
+                PlanetParticleEmitter.belowBlock(
+                        POS,
+                        frame,
+                        0.2D,
+                        0.8D
+                ),
+                new Vec3(
+                        10.2D,
+                        19.95D,
+                        30.8D
                 )
         );
     }
