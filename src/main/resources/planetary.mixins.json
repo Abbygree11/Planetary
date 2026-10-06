@@ -20,6 +20,8 @@
     "DragonBreathParticleAccessor",
     "DragonBreathParticleGravityMixin",
     "FixedVerticalLaunchParticleMixin",
+    "LocalAuthoredLaunchParticleMixin",
+    "SplashParticleGravityMixin",
     "WaterCurrentDownParticleAccessor",
     "WaterCurrentDownParticleGravityMixin",
     "SnowflakeParticleGravityMixin",
