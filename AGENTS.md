@@ -38,9 +38,11 @@ At the beginning of every new chat/session:
 1. Read this file.
 2. Read the active/relevant sections of `docs/IMPLEMENTATION_PLAN.md`.
 3. Read the latest relevant parts of `docs/AI_CONTEXT.md`.
-4. Read the research document(s) for the subsystem being touched.
-5. Inspect the actual current `2.0` branch and recent relevant commits/files.
-6. Identify the last manually accepted/known-good behavior before changing
+4. Read `docs/research/GRAVITY_MECHANISM_MAP_1_21_1.md` when the work can be
+   affected by local gravity/frame semantics.
+5. Read the research document(s) for the subsystem being touched.
+6. Inspect the actual current `2.0` branch and recent relevant commits/files.
+7. Identify the last manually accepted/known-good behavior before changing
    runtime code.
 
 GitHub/repository state wins over remembered chat context.
@@ -69,6 +71,44 @@ and defer it to the owning common mechanism when appropriate.
 
 Example: exact-edge block positioning is a generic block-frame/edge-policy
 problem, not a torch-specific offset problem.
+
+## 3A. Roadmap phases are organized by engine mechanisms
+
+Roadmap ownership is based on the INTERNAL VANILLA/NEOFORGE MECHANISM being
+adapted, not on a flat list of block/entity names.
+
+Canonical classification:
+`docs/research/GRAVITY_MECHANISM_MAP_1_21_1.md`.
+
+A concrete Minecraft object may legitimately appear in multiple phases because
+different behaviors have different owners.
+
+Examples:
+- rail placement/support + RailState graph -> block-semantics phase;
+- powered/detector rail signaling -> signals/automation phase;
+- minecart-on-rail movement -> entity/vehicle phase;
+- rail rendering -> render phase;
+- door placement/pairing -> block-semantics phase;
+- door redstone -> signals phase;
+- door pathfinding -> AI phase.
+
+Before adding a class-specific runtime patch:
+
+1. identify the visible failing behavior, not merely the class name;
+2. identify the exact vanilla call path that owns that behavior;
+3. inspect the superclass/base family;
+4. inspect sibling classes using the same family/mechanism;
+5. check whether an existing shared Planet boundary should cover the family;
+6. update the mechanism map and roadmap when ownership/scope changes.
+
+Prefer this hierarchy:
+
+    stable engine boundary
+        -> base-family adapter
+            -> explicit algorithm-family adapter
+                -> class-specific adapter only when behavior is genuinely unique
+
+Do not call an object "done" because one of its mechanisms works.
 
 ## 4. Research is mandatory BEFORE implementation
 
@@ -212,13 +252,23 @@ covered by the final subsystem acceptance matrix.
 ## 8. Mandatory post-change verification checklist
 
 After EVERY runtime-affecting change, meaningful fix/refactor, or worldgen
-change, give the user a numbered verification checklist.
+change, give the user a numbered verification checklist/status.
 
 When applicable, begin with exactly:
 
 `git pull && .\test.ps1 && .\run-client.ps1`
 
-The checklist must:
+When a subsystem is in documented BATCH ACCEPTANCE mode, do NOT ask the user to
+repeat full gameplay acceptance after every internal class/family patch.
+Instead:
+
+- request build/startup checks only when an intermediate checkpoint is actually
+  needed under section 7A;
+- otherwise state that gameplay acceptance is intentionally deferred to the
+  subsystem matrix and continue implementation;
+- provide the full gameplay checklist once the coherent subsystem batch is ready.
+
+The final/subsystem gameplay checklist must:
 
 1. separate build/startup from gameplay checks;
 2. test the primary behavior;
@@ -230,8 +280,9 @@ The checklist must:
 8. include performance/smoke checks when appropriate;
 9. avoid vague wording such as "check that it works".
 
-The user previously requested this after every change; treat it as a permanent
-project rule.
+This reconciles the permanent post-change verification rule with the permanent
+batch-acceptance rule: evidence is mandatory, but redundant user gameplay
+testing is not.
 
 ## 9. Regression and rollback procedure
 
