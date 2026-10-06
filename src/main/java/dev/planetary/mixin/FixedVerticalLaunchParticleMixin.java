@@ -4,6 +4,7 @@ import dev.planetary.gravity.PlanetBlockGravity;
 import dev.planetary.gravity.PlanetParticleMotion;
 import dev.planetary.topology.PlanetFace;
 import dev.planetary.topology.PlanetGravityFrame;
+import net.minecraft.client.particle.DustPlumeParticle;
 import net.minecraft.client.particle.HeartParticle;
 import net.minecraft.client.particle.NoteParticle;
 import net.minecraft.client.particle.ShriekParticle;
@@ -22,6 +23,7 @@ import java.util.Optional;
 @Mixin({
         HeartParticle.class,
         NoteParticle.class,
+        DustPlumeParticle.class,
         ShriekParticle.class,
         WaterCurrentDownParticle.class
 })
@@ -60,6 +62,9 @@ public abstract class FixedVerticalLaunchParticleMixin {
         }
         else if ((Object) this instanceof ShriekParticle) {
             verticalTerm = 0.1D;
+        }
+        else if ((Object) this instanceof DustPlumeParticle) {
+            verticalTerm = 0.15D;
         }
         else if ((Object) this instanceof WaterCurrentDownParticle) {
             verticalTerm = -0.05D;
