@@ -296,32 +296,21 @@ Implemented, acceptance/audit pending:
 - standing/wall redstone torch visual particle origins use canonical local frame (manual PASS away from exact edges)
 - exact-edge torch emitter mismatch is deferred to the generic player/body-vs-canonical BlockState edge policy; do not special-case torch geometry
 
-Current TerrainParticle destroy-effect work, runtime acceptance pending:
-- post-move onGround/stoppedByCollision patches were rejected; they tried to
-  repair consequences after vanilla had already resolved collision in world axes
-- the render-anchor experiment was also rejected after manual testing showed no
-  visible change and has been removed
-- exact Particle.move research identified the owning asymmetry: vanilla collision
-  order is WORLD Y first, then WORLD X/Z, and its collision response also treats
-  WORLD Y as vertical
-- TerrainParticleMoveGravityMixin now replaces Particle.move only for
-  TerrainParticle on rotated Planet faces:
-  - preserves vanilla physical AABB and hasNearBlocks gate
-  - collects the same block collision shapes as vanilla
-  - resolves them through PlanetEntityCollision.collideWithShapes in LOCAL
-    Y -> LOCAL X/Z order
-  - applies exact vanilla stoppedByCollision/onGround/tangent-velocity semantics
-    to LOCAL axes
-- +Y and every non-TerrainParticle still use vanilla Particle.move unchanged
-- pure tests cover local collision response and the full floor-contact move model
-  across all six faces
-- private Particle.hasNearBlocks is NOT accessed by @Invoker; its small vanilla
-  pre-check is copied locally because the private runtime method name proved
-  unstable under the NeoForge dev transformation pipeline
-
-Generic Particle.move/tick work for other particle classes remains a separate
-open research item; do not generalize the TerrainParticle adapter until this
-runtime acceptance passes
+TerrainParticle destroy-effect work [MANUAL PASS]:
+- radial destroy burst is preserved
+- local gravity launch bias remains correct
+- +/-X, +/-Z and -Y no longer acquire the extra surface-crawling phase seen
+  before acceptance; behavior now matches +Y closely enough in runtime
+- accepted boundary is TerrainParticleMoveGravityMixin on rotated faces:
+  - preserve vanilla physical AABB and hasNearBlocks optimization
+  - resolve collision in LOCAL Y -> LOCAL X/Z order through
+    PlanetEntityCollision.collideWithShapes
+  - apply vanilla stoppedByCollision/onGround/tangent clipping semantics to
+    LOCAL axes
+- +Y and non-TerrainParticle classes remain on vanilla Particle.move
+- rejected post-move flag patches and render-anchor experiment remain removed
+- private Particle.hasNearBlocks is copied locally rather than invoked through a
+  private @Invoker because runtime mapping proved unstable
 
 Still open:
 - complete direct-gravity / custom-tick particle subclass audit
