@@ -24,6 +24,7 @@
     "WaterCurrentDownParticleGravityMixin",
     "SnowflakeParticleGravityMixin",
     "SquidInkParticleGravityMixin",
+    "WaterDropParticleGravityMixin",
     "SemanticTickDeltaParticleMixin",
     "FallingDustParticleGravityMixin",
     "TorchParticleGravityMixin",
