@@ -296,22 +296,18 @@ Implemented, acceptance/audit pending:
 - standing/wall redstone torch visual particle origins use canonical local frame (manual PASS away from exact edges)
 - exact-edge torch emitter mismatch is deferred to the generic player/body-vs-canonical BlockState edge policy; do not special-case torch geometry
 
-Redesigned after rollback, runtime acceptance pending:
-- the first broad Particle.move/tick local-axis pass was rejected because it
-  changed destroy TerrainParticle dispersion
-- replacement remains deliberately narrow: Particle.onGround is reclassified
-  from requested/actual LOCAL Y after vanilla physical collision
-- base ground friction is moved from physical X/Z to local X/Z on side faces
-- residual sliding diagnostics found two distinct issues:
-  - actual movement reconstruction via newPos-oldPos introduced ~1e-15 noise
-    and false airborne onGround;
-  - even with exact collision data, rotated particles retained a visible extra
-    post-contact slide that +Y does not visually exhibit
-- landing now consumes the exact Vec3 returned by vanilla Entity.collideBoundingBox
-  and stops future particle movement immediately on the first proven LOCAL-DOWN
-  contact; runtime acceptance pending
-- head/tangent collisions, collision velocity zeroing and every other
-  Particle.move behavior remain vanilla
+Current TerrainParticle destroy-effect work, runtime acceptance pending:
+- the broad and narrow Particle.move/onGround/stoppedByCollision experiments
+  were rejected and have been removed from runtime; do not build on them
+- exact source review showed TerrainParticle does not remove itself on ground
+- vanilla Particle position/render semantics are center X/Z but AABB.minY;
+  therefore the render anchor is the local-DOWN AABB face only on +Y
+- TerrainParticle render now shifts that anchor to the center of the actual
+  LOCAL-DOWN AABB face on the five rotated gravity faces
+- physics, lifetime, collision and radial destroy burst remain untouched
+
+Generic Particle.move/tick local onGround/friction semantics remain a separate
+open research item; they are not part of the current TerrainParticle visual fix
 
 Still open:
 - complete direct-gravity / custom-tick particle subclass audit
