@@ -3,6 +3,15 @@
 Status: cross-cutting architecture baseline for Planetary 2.0.
 Target runtime: Minecraft 1.21.1 / NeoForge 21.1.x.
 
+**Mechanism ownership / phase classification:**
+`docs/research/GRAVITY_MECHANISM_MAP_1_21_1.md`
+
+Use this file to answer "what can gravity affect?".
+Use the mechanism map to answer "which shared vanilla algorithm owns it and
+which Planet phase must implement/test it?".
+
+Do not turn this audit into a flat checklist of named blocks.
+
 This is the master checklist for every subsystem whose behavior can change when
 local UP/DOWN, local horizontal axes, or an entity body frame no longer match
 physical world XYZ.
@@ -669,17 +678,23 @@ semantics.
 
 ## 30. Rails, pistons and moving blocks
 
-Dedicated audit:
-- BaseRailBlock/RailState/rail shapes;
-- powered/detector/activator rail;
-- minecart movement;
-- piston facing;
-- piston push graph;
-- MovingPistonBlock/BE;
-- slime/honey moved blocks.
+These are intentionally SPLIT BY MECHANISM rather than treated as whole-object
+tasks. See `GRAVITY_MECHANISM_MAP_1_21_1.md`.
 
-These combine BlockState direction, multi-block traversal, collision and entity
-forces.
+Rail ownership:
+- BaseRailBlock support/placement + RailState connection/slope graph -> Phase 2;
+- powered/detector/activator signal semantics -> Phase 7A;
+- minecart-on-RailShape movement -> Phase 7;
+- rail static geometry/render -> Phase 3.
+
+Piston ownership:
+- canonical FACING placement -> Phase 2;
+- signal/quasi-connectivity + push graph + moving block automation -> Phase 7A;
+- entity push/force integration -> Phase 7/7A integration;
+- moving render geometry -> Phase 3/7A integration.
+
+This split prevents "rail placement works" or "piston faces correctly" from
+being mistaken for subsystem completion.
 
 ## 31. Portals and multiblocks
 
