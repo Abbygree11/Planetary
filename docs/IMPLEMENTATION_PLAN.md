@@ -20,6 +20,16 @@ For every phase:
 
 Master audit: `docs/research/GRAVITY_IMPACT_AUDIT_1_21_1.md`
 
+Authoritative mechanism/phase map:
+`docs/research/GRAVITY_MECHANISM_MAP_1_21_1.md`
+
+Roadmap ownership rule:
+- phases own internal engine mechanisms, not whole named blocks/entities;
+- one Minecraft object may appear in several phases for different behaviors;
+- before a class-specific patch, inspect its base family + sibling classes;
+- prefer engine boundary -> base-family adapter -> algorithm-family adapter ->
+  class-specific adapter only when the behavior is genuinely unique.
+
 This audit is a gate above every numbered phase. Gravity changes are not limited
 to player falling and block UP/DOWN. Before closing the project, the following
 families must all have an explicit PHYSICAL-vs-LOCAL policy and acceptance
@@ -138,148 +148,350 @@ Acceptance:
 - public PlanetFrameApi local-neighbor primitive
 - Create-like raw BlockPos.relative(local FACING) stress harness across all six faces
 
-## Phase 2 — block placement, survival and updates [PARTIAL, active]
+## Phase 2 — block semantic subsystem [PARTIAL, BATCH ACCEPTANCE]
 
-Research targets before implementation:
-- UseOnContext
-- BlockPlaceContext
-- StandingAndWallBlockItem
-- DirectionalBlock / HorizontalDirectionalBlock families
-- canSurvive / updateShape / neighborChanged call paths
-- BlockStateProperties direction/axis properties
-- PointedDripstoneBlock
-- torch/wall torch, ladder, vine, door, trapdoor, bed, rail, piston
-- waterlogged SimpleWaterloggedBlock behavior
+Detailed mechanism ownership:
+`docs/research/GRAVITY_MECHANISM_MAP_1_21_1.md`
 
-Implementation target:
-keep BlockHitResult/target BlockPos physical and adapt only semantic orientation
-reads through PlanetBlockPlacementFrame / PlanetFrameApi. Do not globally
-override BlockPlaceContext.getClickedFace or getClickLocation because vanilla
-and mods also use them for physical neighbor/ray geometry.
+Detailed existing research:
+- `docs/research/PLACEMENT_1_21_1.md`
+- `docs/research/SUPPORT_UPDATES_1_21_1.md`
+- `docs/research/GROWTH_CONNECTIONS_1_21_1.md`
+- `docs/research/MULTIBLOCK_PLACEMENT_1_21_1.md`
 
-Detailed placement research:
-- docs/research/PLACEMENT_1_21_1.md
+### Phase policy
 
-Implemented first runtime placement adapters:
-- RotatedPillarBlock AXIS from canonical local clicked face
-- HopperBlock FACING from canonical local clicked face
-- SlabBlock TOP/BOTTOM and replacement checks from local face + local hit Y
-- runtime diagnostic: 108 real vanilla getStateForPlacement checks across six faces
-- StandingAndWallBlockItem standing/wall variant selection uses target-local
-  nearest-direction ordering
-- runtime diagnostic: 6 standing + 24 wall variant-selection checks
+This phase owns BLOCK-LOCAL SEMANTICS:
 
-Implemented first runtime support/update adapters:
-- PlanetBlockSupportRuntime shared canonical support bridge
-- BaseTorchBlock local-DOWN canSurvive/updateShape
-- WallTorchBlock placement/support/updateShape
-- RedstoneWallTorchBlock support update (signal semantics still Phase 7A)
-- LadderBlock placement/support/updateShape + water tick preservation
-- FaceAttachedHorizontalDirectionalBlock placement/canAttach/updateShape
-- runtime diagnostic: 30 survival + 30 updateShape checks across six faces
-- manual support-removal acceptance verified by user for standing torch,
-  wall torch, ladder and lever on rotated faces
+- placement interpretation;
+- canonical BlockState orientation;
+- support/survival;
+- semantic neighbor/update interpretation;
+- multiblock/pair relationships;
+- local tangent connection graphs;
+- runtime growth/support graphs;
+- the block-side rail graph;
+- support-triggered block behavior.
 
-Detailed support research:
-- docs/research/SUPPORT_UPDATES_1_21_1.md
+It does NOT own:
+- static/BER rendering -> Phase 3;
+- particles -> Phase 4;
+- fluid simulation -> Phase 5;
+- entity/minecart physics -> Phase 7;
+- signal propagation/pistons -> Phase 7A.
 
-Implemented local growth/cross-neighbor pass:
-- SpreadingSnowyDirtBlock natural survival/spread uses canonical local UP and
-  explicit seam-aware growth topology
-- SnowyDirtBlock SNOWY placement/update follows local UP
-- FenceBlock N/E/S/W placement/update uses four seam-aware local tangent
-  neighbors instead of world horizontal directions
-- detailed research: docs/research/GROWTH_CONNECTIONS_1_21_1.md
+A block can therefore be partially complete here and still require work in a
+later owning phase.
 
-Implemented multi-block/support placement pass:
-- pressure plates: local-DOWN survival/update + rotated trigger AABB (manual acceptance PASS)
-- doors: local FACING, hinge, upper-half placement, survival and pair updates
-- beds: local FOOT->HEAD topology, target-frame FACING and pair updates
-- pointed dripstone: local vertical placement/support/thickness/update
-- unsupported stalactite chain scan follows local DOWN in one tick and preserves
-  vanilla terminal-tip falling damage setup
-- shared source-local -> physical -> target-local direction reframe helper
-- detailed research: docs/research/MULTIBLOCK_PLACEMENT_1_21_1.md
+Do NOT request one runtime test per block. Finish coherent family adapters and
+run one Phase-2 family acceptance matrix.
 
-Runtime findings from 2026-10-04 acceptance:
-- grass random-tick decay/spread wrong outside +Y -> addressed by local growth pass
-- fence unwanted physical +Y arms -> addressed by local connection pass
-- exact-edge slab placement still needs player-body-vs-canonical policy
-- torch flame/smoke emission origin -> local-frame TorchBlock/WallTorchBlock
-  emitter adapter implemented; first manual pass exposed missing vanilla +0.20
-  wall rise, now corrected by rotating vanilla's complete computed offset
-- redstone torch particle emitters now use the same local-frame transform;
-  redstone signal behavior remains Phase 7A
-- door, pressure plate, pointed dripstone and bed placement -> addressed by
-  multi-block/support placement pass; gameplay/render follow-ups remain
-- thrown potions/arrows still use global projectile gravity
-- fluids still use global FlowingFluid topology
-- pressure plate placement/trigger/support manually accepted
-- redstone wire only connects correctly in world-axis-compatible cases; piston
-  extension/moving geometry is wrong on rotated faces -> confirmed Phase 7A /
-  piston moving-block research item, not a placement hotfix
-- bed visible BER geometry disagreed with its rotated state/collision -> first
-  BedRenderer local-frame adapter implemented
-- dripstone visual chain split from world-XZ random offset seeding and unsupported
-  stalactites fell in delayed pieces -> canonical local-XZ seed + local chain-fall
-  adapter implemented
-- grass side-overlay and side-face shadows need render follow-up
+### 2A — placement input and canonical state orientation
 
-Acceptance examples:
-- runtime login placement probe reports 108 vanilla state checks
-- runtime login support probe reports 30 survival + 30 updateShape checks
-- breaking the actual local support removes standing/wall torch, ladder and lever
-- standing torch on every gravity face
-- wall torch relative to local wall
-- ladder, door, trapdoor, bed
-- slabs/stairs keep intended player-relative orientation
-- pointed dripstone local UP/DOWN placement and survival
-- blocks survive/remove when LOCAL support changes
-- behavior remains vanilla on POS_Y
+Vanilla mechanisms:
+- UseOnContext / BlockPlaceContext;
+- BlockItem;
+- StandingAndWallBlockItem;
+- DirectionalPlaceContext;
+- DirectionalBlock / HorizontalDirectionalBlock;
+- RotatedPillarBlock;
+- click-offset HALF/TOP/BOTTOM logic.
 
-## Phase 3 — block collision/selection/render frame [PARTIAL, active]
+Canonical rule:
+- hit position and physical hit side stay physical;
+- state properties store canonical LOCAL semantics.
 
-Implemented first physical shape boundary:
-- BlockStateBase outline/collision/visual/interaction shapes rotate canonical
-  local -> physical on the outermost bound-Level query
-- nested shape queries use a ThreadLocal scope to prevent double/triple rotation
-- getBlockSupportShape and getOcclusionShape remain canonical for now
-- Shapes.block()/empty preserve vanilla singleton fast paths
-- runtime diagnostic: 36 physical + 12 canonical + 6 full-block identity checks
-- detailed research: docs/research/SHAPES_1_21_1.md
+Implemented:
+- physical hit-side -> canonical local hit-side;
+- physical click point -> local hit offset;
+- local nearest-looking ordering;
+- RotatedPillarBlock AXIS;
+- Hopper FACING;
+- slab TOP/BOTTOM;
+- standing/wall variant selection;
+- first placement diagnostic across all six faces.
 
-Implemented first static baked-model/render-culling boundary:
-- cached BakedModel wrapper per original model x PlanetFace
-- cached transformed BakedQuad per original quad x PlanetFace
-- physical renderer side -> canonical local getQuads side
-- NeoForge QuadTransformers rotates positions + packed normals
-- final BakedQuad.direction is re-expressed in physical frame
-- ModelData/RenderType/AO/render passes remain delegated through BakedModelWrapper
-- frame-aware Block.shouldRenderFace path with source+target canonical local sides
-- dedicated thread-local occlusion LRU because vanilla cache lacks gravity frame
-- exact seam culling unit test
-- grass/mycelium surface seam rendering: every ambiguous outward candidate face
-  uses the model's canonical local-UP quad, without changing BlockState frame
-- detailed research: docs/research/RENDERING_1_21_1.md
+Family audit/coverage still required:
+- full DirectionalBlock family;
+- full HorizontalDirectionalBlock family;
+- standing/wall signs, banners and skulls;
+- lantern/hanging placement;
+- dispenser/dropper/observer/piston placement aspect only;
+- stair/trapdoor specialized click-half behavior;
+- custom orientation properties such as FrontAndTop where used.
 
-Still open / research targets:
-- physical directional shade/environment-light policy
-- model offset vectors (pointed-dripstone local X/Z seed + physical offset first adapter implemented)
-- BlockEntityRenderer orientation (BedRenderer first adapter implemented; generic BER policy still open)
-- Flywheel/custom accelerated rendering integration
-- fluid renderer
+Do not create a giant HorizontalDirectionalBlock behavior mixin: only the
+property/orientation vocabulary is shared; survival, signals and pairing belong
+to different algorithms.
 
-Implementation target:
-cache rotated shapes and rotated baked-model views for the six gravity frames.
-Do not mutate registered BlockState objects.
+### 2B — support, survival and semantic update boundary
 
-Acceptance:
-- grass top texture points local UP
-- asymmetric full model rotates correctly
-- torch/dripstone model matches collision shape
-- culling does not expose holes between full cubes
-- AO/light does not sample the wrong world neighbors
-- block entity renderers have a defined local-frame policy
+Vanilla mechanisms:
+- canSurvive;
+- sturdy/support-face queries;
+- updateShape;
+- neighborChanged when it interprets support direction;
+- Block.canSupport* helpers.
+
+Physical NeighborUpdater fan-out remains physical.
+The target block must reframe the physical source-target relation into its
+canonical local semantics.
+
+Implemented:
+- PlanetBlockSupportRuntime / PlanetBlockSupportQuery;
+- standing torch local-DOWN support;
+- wall torch support/update;
+- redstone wall torch support/update only;
+- ladder placement/support/update;
+- FaceAttachedHorizontalDirectionalBlock placement/support/update;
+- pressure plate local-DOWN support/update;
+- support-removal runtime acceptance for torch/wall torch/ladder/lever;
+- pressure plate support manual PASS.
+
+Family audit still required:
+- BushBlock support family;
+- BaseRailBlock support;
+- lantern/hanging support;
+- signs/banners/skulls support families;
+- coral/fan attachments;
+- scaffolding support/distance;
+- diode/repeater/comparator support aspect only;
+- any block family doing raw below()/above()/relative(localDirection).
+
+Important:
+remapping only updateShape(Direction) is insufficient when the implementation
+then performs raw BlockPos.relative(direction). Adapt both semantic direction and
+physical traversal at the owning family boundary.
+
+### 2C — multiblock and pair topology
+
+Owns state relationships such as:
+- upper/lower;
+- head/foot;
+- left/right paired block;
+- directed pair neighbor.
+
+Implemented:
+- door local FACING/hinge/upper-half/survival/pair update;
+- bed FOOT->HEAD topology and target-frame FACING;
+- pointed dripstone local vertical chain support/thickness/update;
+- unsupported stalactite chain scan local DOWN.
+
+Still required:
+- DoublePlantBlock family;
+- tall seagrass / pitcher / small-dripleaf pair paths;
+- chest LEFT/RIGHT pair + DoubleBlockCombiner physical traversal;
+- standing/hanging multi-part block families discovered by the source sweep.
+
+Redstone behavior of doors/chests is not owned here.
+Block-entity rendering is not owned here.
+
+### 2D — local tangent and multiface connection graphs
+
+Shared primitive:
+four seam-aware LOCAL tangent directions, not world
+Direction.Plane.HORIZONTAL.
+
+Implemented:
+- FenceBlock N/E/S/W placement/update through local tangent neighbors;
+- grass/surface seam work that consumes canonical local UP.
+
+Still required:
+- WallBlock sides + UP post rule;
+- IronBarsBlock;
+- TripWireBlock connection topology;
+- CrossCollisionBlock family;
+- MultifaceBlock / GlowLichen / SculkVein;
+- Vine attachment topology;
+- Chorus/PipeBlock-style connectivity where local tangent/vertical meaning is
+  semantic.
+
+Share traversal primitives, not one universal state mutator: WallSide,
+booleans, RedstoneSide and multiface properties have different state rules.
+
+### 2E — runtime growth and ecology
+
+Already implemented:
+- SpreadingSnowyDirtBlock survival/spread local UP + seam-aware growth;
+- SnowyDirtBlock SNOWY placement/update local UP.
+
+Audit/implement by family:
+- BushBlock descendants and crops;
+- cactus / sugar cane / bamboo;
+- saplings/mushrooms/flowers where support or spread is local;
+- GrowingPlantBlock head/body family;
+- kelp / cave/weeping/twisting vines;
+- DoublePlant growth side after 2C topology;
+- vine random spread;
+- scaffolding distance graph;
+- snow/nylium/farm/path runtime rules;
+- leaves/plant emitters only for their NON-particle semantic behavior
+  (particle emission stays Phase 4).
+
+Worldgen feature growth is Phase 8, not this runtime phase.
+
+### 2F — rail BLOCK topology
+
+This is the owner of the user's "rails do not place on rotated gravity" class of
+bug.
+
+Vanilla owners:
+- BaseRailBlock;
+- RailState;
+- RailShape.
+
+Required as ONE graph implementation:
+- local-DOWN support;
+- canonical local RailShape;
+- initial orientation from local tangent player direction;
+- four local tangent rail neighbors;
+- same/local-UP/local-DOWN neighbor search;
+- ascending rail using local UP;
+- curve selection;
+- reconnect propagation after add/remove;
+- seam-aware graph traversal;
+- waterlogging scheduling hook (fluid correctness remains Phase 5).
+
+Explicitly NOT owned here:
+- powered/detector/activator signal behavior -> Phase 7A;
+- minecart movement on RailShape -> Phase 7.4;
+- rail model/shape rendering -> Phase 3.
+
+Do not patch RailBlock individually. BaseRailBlock + RailState are the shared
+algorithm boundary.
+
+### 2G — falling/support-triggered block semantics
+
+Owns block-side trigger/support decisions for:
+- FallingBlock family;
+- brushable/falling-like blocks;
+- pointed dripstone support/fall trigger;
+- scaffolding collapse/support;
+- analogous modded support-triggered blocks.
+
+Already implemented/accepted pieces:
+- falling-block local spawn anchor;
+- dripstone local chain fall trigger;
+- block-side falling particle origin work where applicable.
+
+The spawned entity's physics/damage belongs to Phase 7.3.
+Its particles belong to Phase 4.
+Its renderer belongs to Phase 3/entity rendering integration.
+
+### 2H — waterlogged block hooks
+
+Phase 2 only ensures local semantic block update paths do not break:
+- WATERLOGGED state;
+- scheduled fluid tick preservation;
+- LiquidBlockContainer/SimpleWaterloggedBlock hook reachability.
+
+Actual fluid topology/height/flow/render belongs entirely to Phase 5.
+
+### Phase-2 acceptance matrix
+
+Run once the non-fluid block semantic families above are implemented.
+
+Must include representative families, not every individual block:
+
+- +Y vanilla baseline and all five rotated faces;
+- one rotated-pillar/axis block;
+- one face-attached block + one standing/wall family;
+- slab/stair/trapdoor placement;
+- door + DoublePlant + bed + chest pair;
+- fence + wall + iron bars/multiface representative;
+- crop/Bush + directed growing plant + vine/scaffolding;
+- ordinary rail: straight, curve, ascending, reconnect and seam crossing;
+- falling/support-trigger representative;
+- remove actual LOCAL support and verify survival/update;
+- exact edge/corner only for mechanisms whose topology owns the seam;
+- no duplicate scheduled updates / runaway neighbor recursion.
+
+Phase 2 does not close merely because a list of common blocks can be placed.
+
+## Phase 3 — block geometry and rendering subsystem [PARTIAL, BATCH ACCEPTANCE]
+
+### 3A — position-aware shape boundary
+
+Implemented:
+- outline/collision/visual/interaction shapes rotate canonical local -> physical
+  on outermost bound-Level query;
+- nested shape scope prevents double/triple rotation;
+- cached six-frame VoxelShape transforms;
+- full-block/empty singleton fast paths;
+- exact seam shape tests.
+
+Support/occlusion cache policy must remain explicit:
+canonical cached state data is never mutated into a position-specific frame.
+
+### 3B — static baked models, culling, AO and light
+
+Implemented:
+- cached BakedModel wrapper per original model x PlanetFace;
+- cached transformed BakedQuad;
+- physical renderer side -> canonical local getQuads side;
+- rotated vertex positions + packed normals;
+- physical final BakedQuad.direction;
+- ModelData/RenderType/render-pass delegation;
+- frame-aware Block.shouldRenderFace;
+- dedicated occlusion cache;
+- grass/mycelium local-UP surface seam handling.
+
+Still required:
+- directional shade/environment-light policy;
+- AO neighbor sampling audit;
+- model random offset vectors as local tangent semantics where applicable;
+- breaking overlay consistency;
+- special models using custom quad direction logic.
+
+### 3C — block entity / custom renderer frame
+
+Static BakedModel rotation does NOT cover BERs.
+
+Existing:
+- first BedRenderer local-frame adapter.
+
+Audit renderer families:
+- chest;
+- standing/wall/hanging sign;
+- banner;
+- skull/head;
+- shulker box;
+- bell;
+- lectern/book;
+- end portal/gateway;
+- moving piston;
+- other directional BERs.
+
+Goal:
+find the highest safe renderer-root frame transform so renderers can consume
+canonical-local state/geometry rather than receiving per-renderer coordinate
+hacks.
+
+### 3D — moving/accelerated rendering integration
+
+Owners include:
+- FallingBlockRenderer alignment;
+- MovingPistonBlock/PistonMovingBlockEntity visual geometry;
+- custom entity/block moving renderers;
+- Flywheel/Create-style accelerated/instanced render paths.
+
+Physics ownership remains in the relevant block/entity/automation phase; this
+subphase owns visual frame equivalence.
+
+Fluid renderer is Phase 5C, though it reuses render-frame primitives.
+
+### Phase-3 acceptance matrix
+
+One batch:
+- full asymmetric static model all six faces;
+- slab/stair/torch/dripstone shapes match visuals;
+- no full-cube culling holes at seams;
+- AO/light/shade samples correct physical neighbors;
+- breaking overlay follows rotated model;
+- bed + chest + sign/banner/skull representative BERs;
+- falling block + moving piston representative moving renderer;
+- ModelData/RenderType compatibility;
+- performance/cache smoke test.
 
 ## Phase 4 — particle subsystem [IN PROGRESS, BATCH ACCEPTANCE]
 
@@ -496,7 +708,7 @@ The final pass must cover, in one run:
 Phase 4 closes only when this matrix passes, except for explicitly documented
 Phase-5-blocked fluid integration gates.
 
-## Phase 5 — fluids [PLANNED; do not implement before Phases 1-2 kernel]
+## Phase 5 — fluid subsystem [PLANNED, BATCH ACCEPTANCE; depends on Phase 1/2 kernel]
 
 Detailed research: docs/research/FLUIDS_1_21_1.md
 
@@ -532,112 +744,339 @@ Acceptance:
 - drip particle originates from and falls from local-DOWN face
 - one representative NeoForge/modded FlowingFluid
 
-## Phase 6 — ground mob navigation [PARTIAL]
+## Phase 6 — navigation and AI subsystem [PARTIAL, BATCH ACCEPTANCE]
+
+This phase owns LOCAL-GROUND NAVIGATION/AI, not generic entity physics.
+
+Dependencies:
+- Phase 1 traversal charts;
+- Phase 2 support/door/fence/rail semantic graphs;
+- Phase 7.1 entity body/collision semantics;
+- Phase 5 for aquatic navigation closure.
 
 Existing:
-- PlanetWalkNodeEvaluator first pass
-- local MoveControl target interpretation
-- path node local anchor
-- local random-stroll target experiment
+- PlanetWalkNodeEvaluator first pass;
+- local MoveControl target interpretation;
+- path node local anchor;
+- local random-stroll experiment.
 
 Known unresolved:
-- mobs fail or spin at gravity-zone edge
-- raw physical neighbor stepping is not a complete seam transition
-- edge waypoint overshoot is experimental, not architecture
-- target generators other than RandomStroll remain world-axis based
-- node volume, diagonals, hazards, doors, fences, rails and water incomplete
+- mobs fail/spin at gravity-zone edge;
+- edge waypoint overshoot is experimental, not architecture;
+- target generators beyond RandomStroll remain world-axis based;
+- node volume/diagonals/hazards/doors/fences/rails/water incomplete.
 
-Research before next runtime change:
-- GroundPathNavigation
-- PathNavigation
-- PathFinder
-- WalkNodeEvaluator
-- NodeEvaluator
-- MoveControl / LookControl / BodyRotationControl
-- RandomPos family and common goals
-- how mob width/height maps to local frame
-- existing gravity-mod approaches, noting which versions actually support AI
+### 6A — node graph and floor semantics
 
-Implementation target:
-path nodes use the Phase-1 seam-aware local topology. An edge is a legitimate
-topological neighbor transition, not a target overshoot hack.
+Audit/implement together:
+- NodeEvaluator / WalkNodeEvaluator;
+- PathFinder;
+- GroundPathNavigation;
+- local floor/support search;
+- step/drop;
+- entity width/height in body frame;
+- seam state where BlockPos alone is insufficient.
 
-Acceptance:
-- random stroll flat face
-- chase/flee target
-- step up/down 1 block
-- cross every edge direction both ways
-- stop on edge without spinning
-- door/fence hazard tests
-- no path-search explosion; maxVisitedNodes behavior preserved
-- controlled performance test with many mobs
+### 6B — steering/body controls
 
-## Phase 7 — other entity subsystems [PLANNED]
+- MoveControl;
+- LookControl;
+- BodyRotationControl;
+- local target vector -> physical movement/body orientation.
 
-### Cross-cutting entity/interaction additions
+### 6C — target generation and common ground goals
 
-The master gravity audit makes the following mandatory here, even when their
-code lives outside Entity subclasses:
-- Entity.move collision/step/onGround/fall semantics
-- eye position/view/up vectors and picking
-- projectile launch/deflection
-- generic force/knockback semantics
-- passenger/leash/attachment/dismount
-- client/server prediction and floating validation
-- body-local render orientation
-- world-ray vs local-hit-side distinction
+- RandomPos family;
+- stroll/chase/flee;
+- door interaction;
+- sleep/bed goals;
+- remove-block/harvest goals;
+- goals using above/below or world XZ.
 
+Do not patch every Goal independently until shared target-generation/body-frame
+helpers exist.
 
-Separate research/implementation gates for:
-- swimming and fluid movement
-- climbing
-- flying mobs
-- projectiles
-- minecarts/rails
-- boats
-- elytra
-- item/xp entities
-- leash/passenger positioning
-- knockback/explosions where world-vector assumptions matter
+### 6D — navigation modes
 
-Do not mark generic "entities" done from player walking alone.
+Separate gates:
+- ground;
+- wall climber;
+- flying;
+- amphibious;
+- aquatic after Phase 5.
 
-## Phase 7A — signals, automation and interaction [PLANNED]
+### Phase-6 acceptance matrix
 
-Detailed source audit required for:
-- SignalGetter and redstone signal-side conventions
-- RedStoneWireBlock, diode/repeater/comparator, observer, torches, levers,
-  buttons, pressure plates, sculk/target/tripwire and rail signals
-- neighbor notification Direction sets
-- physical BlockHitResult vs canonical local hit-side semantics
-- Level.clip / Entity.pick / ProjectileUtil
-- NeoForge sided BlockCapability and EntityCapability
-- BlockCapabilityCache side/context behavior
+- random stroll;
+- chase/flee;
+- step up/down;
+- door/fence/rail hazards;
+- every representative seam direction both ways;
+- stop on edge without spinning;
+- multiple target generators;
+- controlled many-mob path-search performance;
+- maxVisitedNodes/no search explosion.
 
-Acceptance:
-- vanilla redstone around all six faces and across an edge
-- sided item/fluid/energy capability on side and bottom faces
-- capability at exact gravity edge
-- one Create-like directional machine/pipe stress test
-- raycast/interaction side remains correct while placement state is local
+## Phase 7 — entity physics, locomotion and vehicles [PLANNED, BATCH ACCEPTANCE]
 
-## Phase 7B — client/server frame consistency and environment [PLANNED]
+A correct player walking baseline does not close this phase.
+
+### 7.1 — generic entity/body collision core
+
+Owns:
+- Entity.move local vertical/tangent semantics;
+- collision ordering;
+- step height;
+- onGround/verticalCollision/horizontalCollision;
+- supporting block/floor position;
+- fall distance/landing/fall damage;
+- pose/bounding-box body frame;
+- suffocation/push-out interactions.
+
+Physical world AABB/collision geometry stays physical.
+
+Existing accepted foundations include player local movement/camera baseline,
+packet fall-damage adaptation and several falling-entity fixes, but the generic
+entity audit remains incomplete.
+
+### 7.2 — living locomotion
+
+Audit as mechanism families:
+- jump;
+- gravity effects/levitation/slow-fall;
+- sprint/crouch/crawl;
+- climbing;
+- swimming and fluid drag (closure depends Phase 5);
+- elytra/fall flying;
+- riptide;
+- powder snow;
+- honey/slime;
+- local tangent friction.
+
+### 7.3 — non-living entities and projectiles
 
 Audit:
-- LocalPlayer prediction
-- ServerGamePacketListenerImpl movement/floating validation
-- teleport corrections and rotation sync
-- entity/body render frame
-- spawn placement
-- precipitation/weather
-- skylight/sky visibility/heightmaps
-- environment rules that should remain physical-world rather than gravity-local
+- ItemEntity;
+- ExperienceOrb;
+- TNT;
+- FallingBlockEntity;
+- arrows/tridents/throwables;
+- fireballs/wind charges;
+- fishing hook;
+- armor stands/displays where physical orientation matters.
 
-Acceptance:
-- no rubber-band/floating false positives during side/bottom movement
-- ray/camera/server interaction agree
-- spawning policy documented and tested
-- weather/sky/light semantics explicitly chosen rather than inherited by accident
+Separate:
+- gravity vector;
+- class-specific bounce/friction/float;
+- projectile launch/view boundary;
+- projectile collision/deflection.
+
+Already accepted falling-block work remains recorded here as partial coverage,
+not proof for the whole family.
+
+### 7.4 — vehicles
+
+Minecart:
+- depends on Phase-2 RailState topology;
+- RailShape exit vectors and ascending offsets become local semantic geometry;
+- tangent speed/horizontalDistance assumptions must rotate;
+- powered/detector rail signal remains Phase 7A.
+
+Boat:
+- depends on Phase 5;
+- water surface sampling;
+- buoyancy;
+- land friction;
+- passenger placement;
+- bubble/current effects.
+
+### 7.5 — passengers, attachments and forces
+
+Audit:
+- riding/seat offsets;
+- leash anchors;
+- dismount floor search;
+- sleeping attachment;
+- shoulder entities;
+- knockback;
+- explosion impulses;
+- piston pushes;
+- mace/ram/wind-charge forces.
+
+Do not rotate an arbitrary physical world force merely because gravity differs.
+Only gravity/body-relative components rotate.
+
+### Phase-7 acceptance matrix
+
+One batch with dependency-marked cases:
+- players/living entities;
+- item + XP + TNT + falling block;
+- projectile launch/fall/impact;
+- climb/swim/elytra representatives;
+- minecart straight/curve/slope/seam after Phase 2F;
+- boat after Phase 5;
+- passenger/dismount/leash;
+- knockback/explosion/piston force;
+- +Y vanilla baseline;
+- all rotated faces;
+- client/server agreement rechecked in Phase 7B.
+
+## Phase 7A — signals, automation and sided logistics [PLANNED, BATCH ACCEPTANCE]
+
+Depends on canonical block semantics from Phase 2.
+
+### 7A.1 — signal side conventions and neighbor graph
+
+Audit:
+- SignalGetter;
+- BlockState getSignal/getDirectSignal;
+- physical six-neighbor fan-out vs canonical local signal side;
+- reversed/opposite Direction conventions.
+
+Do not rotate physical NeighborUpdater positions blindly.
+
+### 7A.2 — redstone wire and diode family
+
+Wire:
+- local-DOWN support consumes Phase 2;
+- local tangent/climb connection geometry consumes Phase 2 primitives;
+- this phase owns power calculation and propagation.
+
+Diode/repeater/comparator:
+- local support from Phase 2;
+- local tangent FACING;
+- side inputs;
+- lock/compare/output signal semantics.
+
+Also:
+- observer;
+- redstone torches;
+- lever/button/pressure plate signal aspect;
+- target/sculk/tripwire signal behavior.
+
+### 7A.3 — rail signal behavior
+
+Depends on Phase 2F RailState graph.
+
+Owns:
+- PoweredRailBlock recursive power;
+- DetectorRailBlock detection/output;
+- activator rail behavior;
+- signal neighbor notifications.
+
+Minecart motion remains Phase 7.4.
+
+### 7A.4 — piston and moving automation
+
+Treat as one automation mechanism:
+- directional placement consumes Phase 2A;
+- quasi-connectivity / signal search;
+- PistonStructureResolver push graph;
+- slime/honey branching;
+- MovingPistonBlock/PistonMovingBlockEntity;
+- entity pushes integrate Phase 7.5;
+- moving renderer integrates Phase 3D.
+
+Do not call pistons complete from correct FACING alone.
+
+### 7A.5 — NeoForge sided capability/logistics boundary
+
+- physical target BlockPos stays authoritative;
+- null side stays null;
+- physical queried side -> target canonical local side before provider dispatch;
+- BlockCapabilityCache semantics/invalidation;
+- item/fluid/energy;
+- hopper/dispenser/dropper directional I/O;
+- Create-like pipe/machine stress tests.
+
+### Phase-7A acceptance matrix
+
+- wire/repeater/comparator/observer on all faces;
+- lever/button/plate/torch signals;
+- powered/detector/activator rail network;
+- piston extend/retract/push/slime-honey/entity push;
+- exact-edge signal/capability cases where topology owns the seam;
+- item/fluid/energy sided provider;
+- Create-like directional machine/pipe stress test;
+- no duplicate neighbor-update storms.
+
+## Phase 7B — interaction, networking, spawn and environment policy [PLANNED, BATCH ACCEPTANCE]
+
+This phase contains mechanisms that must agree with the entity/body frame but are
+not ordinary movement physics.
+
+### 7B.1 — eye/view/raycast/interaction
+
+Audit:
+- eye position/eye height;
+- body up/view vector;
+- yaw/pitch;
+- Entity.pick;
+- Level.clip;
+- ProjectileUtil;
+- BlockHitResult physical side;
+- item POV hit helpers;
+- reach/crosshair;
+- first/third-person interaction consistency.
+
+Rule:
+one physical world ray is produced from body-local view.
+BlockHitResult stays physical; Phase-2 placement consumes its canonical-local
+interpretation.
+
+### 7B.2 — client/server prediction and validation
+
+Audit together:
+- LocalPlayer prediction;
+- ServerPlayer state;
+- ServerGamePacketListenerImpl floating/flying checks;
+- movement packets;
+- vehicle packets;
+- teleport correction;
+- onGround/fall state sync;
+- yaw/pitch sync/interpolation.
+
+Existing packet fall-damage fix is partial evidence only.
+
+### 7B.3 — spawn placement
+
+Audit:
+- SpawnPlacementTypes;
+- NaturalSpawner;
+- mob-specific placement;
+- spawn eggs;
+- world/respawn/bed spawn.
+
+Important:
+vanilla heightmaps are XZ->Y and cannot automatically represent six planet
+surfaces. Define a Planet surface candidate API rather than pretending vanilla
+heightmaps are local-gravity maps.
+
+### 7B.4 — environment/weather/sky/heightmap policy
+
+Explicit product decision required for:
+- precipitation direction/columns;
+- snow/ice formation;
+- skylight;
+- sky visibility;
+- lightning;
+- clouds;
+- heightmaps;
+- build-height constraints;
+- temperature/elevation rules.
+
+Gravity-local and global environment semantics are not the same thing.
+
+Do not rotate skylight/weather simply because player gravity rotates.
+
+### Phase-7B acceptance matrix
+
+- ray/camera/server hit agreement;
+- no movement rubber-band/floating false positives;
+- teleport/rotation consistency;
+- spawn on representative local surfaces according to chosen policy;
+- weather/environment behavior matches documented product policy;
+- +Y vanilla-equivalent baseline where policy says it should.
 
 ## Phase 8 — real terrain/biome generation [PARTIAL foundation]
 
@@ -860,20 +1299,61 @@ Performance acceptance must measure CPU generation, GPU triangles, memory,
 upload bandwidth and movement-induced remeshing. Far-distance targets are goals,
 not guarantees.
 
-## Phase 9 — structures [PLANNED]
+## Phase 9 — structures and rigid runtime topology [PLANNED, BATCH ACCEPTANCE]
 
-Rigid structures use AVOID_EDGE.
-- cheap origin clearance
-- final StructureStart bounding-box validation
-- data-driven per-structure safety margin
-- structure-like PlacedFeatures classified separately
+### 9A — generated structures
+
+Default policy:
+rigid structures use AVOID_EDGE unless explicitly designed for Planet topology.
+
+Required:
+- cheap origin clearance;
+- final StructureStart bounding-box validation;
+- data-driven per-structure safety margin;
+- placed-feature vs structure classification;
+- structure processors using heightmaps/global Y mapped through Planet
+  generation-space policy where appropriate.
 
 Acceptance:
-- villages/temples never bend across edge
-- no half structure or duplicate start
-- modded structure can opt/configure policy
+- villages/temples never bend across edge;
+- no half structure/duplicate start;
+- representative modded structure opt/config policy.
 
-## Phase 10 — mod compatibility [PARTIAL foundation]
+### 9B — runtime rigid topology / portals
+
+PortalShape and similar algorithms are not ordinary block placement.
+
+PortalShape hard-codes:
+- horizontal portal axis;
+- repeated world UP;
+- below search;
+- rigid width/height rectangle;
+- entity-height Y mapping.
+
+Decide and implement:
+- portal plane in canonical local vertical semantics;
+- portal rectangle stays physically rigid;
+- seam policy (normally do not bend a portal across an edge);
+- portal completion/update;
+- entity relative-position/orientation transition integrates Phase 7B.
+
+Also audit analogous rigid runtime multiblock machines.
+
+### Phase-9 acceptance matrix
+
+- generated structure edge avoidance;
+- structure processor height/elevation;
+- nether portal on representative rotated faces;
+- invalid seam-crossing portal policy;
+- entity transition orientation through portal;
+- modded rigid multiblock integration representative.
+
+## Phase 10 — mod compatibility [PARTIAL foundation, CONTINUOUS GATE]
+
+This is not an "after everything" cleanup phase. Every owning subsystem must run
+its standard Minecraft/NeoForge compatibility gate while it is implemented.
+Phase 10 owns public frame APIs, explicit integration modules and the final
+cross-mod matrix.
 
 Compatibility classes:
 - automatic: standard Minecraft/NeoForge boundaries
