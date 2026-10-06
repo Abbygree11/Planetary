@@ -1421,3 +1421,28 @@ double-adapted.
 Fluid-coupled custom particles are intentionally deferred to Phase 5.
 
 Runtime acceptance pending.
+
+
+## 2026-10-07 particle workflow changed to subsystem batch
+User requested that particle work stop being delivered/tested one class at a
+time.
+
+Decision:
+- ALL particle work is consolidated under Phase 4;
+- no more manual class-by-class acceptance requests while Phase 4 is under
+  implementation;
+- perform a full vanilla 1.21.1 particle registry/source audit;
+- classify particles by shared mechanisms;
+- implement shared adapters + dedicated custom-tick adapters as needed;
+- run one final manual particle acceptance matrix.
+
+Fluid-coupled particles are still audited/implemented on the particle side in
+Phase 4. Any behavior that fundamentally requires unfinished fluid
+topology/flow remains an explicit integration gate for Phase 5 rather than being
+faked temporarily.
+
+AGENTS.md now contains a general subsystem-level batch acceptance rule so this
+workflow applies in future chats as well.
+
+The previously requested cherry-only manual acceptance is superseded: do not ask
+the user to test cherry particles now. Continue Phase 4 implementation first.
