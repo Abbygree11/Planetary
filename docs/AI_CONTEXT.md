@@ -1211,3 +1211,46 @@ Runtime acceptance pending:
 - no false in-air landing;
 - no visible crawl/spread after first local-floor contact;
 - +Y remains vanilla.
+
+
+## 2026-10-07 TerrainParticle crawl root cause moved to render anchor
+Manual acceptance rejected the first-contact stoppedByCollision attempt: rotated
+destroy particles still visibly touched the local floor, spread/crawled, then
+disappeared.
+
+A deeper exact-source review changed the owning mechanism.
+
+Vanilla facts:
+- TerrainParticle does NOT override tick to remove on ground.
+- Particle.setPos stores x/z at AABB center but y at AABB.minY.
+- Particle.setLocationFromBoundingbox restores the same convention.
+- SingleQuadParticle.renderRotatedQuad interpolates Particle xo/yo/zo -> x/y/z
+  directly as the visual quad anchor.
+
+Therefore on +Y the visual anchor is already the center of the local-DOWN face
+of the particle AABB (world minY). Once the AABB reaches the floor, the quad is
+centered on the floor plane and is naturally depth-occluded, which visually
+looks like fall -> disappear rather than a surface-crawling phase.
+
+On rotated gravity the same stored position is NOT the local-DOWN face:
+- -Y should use maxY;
+- +/-X should use minX/maxX face center;
+- +/-Z should use minZ/maxZ face center.
+
+This explains why collision/onGround/stoppedByCollision changes did not remove
+the visible crawl.
+
+Runtime cleanup:
+- restored PlanetParticleMotion, ParticleGravityMixin and its tests to the last
+  accepted pre-landing-experiment state (5f4ddde behavior);
+- removed all unaccepted generic landing hooks and collision Redirects.
+
+New boundary:
+- PlanetParticleRenderAnchor computes the offset from vanilla
+  (centerX,minY,centerZ) to the LOCAL-DOWN AABB-face center;
+- TerrainParticleRenderGravityMixin applies this offset only while rendering
+  TerrainParticle quads;
+- +Y offset is exactly zero;
+- particle physics, AABB, lifetime and destroy radial velocity are unchanged.
+
+Runtime acceptance pending.
