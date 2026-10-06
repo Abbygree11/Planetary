@@ -17,6 +17,8 @@
     "CherryLeavesParticleGravityMixin",
     "CampfireParticleEmitterGravityMixin",
     "CampfireSmokeParticleGravityMixin",
+    "BaseAshSmokeParticleGravityMixin",
+    "WhiteAshParticleGravityMixin",
     "DragonBreathParticleAccessor",
     "DragonBreathParticleGravityMixin",
     "FixedVerticalLaunchParticleMixin",
