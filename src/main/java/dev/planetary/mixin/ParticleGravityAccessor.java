@@ -4,7 +4,6 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
-import org.spongepowered.asm.mixin.gen.Invoker;
 
 /**
  * Accesses fields declared on Particle itself for subclass mixins such as
@@ -45,11 +44,4 @@ public interface ParticleGravityAccessor {
 
     @Accessor("gravity")
     float planetary$getGravity();
-
-    @Invoker("hasNearBlocks")
-    boolean planetary$invokeHasNearBlocks(
-            double dx,
-            double dy,
-            double dz
-    );
 }
