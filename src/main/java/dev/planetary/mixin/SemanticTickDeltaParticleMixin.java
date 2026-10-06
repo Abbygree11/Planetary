@@ -10,7 +10,6 @@ import net.minecraft.client.particle.CampfireSmokeParticle;
 import net.minecraft.client.particle.DripParticle;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.WakeParticle;
-import net.minecraft.client.particle.WaterCurrentDownParticle;
 import net.minecraft.client.particle.WaterDropParticle;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
@@ -35,8 +34,7 @@ import java.util.Optional;
         BubblePopParticle.class,
         WakeParticle.class,
         CampfireSmokeParticle.class,
-        BubbleParticle.class,
-        WaterCurrentDownParticle.class
+        BubbleParticle.class
 })
 public abstract class SemanticTickDeltaParticleMixin {
     @Unique
