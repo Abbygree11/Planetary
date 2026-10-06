@@ -137,6 +137,58 @@ final class PlanetParticleMotionTest {
     }
 
     @Test
+    void componentScalesCanBeMovedFromWorldAxesToLocalAxes() {
+        PlanetGravityFrame frame =
+                new PlanetGravityFrame(
+                        PlanetFace.NEG_X
+                );
+
+        Vec3 neutral =
+                worldVector(
+                        frame,
+                        0.4D,
+                        -0.3D,
+                        0.2D
+                );
+
+        double worldXScale = 0.8D;
+        double worldYScale = 0.9D;
+        double worldZScale = 0.7D;
+
+        Vec3 vanillaScaled =
+                new Vec3(
+                        neutral.x * worldXScale,
+                        neutral.y * worldYScale,
+                        neutral.z * worldZScale
+                );
+
+        Vec3 corrected =
+                PlanetParticleMotion.remapComponentScales(
+                        vanillaScaled,
+                        frame,
+                        worldXScale,
+                        worldYScale,
+                        worldZScale,
+                        0.6D,
+                        0.5D,
+                        0.4D
+                );
+
+        PlanetFrameVector local =
+                frame.worldToLocal(
+                        new PlanetFrameVector(
+                                corrected.x,
+                                corrected.y,
+                                corrected.z
+                        )
+                );
+
+        assertEquals(0.4D * 0.6D, local.x(), EPSILON);
+        assertEquals(-0.3D * 0.5D, local.y(), EPSILON);
+        assertEquals(0.2D * 0.4D, local.z(), EPSILON);
+    }
+
+    @Test
     void groundFrictionMovesFromWorldXZToLocalTangents() {
         double friction =
                 (double) 0.7F;
