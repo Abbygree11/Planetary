@@ -281,66 +281,220 @@ Acceptance:
 - AO/light does not sample the wrong world neighbors
 - block entity renderers have a defined local-frame policy
 
-## Phase 4 — falling blocks and generic particles [PARTIAL]
+## Phase 4 — particle subsystem [IN PROGRESS, BATCH ACCEPTANCE]
 
-Already verified:
-- FallingBlock/FallingBlockEntity physical gravity mostly follows local DOWN
-- ordinary block-breaking particles follow local gravity
-- block-destroy particle local-UP launch-bias fix manually accepted after ebad1e1
+### Phase policy
 
-Implemented, acceptance/audit pending:
-- FallingBlock client animateTick emits from local DOWN
-- FallingDustParticle acceleration and terminal-speed clamp use local DOWN
-- direct-gravity particle subclass first-pass adapter
-- standing/wall normal+soul torch flame/smoke origins use canonical local frame (manual PASS away from exact edges)
-- standing/wall redstone torch visual particle origins use canonical local frame (manual PASS away from exact edges)
-- exact-edge torch emitter mismatch is deferred to the generic player/body-vs-canonical BlockState edge policy; do not special-case torch geometry
+All particle work is owned by this phase, even when the concrete emitter lives
+in a block/entity/world helper.
 
-TerrainParticle destroy-effect work [MANUAL PASS]:
-- radial destroy burst is preserved
-- local gravity launch bias remains correct
-- +/-X, +/-Z and -Y no longer acquire the extra surface-crawling phase seen
-  before acceptance; behavior now matches +Y closely enough in runtime
-- accepted boundary is TerrainParticleMoveGravityMixin on rotated faces:
-  - preserve vanilla physical AABB and hasNearBlocks optimization
-  - resolve collision in LOCAL Y -> LOCAL X/Z order through
-    PlanetEntityCollision.collideWithShapes
-  - apply vanilla stoppedByCollision/onGround/tangent clipping semantics to
-    LOCAL axes
-- +Y and non-TerrainParticle classes remain on vanilla Particle.move
-- rejected post-move flag patches and render-anchor experiment remain removed
-- private Particle.hasNearBlocks is copied locally rather than invoked through a
-  private @Invoker because runtime mapping proved unstable
+Do NOT ask for class-by-class manual testing while this phase is being built.
+Research and implement the complete particle subsystem first, then run one
+manual acceptance matrix.
 
-Implemented, runtime acceptance pending:
-- CherryLeavesBlock cherry-petal emission is local-frame:
-  - local DOWN neighbor instead of pos.below()
-  - physical face toward the leaves instead of world Direction.UP
-  - ParticleUtils.spawnParticleBelow geometry reproduced as local tangent samples
-    plus local Y=-0.55, preserving vanilla RNG order
-- CherryParticle has a dedicated rotated tick:
-  - wind acceleration lies in local X/Z
-  - gravity uses local DOWN
-  - collision uses the accepted allowlisted local Particle.move adapter
-  - blocked-tangent removal tests local X/Z
-- accepted TerrainParticle move adapter was renamed to
-  LocalGravityParticleMoveMixin and now explicitly allowlists TerrainParticle
-  and CherryParticle only
+Exception: an intermediate checkpoint is allowed only for startup/mixin failure
+or when a new shared core boundary cannot be validated deterministically and
+substantial later work would depend on it.
 
-Still open:
-- complete remaining non-fluid custom-tick particle audit
-- CampfireSmokeParticle local tangent drift / constructor rise
-- DragonBreathParticle local ground/rise/tangent-speedup semantics
-- remaining weather/custom emitter origin audit
-- fluid-coupled particle cases (Drip/WaterDrop/Wake/Bubble/CurrentDown etc.)
-  belong with Phase 5
+Fluid-coupled particles are also audited here. If a final behavior depends on
+fluid topology/flow that does not exist until Phase 5, implement the
+frame-independent particle part here and mark only the integration gate blocked
+by Phase 5. Do not create temporary fake fluid behavior.
 
-Close only after:
-- sand/gravel/anvil on each face
-- falling dust origin + acceleration + settling correct
-- block breaking particles
-- rain/drop/drip particles
-- no duplicated particles from dual vanilla/custom emission
+### 4.0 Shared particle foundations
+
+Required common mechanisms:
+
+- emitter coordinates:
+  - distinguish block-local semantic offsets from physical world coordinates;
+  - rotate local UP/DOWN/tangent offsets at the emitter boundary;
+  - preserve vanilla RNG count/order;
+- acceleration/motion:
+  - generic Particle.tick gravity;
+  - custom tick gravity/rise terms;
+  - local tangent-plane accelerations/drift;
+- collision:
+  - preserve physical AABB/world storage;
+  - when a particle's vanilla semantics depend on vertical-vs-tangent ordering,
+    rotate the whole Particle.move semantic unit rather than patching flags
+    afterward;
+  - local onGround/stoppedByCollision/tangent clipping where the owning class
+    actually requires them;
+- lifecycle:
+  - world-Y / world-XZ stop/remove conditions must be classified as semantic or
+    physical before adaptation;
+- rendering:
+  - only adapt render/anchor logic when source research proves it owns the
+    asymmetry; do not use render offsets as a substitute for broken physics;
+- environment queries:
+  - block/fluid/weather neighbor checks must use the owning local semantic
+    direction when appropriate;
+- performance:
+  - no unbounded per-particle caches;
+  - avoid allocations in hot ticks where practical;
+  - no duplicate vanilla + Planet emission.
+
+Shared implementation should be generic only when multiple audited particle
+families genuinely share the same semantics. Otherwise use explicit allowlists;
+do not generalize from one working particle class by assumption.
+
+### 4.1 Accepted foundations / behavior
+
+Already manually verified:
+
+- ordinary block-breaking particles follow local gravity;
+- block-destroy particle local-UP launch bias;
+- TerrainParticle radial destroy burst;
+- TerrainParticle rotated collision behavior:
+  - no extra local-floor crawl on +/-X, +/-Z or -Y;
+  - accepted boundary is the whole local Particle.move semantic unit;
+- standing/wall normal+soul torch flame/smoke origins away from exact edges;
+- standing/wall redstone torch visual particle origins away from exact edges.
+
+TerrainParticle accepted architecture:
+
+- LocalGravityParticleMoveMixin uses an explicit allowlist;
+- physical AABB/world storage remains vanilla;
+- collision shapes are resolved with PlanetEntityCollision in LOCAL
+  Y -> LOCAL X/Z order;
+- stoppedByCollision/onGround/tangent clipping use local axes;
+- private Particle.hasNearBlocks is copied locally rather than accessed through
+  a private @Invoker because runtime mapping proved unstable.
+
+Rejected approaches that must not be revived:
+
+- post-processing onGround/stoppedByCollision after a world-axis collision solve;
+- reconstructing collision movement from newPos-oldPos;
+- TerrainParticle render-anchor shifting as a crawl fix.
+
+### 4.2 Implemented, final phase acceptance pending
+
+- FallingBlock client animateTick emits from local DOWN;
+- FallingDustParticle acceleration and terminal-speed clamp use local DOWN;
+- direct-gravity custom-tick first-pass adapter;
+- cherry-leaf particle path:
+  - local-DOWN emission from CherryLeavesBlock;
+  - local support-face test;
+  - vanilla RNG order preserved;
+  - local tangent wind;
+  - local gravity;
+  - allowlisted local Particle.move collision;
+  - local tangent blocked/removal semantics;
+- accepted TerrainParticle move adapter renamed to LocalGravityParticleMoveMixin
+  and currently allowlists TerrainParticle + CherryParticle.
+
+Exact-edge torch emitter mismatch remains deferred to the generic
+player/body-vs-canonical BlockState edge policy. Do not special-case torch
+geometry.
+
+### 4.3 Full source audit before any more manual testing
+
+Audit every vanilla 1.21.1 particle class and every vanilla emitter/helper that
+contains any of these assumptions:
+
+- direct x/y/z or xd/yd/zd semantic manipulation;
+- gravity/rise hard-coded to world Y;
+- horizontal/tangent behavior hard-coded to world X/Z;
+- onGround or y==yo style vertical checks;
+- pos.above()/below(), Direction.UP/DOWN, or y +/- constant emitter placement;
+- ParticleUtils helpers with world-axis meaning;
+- block/fluid/environment queries coupled to the particle;
+- custom move() or custom tick() that bypasses Particle.tick;
+- weather/rain/splash origins;
+- nested particle emission from another particle;
+- renderer logic whose meaning depends on vertical orientation.
+
+For each audited class/path, classify it as one of:
+
+1. frame-independent: no Planet change;
+2. base Particle.tick compatible: inherited shared fix is sufficient;
+3. shared local-move compatible: add to an explicit allowlist only after tests;
+4. custom tick: dedicated local-frame adapter;
+5. emitter-only adaptation;
+6. fluid-coupled: particle-side implementation here, final integration gate
+   after Phase 5;
+7. intentionally world-physical: document why no rotation is correct.
+
+### 4.4 Known families to cover in this audit
+
+At minimum include:
+
+- TerrainParticle / block destroy;
+- FallingDustParticle;
+- torch / wall torch / soul torch;
+- redstone torch;
+- CherryParticle + CherryLeavesBlock/ParticleUtils.spawnParticleBelow;
+- CampfireSmokeParticle + CampfireBlock emitter;
+- DragonBreathParticle and all emitters that supply its initial velocity;
+- DripParticle family;
+- WaterDropParticle;
+- WakeParticle;
+- BubbleParticle / BubblePopParticle / BubbleColumnUpParticle;
+- WaterCurrentDownParticle;
+- SplashParticle and fluid splash emitters;
+- lava-related particles;
+- smoke/ash families that use speedUpWhenYMotionIsBlocked;
+- spell/trial-spawner particles with negative gravity/rise;
+- crit/breaking-item/snowflake/explode and other base-gravity users;
+- weather/rain particles;
+- firework nested emissions;
+- portal/reverse-portal/fly-towards-position classes with custom movement;
+- any remaining ParticleEngine-registered vanilla particle class found by the
+  full registry/source sweep.
+
+This list is a minimum audit matrix, not a whitelist. The source sweep decides
+the final set.
+
+### 4.5 Fluid dependency rule
+
+Particle classes that query FluidState or model bubble/current/drip behavior are
+still owned by Phase 4 for:
+
+- local-frame acceleration;
+- emitter orientation;
+- custom tick axis semantics;
+- collision/lifecycle semantics independent of fluid topology.
+
+However, final correctness of:
+
+- flow/current direction;
+- fluid surface/inside tests under Planet topology;
+- fluid-render coupling;
+- waterlogging-dependent emission;
+- lava/water topology interactions
+
+is blocked by Phase 5 and will receive an integration re-check there.
+
+### 4.6 Single final particle acceptance matrix
+
+Do not request manual testing until the non-blocked Phase 4 implementation is
+complete.
+
+The final pass must cover, in one run:
+
+- +Y vanilla baseline;
+- +/-X, +/-Z and -Y;
+- block destroy;
+- falling dust / falling-block visual particles;
+- all torch variants;
+- cherry leaves;
+- campfire smoke;
+- dragon breath;
+- representative generic gravity particles;
+- representative custom-tick rise/fall particles;
+- weather/rain;
+- representative fluid-coupled particles for the portions not blocked by
+  Phase 5;
+- no physical +Y drift;
+- no duplicate vanilla/custom emission;
+- no premature removal/freeze;
+- no extra surface crawl where +Y does not have it;
+- performance smoke check with many particles;
+- exact-edge cases only where the particle mechanism itself owns the edge
+  behavior; generic block edge-policy remains deferred.
+
+Phase 4 closes only when this matrix passes, except for explicitly documented
+Phase-5-blocked fluid integration gates.
 
 ## Phase 5 — fluids [PLANNED; do not implement before Phases 1-2 kernel]
 
