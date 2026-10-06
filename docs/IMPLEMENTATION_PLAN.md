@@ -297,17 +297,28 @@ Implemented, acceptance/audit pending:
 - exact-edge torch emitter mismatch is deferred to the generic player/body-vs-canonical BlockState edge policy; do not special-case torch geometry
 
 Current TerrainParticle destroy-effect work, runtime acceptance pending:
-- the broad and narrow Particle.move/onGround/stoppedByCollision experiments
-  were rejected and have been removed from runtime; do not build on them
-- exact source review showed TerrainParticle does not remove itself on ground
-- vanilla Particle position/render semantics are center X/Z but AABB.minY;
-  therefore the render anchor is the local-DOWN AABB face only on +Y
-- TerrainParticle render now shifts that anchor to the center of the actual
-  LOCAL-DOWN AABB face on the five rotated gravity faces
-- physics, lifetime, collision and radial destroy burst remain untouched
+- post-move onGround/stoppedByCollision patches were rejected; they tried to
+  repair consequences after vanilla had already resolved collision in world axes
+- the render-anchor experiment was also rejected after manual testing showed no
+  visible change and has been removed
+- exact Particle.move research identified the owning asymmetry: vanilla collision
+  order is WORLD Y first, then WORLD X/Z, and its collision response also treats
+  WORLD Y as vertical
+- TerrainParticleMoveGravityMixin now replaces Particle.move only for
+  TerrainParticle on rotated Planet faces:
+  - preserves vanilla physical AABB and hasNearBlocks gate
+  - collects the same block collision shapes as vanilla
+  - resolves them through PlanetEntityCollision.collideWithShapes in LOCAL
+    Y -> LOCAL X/Z order
+  - applies exact vanilla stoppedByCollision/onGround/tangent-velocity semantics
+    to LOCAL axes
+- +Y and every non-TerrainParticle still use vanilla Particle.move unchanged
+- pure tests cover local collision response and the full floor-contact move model
+  across all six faces
 
-Generic Particle.move/tick local onGround/friction semantics remain a separate
-open research item; they are not part of the current TerrainParticle visual fix
+Generic Particle.move/tick work for other particle classes remains a separate
+open research item; do not generalize the TerrainParticle adapter until this
+runtime acceptance passes
 
 Still open:
 - complete direct-gravity / custom-tick particle subclass audit
