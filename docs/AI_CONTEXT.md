@@ -1367,3 +1367,57 @@ Rejected approaches remain rejected:
 This closes the specific TerrainParticle destroy-crawl regression. Continue
 Phase 4 with the remaining direct/custom-tick particle audit; do not reopen this
 item unless a new regression appears.
+
+
+## 2026-10-07 Cherry leaf particle complete local-frame pass
+After TerrainParticle local move was manually accepted, the next Phase 4
+non-fluid custom particle audit focused on CHERRY_LEAVES.
+
+Exact vanilla path:
+CherryLeavesBlock.animateTick:
+- calls super.animateTick;
+- 1/10 chance;
+- pos.below();
+- get collision shape of that block;
+- Block.isFaceFull(shape, Direction.UP);
+- ParticleUtils.spawnParticleBelow.
+
+ParticleUtils.spawnParticleBelow:
+- random X in block;
+- y = blockY - 0.05;
+- random Z in block;
+- zero initial velocity.
+
+CherryParticle.tick:
+- wind curve adds only to world xd/zd;
+- subtracts gravity from world yd;
+- move(xd,yd,zd);
+- removes on onGround OR, after first tick, when xd==0 or zd==0;
+- scalar friction.
+
+Adaptation:
+- CherryLeavesParticleGravityMixin injects immediately AFTER
+  LeavesBlock.animateTick, so vanilla super behavior remains intact;
+- on rotated faces it cancels only CherryLeavesBlock's own world-Y branch;
+- the same 1/10 random check is consumed once;
+- local DOWN physical neighbor replaces pos.below();
+- collision face toward the leaves replaces world Direction.UP;
+- the same two nextDouble calls are consumed X-sample then Z-sample;
+- PlanetParticleEmitter.belowBlock reinterprets vanilla relative
+  (sampleX-0.5, -0.55, sampleZ-0.5) in the local frame.
+
+CherryParticleGravityMixin owns the full rotated CherryParticle.tick:
+- POS_Y stays vanilla;
+- local tangent wind is computed from the exact vanilla curve;
+- gravity magnitude is unchanged and applied along local DOWN;
+- roll/spin/lifetime/friction remain vanilla;
+- LocalGravityParticleMoveMixin now allowlists both TerrainParticle and
+  CherryParticle so collision ordering/response is local as one unit;
+- blocked-axis removal tests local X/Z after move.
+
+CherryParticle was removed from DirectGravityParticleMixin so gravity is not
+double-adapted.
+
+Fluid-coupled custom particles are intentionally deferred to Phase 5.
+
+Runtime acceptance pending.
