@@ -19,6 +19,8 @@
     "CampfireSmokeParticleGravityMixin",
     "BaseAshSmokeParticleGravityMixin",
     "WhiteAshParticleGravityMixin",
+    "SpellParticleGravityMixin",
+    "TrialSpawnerDetectionParticleGravityMixin",
     "DragonBreathParticleAccessor",
     "DragonBreathParticleGravityMixin",
     "FixedVerticalLaunchParticleMixin",
