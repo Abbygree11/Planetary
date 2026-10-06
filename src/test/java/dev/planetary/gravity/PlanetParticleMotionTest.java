@@ -91,6 +91,52 @@ final class PlanetParticleMotionTest {
     }
 
     @Test
+    void customTickDeltaIsReinterpretedAsLocalAxes() {
+        Vec3 start =
+                new Vec3(
+                        0.4D,
+                        -0.2D,
+                        0.7D
+                );
+        Vec3 vanillaBeforeMove =
+                start.add(
+                        0.03D,
+                        -0.05D,
+                        -0.02D
+                );
+
+        for (PlanetFace face : PlanetFace.values()) {
+            PlanetGravityFrame frame =
+                    new PlanetGravityFrame(face);
+
+            Vec3 actual =
+                    PlanetParticleMotion.reinterpretTickDeltaAsLocal(
+                            start,
+                            vanillaBeforeMove,
+                            frame
+                    );
+
+            PlanetFrameVector expectedDelta =
+                    frame.localToWorld(
+                            new PlanetFrameVector(
+                                    0.03D,
+                                    -0.05D,
+                                    -0.02D
+                            )
+                    );
+
+            assertVec(
+                    actual,
+                    start.add(
+                            expectedDelta.x(),
+                            expectedDelta.y(),
+                            expectedDelta.z()
+                    )
+            );
+        }
+    }
+
+    @Test
     void groundFrictionMovesFromWorldXZToLocalTangents() {
         double friction =
                 (double) 0.7F;
