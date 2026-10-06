@@ -312,11 +312,28 @@ TerrainParticle destroy-effect work [MANUAL PASS]:
 - private Particle.hasNearBlocks is copied locally rather than invoked through a
   private @Invoker because runtime mapping proved unstable
 
+Implemented, runtime acceptance pending:
+- CherryLeavesBlock cherry-petal emission is local-frame:
+  - local DOWN neighbor instead of pos.below()
+  - physical face toward the leaves instead of world Direction.UP
+  - ParticleUtils.spawnParticleBelow geometry reproduced as local tangent samples
+    plus local Y=-0.55, preserving vanilla RNG order
+- CherryParticle has a dedicated rotated tick:
+  - wind acceleration lies in local X/Z
+  - gravity uses local DOWN
+  - collision uses the accepted allowlisted local Particle.move adapter
+  - blocked-tangent removal tests local X/Z
+- accepted TerrainParticle move adapter was renamed to
+  LocalGravityParticleMoveMixin and now explicitly allowlists TerrainParticle
+  and CherryParticle only
+
 Still open:
-- complete direct-gravity / custom-tick particle subclass audit
-- emission helpers such as ParticleUtils.spawnParticleBelow use world Y
+- complete remaining non-fluid custom-tick particle audit
+- CampfireSmokeParticle local tangent drift / constructor rise
+- DragonBreathParticle local ground/rise/tangent-speedup semantics
 - remaining weather/custom emitter origin audit
-- fluid-specific particle topology/render coupling belongs with Phase 5
+- fluid-coupled particle cases (Drip/WaterDrop/Wake/Bubble/CurrentDown etc.)
+  belong with Phase 5
 
 Close only after:
 - sand/gravel/anvil on each face
