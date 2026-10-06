@@ -15,7 +15,7 @@
     "LocalGravityParticleMoveMixin",
     "CherryParticleGravityMixin",
     "CherryLeavesParticleGravityMixin",
-    "DirectGravityParticleMixin",
+    "SemanticTickDeltaParticleMixin",
     "FallingDustParticleGravityMixin",
     "TorchParticleGravityMixin",
     "RedstoneTorchParticleGravityMixin",
