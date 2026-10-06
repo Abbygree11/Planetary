@@ -155,6 +155,23 @@ These require an explicit product decision, not automatic rotation.
 
 ---
 
+## 2A. Portability rule for every mechanism
+
+Cross-version strategy:
+`docs/research/PORTABILITY_STRATEGY.md`.
+
+This mechanism map is intentionally based on semantic ownership rather than
+current 1.21.1 method names because that is also the portability boundary.
+
+For every mechanism listed below:
+- Planet-owned frame/topology/graph/semantic logic should stay stable;
+- the exact Minecraft/NeoForge hook feeding that logic is version-sensitive;
+- a future port re-researches the vanilla owner and rewires the adapter first;
+- only a true semantic change should force a core algorithm rewrite.
+
+A mechanism implemented mostly inside mixins is considered insufficiently
+portable until its reusable logic is extracted behind a Planet-owned helper/API.
+
 ## 3. Critical roadmap rule: phases own BEHAVIOR, not objects
 
 A Minecraft class/block/entity can participate in multiple phases.
