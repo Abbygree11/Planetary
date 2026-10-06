@@ -595,3 +595,97 @@ instability of @Invoker.
 
 Treat the earlier landing-flag and render-anchor sections as historical rejected
 experiments only. Do not restore them.
+
+
+## Cherry leaves: full emitter + custom tick audit
+
+### Vanilla emitter path
+
+CherryLeavesBlock.animateTick first calls LeavesBlock.animateTick unchanged.
+Then its own branch does:
+
+    if (random.nextInt(10) == 0) {
+        BlockPos below = pos.below();
+        BlockState belowState = level.getBlockState(below);
+        if (!Block.isFaceFull(
+                belowState.getCollisionShape(level, below),
+                Direction.UP
+        )) {
+            ParticleUtils.spawnParticleBelow(... CHERRY_LEAVES);
+        }
+    }
+
+ParticleUtils.spawnParticleBelow samples:
+
+    x = pos.x + random.nextDouble();
+    y = pos.y - 0.05;
+    z = pos.z + random.nextDouble();
+
+Relative to the source block center this is:
+
+    localX = sampleX - 0.5
+    localY = -0.55
+    localZ = sampleZ - 0.5
+
+All of pos.below(), Direction.UP and y-0.05 are semantic local-frame concepts.
+
+### Adapted emitter boundary
+
+On rotated faces CherryLeavesParticleGravityMixin injects AFTER the super
+LeavesBlock.animateTick call and cancels only the remaining CherryLeavesBlock
+branch.
+
+It preserves RNG count/order:
+1. nextInt(10);
+2. only when spawning: nextDouble for local X;
+3. nextDouble for local Z.
+
+The local DOWN physical neighbor is queried. Because collision shapes are
+already physical through BlockStateShapeMixin, Block.isFaceFull checks the
+physical face pointing back toward the leaves.
+
+PlanetParticleEmitter.belowBlock rotates the exact vanilla local relative
+offset. POS_Y reproduces the original coordinates exactly.
+
+### Vanilla CherryParticle.tick axis assumptions
+
+The custom tick bypasses Particle.tick.
+
+It computes a time-dependent wind curve and applies:
+
+    xd += windX;
+    zd += windZ;
+    yd -= gravity;
+
+After move it removes when:
+
+    onGround
+    || lifetime < 299 && (xd == 0 || zd == 0)
+
+Thus world X/Z are assumed to be the tangent plane in both wind and blocked-axis
+semantics.
+
+### Adapted tick boundary
+
+CherryParticleGravityMixin cancels and reproduces tick only on rotated faces.
+
+Preserved exactly:
+- lifetime post-decrement semantics;
+- particleRandom-based wind curve;
+- rotSpeed/spinAcceleration and roll;
+- gravity magnitude;
+- scalar friction;
+- POS_Y vanilla behavior.
+
+Rotated semantics:
+- wind curve is constructed as local (X,0,Z) then transformed to world;
+- gravity is local DOWN;
+- Particle.move is handled by LocalGravityParticleMoveMixin, using local
+  collision ordering and response;
+- removal checks onGround from that local move plus exact-zero local X/Z
+  tangent velocity after the first tick.
+
+CherryParticle is removed from DirectGravityParticleMixin to prevent duplicate
+gravity rotation.
+
+Fluid-coupled particles are explicitly outside this pass and remain Phase 5.
