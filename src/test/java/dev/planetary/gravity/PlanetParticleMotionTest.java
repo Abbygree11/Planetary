@@ -1,6 +1,7 @@
 package dev.planetary.gravity;
 
 import dev.planetary.topology.PlanetFace;
+import dev.planetary.topology.PlanetFrameVector;
 import dev.planetary.topology.PlanetGravityFrame;
 import net.minecraft.world.phys.Vec3;
 import org.junit.jupiter.api.Test;
@@ -90,6 +91,150 @@ final class PlanetParticleMotionTest {
     }
 
     @Test
+    void groundFrictionMovesFromWorldXZToLocalTangents() {
+        double friction =
+                (double) 0.7F;
+
+        for (PlanetFace face : PlanetFace.values()) {
+            PlanetGravityFrame frame =
+                    new PlanetGravityFrame(face);
+
+            Vec3 neutral =
+                    worldVector(
+                            frame,
+                            0.5D,
+                            -0.4D,
+                            0.25D
+                    );
+
+            Vec3 vanillaAfterGround =
+                    new Vec3(
+                            neutral.x * friction,
+                            neutral.y,
+                            neutral.z * friction
+                    );
+
+            Vec3 corrected =
+                    PlanetParticleMotion.correctBaseTickAxisEffects(
+                            vanillaAfterGround,
+                            frame,
+                            false,
+                            false,
+                            true
+                    );
+
+            PlanetFrameVector local =
+                    frame.worldToLocal(
+                            new PlanetFrameVector(
+                                    corrected.x,
+                                    corrected.y,
+                                    corrected.z
+                            )
+                    );
+
+            assertEquals(
+                    0.5D * friction,
+                    local.x(),
+                    EPSILON,
+                    face.name()
+            );
+            assertEquals(
+                    -0.4D,
+                    local.y(),
+                    EPSILON,
+                    face.name()
+            );
+            assertEquals(
+                    0.25D * friction,
+                    local.z(),
+                    EPSILON,
+                    face.name()
+            );
+        }
+    }
+
+    @Test
+    void blockedVerticalSpeedUpUsesLocalTangents() {
+        PlanetGravityFrame frame =
+                new PlanetGravityFrame(
+                        PlanetFace.POS_Z
+                );
+
+        Vec3 neutral =
+                worldVector(
+                        frame,
+                        0.3D,
+                        0.2D,
+                        -0.5D
+                );
+
+        Vec3 vanillaAfterWrongSpeedUp =
+                new Vec3(
+                        neutral.x * 1.1D,
+                        neutral.y,
+                        neutral.z * 1.1D
+                );
+
+        Vec3 corrected =
+                PlanetParticleMotion.correctBaseTickAxisEffects(
+                        vanillaAfterWrongSpeedUp,
+                        frame,
+                        true,
+                        true,
+                        false
+                );
+
+        PlanetFrameVector local =
+                frame.worldToLocal(
+                        new PlanetFrameVector(
+                                corrected.x,
+                                corrected.y,
+                                corrected.z
+                        )
+                );
+
+        assertEquals(0.3D * 1.1D, local.x(), EPSILON);
+        assertEquals(0.2D, local.y(), EPSILON);
+        assertEquals(-0.5D * 1.1D, local.z(), EPSILON);
+    }
+
+    @Test
+    void localVerticalDisplacementCheckUsesFrameAxis() {
+        for (PlanetFace face : PlanetFace.values()) {
+            PlanetGravityFrame frame =
+                    new PlanetGravityFrame(face);
+
+            assertEquals(
+                    true,
+                    PlanetParticleMotion.hasNoLocalVerticalDisplacement(
+                            worldVector(
+                                    frame,
+                                    0.25D,
+                                    0.0D,
+                                    -0.4D
+                            ),
+                            frame
+                    ),
+                    face.name()
+            );
+
+            assertEquals(
+                    false,
+                    PlanetParticleMotion.hasNoLocalVerticalDisplacement(
+                            worldVector(
+                                    frame,
+                                    0.0D,
+                                    0.1D,
+                                    0.0D
+                            ),
+                            frame
+                    ),
+                    face.name()
+            );
+        }
+    }
+
+    @Test
     void positiveYMatchesVanillaExactly() {
         PlanetGravityFrame frame =
                 new PlanetGravityFrame(
@@ -122,6 +267,28 @@ final class PlanetParticleMotionTest {
                         (velocity.y - 0.1D) * power + 0.1D,
                         velocity.z * power
                 )
+        );
+    }
+
+    private static Vec3 worldVector(
+            PlanetGravityFrame frame,
+            double localX,
+            double localY,
+            double localZ
+    ) {
+        PlanetFrameVector world =
+                frame.localToWorld(
+                        new PlanetFrameVector(
+                                localX,
+                                localY,
+                                localZ
+                        )
+                );
+
+        return new Vec3(
+                world.x(),
+                world.y(),
+                world.z()
         );
     }
 
