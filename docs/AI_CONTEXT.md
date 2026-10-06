@@ -1305,3 +1305,32 @@ No render offset remains. No generic Particle.move adapter remains.
 +Y is pure vanilla.
 
 Runtime acceptance pending.
+
+
+## 2026-10-07 TerrainParticle move mixin startup crash
+First runtime attempt of the local TerrainParticle move adapter failed during
+Mixin application before the game initialized.
+
+Observed error:
+    InvalidAccessorException:
+    No candidates were found matching hasNearBlocks(DDD)Z
+    in net.minecraft.client.particle.Particle
+
+Cause:
+ParticleGravityAccessor used @Invoker("hasNearBlocks") for a private vanilla
+Particle helper. The external 1.21.1 source name is not a safe runtime contract
+through the NeoForge dev transformation/mapping pipeline.
+
+Correction:
+- removed the @Invoker entirely;
+- copied the exact vanilla hasNearBlocks pre-check logic into
+  TerrainParticleMoveGravityMixin;
+- copied logic still checks bbWidth/bbHeight, current block and the projected
+  movement-edge block before invoking the collision solver;
+- added one lazily allocated MutableBlockPos per particle mixin instance to
+  avoid allocating block positions every tick;
+- collision semantics themselves are unchanged from the previous experimental
+  local TerrainParticle move design.
+
+Runtime acceptance remains pending; startup must pass before visual behavior can
+be evaluated.
