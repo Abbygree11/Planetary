@@ -8,6 +8,8 @@ import dev.planetary.topology.PlanetGravityFrame;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.TerrainParticle;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -70,7 +72,16 @@ public abstract class TerrainParticleMoveGravityMixin {
     protected boolean hasPhysics;
 
     @Shadow
+    protected float bbWidth;
+
+    @Shadow
+    protected float bbHeight;
+
+    @Shadow
     private boolean stoppedByCollision;
+
+    @Unique
+    private BlockPos.MutableBlockPos planetary$nearBlockPos;
 
     @Inject(
             method = "move(DDD)V",
@@ -128,8 +139,6 @@ public abstract class TerrainParticleMoveGravityMixin {
 
         Particle particle =
                 (Particle) (Object) this;
-        ParticleGravityAccessor accessor =
-                (ParticleGravityAccessor) (Object) this;
 
         AABB box =
                 particle.getBoundingBox();
@@ -138,10 +147,11 @@ public abstract class TerrainParticleMoveGravityMixin {
                 && movementLengthSquared != 0.0D
                 && movementLengthSquared
                 < PLANETARY_MAXIMUM_COLLISION_VELOCITY_SQUARED
-                && accessor.planetary$invokeHasNearBlocks(
+                && this.planetary$hasNearBlocks(
                         requestedX,
                         requestedY,
-                        requestedZ
+                        requestedZ,
+                        box
                 )) {
             List<VoxelShape> colliders =
                     new ArrayList<>();
@@ -204,6 +214,94 @@ public abstract class TerrainParticleMoveGravityMixin {
 
         this.xd = correctedVelocity.x;
         this.yd = correctedVelocity.y;
+
         this.zd = correctedVelocity.z;
+    }
+
+    /**
+     * Local copy of vanilla Particle.hasNearBlocks.
+     *
+     * <p>This method is intentionally copied instead of invoked through Mixin:
+     * hasNearBlocks is private and its runtime name is not stable enough for an
+     * accessor/invoker across the NeoForge dev transformation pipeline.</p>
+     */
+    @Unique
+    private boolean planetary$hasNearBlocks(
+            double dx,
+            double dy,
+            double dz,
+            AABB box
+    ) {
+        if (this.bbWidth > 1.0F
+                || this.bbHeight > 1.0F) {
+            return true;
+        }
+
+        if (this.planetary$nearBlockPos == null) {
+            this.planetary$nearBlockPos =
+                    new BlockPos.MutableBlockPos();
+        }
+
+        int x = Mth.floor(this.x);
+        int y = Mth.floor(this.y);
+        int z = Mth.floor(this.z);
+
+        this.planetary$nearBlockPos.set(
+                x,
+                y,
+                z
+        );
+
+        if (!this.level
+                .getBlockState(
+                        this.planetary$nearBlockPos
+                )
+                .isAir()) {
+            return true;
+        }
+
+        double edgeX =
+                dx > 0.0D
+                        ? box.maxX
+                        : dx < 0.0D
+                        ? box.minX
+                        : this.x;
+        double edgeY =
+                dy > 0.0D
+                        ? box.maxY
+                        : dy < 0.0D
+                        ? box.minY
+                        : this.y;
+        double edgeZ =
+                dz > 0.0D
+                        ? box.maxZ
+                        : dz < 0.0D
+                        ? box.minZ
+                        : this.z;
+
+        int targetX =
+                Mth.floor(edgeX + dx);
+        int targetY =
+                Mth.floor(edgeY + dy);
+        int targetZ =
+                Mth.floor(edgeZ + dz);
+
+        if (targetX == x
+                && targetY == y
+                && targetZ == z) {
+            return false;
+        }
+
+        this.planetary$nearBlockPos.set(
+                targetX,
+                targetY,
+                targetZ
+        );
+
+        return !this.level
+                .getBlockState(
+                        this.planetary$nearBlockPos
+                )
+                .isAir();
     }
 }
