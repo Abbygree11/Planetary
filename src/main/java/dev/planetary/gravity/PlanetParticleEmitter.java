@@ -106,6 +106,38 @@ public final class PlanetParticleEmitter {
         );
     }
 
+    /**
+     * Vanilla ParticleUtils.spawnParticleBelow samples two tangent coordinates
+     * in [0,1) and places the particle at y - 0.05. Relative to the block
+     * center that is local Y = -0.55.
+     */
+    public static Vec3 belowBlock(
+            BlockPos pos,
+            PlanetGravityFrame frame,
+            double localXSample,
+            double localZSample
+    ) {
+        if (localXSample < 0.0D
+                || localXSample >= 1.0D
+                || localZSample < 0.0D
+                || localZSample >= 1.0D) {
+            throw new IllegalArgumentException(
+                    "Samples must be in [0,1): x="
+                            + localXSample
+                            + ", z="
+                            + localZSample
+            );
+        }
+
+        return localOffsetFromCenter(
+                pos,
+                frame,
+                localXSample - 0.5D,
+                -0.55D,
+                localZSample - 0.5D
+        );
+    }
+
     public static Vec3 localOffsetFromCenter(
             BlockPos pos,
             PlanetGravityFrame frame,
