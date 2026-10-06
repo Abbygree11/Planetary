@@ -35,6 +35,7 @@ import java.util.Optional;
  */
 @Mixin(SingleQuadParticle.class)
 public abstract class TerrainParticleRenderGravityMixin {
+    @Unique
     private static final String RENDER_ROTATED_QUAD =
             "renderRotatedQuad("
                     + "Lcom/mojang/blaze3d/vertex/VertexConsumer;"
