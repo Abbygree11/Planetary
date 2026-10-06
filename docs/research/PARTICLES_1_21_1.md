@@ -447,3 +447,59 @@ on the local floor.
 ParticleTrace diagnostics were removed after identifying the data-provenance bug
 and confirming the remaining issue was post-contact motion rather than false
 airborne collision.
+
+
+## Current conclusion: TerrainParticle surface crawl is render-anchor asymmetry
+
+This section supersedes the earlier landing/stoppedByCollision hypotheses for
+the specific destroy-particle visual crawl.
+
+Exact vanilla source:
+- Particle.setPos:
+  - x = requested x;
+  - y = requested y;
+  - z = requested z;
+  - AABB = [x-width/2, y, z-width/2] .. [x+width/2, y+height, z+width/2].
+- Particle.setLocationFromBoundingbox:
+  - x = AABB centerX;
+  - y = AABB.minY;
+  - z = AABB centerZ.
+- SingleQuadParticle.renderRotatedQuad:
+  - render X = lerp(xo, x);
+  - render Y = lerp(yo, y);
+  - render Z = lerp(zo, z).
+- TerrainParticle has no ground-removal override.
+
+So vanilla's particle render position is an asymmetric AABB anchor:
+(centerX, minY, centerZ). It is exactly the local-DOWN face center only for
++Y gravity.
+
+For rotational equivalence the desired render anchor is:
+
+    center(AABB) + worldLocalDown * halfExtentAlongThatAxis
+
+The render offset is:
+
+    desiredLocalDownFaceCenter - (centerX, minY, centerZ)
+
+Expected 0.2-cube offsets:
+- +Y: (0, 0, 0)
+- -Y: (0, +0.2, 0)
+- +X: (-0.1, +0.1, 0)
+- -X: (+0.1, +0.1, 0)
+- +Z: (0, +0.1, -0.1)
+- -Z: (0, +0.1, +0.1)
+
+Implementation intentionally targets TerrainParticle rendering only. Applying
+this to every SingleQuadParticle would move torch/flame and other emitter
+particles whose supplied render point is already semantically meaningful.
+
+All rejected Particle.move/onGround/stoppedByCollision runtime experiments were
+removed before adding this renderer adapter.
+
+Acceptance:
+- +Y remains pixel/position-equivalent to vanilla (zero offset);
+- destroy burst/radial motion remains unchanged;
+- +/-X, +/-Z and -Y no longer expose a visible post-contact crawl along the
+  local floor;
+- no physical +Y drift returns.
