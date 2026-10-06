@@ -315,6 +315,9 @@ Current TerrainParticle destroy-effect work, runtime acceptance pending:
 - +Y and every non-TerrainParticle still use vanilla Particle.move unchanged
 - pure tests cover local collision response and the full floor-contact move model
   across all six faces
+- private Particle.hasNearBlocks is NOT accessed by @Invoker; its small vanilla
+  pre-check is copied locally because the private runtime method name proved
+  unstable under the NeoForge dev transformation pipeline
 
 Generic Particle.move/tick work for other particle classes remains a separate
 open research item; do not generalize the TerrainParticle adapter until this
