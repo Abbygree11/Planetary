@@ -1,6 +1,7 @@
 package dev.planetary.mixin;
 
 import net.minecraft.client.multiplayer.ClientLevel;
+import dev.planetary.gravity.PlanetParticleMoveAccess;
 import net.minecraft.client.particle.Particle;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
@@ -11,18 +12,28 @@ import org.spongepowered.asm.mixin.gen.Accessor;
  * DripParticle-targeted mixin is invalid.
  */
 @Mixin(Particle.class)
-public interface ParticleGravityAccessor {
+public interface ParticleGravityAccessor
+        extends PlanetParticleMoveAccess {
     @Accessor("level")
     ClientLevel planetary$getLevel();
 
     @Accessor("x")
     double planetary$getX();
 
+    @Accessor("x")
+    void planetary$setX(double value);
+
     @Accessor("y")
     double planetary$getY();
 
+    @Accessor("y")
+    void planetary$setY(double value);
+
     @Accessor("z")
     double planetary$getZ();
+
+    @Accessor("z")
+    void planetary$setZ(double value);
 
     @Accessor("xd")
     double planetary$getXd();
@@ -65,6 +76,24 @@ public interface ParticleGravityAccessor {
 
     @Accessor("onGround")
     boolean planetary$isOnGround();
+
+    @Accessor("onGround")
+    void planetary$setOnGround(boolean value);
+
+    @Accessor("hasPhysics")
+    boolean planetary$hasPhysics();
+
+    @Accessor("bbWidth")
+    float planetary$getBbWidth();
+
+    @Accessor("bbHeight")
+    float planetary$getBbHeight();
+
+    @Accessor("stoppedByCollision")
+    boolean planetary$isStoppedByCollision();
+
+    @Accessor("stoppedByCollision")
+    void planetary$setStoppedByCollision(boolean value);
 
     @Accessor("roll")
     float planetary$getRoll();
