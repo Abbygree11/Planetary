@@ -5,7 +5,6 @@ import dev.planetary.topology.PlanetGravityFrame;
 import dev.planetary.topology.PlanetVector;
 import net.minecraft.client.particle.BubblePopParticle;
 import net.minecraft.client.particle.CampfireSmokeParticle;
-import net.minecraft.client.particle.CherryParticle;
 import net.minecraft.client.particle.DripParticle;
 import net.minecraft.client.particle.WakeParticle;
 import net.minecraft.client.particle.WaterDropParticle;
@@ -26,7 +25,6 @@ import java.util.Optional;
         WaterDropParticle.class,
         BubblePopParticle.class,
         WakeParticle.class,
-        CherryParticle.class,
         CampfireSmokeParticle.class
 })
 public abstract class DirectGravityParticleMixin {
