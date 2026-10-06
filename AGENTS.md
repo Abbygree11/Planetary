@@ -180,6 +180,35 @@ Use these status meanings consistently:
   active runtime design.
 - **PLANNED** — no stable runtime implementation yet.
 
+## 7A. Batch acceptance for shared subsystems
+
+Do not force the user to manually test every tiny implementation step when
+several pending changes belong to the same subsystem and share the same internal
+mechanisms.
+
+For a subsystem such as particles, fluids, rendering, redstone, worldgen, etc.:
+
+1. audit the complete relevant vanilla/NeoForge mechanism first;
+2. classify concrete classes/paths by shared behavior;
+3. implement shared adapters and all coherent owned cases;
+4. add deterministic tests during implementation;
+5. keep roadmap status as implementation/acceptance pending;
+6. perform ONE subsystem-level manual acceptance pass with a matrix covering all
+   implemented cases.
+
+Ask for an intermediate manual checkpoint only when it is necessary to avoid
+building substantial work on an unverified foundation, for example:
+- client/server cannot start;
+- mixin/apply/load failure;
+- serialization/data migration risk;
+- the subsystem's core boundary itself is uncertain and cannot be validated
+  deterministically;
+- a previous broad implementation already caused regressions and the new base
+  abstraction must be proven before reuse.
+
+Do not turn every class-specific patch into a separate user test if it can be
+covered by the final subsystem acceptance matrix.
+
 ## 8. Mandatory post-change verification checklist
 
 After EVERY runtime-affecting change, meaningful fix/refactor, or worldgen
