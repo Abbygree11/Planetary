@@ -19,6 +19,7 @@
     "CampfireSmokeParticleGravityMixin",
     "DragonBreathParticleAccessor",
     "DragonBreathParticleGravityMixin",
+    "FixedVerticalLaunchParticleMixin",
     "SemanticTickDeltaParticleMixin",
     "FallingDustParticleGravityMixin",
     "TorchParticleGravityMixin",
