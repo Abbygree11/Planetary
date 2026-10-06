@@ -1180,3 +1180,34 @@ Correction in 77734b4:
 
 Temporary TerrainParticle trace remains capped for one acceptance pass and must
 be removed once behavior is confirmed.
+
+
+## 2026-10-07 TerrainParticle landing policy finalized for acceptance
+User clarified the visual target precisely:
+- +Y destroy particles fall and disappear without a visible surface-crawling
+  phase;
+- rotated-face particles were reaching the local floor, visibly spreading along
+  it, then disappearing.
+
+The exact collision-result capture fixed false airborne onGround, but did not
+remove the remaining visible post-contact slide.
+
+Current narrow policy:
+- keep vanilla physical collision solver unchanged;
+- use the exact clipped Vec3 from Entity.collideBoundingBox;
+- detect the first REAL LOCAL-DOWN clipping event;
+- on that first local-ground event set onGround=true and
+  stoppedByCollision=true immediately;
+- do not wait for a second tick/full-zero vertical displacement;
+- do not rewrite tangent velocity components or collision geometry.
+
+This is intentionally targeted at eliminating the extra rotated-face
+post-contact movement phase while preserving the already accepted destroy burst.
+
+Temporary ParticleTrace diagnostics have been removed.
+
+Runtime acceptance pending:
+- radial burst unchanged;
+- no false in-air landing;
+- no visible crawl/spread after first local-floor contact;
+- +Y remains vanilla.
