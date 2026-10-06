@@ -58,6 +58,32 @@ Minecraft/NeoForge boundaries first. Mods that use standard boundaries should
 inherit Planet behavior automatically; mods doing their own raw world-axis math
 may require a small integration adapter.
 
+## Cross-version portability gate [MANDATORY]
+
+Canonical strategy: `docs/research/PORTABILITY_STRATEGY.md`
+
+Every phase must minimize the amount of code that must change when moving from
+Minecraft 1.21.1 / NeoForge 21.1.215 to a newer runtime.
+
+Phase requirements:
+- version-stable topology/frame/semantic logic lives in Planet-owned helpers;
+- Minecraft/NeoForge-specific code is a thin adaptation layer;
+- Mixins contain minimal hook plumbing, not duplicated subsystem algorithms;
+- shared mechanism/base-family boundaries are preferred over concrete-class
+  patches;
+- version-specific private members, ordinals and copied vanilla fragments are
+  documented as explicit port hotspots;
+- pure semantic tests are separated from per-version integration/runtime tests;
+- standard NeoForge/Minecraft extension points remain reachable;
+- any Planet-owned persistent format has an explicit migration/version policy.
+
+Phase closure must include a short portability review:
+"Could a newer Minecraft version change the vanilla hook while leaving the
+Planet helper/algorithm intact?"
+
+If not, the boundary should be improved before multiplying it across more
+classes.
+
 ## Status legend
 - DONE: user verified in game or deterministic tests fully cover the item.
 - PARTIAL: architecture exists and some behavior is verified, but the phase is not closed.
