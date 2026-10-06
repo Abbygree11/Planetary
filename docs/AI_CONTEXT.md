@@ -1446,3 +1446,76 @@ workflow applies in future chats as well.
 
 The previously requested cherry-only manual acceptance is superseded: do not ask
 the user to test cherry particles now. Continue Phase 4 implementation first.
+
+
+## 2026-10-07 global mechanism-oriented roadmap audit
+User generalized the particle batch lesson to the whole Planetary project:
+do not implement/test gravity support as a sequence of named blocks (door,
+ladder, rail, etc.). Research the underlying vanilla mechanism families first,
+then implement and accept them as coherent subsystem batches.
+
+A broad Minecraft 1.21.1 source audit was performed.
+
+Audit scope:
+- source tree inventory: 5,171 Java files under net/minecraft;
+- broad searches for above/below, Direction.UP/DOWN, Plane.HORIZONTAL,
+  Axis.Y, placement direction helpers, onGround/fallDistance, raw Y motion,
+  heightmaps, fluid height/flow and support/signal patterns;
+- detailed representative source inspection across placement, support/update,
+  BlockState properties, rails, connection graphs, growth, redstone, pistons,
+  entity physics, vehicles, fluids, rendering, portals, spawning/weather and
+  worldgen.
+
+New authoritative document:
+    docs/research/GRAVITY_MECHANISM_MAP_1_21_1.md
+
+Core decision:
+ROADMAP PHASES OWN ENGINE MECHANISMS, NOT WHOLE NAMED OBJECTS.
+
+A single object can be split across phases.
+
+Canonical rail example:
+- BaseRailBlock support/placement + RailState graph -> Phase 2F;
+- powered/detector/activator signal -> Phase 7A.3;
+- AbstractMinecart rail movement -> Phase 7.4;
+- rail rendering -> Phase 3.
+
+Canonical piston example:
+- FACING placement -> Phase 2A;
+- power/quasi-connectivity + push graph + moving block automation -> Phase 7A.4;
+- entity push integration -> Phase 7.5;
+- moving render -> Phase 3D.
+
+Important source conclusion:
+there is no safe global "make Direction local" fix for blocks.
+Generic callbacks such as updateShape receive Direction, but many implementations
+then call raw BlockPos.relative(direction), above()/below() or
+Direction.Plane.HORIZONTAL. Physical primitives must remain physical. Shared
+adapters must live at stable engine/base-family/algorithm-family boundaries.
+
+Roadmap changes:
+- Phase 2 is now the block semantic subsystem with subphases for placement,
+  support/update, multiblock pairs, tangent graphs, runtime growth, rail block
+  topology, falling/support-trigger behavior and waterlogged hooks;
+- Phase 3 is block geometry/render with shape/static/BER/moving-render subphases;
+- Phase 4 remains full particle subsystem batch;
+- Phase 5 remains coherent fluids;
+- Phase 6 is navigation/AI batch;
+- Phase 7 is entity collision/locomotion/non-living/projectiles/vehicles/
+  attachments+forces;
+- Phase 7A is signal graph, redstone, rail signals, pistons and sided logistics;
+- Phase 7B is interaction/raycast, networking, spawn and environment policy;
+- Phase 9 now explicitly separates generated structures from runtime rigid
+  topology/portals;
+- Phase 10 is a continuous compatibility gate, not an end-only cleanup phase.
+
+AGENTS.md now makes this mechanism-first classification mandatory before any
+class-specific runtime patch and requires checking base families + siblings.
+
+Batch acceptance is global project policy:
+finish a coherent mechanism family/subsystem and ask for one representative
+runtime acceptance matrix, rather than making the user test every vanilla class
+one by one.
+
+No runtime behavior was changed by this roadmap/research reorganization.
+Current runtime acceptance states remain unchanged.
