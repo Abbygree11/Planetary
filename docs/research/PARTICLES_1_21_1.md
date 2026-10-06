@@ -503,3 +503,53 @@ Acceptance:
 - +/-X, +/-Z and -Y no longer expose a visible post-contact crawl along the
   local floor;
 - no physical +Y drift returns.
+
+
+## TerrainParticle final current hypothesis: Particle.move must be rotated as one unit
+
+The local-DOWN render-anchor experiment produced no visible runtime change and
+was removed.
+
+The important source-level invariant is larger than onGround:
+
+Vanilla Entity.collideBoundingBox / collideWithShapes resolves movement in:
+1. world Y;
+2. world Z/X horizontal order.
+
+Then Particle.move classifies the result using the same implicit frame:
+- world Y -> stoppedByCollision / onGround;
+- world X/Z -> tangent velocity cancellation.
+
+Therefore the method is coherent only when semantic vertical == world Y.
+Post-processing onGround/stoppedByCollision after a world-axis collision solve
+cannot make the complete movement rotationally equivalent.
+
+Current TerrainParticle-specific adapter:
+- keep vanilla Particle.move for +Y;
+- keep vanilla Particle.move for every other particle type;
+- for TerrainParticle on a rotated face:
+  1. preserve stoppedByCollision early return;
+  2. preserve hasPhysics, speed threshold and hasNearBlocks optimization;
+  3. collect block collision shapes from the same expanded physical AABB;
+  4. resolve with existing tested PlanetEntityCollision.collideWithShapes,
+     whose order is local Y first then local X/Z;
+  5. move the same physical AABB by the resulting world Vec3;
+  6. restore vanilla Particle position convention from that AABB;
+  7. apply exact vanilla response rules to local requested/actual components:
+     - |requested local Y| >= 1e-5 && |actual local Y| < 1e-5 -> sticky stop;
+     - requested local Y != actual local Y && requested local Y < 0 -> onGround;
+     - clipped local X/Z -> zero those local velocity components.
+
+This is the first implementation in this debugging sequence that rotates BOTH
+the collision solve and its response as one coherent vanilla unit.
+
+Acceptance gate remains:
+- radial destroy burst unchanged;
+- no premature in-air stop;
+- side and -Y floor contact no longer produces an extra crawl phase relative to
+  +Y;
+- +Y remains vanilla;
+- no physical +Y drift returns.
+
+Do not generalize this adapter to all particles until TerrainParticle runtime
+acceptance passes.
