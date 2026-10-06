@@ -3,12 +3,10 @@ package dev.planetary.mixin;
 import dev.planetary.gravity.PlanetBlockGravity;
 import dev.planetary.gravity.PlanetParticleMotion;
 import dev.planetary.topology.PlanetFace;
-import dev.planetary.topology.PlanetFrameVector;
 import dev.planetary.topology.PlanetGravityFrame;
 import dev.planetary.topology.PlanetVector;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.TerrainParticle;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -63,15 +61,6 @@ public abstract class ParticleGravityMixin {
 
     @Shadow
     protected float gravity;
-
-    @Shadow
-    protected int age;
-
-    @Unique
-    private static int planetary$terrainLandingTraceBudget = 4;
-
-    @Unique
-    private int planetary$terrainTraceTicks;
 
     @Unique
     private PlanetGravityFrame planetary$moveFrame;
@@ -327,73 +316,21 @@ public abstract class ParticleGravityMixin {
                         this.planetary$actualMoveZ
                 );
 
-        boolean vanillaOnGround =
-                this.onGround;
-        boolean vanillaStoppedByCollision =
-                this.stoppedByCollision;
-
-        boolean localOnGround =
+        this.onGround =
                 PlanetParticleMotion.isLocalGroundCollision(
                         requested,
                         actual,
                         frame
                 );
 
-        this.onGround = localOnGround;
-
         if (this.onGround) {
             this.planetary$groundFrameThisTick = frame;
 
-            // Reproduce only vanilla's sticky stop on a confirmed LOCAL-DOWN
-            // landing. Do not generalize stoppedByCollision to head/tangent
-            // collisions and do not alter collision velocity components.
-            if (PlanetParticleMotion
-                    .shouldStopAfterLocalGroundCollision(
-                            requested,
-                            actual,
-                            frame
-                    )) {
-                this.stoppedByCollision = true;
-            }
-        }
-
-        if ((Object) this instanceof TerrainParticle
-                && localOnGround
-                && this.planetary$terrainTraceTicks == 0
-                && planetary$terrainLandingTraceBudget > 0) {
-            planetary$terrainLandingTraceBudget--;
-            this.planetary$terrainTraceTicks = 4;
-
-            PlanetFrameVector requestedLocal =
-                    frame.worldToLocal(
-                            new PlanetFrameVector(
-                                    requested.x,
-                                    requested.y,
-                                    requested.z
-                            )
-                    );
-            PlanetFrameVector actualLocal =
-                    frame.worldToLocal(
-                            new PlanetFrameVector(
-                                    actual.x,
-                                    actual.y,
-                                    actual.z
-                            )
-                    );
-
-            System.out.println(
-                    "[Planetary/ParticleTrace] LAND"
-                            + " face=" + frame.face()
-                            + " age=" + this.age
-                            + " reqLocal=" + requestedLocal
-                            + " actualLocal=" + actualLocal
-                            + " vanillaOnGround=" + vanillaOnGround
-                            + " localOnGround=" + this.onGround
-                            + " vanillaStopped=" + vanillaStoppedByCollision
-                            + " stoppedNow=" + this.stoppedByCollision
-                            + " pos=(" + this.x + "," + this.y + "," + this.z + ")"
-                            + " vel=(" + this.xd + "," + this.yd + "," + this.zd + ")"
-            );
+            // The exact vanilla collision result proves that LOCAL-DOWN
+            // movement was clipped by real geometry. Stop future movement on
+            // this first landing tick so rotated faces do not visibly acquire
+            // an extra surface-sliding phase.
+            this.stoppedByCollision = true;
         }
 
         this.planetary$moveFrame = null;
@@ -430,19 +367,6 @@ public abstract class ParticleGravityMixin {
             this.zd = corrected.z;
         } finally {
             this.planetary$groundFrameThisTick = null;
-
-            if ((Object) this instanceof TerrainParticle
-                    && this.planetary$terrainTraceTicks > 0) {
-                System.out.println(
-                        "[Planetary/ParticleTrace] TICK"
-                                + " age=" + this.age
-                                + " onGround=" + this.onGround
-                                + " stopped=" + this.stoppedByCollision
-                                + " pos=(" + this.x + "," + this.y + "," + this.z + ")"
-                                + " vel=(" + this.xd + "," + this.yd + "," + this.zd + ")"
-                );
-                this.planetary$terrainTraceTicks--;
-            }
         }
     }
 }
