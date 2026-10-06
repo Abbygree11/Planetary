@@ -1334,3 +1334,36 @@ Correction:
 
 Runtime acceptance remains pending; startup must pass before visual behavior can
 be evaluated.
+
+
+## 2026-10-07 TerrainParticle local move MANUAL PASS
+User explicitly confirmed the final TerrainParticle move design fixed the
+rotated-face surface crawl.
+
+Accepted behavior:
+- destroy radial burst remains correct;
+- particles fall in local gravity;
+- +/-X, +/-Z and -Y no longer visibly crawl/spread along the local floor before
+  disappearing relative to the +Y baseline;
+- +Y remains vanilla.
+
+Accepted architectural boundary:
+- TerrainParticleMoveGravityMixin only on rotated Planet faces;
+- full vanilla Particle.move semantics are rotated as one coherent unit:
+  collision order + collision response;
+- PlanetEntityCollision.collideWithShapes performs local Y first, then local
+  X/Z;
+- PlanetParticleCollisionResponse applies vanilla stopped/onGround/tangent
+  velocity rules in local axes;
+- vanilla physical AABB storage is retained;
+- the private hasNearBlocks optimization is copied locally, not invoked via
+  @Invoker.
+
+Rejected approaches remain rejected:
+- post-processing onGround/stoppedByCollision after vanilla world-axis solve;
+- reconstructing actual movement from newPos-oldPos;
+- TerrainParticle render-anchor shifting.
+
+This closes the specific TerrainParticle destroy-crawl regression. Continue
+Phase 4 with the remaining direct/custom-tick particle audit; do not reopen this
+item unless a new regression appears.
