@@ -44,4 +44,34 @@ public interface ParticleGravityAccessor {
 
     @Accessor("gravity")
     float planetary$getGravity();
+
+    @Accessor("xo")
+    void planetary$setXo(double value);
+
+    @Accessor("yo")
+    void planetary$setYo(double value);
+
+    @Accessor("zo")
+    void planetary$setZo(double value);
+
+    @Accessor("lifetime")
+    int planetary$getLifetime();
+
+    @Accessor("lifetime")
+    void planetary$setLifetime(int value);
+
+    @Accessor("friction")
+    float planetary$getFriction();
+
+    @Accessor("onGround")
+    boolean planetary$isOnGround();
+
+    @Accessor("roll")
+    float planetary$getRoll();
+
+    @Accessor("roll")
+    void planetary$setRoll(float value);
+
+    @Accessor("oRoll")
+    void planetary$setORoll(float value);
 }
