@@ -20,6 +20,8 @@
     "DragonBreathParticleAccessor",
     "DragonBreathParticleGravityMixin",
     "FixedVerticalLaunchParticleMixin",
+    "WaterCurrentDownParticleAccessor",
+    "WaterCurrentDownParticleGravityMixin",
     "SemanticTickDeltaParticleMixin",
     "FallingDustParticleGravityMixin",
     "TorchParticleGravityMixin",
