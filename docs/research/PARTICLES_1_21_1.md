@@ -575,3 +575,23 @@ Current implementation copies the helper's exact logic:
 
 The helper remains only an optimization gate; local collision correctness is
 owned by PlanetEntityCollision.collideWithShapes after the gate passes.
+
+
+## Acceptance result: TerrainParticle local move PASS
+
+Manual runtime acceptance confirmed the TerrainParticle-specific local move
+adapter removes the extra rotated-face surface crawl while preserving the
+destroy burst and local gravity behavior.
+
+The accepted implementation boundary is the whole Particle.move semantic unit,
+not post-hoc flags and not rendering:
+- local collision ordering;
+- local vertical classification;
+- local tangent velocity clipping;
+- vanilla physical AABB storage.
+
+The private hasNearBlocks pre-check remains copied locally due runtime mapping
+instability of @Invoker.
+
+Treat the earlier landing-flag and render-anchor sections as historical rejected
+experiments only. Do not restore them.
