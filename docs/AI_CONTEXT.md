@@ -1519,3 +1519,36 @@ one by one.
 
 No runtime behavior was changed by this roadmap/research reorganization.
 Current runtime acceptance states remain unchanged.
+
+
+## 2026-10-07 cross-version portability requirement
+User added a global architectural constraint: Planetary must be designed so
+porting from Minecraft 1.21.1 / NeoForge 21.1.215 to newer Minecraft versions
+does not require rewriting a large fraction of the mod.
+
+New canonical strategy:
+    docs/research/PORTABILITY_STRATEGY.md
+
+Mandatory design direction:
+    stable Planet semantic/core logic
+        <- Minecraft/NeoForge adaptation layer
+            <- thin Mixins/hooks/entrypoints
+
+Implications:
+- frame/topology/graph/shape/entity semantic algorithms should live in
+  Planet-owned helpers/services rather than mixin bodies;
+- mixins should mainly capture exact vanilla context and adapt args/results;
+- prefer stable public/protected or platform extension points over private
+  accessors, locals and ordinals;
+- avoid copying large vanilla methods;
+- unavoidable mirrored vanilla fragments are explicit version-sensitive
+  hotspots with vanilla-equivalence tests;
+- preserve capabilities/codecs/model/worldgen extension points;
+- keep pure semantic tests as version-independent as practical;
+- any Planet-owned persistent format must be versioned/migratable.
+
+AGENTS.md and IMPLEMENTATION_PLAN.md now make portability a hard gate.
+GRAVITY_MECHANISM_MAP_1_21_1.md explicitly treats mechanism ownership as the
+future porting boundary.
+
+No runtime code changed in this documentation/process update.
