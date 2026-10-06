@@ -43,6 +43,49 @@ public final class PlanetParticleMotion {
     }
 
     /**
+     * Reinterprets the velocity delta produced by a custom vanilla tick before
+     * Particle.move as LOCAL X/Y/Z semantics.
+     *
+     * <p>The starting velocity is already physical world velocity. Only the
+     * delta authored by the vanilla custom tick is rotated.</p>
+     */
+    public static Vec3 reinterpretTickDeltaAsLocal(
+            Vec3 velocityAtTickStart,
+            Vec3 vanillaVelocityBeforeMove,
+            PlanetGravityFrame frame
+    ) {
+        Objects.requireNonNull(
+                velocityAtTickStart,
+                "velocityAtTickStart"
+        );
+        Objects.requireNonNull(
+                vanillaVelocityBeforeMove,
+                "vanillaVelocityBeforeMove"
+        );
+        Objects.requireNonNull(frame, "frame");
+
+        Vec3 vanillaDelta =
+                vanillaVelocityBeforeMove.subtract(
+                        velocityAtTickStart
+                );
+
+        PlanetFrameVector physicalDelta =
+                frame.localToWorld(
+                        new PlanetFrameVector(
+                                vanillaDelta.x,
+                                vanillaDelta.y,
+                                vanillaDelta.z
+                        )
+                );
+
+        return velocityAtTickStart.add(
+                physicalDelta.x(),
+                physicalDelta.y(),
+                physicalDelta.z()
+        );
+    }
+
+    /**
      * Corrects vanilla Particle.tick axis-specific post-move multipliers.
      *
      * <p>Vanilla applies speedUpWhenYMotionIsBlocked and onGround friction to
