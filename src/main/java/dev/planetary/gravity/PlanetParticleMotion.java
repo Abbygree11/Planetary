@@ -42,6 +42,33 @@ public final class PlanetParticleMotion {
         );
     }
 
+    public static Vec3 rotateAddedWorldYTermToLocalY(
+            Vec3 currentVelocity,
+            PlanetGravityFrame frame,
+            double vanillaWorldYTerm
+    ) {
+        Objects.requireNonNull(
+                currentVelocity,
+                "currentVelocity"
+        );
+        Objects.requireNonNull(frame, "frame");
+
+        Vec3 withoutVanillaTerm =
+                currentVelocity.subtract(
+                        0.0D,
+                        vanillaWorldYTerm,
+                        0.0D
+                );
+
+        return addLocalVelocity(
+                withoutVanillaTerm,
+                frame,
+                0.0D,
+                vanillaWorldYTerm,
+                0.0D
+        );
+    }
+
     public static Vec3 localVelocityToWorld(
             Vec3 localVelocity,
             PlanetGravityFrame frame
