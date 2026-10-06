@@ -419,3 +419,31 @@ Acceptance gate:
 - destroy radial burst remains unchanged;
 - no false LAND traces during free flight;
 - side/-Y particles should settle like +Y after genuine local-floor contact.
+
+
+## First-contact sticky stop for rotated landing visual parity
+
+After switching to exact Entity.collideBoundingBox output, runtime still showed a
+visible behavioral asymmetry:
+- +Y destroy fragments do not exhibit a noticeable surface-crawling phase;
+- rotated-face fragments did.
+
+The remaining visible difference is eliminated at the first proven local-ground
+collision:
+- requested and actual movement come from vanilla's exact collision path;
+- local DOWN movement was genuinely clipped;
+- onGround is set;
+- stoppedByCollision is set immediately on that same landing tick.
+
+This intentionally stops FUTURE movement only. It does not undo the movement
+vanilla already accepted during the landing tick and does not modify collision
+geometry or tangent velocity components.
+
+Rationale:
+the user-visible invariant for TerrainParticle destroy effects is rotational
+parity with +Y: burst -> fall -> disappear, without a separate crawl/spread phase
+on the local floor.
+
+ParticleTrace diagnostics were removed after identifying the data-provenance bug
+and confirming the remaining issue was post-contact motion rather than false
+airborne collision.
