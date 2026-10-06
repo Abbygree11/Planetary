@@ -184,6 +184,69 @@ public final class PlanetParticleMotion {
     }
 
     /**
+     * Removes component-wise scales already applied in physical world axes and
+     * reapplies equivalent scales in local particle axes.
+     */
+    public static Vec3 remapComponentScales(
+            Vec3 vanillaScaledWorldVelocity,
+            PlanetGravityFrame frame,
+            double vanillaWorldScaleX,
+            double vanillaWorldScaleY,
+            double vanillaWorldScaleZ,
+            double desiredLocalScaleX,
+            double desiredLocalScaleY,
+            double desiredLocalScaleZ
+    ) {
+        Objects.requireNonNull(
+                vanillaScaledWorldVelocity,
+                "vanillaScaledWorldVelocity"
+        );
+        Objects.requireNonNull(frame, "frame");
+
+        if (vanillaWorldScaleX == 0.0D
+                || vanillaWorldScaleY == 0.0D
+                || vanillaWorldScaleZ == 0.0D) {
+            throw new IllegalArgumentException(
+                    "Cannot undo a zero component scale"
+            );
+        }
+
+        Vec3 neutralWorld =
+                new Vec3(
+                        vanillaScaledWorldVelocity.x
+                                / vanillaWorldScaleX,
+                        vanillaScaledWorldVelocity.y
+                                / vanillaWorldScaleY,
+                        vanillaScaledWorldVelocity.z
+                                / vanillaWorldScaleZ
+                );
+
+        PlanetFrameVector local =
+                frame.worldToLocal(
+                        new PlanetFrameVector(
+                                neutralWorld.x,
+                                neutralWorld.y,
+                                neutralWorld.z
+                        )
+                );
+
+        PlanetFrameVector correctedWorld =
+                frame.localToWorld(
+                        new PlanetFrameVector(
+                                local.x() * desiredLocalScaleX,
+                                local.y() * desiredLocalScaleY,
+                                local.z() * desiredLocalScaleZ
+                        )
+                );
+
+        return new Vec3(
+                correctedWorld.x(),
+                correctedWorld.y(),
+                correctedWorld.z()
+        );
+    }
+
+    /**
      * Corrects vanilla Particle.tick axis-specific post-move multipliers.
      *
      * <p>Vanilla applies speedUpWhenYMotionIsBlocked and onGround friction to
