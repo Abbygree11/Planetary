@@ -22,6 +22,8 @@
     "FixedVerticalLaunchParticleMixin",
     "WaterCurrentDownParticleAccessor",
     "WaterCurrentDownParticleGravityMixin",
+    "SnowflakeParticleGravityMixin",
+    "SquidInkParticleGravityMixin",
     "SemanticTickDeltaParticleMixin",
     "FallingDustParticleGravityMixin",
     "TorchParticleGravityMixin",
