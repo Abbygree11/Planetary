@@ -11,7 +11,7 @@
     "ScreenEffectRendererGravityMixin",
     "ParticleGravityMixin",
     "ParticleGravityAccessor",
-    "TerrainParticleMoveGravityMixin",
+    "LocalGravityParticleMoveMixin",
     "DirectGravityParticleMixin",
     "FallingDustParticleGravityMixin",
     "TorchParticleGravityMixin",
