@@ -553,3 +553,25 @@ Acceptance gate remains:
 
 Do not generalize this adapter to all particles until TerrainParticle runtime
 acceptance passes.
+
+
+## NeoForge dev-runtime note: do not invoke Particle.hasNearBlocks privately
+
+The first TerrainParticle local-move runtime attempt crashed during mixin
+application because @Invoker("hasNearBlocks") could not resolve a candidate on
+the transformed Particle class.
+
+Although the examined 1.21.1 source names the helper hasNearBlocks(DDD)Z, that
+private name is not treated as a stable integration boundary.
+
+Current implementation copies the helper's exact logic:
+- particles wider/taller than 1 block -> true;
+- inspect block at floor(x/y/z);
+- if non-air -> true;
+- otherwise choose movement-facing AABB edge per physical world axis;
+- floor(edge + movement);
+- if that reaches a different block, inspect it;
+- return whether that block is non-air.
+
+The helper remains only an optimization gate; local collision correctness is
+owned by PlanetEntityCollision.collideWithShapes after the gate passes.
