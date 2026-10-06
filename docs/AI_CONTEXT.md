@@ -1254,3 +1254,54 @@ New boundary:
 - particle physics, AABB, lifetime and destroy radial velocity are unchanged.
 
 Runtime acceptance pending.
+
+
+## 2026-10-07 TerrainParticle render-anchor experiment REJECTED; move owner identified
+Manual acceptance after the TerrainParticle local-DOWN render-anchor adapter:
+- user reported no visible change;
+- surface crawl remained.
+
+The render-anchor files/mixin were removed completely.
+
+Re-reading the complete vanilla Particle.move path identified a deeper owning
+asymmetry that all earlier post-processing attempts left intact:
+
+Entity.collideBoundingBox -> collideWithShapes resolves:
+1. WORLD Y first;
+2. WORLD Z/X in horizontal order.
+
+Particle.move then:
+- derives stoppedByCollision only from WORLD Y;
+- derives onGround only from negative WORLD Y clipping;
+- zeros xd/zd only for WORLD X/Z clipping.
+
+For +Y gravity that entire method is internally self-consistent. On +/-X and
++/-Z, local vertical is one of vanilla's "horizontal" world axes, so fixing flags
+after the call still leaves the actual collision path resolved in the wrong
+semantic axis order.
+
+New runtime design:
+TerrainParticleMoveGravityMixin targets Particle.move but activates ONLY when:
+- the concrete particle is TerrainParticle;
+- a Planet frame exists;
+- the face is not POS_Y.
+
+It mirrors vanilla Particle.move, preserving:
+- stoppedByCollision early return;
+- physical AABB storage;
+- hasPhysics;
+- the private vanilla hasNearBlocks optimization (exposed via accessor invoker);
+- the 100^2 maximum collision movement gate;
+- vanilla setLocationFromBoundingbox world position convention.
+
+The one changed boundary is collision semantics:
+- block collision shapes are collected from the same expanded physical AABB;
+- PlanetEntityCollision.collideWithShapes resolves them in local
+  Y -> local X/Z order;
+- PlanetParticleCollisionResponse applies vanilla stopped/onGround/XZ clipping
+  semantics to local axes and transforms corrected velocity back to world XYZ.
+
+No render offset remains. No generic Particle.move adapter remains.
++Y is pure vanilla.
+
+Runtime acceptance pending.
