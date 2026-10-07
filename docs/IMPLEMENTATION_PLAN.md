@@ -95,8 +95,8 @@ Canonical batch plan:
 Research batches:
 - R1 block/world semantic topology — COMPLETE;
 - R2 client geometry/render/particles — COMPLETE;
-- R3 fluids — NEXT;
-- R4 entity/body/interaction/network;
+- R3 fluids — COMPLETE;
+- R4 entity/body/interaction/network — NEXT;
 - R5 AI/navigation + signals/automation/logistics;
 - R6 environment/worldgen/structures/compatibility;
 - final completeness sweep.
@@ -789,9 +789,11 @@ The final pass must cover, in one run:
 Phase 4 closes only when this matrix passes, except for explicitly documented
 Phase-5-blocked fluid integration gates.
 
-## Phase 5 — fluid subsystem [PLANNED, BATCH ACCEPTANCE; depends on Phase 1/2 kernel]
+## Phase 5 — fluid subsystem [R3 RESEARCH COMPLETE; PLANNED IMPLEMENTATION, BATCH ACCEPTANCE]
 
-Detailed research: docs/research/FLUIDS_1_21_1.md
+Detailed research:
+- `docs/research/FLUIDS_1_21_1.md`
+- `docs/research/FLUID_MECHANISM_MATRIX_1_21_1.md`
 
 Subsystems that must be handled together:
 - FlowingFluid simulation
@@ -805,9 +807,18 @@ Subsystems that must be handled together:
 - water/lava interactions
 - NeoForge source-creation hook and modded fluids
 
-Hard requirement:
-local DOWN/UP/tangent neighbors use the seam-aware block topology layer. Raw
-below()/above()/Direction.Plane.HORIZONTAL replacements are insufficient at edges.
+Hard requirements from R3:
+- build one Planet-owned fluid graph/context on top of PlanetBlockStep;
+- carry semantic local direction separately from physical edge direction;
+- replace vanilla slope-cache identity that assumes physical X/Z;
+- use frame-complete wall-occlusion caching;
+- preserve NeoForge CreateFluidSourceEvent / FluidType / BaseFlowingFluid /
+  FluidInteractionRegistry hooks;
+- keep bucket hit-direction physical;
+- keep waterlogging/container same-position behavior intact;
+- render fluids through a dedicated local mesh algorithm, not BakedModel rotation;
+- defer entity immersion/body response to Phase 7 while keeping FluidState.getFlow
+  as a physical world vector.
 
 Acceptance:
 - source bucket on all six faces
