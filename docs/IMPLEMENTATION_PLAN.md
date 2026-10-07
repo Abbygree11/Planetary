@@ -97,8 +97,8 @@ Research batches:
 - R2 client geometry/render/particles — COMPLETE;
 - R3 fluids — COMPLETE;
 - R4 entity/body/interaction/network — COMPLETE;
-- R5 AI/navigation + signals/automation/logistics — NEXT;
-- R6 environment/worldgen/structures/compatibility;
+- R5 AI/navigation + signals/automation/logistics — COMPLETE;
+- R6 environment/worldgen/structures/compatibility — NEXT;
 - final completeness sweep.
 
 Runtime code is temporarily frozen at the current partial Phase-4 checkpoint.
@@ -273,7 +273,9 @@ Family audit/coverage still required:
 - lantern/hanging placement;
 - dispenser/dropper/observer/piston placement aspect only;
 - stair/trapdoor specialized click-half behavior;
-- custom orientation properties such as FrontAndTop where used.
+- FrontAndTop ORIENTATION family (Crafter and Jigsaw): both front and top are
+  canonical local directions; Crafter runtime output belongs Phase 7A and Jigsaw
+  structure semantics belong R6.
 
 Do not create a giant HorizontalDirectionalBlock behavior mixin: only the
 property/orientation vocabulary is shared; survival, signals and pairing belong
@@ -836,9 +838,13 @@ Acceptance:
 - drip particle originates from and falls from local-DOWN face
 - one representative NeoForge/modded FlowingFluid
 
-## Phase 6 — navigation and AI subsystem [PARTIAL, BATCH ACCEPTANCE]
+## Phase 6 — navigation and AI subsystem [R5 RESEARCH COMPLETE; IMPLEMENTATION PARTIAL, BATCH ACCEPTANCE]
 
-This phase owns LOCAL-GROUND NAVIGATION/AI, not generic entity physics.
+Completed R5 matrix:
+`docs/research/AI_AUTOMATION_MATRIX_1_21_1.md`
+
+This phase owns navigation graphs, steering and AI target-generation semantics,
+not generic entity physics.
 
 Dependencies:
 - Phase 1 traversal charts;
@@ -852,41 +858,52 @@ Existing:
 - path node local anchor;
 - local random-stroll experiment.
 
-Known unresolved:
-- mobs fail/spin at gravity-zone edge;
-- edge waypoint overshoot is experimental, not architecture;
-- target generators beyond RandomStroll remain world-axis based;
-- node volume/diagonals/hazards/doors/fences/rails/water incomplete.
+R5 architecture decisions:
+- navigation node identity is (physical BlockPos + traversal chart), not xyz-only;
+- retain vanilla PathFinder A* where possible, but use a Planet-owned node cache
+  and chart-aware Path/navigation metadata;
+- edge waypoint overshoot and ordinal MoveControl redirects are experimental and
+  must not become the final boundary;
+- WalkNodeEvaluator floor/step/drop/body volume/diagonals are one local-ground
+  graph family;
+- steering projects physical targets into the entity body frame;
+- RandomPos and MoveToBlockGoal are shared target-generation boundaries;
+- preserve NeoForge BlockState/FluidState path-type callbacks;
+- aquatic/amphibious closure still depends on Phase 5.
 
-### 6A — node graph and floor semantics
+### 6A — chart-aware node graph and floor semantics
 
-Audit/implement together:
-- NodeEvaluator / WalkNodeEvaluator;
-- PathFinder;
-- GroundPathNavigation;
-- local floor/support search;
-- step/drop;
-- entity width/height in body frame;
-- seam state where BlockPos alone is insufficient.
+Implement together:
+- PlanetNavigationNodeKey = physical BlockPos + traversal chart;
+- Planet navigation Node subclass/cache;
+- WalkNodeEvaluator-equivalent local tangent/floor/step/drop semantics;
+- seam-aware diagonals;
+- body-frame candidate AABB/clearance;
+- chart-aware Path equality/waypoint/timeout metadata;
+- vanilla PathFinder retained where compatible.
 
 ### 6B — steering/body controls
 
-- MoveControl;
-- LookControl;
-- BodyRotationControl;
-- local target vector -> physical movement/body orientation.
+- replace ordinal MoveControl coordinate redirects with stable Planet steering;
+- physical target delta -> body-local tangent/vertical;
+- MoveControl / LookControl / BodyRotationControl / FlyingMoveControl;
+- output physical movement/body orientation under the R4 entity contract.
 
 ### 6C — target generation and common ground goals
 
-- RandomPos family;
-- stroll/chase/flee;
-- door interaction;
-- sleep/bed goals;
-- remove-block/harvest goals;
-- goals using above/below or world XZ.
+Shared families:
+- RandomPos local tangent/local vertical generation with RNG-order preservation;
+- MoveToBlockGoal local-volume search;
+- chase/flee/melee inherit PathNavigation.
 
-Do not patch every Goal independently until shared target-generation/body-frame
-helpers exist.
+Explicit bypass adapters:
+- DoorInteractGoal;
+- EatBlockGoal;
+- RemoveBlockGoal;
+- local-UP bed/powder-snow cases;
+- BreathAir/TryFindWater after Phase 5.
+
+Do not patch every Goal independently.
 
 ### 6D — navigation modes
 
@@ -1037,73 +1054,87 @@ One batch with dependency-marked cases:
 - all rotated faces;
 - client/server agreement rechecked in Phase 7B.
 
-## Phase 7A — signals, automation and sided logistics [PLANNED, BATCH ACCEPTANCE]
+## Phase 7A — signals, automation and sided logistics [R5 RESEARCH COMPLETE; PLANNED IMPLEMENTATION, BATCH ACCEPTANCE]
 
-Depends on canonical block semantics from Phase 2.
+Completed R5 matrix:
+`docs/research/AI_AUTOMATION_MATRIX_1_21_1.md`
 
-### 7A.1 — signal side conventions and neighbor graph
+Depends on canonical block semantics/topology from Phase 2.
 
-Audit:
-- SignalGetter;
-- BlockState getSignal/getDirectSignal;
-- physical six-neighbor fan-out vs canonical local signal side;
-- reversed/opposite Direction conventions.
+### 7A.1 — generic signal-query boundary
 
-Do not rotate physical NeighborUpdater positions blindly.
+- SignalGetter physical six-neighbor source selection remains PHYSICAL;
+- the Direction argument passed to source-state getSignal/getDirectSignal and
+  NeoForge shouldCheckWeakPower is reframed into the SOURCE canonical frame;
+- physical NeighborUpdater / NeighborNotifyEvent fan-out remains physical;
+- paired/local graphs choose physical positions before calling SignalGetter.
 
-### 7A.2 — redstone wire and diode family
+### 7A.2 — redstone graph families
 
 Wire:
-- local-DOWN support consumes Phase 2;
-- local tangent/climb connection geometry consumes Phase 2 primitives;
-- this phase owns power calculation and propagation.
+- four local tangent directions + local-UP/local-DOWN climb topology;
+- target canonical side for NeoForge canRedstoneConnectTo;
+- physical generic notifications remain physical.
 
 Diode/repeater/comparator:
-- local support from Phase 2;
-- local tangent FACING;
-- side inputs;
-- lock/compare/output signal semantics.
+- local FACING forward + clockwise/counter-clockwise side inputs;
+- comparator one/two-block forward traversal and hanging-item-frame integration.
 
-Also:
-- observer;
-- redstone torches;
-- lever/button/pressure plate signal aspect;
-- target/sculk/tripwire signal behavior.
+Separate long-line graph:
+- tripwire uses PlanetBlockWalk with transported direction.
+
+Calibrated sculk:
+- local back-input topology only; vibration propagation remains physical.
+
+Ordinary sources (observer, torch, lever/button/plate, target, lectern, sculk,
+lightning rod, etc.) inherit the generic signal boundary where possible.
 
 ### 7A.3 — rail signal behavior
 
-Depends on Phase 2F RailState graph.
+Consumes the Phase-2 Planet rail graph; do not duplicate RailShape traversal.
 
 Owns:
-- PoweredRailBlock recursive power;
-- DetectorRailBlock detection/output;
-- activator rail behavior;
-- signal neighbor notifications.
+- PoweredRailBlock recursion through rail graph, including local slopes/seams;
+- DetectorRailBlock output plus canonical-local detection AABB -> physical AABB;
+- activator/powered state signal aspect.
 
 Minecart motion remains Phase 7.4.
 
 ### 7A.4 — piston and moving automation
 
-Treat as one automation mechanism:
-- directional placement consumes Phase 2A;
-- quasi-connectivity / signal search;
-- PistonStructureResolver push graph;
-- slime/honey branching;
-- MovingPistonBlock/PistonMovingBlockEntity;
-- entity pushes integrate Phase 7.5;
-- moving renderer integrates Phase 3D.
+Implement as PlanetPistonPushGraph:
+- local/quasi power probe over ordinary signal boundary;
+- transported push line through PlanetBlockStep;
+- slime/honey branch graph;
+- max-12 and vanilla move/destroy ordering;
+- preserve NeoForge canStickTo/isSlimeBlock/PistonEvent hooks.
 
-Do not call pistons complete from correct FACING alone.
+Cross-phase prerequisite:
+add PlanetBlockStateTransport for safely reframing supported oriented BlockState
+properties when a moved block crosses a gravity seam.
 
-### 7A.5 — NeoForge sided capability/logistics boundary
+Entity pushes integrate Phase 7.5; renderer integrates Phase 3D.
 
-- physical target BlockPos stays authoritative;
-- null side stays null;
-- physical queried side -> target canonical local side before provider dispatch;
-- BlockCapabilityCache semantics/invalidation;
-- item/fluid/energy;
-- hopper/dispenser/dropper directional I/O;
-- Create-like pipe/machine stress tests.
+### 7A.5 — sided logistics and NeoForge capability integration
+
+Two stages:
+1. topology-aware source semantic direction -> correct PHYSICAL target;
+2. physical shared face -> TARGET canonical side.
+
+Apply to:
+- vanilla WorldlyContainer;
+- NeoForge ItemHandler capability;
+- hopper output/local-UP suction and item collection AABB;
+- dropper insertion;
+- crafter FrontAndTop.front output;
+- dispenser emission.
+
+Existing generic capability-side adaptation remains valid but cannot repair an
+upstream caller that already chose the wrong physical target.
+
+Dispenser item launch authors its vanilla upward bias in local UP, then emits a
+physical entity velocity. Projectile dispenser hands physical spawn/forward to
+the Phase-7 projectile contract.
 
 ### Phase-7A acceptance matrix
 
