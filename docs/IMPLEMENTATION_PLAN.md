@@ -84,6 +84,32 @@ Planet helper/algorithm intact?"
 If not, the boundary should be improved before multiplying it across more
 classes.
 
+## Global research completion gate [ACTIVE]
+
+Current project mode:
+**finish the global mechanism audit before further runtime implementation**.
+
+Canonical batch plan:
+`docs/research/GLOBAL_RESEARCH_BATCH_PLAN_1_21_1.md`.
+
+Research batches:
+- R1 block/world semantic topology;
+- R2 client geometry/render/particles;
+- R3 fluids;
+- R4 entity/body/interaction/network;
+- R5 AI/navigation + signals/automation/logistics;
+- R6 environment/worldgen/structures/compatibility;
+- final completeness sweep.
+
+Runtime code is temporarily frozen at the current partial Phase-4 checkpoint.
+Existing accepted/implemented behavior is preserved; this is not a rollback.
+
+After the final sweep:
+1. establish dependency-based implementation order;
+2. resume coherent mechanism batches;
+3. request build/startup at the first runtime checkpoint;
+4. use subsystem/phase batch gameplay acceptance rather than per-class tests.
+
 ## Status legend
 - DONE: user verified in game or deterministic tests fully cover the item.
 - PARTIAL: architecture exists and some behavior is verified, but the phase is not closed.
