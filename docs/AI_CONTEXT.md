@@ -1853,3 +1853,61 @@ Global research advances to R5:
 AI/navigation + signals/automation/logistics.
 
 Runtime remains frozen.
+
+
+## 2026-10-08 R5 AI/navigation + signals/automation/logistics research COMPLETE
+Global research batch R5 is complete. No runtime code was changed during R5.
+
+New canonical matrix:
+    docs/research/AI_AUTOMATION_MATRIX_1_21_1.md
+
+Important findings:
+1. Vanilla Node and NodeEvaluator cache navigation state by physical xyz only.
+   A Planet ground-navigation node must additionally carry traversal chart/face
+   or seam states alias.
+2. Vanilla BinaryHeap/PathFinder can likely remain; Planet should own the
+   chart-aware node/cache/neighbor graph and adapt Path metadata.
+3. Current PlanetWalkNodeEvaluator edge overshoot and MoveControl ordinal
+   redirects are explicitly experimental and rejected as the long-term
+   architecture.
+4. WalkNodeEvaluator floor/step/drop/body-volume/diagonal behavior is one local
+   ground-graph family.
+5. NeoForge BlockState/FluidState path type hooks must be preserved on the real
+   physical candidate cells.
+6. Steering uses physical target delta projected to the entity body frame.
+7. RandomPos and MoveToBlockGoal are shared local target-generation families;
+   most chase/flee/melee goals should inherit common navigation rather than get
+   class patches.
+8. SignalGetter physical six-neighbor enumeration remains physical. Its
+   Direction-sensitive source-state queries are reframed into the queried
+   source state's canonical block frame.
+9. Redstone wire, diode/comparator, tripwire, powered rail and piston are
+   distinct graph families.
+10. Powered rail must consume the Phase-2 Planet rail graph; DetectorRail search
+    volume needs canonical-local AABB -> physical AABB.
+11. PistonStructureResolver's constant world Direction model fails at seams.
+    Phase 7A needs a PlanetPistonPushGraph with transported push direction.
+12. Moving oriented blocks across a gravity seam creates a new shared
+    PlanetBlockStateTransport requirement; do not hide property rewrites in the
+    piston mixin.
+13. Hopper/dropper/crafter target selection happens BEFORE vanilla/NeoForge
+    sided container/capability dispatch. Capability-side reframing alone cannot
+    repair a wrong target BlockPos.
+14. Sided logistics therefore has two stages: topology-aware physical target,
+    then physical shared face -> target canonical side.
+15. Default dispenser item launch contains a separate vanilla world-Y upward
+    bias; it must be authored as local UP while preserving RNG order.
+16. Crafter/Jigsaw use FrontAndTop ORIENTATION. R5 adds this concrete canonical
+    two-direction vocabulary to Phase 2A.
+17. Dispenser/dropper have an extra local-UP power probe; door power over both
+    halves is instead a Phase-2 pair-topology signal query.
+18. Preserve NeoForge path-type, redstone connection, piston event/stickiness,
+    VanillaInventoryCodeHooks and capability extension points.
+
+R1 block matrix and capability research were amended with the newly discovered
+FrontAndTop and upstream-logistics findings.
+
+Global research advances to R6:
+environment/worldgen/structures/compatibility.
+
+Runtime remains frozen.
