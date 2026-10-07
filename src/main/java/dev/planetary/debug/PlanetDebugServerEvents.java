@@ -142,7 +142,9 @@ public final class PlanetDebugServerEvents {
                 Component.literal(
                         "[Planetary] Capability probe passed: "
                                 + capabilityProbe.sideChecks()
-                                + " generic side mappings, "
+                                + " explicit local side mappings, "
+                                + capabilityProbe.physicalSideChecks()
+                                + " physical-side pass-through checks, "
                                 + capabilityProbe.standardCapabilityChecks()
                                 + " standard item/fluid/energy checks, "
                                 + capabilityProbe.cacheInvalidations()
