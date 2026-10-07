@@ -331,3 +331,31 @@ BlockPos/Heightmap/Direction, or an arbitrary float-to-integer conversion of
 modded feature placement. Minecraft's world height is finite even if the
 Planet surface is defined by an outward shell; document the runtime/world
 envelope instead of implying six infinite playable directions.
+
+
+## 15. External coordinate mod integration precedents
+
+External research:
+docs/research/EXTERNAL_COORDINATE_MOD_CASE_STUDIES.md
+Cross-phase freeze:
+docs/research/FINAL_COMPLETENESS_SWEEP_1_21_1.md
+
+Real mod source confirms the interoperability cost of ambiguous coordinates:
+GravityChanger exposes explicit getWorldVelocity/setWorldVelocity over a
+local-stored entity delta; Immersive Portals adapts body eye offset, physical
+velocity, directions and quaternion camera rotation as separate APIs.
+Valkyrien Skies separates world-to-ship ray positions, hit locations,
+particle directions/positions and motion, while documenting shipyard passenger
+save positions and unloaded-world issues. Cubic Chunks uses a dedicated
+3D cube provider instead of a fake ChunkGenerator height extension.
+
+For Planet: document per-API frame, require finite/valid transformed bounds,
+typed position/vector/normal/AABB/rotation composition, safe missing-mod
+fallback and correct physical saved/network positions. Never promise
+cross-seam block graph simulation with a fake portal seam; seamless rendering
+does not imply fluid/redstone/AI adjacency. Performance smoke checks must
+include transformed AABB and loaded/unloaded frame boundaries.
+
+Historical mods target different Minecraft versions; their source can
+support the design principles but cannot validate the current NeoForge
+21.1.215 mixin integration or mod compatibility.
