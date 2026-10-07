@@ -170,19 +170,28 @@ Audit/implementation buckets:
 
 Non-blocked before final batch acceptance:
 
-1. BaseAshSmoke constructor-family local component scaling.
-2. SpellParticle constructor local-axis normalization/scaling.
-3. TrialSpawnerDetectionParticle constructor local vertical bias vs physical
-   supplied target velocity.
-4. DustPlume explicit +0.15 local-UP term.
+1. [IMPLEMENTED / GAMEPLAY PENDING] BaseAshSmoke constructor-family local
+   component scaling (`BaseAshSmokeParticleGravityMixin`).
+2. [IMPLEMENTED / GAMEPLAY PENDING] SpellParticle constructor local-axis
+   normalization/scaling (`SpellParticleGravityMixin`).
+3. [IMPLEMENTED / GAMEPLAY PENDING] TrialSpawnerDetectionParticle constructor
+   local vertical bias vs physical supplied target velocity
+   (`TrialSpawnerDetectionParticleGravityMixin`).
+4. [IMPLEMENTED / GAMEPLAY PENDING] DustPlume explicit +0.15 local-UP
+   term (`FixedVerticalLaunchParticleMixin`).
 5. [RECLASSIFIED -> Phase 7] GlowSquid ink provider: source velocity is authored
    from Squid body orientation; particle class should consume the physical
    body-produced vector after entity-frame integration.
 6. [IMPLEMENTED] PortalParticle local vertical arc.
 7. [IMPLEMENTED] FlyTowardsPositionParticle local vertical arc.
 8. [IMPLEMENTED] Shriek local-frame render orientation.
-9. [PARTIAL] Campfire emitter implemented; remaining non-fluid emitter-family
-   source sweep is the next Phase-4 batch.
+9. [PARTIAL] Campfire ember/smoke emitters implemented; block-local
+   Furnace/BlastFurnace/Smoker/BrewingStand/EndRod/RespawnAnchor/
+   EnderChest `animateTick` emission adapted via one audited
+   `@ModifyArgs` family. Remaining candle-lambda, enchantment-table
+   bookshelf topology, and spore-blossom distributed candidate volume
+   are the next non-fluid source work. See
+   `docs/research/BLOCK_LOCAL_PARTICLE_EMITTERS_1_21_1.md`.
 10. [RECLASSIFIED -> Phase 7 integration] Firework Spark base gravity is already
     covered by shared Particle.tick. Explosion/star/burst orientation is authored
     by the Firework Starter/rocket source and must follow the entity/rocket frame
