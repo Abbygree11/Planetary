@@ -5,7 +5,6 @@ import dev.planetary.gravity.PlanetParticleMotion;
 import dev.planetary.topology.PlanetFace;
 import dev.planetary.topology.PlanetFrameVector;
 import dev.planetary.topology.PlanetGravityFrame;
-import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.WaterCurrentDownParticle;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
@@ -74,7 +73,7 @@ public abstract class WaterCurrentDownParticleGravityMixin {
             method = "tick",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/particle/Particle;move(DDD)V"
+                    target = "Lnet/minecraft/client/particle/WaterCurrentDownParticle;move(DDD)V"
             )
     )
     private void planetary$rotateCurrentSpiral(
