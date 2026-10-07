@@ -2080,3 +2080,53 @@ receiving family/provider; do not restore blanket side transformation.
 Needed next: user git pull && .\\test.ps1 && .\\run-client.ps1,
 login diagnostic chat and single capability subsystem manual matrix.
 No build or client run has been executed by the assistant this turn.
+
+
+## 2026-10-08 Phase-4 SemanticTickDeltaParticleMixin startup crash
+
+User pasted full PowerShell log from:
+git pull && .\test.ps1 && .\run-client.ps1
+
+User LOCAL evidence after pulling a9c683f:
+- Gradle 8.12 build/unit test SUCCESS in 23 seconds;
+- NeoForge 21.1.215 / Minecraft 1.21.1 / Java 21 startup FAILED;
+- ParticleEngine.registerProviders -> MixinTransformerError:
+  SemanticTickDeltaParticleMixin.planetary$reinterpretTickDeltaBeforeMove,
+  target @At INVOKE Particle.move(DDD)V matched 0/1, scanned 0 targets.
+The last known accepted individual particle behavior remains TerrainParticle
+local move and CherryLeaves/torch effects. Newer Phase-4 broad batch was
+NOT startup accepted. Do not confuse this with the capability-provider
+registration added at a9c683f; that code had passed compilation/tests but
+could NOT be gameplay accepted because a particle mixin crashes first.
+
+Source diagnosis:
+Six Minecraft 1.21.1 custom tick classes DripParticle, WaterDropParticle,
+BubblePopParticle, WakeParticle, CampfireSmokeParticle, BubbleParticle each
+use this.move(xd,yd,zd). Java compiler emits concrete subclass-owned
+INVOKEVIRTUAL target even though move is inherited from Particle. A separate
+javac/javap control reproduced subclass-owned Methodref. Old shared
+multi-target injector looked for LParticle;move and could not match.
+Reference class source: hackersense/OptiFine-Source 1.21.1 (not a
+stand-in for exact NeoForge 21.1.215 transformed bytecode).
+A new ASM unit test asserts actual target class files agree.
+
+Implemented architecture revision, startup acceptance PENDING:
+- remove SemanticTickDeltaParticleMixin multi-target injection;
+- add six exact owner-targeted *TickDeltaMixin class bridges, each required
+  HEAD capture and required pre-move INVOKE, no require=0 masking;
+- PlanetSemanticTickDeltaState shared per-instance tick semantic delta
+  capture/physical velocity preservation, lazy only on active rotated
+  Planet frame; existing PlanetParticleMotion math unchanged;
+- config replaces old mixin with six; bytecode/reg test checks all;
+- vanilla RNG, base Particle.move, child tick, emitter, fluids, all Phase-1
+  capability provider fixes untouched by this repair.
+Detailed matrix: docs/research/PARTICLE_MATRIX_1_21_1.md.
+
+User next intermediate startup gate (per AGENTS.md 7A): execute
+git pull && .\test.ps1 && .\run-client.ps1.
+Expect build success, client main menu, Planet world login and Phase-1
+capability diagnostic (36 local/36 physical/36 standard, cache listener).
+If a new failing INVOKE remains, use the exact owner from the ASM test and
+crash log to correct the one owning adapter; do not disable required
+injections globally. Full Phase-4 visual game acceptance deferred to
+subsystem batch; new startup test NOT yet confirmed by user.
