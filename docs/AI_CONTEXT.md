@@ -2168,3 +2168,46 @@ Mixin application, or of capabilities acceptance. Next:
 git pull && .\\test.ps1 && .\\run-client.ps1, check test results first,
 then main menu / login. Do not start full particle gameplay acceptance
 until startup passes.
+
+
+## 2026-10-08 Third startup smoke: WaterCurrentDown tick Mixin owner crash
+
+User's third pasted command output after previous package relocation:
+runClient starts then fatal MixinTransformerError during
+ParticleEngine.registerProviders:114,
+WaterCurrentDownParticleGravityMixin.planetary$rotateCurrentSpiral,
+target "Lnet/minecraft/client/particle/Particle;move(DDD)V",
+"0/1 succeeded. Scanned 0 target(s)." Test step had allowed the
+PowerShell && chain to reach runClient; no preceding test failure reported.
+
+This is SAME Phase-4 boundary problem as original multi-target
+SemanticTickDeltaParticleMixin, but in an independent remaining hook;
+not a capability issue, JVM crash, or a particle math issue.
+The actual Java tick() in WaterCurrentDownParticle invokes inherited
+this.move via its concrete subclass owner. Source audit finds identical
+error in DragonBreathParticleGravityMixin; ShriekParticleRenderGravityMixin
+similarly expects superclass SingleQuadParticle renderRotatedQuad owner
+despite two subclass-owned this.renderRotatedQuad call sites.
+
+Batch committed on branch 2.0 (startup/test ACCEPTANCE PENDING):
+- change only @At targets in WaterCurrentDown and DragonBreath to
+  their concrete subclass move owners;
+- change Shriek @ModifyArg target from SingleQuadParticle to
+  ShriekParticle.renderRotatedQuad owner;
+- ASM JUnit guards: eight custom tick move call sites, eight exact
+  compiled Mixin @Inject annotation targets, Shriek render's two
+  subclass-owned calls, and compiled @ModifyArg annotation;
+- focused exact-version source note added:
+  docs/research/PARTICLE_MIXIN_INVOKE_ANCHORS_1_21_1.md;
+- permanent AGENTS.md rule for inherited-call INVOKEs and classfile
+  tests, not a broad rewrite of particle motion.
+
+The legacy +Y / non-Planet pass-through, emitter RNG, player/entity
+mechanics, inherited Particle.move runtime and new per-provider
+capability policy are unchanged.
+
+User next: git pull && .\\test.ps1 && .\\run-client.ps1.
+Report any failing ASM assertion or Mixin's nested InjectionError.
+Required first acceptance: test task green, client main menu and
+Planet login, then capability diagnostic. Phase-4 gameplay acceptance
+remains deferred to the ONE subsystem matrix, not per-class testing.
