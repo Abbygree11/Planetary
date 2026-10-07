@@ -1459,3 +1459,20 @@ Then inspect:
 Update this mechanism map if a new family is discovered.
 
 Only after ownership is clear should runtime code change.
+
+
+## 22. Cross-mod sided-provider contract and foreign spaces
+
+See docs/research/ULTIMATE_CROSS_MOD_COMPATIBILITY_REVIEW_1_21_1.md.
+
+Different third-party graph engines own different meanings for Direction:
+physical port, local block side, signed kinetic axis or traversal chart.
+Never unconditionally rotate NeoForge BlockCapability Direction for an
+unknown receiver: current blanket BlockCapabilityMixin is a P0 contract
+risk. Receiving provider opt-in LOCAL; default PHYSICAL and physical
+BlockPos. Old Planet-local capability acceptance is not generic mod proof.
+
+Coordinate provenance is required for virtual Create ContraptionWorld,
+AE2 remote nodes and WorldEdit clipboard. Separate physical connection
+geometry, graph-specific signed transformation, BlockState and BlockEntity
+transport, cache invalidation and unloading lifecycle.
