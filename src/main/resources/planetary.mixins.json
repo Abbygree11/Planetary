@@ -16,6 +16,7 @@
     "CherryParticleGravityMixin",
     "CherryLeavesParticleGravityMixin",
     "CampfireParticleEmitterGravityMixin",
+    "BlockLocalParticleEmitterGravityMixin",
     "CampfireSmokeParticleGravityMixin",
     "BaseAshSmokeParticleGravityMixin",
     "WhiteAshParticleGravityMixin",
