@@ -301,3 +301,33 @@ If/when simultaneous support becomes valuable:
 
 The immediate goal for 1.21.1 is to build those contracts cleanly so a future
 port has a small diff surface.
+
+
+## 14. R6 worldgen/environment portability hotspots
+
+R6 research matrix:
+docs/research/ENVIRONMENT_WORLDGEN_STRUCTURE_COMPAT_MATRIX_1_21_1.md
+
+The following MUST be isolated as exact-version adapters when implementation
+resumes on Minecraft 1.21.1 / NeoForge 21.1.215:
+- ChunkGenerator.createBiomes, fillFromNoise, buildSurface, applyCarvers,
+  applyBiomeDecoration, createStructures/createReferences and structure starts;
+- BiomeResolver/Climate.Sampler, surface/placement modifiers and their RNG/
+  getHeight Y semantics; BiomeModifier hooks are data/registry-owned;
+- NaturalSpawner candidate sampling versus SpawnPlacements validity and mob caps;
+- ServerLevel precipitation/lightning, LevelRenderer weather visuals and
+  SkyLightEngine/SkyLightSectionStorage vertical light-source assumptions;
+- StructureStart bounding-box registration, jigsaw placement, gravity processor,
+  PortalShape plus dimension-transfer and persisted worldgen settings.
+
+Keep Planet-native surface geometry, continuous field sampling, drainage,
+whole-box seam predicates, and spawn candidate math independent of these
+method signatures. Tests should cover exact six-face semantic math and
+version-specific vanilla-equivalence separately. Codec/data versions and
+old generated-world fingerprints require an explicit migration policy.
+
+Not a portable generic solution: a worldgen view that globally redefines
+BlockPos/Heightmap/Direction, or an arbitrary float-to-integer conversion of
+modded feature placement. Minecraft's world height is finite even if the
+Planet surface is defined by an outward shell; document the runtime/world
+envelope instead of implying six infinite playable directions.
