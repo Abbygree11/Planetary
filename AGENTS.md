@@ -148,6 +148,35 @@ Before expanding a new runtime mechanism across many classes, verify that its
 core logic can remain unchanged if the exact vanilla hook/signature moves in a
 future Minecraft version.
 
+## 3C. Separate discovery/research batches from implementation batches
+
+Canonical global audit plan:
+`docs/research/GLOBAL_RESEARCH_BATCH_PLAN_1_21_1.md`.
+
+Do not mix large-scale mechanism discovery with runtime implementation in the
+same open-ended work pass.
+
+When the project is in a research/planning stage:
+
+1. choose one substantial bounded mechanism batch;
+2. complete its source inventory and representative call-flow analysis;
+3. update mechanism ownership, dependencies, portability hotspots and acceptance
+   plan;
+4. stop at the batch boundary;
+5. do NOT write runtime code until the research stage explicitly transitions to
+   implementation.
+
+Research batches should be large enough to expose shared mechanisms, but small
+enough to finish as a bounded unit. Avoid both extremes:
+- one vanilla class at a time;
+- "audit all of Minecraft and implement it while discovering it".
+
+During implementation:
+- work from the frozen mechanism map;
+- reopen research only when new evidence invalidates ownership or uncovers a
+  missing mechanism;
+- update the roadmap if new research changes phase ownership.
+
 ## 4. Research is mandatory BEFORE implementation
 
 Before implementing a non-trivial mechanic, feature, compatibility layer, or bug
