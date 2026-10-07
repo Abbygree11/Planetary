@@ -6,7 +6,6 @@ import dev.planetary.topology.PlanetFace;
 import dev.planetary.topology.PlanetFrameVector;
 import dev.planetary.topology.PlanetGravityFrame;
 import net.minecraft.client.particle.DragonBreathParticle;
-import net.minecraft.client.particle.Particle;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -98,7 +97,7 @@ public abstract class DragonBreathParticleGravityMixin {
             method = "tick",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/particle/Particle;move(DDD)V"
+                    target = "Lnet/minecraft/client/particle/DragonBreathParticle;move(DDD)V"
             )
     )
     private void planetary$prepareDragonVelocityBeforeMove(
