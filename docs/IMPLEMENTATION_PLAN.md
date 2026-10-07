@@ -1147,7 +1147,53 @@ the Phase-7 projectile contract.
 - Create-like directional machine/pipe stress test;
 - no duplicate neighbor-update storms.
 
-## Phase 7B — interaction, networking, spawn and environment policy [R4 RESEARCH COMPLETE FOR 7B.1-2; R6 PENDING FOR 7B.3-4, BATCH ACCEPTANCE]
+### R6 completion and implementation handoff (research only)
+
+Canonical matrix: docs/research/ENVIRONMENT_WORLDGEN_STRUCTURE_COMPAT_MATRIX_1_21_1.md
+
+Mechanisms / acceptance ownership:
+- 7B.3: PlanetSpawnCandidateProvider and PlanetSpawnSafetyQuery; preserve
+  biome/entity registered rules and mob caps; stop selecting all-face
+  candidates from vanilla physical XZ heightmap.
+- 7B.4: PlanetSurfaceQuery/Index, PlanetClimateQuery and
+  PlanetPrecipitationQuery; server deposition, client weather, lightning
+  candidates/rods and SkyLightEngine are separate algorithms. Product target
+  is natural six-face exterior daylight, not merely a rotated client sky.
+- 8A: generation-space BiomeResolver/Climate.Sampler; keeping BiomeSource
+  serializable is not enough to sample continuous climate on cube seams.
+- 8B-8D: retain continuous macro relief, constant radial SEA_SHELL, bounded
+  coast changes, post-terrain drainage and piecewise-flat river reaches.
+- 8E: field noise WRAP versus local chart/rigid feature placement; preserve
+  physical ChunkPos and PlacedFeature ordering, seed and biome modifiers.
+- 9A: AVOID_EDGE final whole StructureStart bounding box before registration,
+  structure refs/locate integrity, jigsaw/GravityProcessor local surface.
+- 9B: rigid locally vertical portal plane, seam reject, separate entity
+  transition/orientation. End/gateway are distinct vanilla path families.
+- 10: versioned generator/profile codec and saved-world fingerprint/migration;
+  modified biome registries, TerraBlender/BOP/BYG early gates; public frame
+  API and opt-in feature/processor contracts, instrument chunk/spawn/light
+  hotspots and keep vanilla non-Planet pass-through.
+
+Critical newly discovered contracts:
+1. Heightmap 16x16 physical XZ->Y cannot encode six Planet surfaces.
+2. PlanetGenerationSpace is C0 continuous; seam gradient and voxelized
+   geometry are unproven and need independent tests.
+3. getSeaLevel is physical/global-Y, not the radius of a constant sea shell.
+4. Arbitrary modded integer-grid Features cannot be made seamless simply by
+   mapping coordinates and rounding; explicit classification is required.
+5. A radial sun/skylight implementation may require a lighting engine adapter,
+   not an inexpensive gravity/heightmap mixin.
+6. Stock dimension build limits cannot accommodate literally infinite +Y/-Y
+   exterior shells. Define a finite playable envelope/portability policy.
+7. Structure selection, early bbox validation, persisted starts/references and
+   chunk stage ordering must agree; do not reject after writing blocks.
+8. Current generator still has no real decorations, carvers or initial mobs.
+
+Status: research done, NO Phase-7B/8/9/10 runtime PASS claimed. Next:
+FINAL GLOBAL COMPLETENESS SWEEP R1-R6, then frozen architecture and a
+dependency-ordered implementation batch plan. Runtime remains frozen.
+
+## Phase 7B — interaction, networking, spawn and environment policy [R4+R6 RESEARCH COMPLETE; RUNTIME ACCEPTANCE PENDING]
 
 This phase contains mechanisms that must agree with the entity/body frame but are
 not ordinary movement physics.
@@ -1239,7 +1285,7 @@ Do not rotate skylight/weather simply because player gravity rotates.
 - weather/environment behavior matches documented product policy;
 - +Y vanilla-equivalent baseline where policy says it should.
 
-## Phase 8 — real terrain/biome generation [PARTIAL foundation]
+## Phase 8 — real terrain/biome generation [R6 RESEARCH COMPLETE; PARTIAL RUNTIME FOUNDATION]
 
 Existing:
 - PlanetGenerationSpace continuous mapping
@@ -1460,7 +1506,7 @@ Performance acceptance must measure CPU generation, GPU triangles, memory,
 upload bandwidth and movement-induced remeshing. Far-distance targets are goals,
 not guarantees.
 
-## Phase 9 — structures and rigid runtime topology [PLANNED, BATCH ACCEPTANCE]
+## Phase 9 — structures and rigid runtime topology [R6 RESEARCH COMPLETE; RUNTIME PLANNED, BATCH ACCEPTANCE]
 
 ### 9A — generated structures
 
@@ -1509,7 +1555,7 @@ Also audit analogous rigid runtime multiblock machines.
 - entity transition orientation through portal;
 - modded rigid multiblock integration representative.
 
-## Phase 10 — mod compatibility [PARTIAL foundation, CONTINUOUS GATE]
+## Phase 10 — mod compatibility [R6 RESEARCH COMPLETE; PARTIAL RUNTIME FOUNDATION, CONTINUOUS GATE]
 
 This is not an "after everything" cleanup phase. Every owning subsystem must run
 its standard Minecraft/NeoForge compatibility gate while it is implemented.
