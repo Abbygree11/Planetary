@@ -93,8 +93,8 @@ Canonical batch plan:
 `docs/research/GLOBAL_RESEARCH_BATCH_PLAN_1_21_1.md`.
 
 Research batches:
-- R1 block/world semantic topology;
-- R2 client geometry/render/particles;
+- R1 block/world semantic topology — COMPLETE;
+- R2 client geometry/render/particles — NEXT;
 - R3 fluids;
 - R4 entity/body/interaction/network;
 - R5 AI/navigation + signals/automation/logistics;
@@ -200,10 +200,13 @@ Acceptance:
 - public PlanetFrameApi local-neighbor primitive
 - Create-like raw BlockPos.relative(local FACING) stress harness across all six faces
 
-## Phase 2 — block semantic subsystem [PARTIAL, BATCH ACCEPTANCE]
+## Phase 2 — block semantic subsystem [R1 RESEARCH COMPLETE; IMPLEMENTATION PARTIAL, BATCH ACCEPTANCE]
 
 Detailed mechanism ownership:
 `docs/research/GRAVITY_MECHANISM_MAP_1_21_1.md`
+
+Completed R1 family matrix:
+`docs/research/BLOCK_WORLD_TOPOLOGY_MATRIX_1_21_1.md`
 
 Detailed existing research:
 - `docs/research/PLACEMENT_1_21_1.md`
@@ -402,7 +405,14 @@ Required as ONE graph implementation:
 - curve selection;
 - reconnect propagation after add/remove;
 - seam-aware graph traversal;
+- rail connection identity in local/traversal topology rather than vanilla's
+  physical-X/Z column assumption;
 - waterlogging scheduling hook (fluid correctness remains Phase 5).
+
+R1 architecture decision:
+do not patch RailState method-by-method as the long-term design. Extract a
+Planet-owned rail graph helper/service and keep RailState/Mixin wiring thin for
+cross-version portability.
 
 Explicitly NOT owned here:
 - powered/detector/activator signal behavior -> Phase 7A;
