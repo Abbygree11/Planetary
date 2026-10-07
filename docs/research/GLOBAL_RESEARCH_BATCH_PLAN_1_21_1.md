@@ -34,7 +34,12 @@ After all batches complete:
 - resume implementation phase-by-phase/mechanism-by-mechanism;
 - use batch acceptance, not per-class gameplay testing.
 
-## Batch R1 — block/world semantic topology
+## Batch R1 — block/world semantic topology [COMPLETE]
+
+Result:
+`docs/research/BLOCK_WORLD_TOPOLOGY_MATRIX_1_21_1.md`
+
+Completion findings are merged into the mechanism map and Phase-2 roadmap.
 
 Scope:
 - UseOnContext / BlockPlaceContext / BlockItem;
@@ -55,7 +60,7 @@ Output:
 complete Phase-2 ownership map, family list, dependencies to render/redstone/
 entity/fluid phases, and a Phase-2 representative acceptance matrix.
 
-## Batch R2 — client geometry/render/particles
+## Batch R2 — client geometry/render/particles [NEXT]
 
 Scope:
 - VoxelShape/query/collision/visual/interaction shapes;
