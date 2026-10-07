@@ -1097,6 +1097,47 @@ correctness is not sufficient.
 
 ---
 
+## R6 environment/worldgen/structure/compatibility research status
+
+RESEARCH COMPLETE. Detailed authoritative source/architecture matrix:
+docs/research/ENVIRONMENT_WORLDGEN_STRUCTURE_COMPAT_MATRIX_1_21_1.md
+
+Cross-phase corrections:
+- PlanetSurfaceQuery is a NEW six-face/elevation candidate interface. Minecraft
+  Heightmap remains a physical XZ->Y summary; adapting its result cannot fix
+  natural spawn candidate distribution, weather, features or structures.
+- Spawn selection is a candidate-distribution problem (Phase 7B.3), followed
+  separately by SpawnPlacements local-ground clearance. Mob caps, biome spawn
+  lists and registered predicates remain vanilla/NeoForge decisions.
+- PlanetClimateQuery is not Biome.getTemperature with a fake Y: vanilla uses
+  physical y>80, x/z temperature noise and caches by physical BlockPos.
+- Precipitation simulation, visual particles/audio, lightning candidate/rod
+  search, and worldgen snow/ice are independent paths fed by one chosen Planet
+  exposure/temperature policy (Phase 7B.4 / Phase 8E).
+- SkyLightEngine's physical Y column injection/storage cannot be made radial
+  by rotating camera or global Heightmap. A radial sky exposure/light-source
+  integration is a distinct architectural gate (Phase 7B.4).
+- PlanetChunkGenerator has a BiomeSource codec but currently generates only
+  the fixed test cube and disables surface, carvers, biome decoration and
+  original mobs; PlanetGenerationSpace is not used by fillFromNoise.
+- The existing continuous WRAP transform does not prove continuous
+  gradients at exact cube tie planes. Noise/climate SCALAR fields and integer
+  block-placement algorithms are distinct families (Phase 8).
+- Feature placement needs FIELD_WRAP / LOCAL_CHART / RIGID_AVOID_EDGE /
+  INTEGRATION_REQUIRED classification, rather than blanket wrap of
+  arbitrary modded Feature code.
+- getSeaLevel is a global Y scalar; constant radial SEA_SHELL needs an
+  independent Planet elevation interface and adapters for aquifer/surface
+  consumers (Phase 8).
+- StructureStarts require whole-bounding-box clearance before commit/refs;
+  JigsawPlacement/GravityProcessor use global Y height queries (Phase 9A).
+- Nether PortalShape is a whole local-rigid rectangle algorithm, not a
+  single block-orientation adaptation (Phase 9B).
+- Codec/profile persistence, finite vertical build bounds, structures/feature
+  registry extension points and chunk-stage performance are Phase 8/10 gates.
+- Compatibility is continuous. No current TerraBlender, BOP or BYG acceptance
+  is implied by preserving a BiomeSource property.
+
 ## 16. Spawning, environment and heightmaps
 
 This group must NOT be auto-rotated without a product decision.
