@@ -79,7 +79,8 @@ Correct policy to implement after baseline:
 1. PHYSICAL Direction = safe default for unknown NeoForge provider.
 2. LOCAL conversion ONLY under an explicit provider/block/BE capability policy,
    such as Planet-aware vanilla-family adapter or third-party opt-in.
-3. Contract keyed by provider/capability plus Block/BlockEntityType; avoid
+3. Contract applied individually per registered provider (preferred over a
+   shared capability/block registry); avoid
    blanket mod-ID or Direction type inference.
 4. Calculate caller's physical target BlockPos first, then target physical
    entry side; convert to target-local ONLY if target provider declares LOCAL.
@@ -317,3 +318,32 @@ party graph engines remain owned by their respective mods.
 The previous frozen R1-R6 family map is retained. This is one bounded
 compatibility-specific amendment, not an endless global research cycle.
 No runtime code, build or gameplay acceptance performed during this review.
+
+
+## 10. Implemented resolution — per-provider opt-in (2026-10-08)
+
+After inspecting exact NeoForge branch 1.21.1 BlockCapability and
+RegisterCapabilitiesEvent, the safer, smaller integration point is EACH
+REGISTERED PROVIDER, not a globally mutable (capability, block) policy.
+BlockCapability.getCapability enumerates independent providers for one
+Block; a block-wide conversion would still rewrite independent foreign
+providers on that block. The research goal (physical default, local opt-in)
+is now implemented using PlanetCapabilityAdapters.canonicalLocalBlock and
+canonicalLocalBlockEntity wrappers at RegisterCapabilitiesEvent registration.
+
+The physical Planet BlockCapabilityMixin path no longer changes context.
+The old legacy virtual-atlas fallback is retained and guarded separately.
+Old diagnostic local echo and local-UP item/fluid/energy handlers opt in;
+a new physical echo remains completely unwrapped on the SAME Stone target.
+PlanetCoordinateContext plus guarded PlanetFrameApi overloads explicitly
+reject foreign virtual block coordinates lacking a resolved physical mapping.
+
+This is IMPLEMENTED / ACCEPTANCE PENDING. Unit tests and runtime diagnostic
+checks have been authored, NOT run in this session. No mod compatibility
+has been verified in game. Detailed source/test handoff:
+docs/research/CAPABILITY_PROVIDER_CONTEXT_1_21_1.md.
+
+Supersedes any earlier suggestion in this document to use one registry policy
+for a whole BlockCapability/Block when its provider list contains mixed side
+contracts. Other planned optional mod-specific graph/foreign-frame SPI remains
+future work.
