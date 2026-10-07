@@ -16,6 +16,70 @@ For every phase:
 6. Run the acceptance matrix on +Y, -Y, X, Z, edge and (when relevant) corner.
 7. Only then mark the phase verified and update AI_CONTEXT.md.
 
+## Final research sweep: frozen cross-phase handoff [2026-10-08]
+
+R1–R6 source/mechanism research has completed, plus a separate public mod
+coordinate-system precedent study. This means *research architecture* is
+ready for dependency-ordered implementation; not one Phase 2–11 runtime
+subsystem has been newly accepted by this documentation-only pass.
+
+Canonical cross-phase decisions and batch ordering:
+- docs/research/FINAL_COMPLETENESS_SWEEP_1_21_1.md
+- docs/research/EXTERNAL_COORDINATE_MOD_CASE_STUDIES.md
+
+Status:
+- R1/R2/R3/R4/R5/R6: RESEARCH COMPLETE.
+- Final completeness sweep: COMPLETE (with explicit future hook/version gates).
+- Runtime: remains at previous Phase-4 experimental/baseline checkpoint;
+  DO NOT mark earlier partial implementations PASS retroactively.
+- Each batch must respect AGENTS.md and complete its one acceptance matrix.
+
+**Implementation order is dependency-based, not naive phase-number order:**
+0. Build/startup baseline, last accepted gameplay state, and finite-world/
+   save-version/light-engine architecture gates.
+A. Phase 1: pure canonical state/traversal/typed direction-vector/normal/AABB
+   foundation and public frame API.
+B. Phase 2 + Phase 3: block semantics, state/graph ownership, shapes/static/
+   accelerated renderer adapter.
+C. Phase 7.1/7.2 and 7B.1/7B.2: physical deltaMovement migration and
+   entity/body collision, locomotion, view/raycast/client-server authority.
+D. Phase 5 + Phase 4: fluid topology/render/NeoForge extensions and
+   particle class/emitter completion; weather emitters depend on 7B.4.
+E. Phase 7A then Phase 6: signals, piston, rail, logistics; afterward
+   chart-aware navigation/AI depending on Phase 2/5/7.
+F. Phase 8 and Phase 7B.3–7B.4: PlanetSurfaceQuery, continuous climate/
+   biome generator, terrain/sea/hydrology, features, spawn candidates,
+   real weather/sky-light-engine integration.
+G. Phase 9 + 10 + 11: rigid structures and portals, targeted mod integration,
+   saved-world compatibility, smooth gravity transition/polish.
+
+External precedents and added acceptance:
+- GravityChanger / Immersive Portals demonstrate explicit physical velocity,
+  eye-offset, quaternion and direction adapters. R4 physical deltaMovement
+  is ALREADY the chosen future design; current runtime still stores LOCAL.
+- Valkyrien Skies highlights split position/vector/raycast/particle transforms,
+  NaN/huge transformed bounds, unloaded-space teleports, rider-save mismatch.
+- Cubic Chunks demonstrates why truly unlimited physical Y is a storage/engine
+  rewrite; first implementation envelope MUST be finite and documented.
+- Immersive Portals virtual wrapping cannot provide real across-seam
+  redstone/fluid/AI; Planet must preserve one physical voxel neighborhood.
+- Starminer and Up And Down are historical comparison/test coverage only.
+- All external examples span different Minecraft/loader versions; none
+  automatically validate NeoForge 1.21.1 integration.
+
+**P0 gates before claiming production-quality survival planet:**
+1. Six-face skylight needs a true sky-light-source/exposure mechanism, not
+   rotated render or globally redefined Heightmap.
+2. Finite vertical world envelope + versioned serialized worldgen profile
+   BEFORE replacing the R48 fixed test cube on existing saves.
+3. Entity physical-velocity migration before cross-frame force/network/AI.
+4. Exact-corner traversal chart remains independent of physical BlockPos.
+5. Exact NeoForge 21.1.215 hooks must be verified per implementation batch.
+
+The final sweep documents 15 residual engineering gates and how they
+map to existing phases, not an invitation to endless global re-research.
+No build/runtime tests required for the research-only commits.
+
 ## Cross-cutting gravity/local-frame audit [MANDATORY]
 
 Master audit: `docs/research/GRAVITY_IMPACT_AUDIT_1_21_1.md`
