@@ -16,6 +16,54 @@ For every phase:
 6. Run the acceptance matrix on +Y, -Y, X, Z, edge and (when relevant) corner.
 7. Only then mark the phase verified and update AI_CONTEXT.md.
 
+## Ultimate cross-mod compatibility architecture gate [2026-10-08, RESEARCH COMPLETE]
+
+Canonical audit:
+docs/research/ULTIMATE_CROSS_MOD_COMPATIBILITY_REVIEW_1_21_1.md
+
+Found a materially unsafe universal assumption in current runtime:
+BlockCapabilityMixin unconditionally rewrites every NeoForge sided Direction
+context to target canonical LOCAL direction. Current verified STONE provider
+tests were intentionally designed to EXPECT canonical LOCAL, so they only
+validate that contract. Ordinary third-party providers may instead expect
+PHYSICAL sides (Mekanism persists port state by Direction ordinal; AE2 uses
+Direction keyed in-world grid connections). The issue is RESEARCH-CONFIRMED
+AS A GENERAL CONTRACT RISK, not an in-game reproduced failure.
+
+**NEW P0 capability contract before broad compatibility claims:**
+- default unknown NeoForge capability provider sides to PHYSICAL;
+- rewrite to canonical LOCAL only for explicitly registered receiver
+  provider/Block/BE-capability semantics; preserve old local echo as an
+  opt-in regression case; preserve null and cache invalidation;
+- calculate correct PHYSICAL adjacent target before selecting receiving side;
+- verify exact NeoForge 21.1.215 integration and a genuine modded machine
+  before changing existing accepted runtime.
+Owner: Phase 1 + Phase 7A.5 + Phase 10. No runtime changes yet.
+
+**NEW universal compatibility foundation:**
+- explicit coordinate provenance: physical Level vs virtual Create
+  ContraptionWorld, WorldEdit clipboard, generation sample, entity frame,
+  traversing chart, render frame; never silently reinterpret fake Level;
+- separate position/direction/normal/velocity/rotation/AABB and typed
+  foreign transforms; no global primitive replacements;
+- ConnectionGeometry for physically adjacent endpoint port pairs plus
+  signed rotational axis/handedness when a graph declares it, without
+  implementing a second Create/AE2/Mekanism graph;
+- frame-aware BlockState + BlockEntity/NBT side-settings transport and
+  lifecycle/invalidation for moved blocks, with opt-in and rigid fallback;
+- deterministic semantic adapter SPI by capability+provider/Block/BE type,
+  no per-tick reflection or optional-mod hard dependency;
+- exact-version integration matrix for Create, AE2, Mekanism, WorldEdit,
+  TerraBlender, custom fluid/entity, Sodium/Embeddium/Iris, Distant Horizons,
+  scripted/fake-player automation and vanilla pass-through.
+Owners: Phase 1 foundation; Phase 2/7A graph and block transport;
+Phase 8 biome/LOD; Phase 3 render; Phase 10 optional bridges.
+
+This is a TARGETED amendment to the frozen R1-R6 map, not another open-ended
+discovery pass. Batch 0 must inventory this contract before code changes;
+implementation proceeds in coherent owning batches with one acceptance
+matrix each.
+
 ## Final research sweep: frozen cross-phase handoff [2026-10-08]
 
 R1–R6 source/mechanism research has completed, plus a separate public mod
@@ -148,10 +196,12 @@ Planet helper/algorithm intact?"
 If not, the boundary should be improved before multiplying it across more
 classes.
 
-## Global research completion gate [ACTIVE]
+## Global research completion gate [COMPLETE — IMPLEMENTATION MAY RESUME]
 
 Current project mode:
-**finish the global mechanism audit before further runtime implementation**.
+**R1–R6 and the final global cross-sweep are COMPLETE.** The extra targeted
+third-party compatibility audit is also complete; implement its P0 provider
+contract at its owning mechanism and resume baseline + coherent batches.
 
 Canonical batch plan:
 `docs/research/GLOBAL_RESEARCH_BATCH_PLAN_1_21_1.md`.
@@ -162,17 +212,20 @@ Research batches:
 - R3 fluids — COMPLETE;
 - R4 entity/body/interaction/network — COMPLETE;
 - R5 AI/navigation + signals/automation/logistics — COMPLETE;
-- R6 environment/worldgen/structures/compatibility — NEXT;
-- final completeness sweep.
+- R6 environment/worldgen/structures/compatibility — COMPLETE;
+- final completeness sweep — COMPLETE;
+- third-party integration/API semantic review — COMPLETE.
 
-Runtime code is temporarily frozen at the current partial Phase-4 checkpoint.
-Existing accepted/implemented behavior is preserved; this is not a rollback.
+Runtime remains at the current partial Phase-4 checkpoint. No runtime
+changes were made by research; this is not a rollback. The next changes
+must go through Batch 0 baseline and P0 capability-direction contract.
 
-After the final sweep:
-1. establish dependency-based implementation order;
-2. resume coherent mechanism batches;
-3. request build/startup at the first runtime checkpoint;
-4. use subsystem/phase batch gameplay acceptance rather than per-class tests.
+After the completed research sweep:
+1. preserve the dependency-based implementation order already recorded;
+2. verify baseline and local-vs-physical capability provider risk;
+3. resume coherent mechanism implementation batches;
+4. request build/startup at the first runtime checkpoint;
+5. use subsystem/phase batch gameplay acceptance rather than per-class tests.
 
 ## Status legend
 - DONE: user verified in game or deterministic tests fully cover the item.
@@ -234,8 +287,10 @@ Implemented foundation:
 Implemented runtime/compat foundation:
 - PlanetBlockRuntime as shared Level + physical BlockPos -> active field/frame boundary
 - block activation evaluated at the physical block center
-- physical capability Direction -> canonical local BlockState side
-- dedicated physical capability queries keep the queried BlockPos authoritative
+- existing mixin currently rewrites physical capability Direction to canonical
+  local BlockState side; its generic compatibility assumption is NOT sound for
+  unknown third-party provider semantics, see latest ultimate audit;
+- dedicated physical capability queries keep queried BlockPos authoritative
 - legacy virtual-atlas capability alias routing retained only as fallback
 
 Implemented placement-frame foundation:
