@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *
  * <p>Inherited Particle.move is invoked from each concrete tick method with
  * the concrete tick class as the bytecode invocation owner. This must agree
- * with the six exact @At(target=...) descriptors in the bridge mixins.
+ * with the eight exact @At(target=...) descriptors in their respective mixins.
  * Compilation of a mixin alone does not verify the target bytecode.</p>
  */
 final class ParticleTickInvocationTargetTest {
@@ -108,7 +108,7 @@ final class ParticleTickInvocationTargetTest {
     }
 
     @Test
-    void allSixBridgesRegisteredAndOldMultiTargetRemoved()
+    void allEightBridgesRegisteredAndOldMultiTargetRemoved()
             throws IOException {
         try (InputStream bytes =
                      getClass().getClassLoader().getResourceAsStream(
