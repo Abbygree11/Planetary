@@ -197,7 +197,18 @@ Scope:
 Output:
 complete Phase-7B environment + Phase-8/9/10/11 map.
 
-## Final completeness sweep [NEXT — RESEARCH DONE, RUNTIME STILL FROZEN]
+## Final completeness sweep [COMPLETE — ARCHITECTURE HANDOFF, RUNTIME UNCHANGED]
+
+Results:
+- `docs/research/FINAL_COMPLETENESS_SWEEP_1_21_1.md`
+- `docs/research/EXTERNAL_COORDINATE_MOD_CASE_STUDIES.md`
+
+The full R1–R6 mechanism ownership/cross-dependencies have been reconciled;
+critical implementation gates, physical-vs-local contract conflicts, external
+coordinate-system precedents and dependency-ordered implementation batches
+are now recorded. The following steps in this section describe the completed
+sweep criteria, not work to repeat before starting Batch 0.
+
 
 After R1-R6:
 
