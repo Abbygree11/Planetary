@@ -136,7 +136,12 @@ Scope:
 Output:
 complete Phase-7 + interaction/network half of Phase-7B.
 
-## Batch R5 — AI/navigation + signals/automation/logistics [NEXT]
+## Batch R5 — AI/navigation + signals/automation/logistics [COMPLETE]
+
+Result:
+`docs/research/AI_AUTOMATION_MATRIX_1_21_1.md`
+
+Completion findings are merged into the mechanism map and Phase-6/7A roadmap.
 
 Scope:
 - NodeEvaluator / WalkNodeEvaluator / PathFinder;
@@ -157,7 +162,7 @@ Scope:
 Output:
 complete Phase-6 + Phase-7A map and cross-dependencies.
 
-## Batch R6 — environment/worldgen/structures/compatibility
+## Batch R6 — environment/worldgen/structures/compatibility [NEXT]
 
 Scope:
 - spawn placement and NaturalSpawner;
