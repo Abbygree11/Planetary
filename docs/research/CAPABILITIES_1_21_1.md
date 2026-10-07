@@ -77,6 +77,21 @@ master gravity-impact audit and needs either:
 This is preferable to globally patching BlockPos.relative, which would corrupt
 genuinely physical callers.
 
+R5 confirmed this is not only a third-party compatibility scenario. NeoForge
+1.21.1 `VanillaInventoryCodeHooks` performs upstream neighbor selection for
+vanilla automation before the capability query:
+- hopper output uses the hopper FACING step;
+- hopper suction uses world +Y;
+- dropper/crafter attached handlers use Direction step components.
+
+Therefore Phase 7A needs a topology-aware logistics neighbor resolver BEFORE the
+capability boundary.
+
+The existing capability adapter still owns the second stage:
+correct physical target + physical shared face -> target canonical provider side.
+
+The same two-stage split applies to vanilla `WorldlyContainer` sided access.
+
 ## 5. Legacy virtual atlas
 
 The older PlanetLevelBridge / PlanetWorldAccess prototype represents one
