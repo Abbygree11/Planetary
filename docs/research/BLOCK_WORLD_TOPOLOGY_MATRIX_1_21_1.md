@@ -322,6 +322,32 @@ evaluate TOP/BOTTOM/HALF using local-frame click offset.
 Current slab foundation exists.
 Stair/trapdoor need family completion.
 
+#### H. FrontAndTop two-direction orientation family
+
+R5 completeness sweep found a concrete Phase-2A family omitted from the original
+R1 matrix.
+
+Examples:
+- CrafterBlock;
+- JigsawBlock.
+
+State:
+`FrontAndTop` stores two orthogonal directions:
+- front;
+- top.
+
+Planet rule:
+both values are canonical LOCAL directions in the block state.
+
+Placement must derive them from the Planet placement frame rather than allowing
+world UP to leak into the top component.
+
+Cross-phase ownership:
+- Crafter trigger/output/logistics -> Phase 7A;
+- Jigsaw structure/worldgen semantics -> R6.
+
+This is a reusable orientation vocabulary, not a Crafter-specific patch.
+
 ### Phase-2A test strategy
 
 Pure:
