@@ -1770,3 +1770,86 @@ Important findings:
 
 Global research advances to R4: entity/body/interaction/network.
 Runtime remains frozen.
+
+
+## 2026-10-08 R4 entity/body/interaction/network research COMPLETE
+Global research batch R4 is complete. No runtime code was changed during R4.
+
+New canonical matrix:
+    docs/research/ENTITY_BODY_NETWORK_MATRIX_1_21_1.md
+
+Exact source audit covered vanilla Minecraft 1.21.1 and NeoForge 1.21.1:
+- Entity movement/collision/support/fall/body/view;
+- LivingEntity locomotion;
+- representative non-living entities;
+- projectile families;
+- minecart and boat;
+- passengers/attachments/dismount/leash/sleeping/hanging entities;
+- knockback/explosion/piston/external forces;
+- GameRenderer/Item/ProjectileUtil picking;
+- LocalPlayer/ServerPlayer/client packet listener/server packet listener;
+- movement/vehicle/teleport packet semantics;
+- NeoForge entity/living/projectile/vehicle/interaction hooks.
+
+Critical architecture correction:
+The current partial runtime converts Entity.deltaMovement into LOCAL coordinates
+inside a Planet gravity field. R4 rejects that as the long-term architecture.
+
+Vanilla/NeoForge contracts demonstrate that deltaMovement is PHYSICAL world XYZ:
+- Explosion adds a physical radial world vector directly;
+- Leashable adds holder-position minus entity-position directly;
+- Entity.push directly adds supplied physical components;
+- ProjectileUtil uses deltaMovement as the physical collision ray;
+- ClientPacketListener relative teleport preserves deltaMovement components by
+  physical RelativeMovement.X/Y/Z flags;
+- server player/vehicle validation compares physical packet displacement to
+  deltaMovement magnitude;
+- third-party mods naturally rely on the same API contract.
+
+Required future Phase-7 migration:
+    physical deltaMovement
+        -> project into body-local frame for semantic locomotion
+        -> run local Y/tangent algorithm
+        -> recompose physical result
+        -> store physical deltaMovement
+
+Entity.move displacement must likewise remain physical.
+
+This correction does NOT reject or roll back manually accepted player behavior.
+Accepted movement/camera/jump/fall behavior remains the product target and
+evidence for semantic correctness. Only the internal velocity storage boundary
+is marked for replacement before broad Phase-7 expansion.
+
+Other R4 conclusions:
+1. Existing PlanetEntityCollision is retained: physical AABB/colliders, local
+   collision order, physical displacement result.
+2. onGround/vertical/tangent/step/fall are body-local semantics.
+3. EntityDimensions remain canonical local dimensions; physical AABB is derived
+   from the body frame. Preserve NeoForge EntityEvent.Size.
+4. Eye/view is local-authored and converted once to a physical world ray.
+5. BlockHitResult remains physical through client/server networking.
+6. Packet and teleport XYZ remain physical.
+7. Server jump/floating/fall/vehicle validation must project physical deltas
+   into the entity body frame rather than reading world Y.
+8. Yaw/pitch may remain body-local scalar vocabulary only if client/server share
+   the same gravity frame.
+9. Current gravity-face selection uses preferred-face hysteresis and prediction
+   state. An explicit authoritative face synchronization path is the safer
+   long-term design unless deterministic equivalence is proven.
+10. Projectiles separate launch/body semantics from physical collision/raycast.
+11. Minecart consumes Phase-2 rail topology; boat consumes Phase-5 fluid
+    surfaces.
+12. Passenger/seat/leash/sleep authored offsets are body-local; final endpoints
+    are physical.
+13. Dismount requires a dedicated local-floor/clearance search.
+14. Explosion/leash/source-target attraction are physical forces and must not
+    be rotated merely because gravity differs.
+15. Living knockback is a mixed boundary and needs explicit caller semantics
+    while preserving NeoForge LivingKnockBackEvent.
+16. Preserve NeoForge entity tick/size/mount/fall/fluid/projectile/minecart/boat
+    and interaction extension points.
+
+Global research advances to R5:
+AI/navigation + signals/automation/logistics.
+
+Runtime remains frozen.
