@@ -25,6 +25,7 @@
     "DragonBreathParticleAccessor",
     "DragonBreathParticleGravityMixin",
     "FixedVerticalLaunchParticleMixin",
+    "ShriekParticleRenderGravityMixin",
     "LocalAuthoredLaunchParticleMixin",
     "SplashParticleGravityMixin",
     "WaterCurrentDownParticleAccessor",
