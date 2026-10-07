@@ -1911,3 +1911,59 @@ Global research advances to R6:
 environment/worldgen/structures/compatibility.
 
 Runtime remains frozen.
+
+
+## 2026-10-08 R6 environment/worldgen/structures/compatibility research COMPLETE
+
+R6 is a DOCS-ONLY complete research batch; runtime remains frozen.
+Canonical source/call-flow/matrix:
+    docs/research/ENVIRONMENT_WORLDGEN_STRUCTURE_COMPAT_MATRIX_1_21_1.md
+
+Exact source inspection (1.21.1 Mojang-named baseline) verified:
+1. NaturalSpawner candidate selection samples physical XZ + global-Y heightmap.
+   SpawnPlacementTypes.ON_GROUND uses below/above separately. Phase 7B.3
+   therefore needs PlanetSpawnCandidateProvider, not just ground-rule patches.
+2. Heightmap is 16x16 physical XZ->Y; it is not a six-face surface.
+   Introduce explicit PlanetSurfaceQuery/Index while leaving global Heightmap.
+3. ServerLevel precipitation + lightning, worldgen SnowAndFreezeFeature and
+   LevelRenderer weather visuals are independent XZ/Y code paths; shared
+   PlanetClimateQuery/PrecipitationQuery policy, separate adapters.
+4. Biome height-adjusted temperature directly tests physical Y > 80 and uses
+   physical X/Z noise/cached position. Cannot treat equal-shell opposite faces
+   as equal temperature without a Planet climate boundary.
+5. SkyLightEngine and SkyLightSectionStorage inject/read physical Y columns.
+   Six-face skylight is a distinct engine integration, not a camera rotation.
+6. PlanetChunkGenerator today only fills a fixed R48 test cube; surface,
+   carvers, decoration and original mobs are intentionally disabled.
+   It does not yet use PlanetGenerationSpace for noise fill.
+7. Default ChunkGenerator.createBiomes still samples physical quart XYZ even
+   when an external BiomeSource is stored in PlanetChunkGenerator.CODEC.
+   Seam-coherent sampling requires generation-space climate/biome resolver.
+8. Continuous scalar fields and discrete block structures/features differ:
+   arbitrary integer world-Y modded placement cannot be made seam-safe by
+   unqualified wrap-and-round. Classify FIELD_WRAP, LOCAL_CHART,
+   RIGID_AVOID_EDGE, INTEGRATION_REQUIRED.
+9. PlanetGenerationSpace is continuous in value but its maxAbs shell
+   definition does not prove continuous gradient at tie planes.
+10. getSeaLevel is a global-Y integer API. Constant Planet SEA_SHELL needs
+    its own radial interface and explicit aquifer/surface adapters.
+11. StructureStart final bounding box must be validated before registration
+    and cross-chunk refs/placement. JigsawPlacement and GravityProcessor use
+    getHeight/global Y. Preserve structure seeds, biome filters and locate.
+12. Nether PortalShape is a bounded local-vertical rigid rectangle algorithm,
+    normally forbidden to span a gravity seam. Entity transition is separate.
+13. BiomeModifier/PlacedFeature/StructureSet and mod biome registries remain
+    vanilla/NeoForge-owned. TerraBlender, BOP and BYG are future acceptance
+    cases, NOT verified working yet.
+14. Worldgen settings need codecs/data versions/world fingerprints; vanilla
+    Y build limits cannot represent infinite exterior ±Y radial surfaces
+    without a much larger storage-world redesign.
+
+Documents updated: R6 matrix, GRAVITY_MECHANISM_MAP_1_21_1.md,
+IMPLEMENTATION_PLAN.md, GLOBAL_RESEARCH_BATCH_PLAN_1_21_1.md,
+PORTABILITY_STRATEGY.md, this AI_CONTEXT.md.
+
+Global batches: R1 ✅ R2 ✅ R3 ✅ R4 ✅ R5 ✅ R6 ✅.
+NEXT: final cross-batch COMPLETENESS SWEEP, architecture freeze,
+dependency-ordered implementation plan. Do not start runtime before sweep.
+No build or gameplay acceptance required for this documentation-only change.
