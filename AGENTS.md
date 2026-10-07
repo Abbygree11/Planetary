@@ -148,6 +148,22 @@ Before expanding a new runtime mechanism across many classes, verify that its
 core logic can remain unchanged if the exact vanilla hook/signature moves in a
 future Minecraft version.
 
+### Reserved Mixin package boundary (NeoForge 1.21.1)
+
+Any package declared as `package` in a Mixin config (currently
+`dev.planetary.mixin` in `planetary.mixins.json`) is reserved by the
+Mixin transformer. **Never place ordinary helper classes, unit-test classes,
+records or utility classes in that package.** Put semantic helpers in
+`dev.planetary.gravity`/`world`/`api` as appropriate, and place tests in a
+matching non-mixin source package. The reserved package is for actual Mixin
+and accessor classes only.
+
+This is not merely a style preference: the NeoForge Gradle test runner can
+throw `IllegalClassLoadError: ... is in a defined mixin package ... and cannot
+be referenced directly` before executing even one JUnit method. A runtime
+helper in the same reserved namespace can fail later while applying Mixins.
+Check both `src/main` and `src/test` before committing new helpers/tests.
+
 ## 3C. Separate discovery/research batches from implementation batches
 
 Canonical global audit plan:
