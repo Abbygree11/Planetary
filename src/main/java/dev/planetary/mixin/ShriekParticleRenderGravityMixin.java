@@ -22,7 +22,7 @@ public abstract class ShriekParticleRenderGravityMixin {
             method = "render",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/particle/SingleQuadParticle;renderRotatedQuad(Lcom/mojang/blaze3d/vertex/VertexConsumer;Lnet/minecraft/client/Camera;Lorg/joml/Quaternionf;F)V"
+                    target = "Lnet/minecraft/client/particle/ShriekParticle;renderRotatedQuad(Lcom/mojang/blaze3d/vertex/VertexConsumer;Lnet/minecraft/client/Camera;Lorg/joml/Quaternionf;F)V"
             ),
             index = 2
     )
