@@ -1,7 +1,10 @@
 # Research: Minecraft 1.21.1 / NeoForge 21.1.215 fluid pipeline
 
-Status: research baseline. Do not implement the full fluid phase until the
-Phase-1 local block/topology kernel exists.
+Status: R3 RESEARCH COMPLETE. Runtime implementation remains frozen until the
+global R1-R6 research pass and final completeness sweep finish.
+
+Canonical completed R3 matrix:
+`docs/research/FLUID_MECHANISM_MATRIX_1_21_1.md`.
 
 Primary source inspected:
 NeoForm-unpacked Minecraft 1.21.1 sources (official Mojang mappings), including
@@ -250,25 +253,31 @@ adaptation should remain compatible with IFluidHandler-style sided queries.
 Do not assume every modded fluid is exactly WaterFluid/LavaFluid. Adapt at the
 FlowingFluid / FluidState / rendering boundaries where practical.
 
-## 13. Edge topology: unresolved design gate
+## 13. Edge topology: prerequisite satisfied, fluid graph still required
 
-This is the most important prerequisite.
+The topology prerequisite described by the original baseline now exists:
 
-For a cell on/near a convex cube edge, local EAST/WEST/NORTH/SOUTH cannot be
-implemented by blindly converting a local direction once and calling
-pos.relative(worldDirection).
+`PlanetBlockFrameContext.step(localDirection)` returns a `PlanetBlockStep`
+containing:
+- semantic local direction;
+- physical direction;
+- target physical BlockPos/frame;
+- transported direction;
+- boundary-crossing state.
 
-The next local cell may require:
-- crossing into a new gravity chart,
-- rotating the local basis,
-- transporting the 'came from' direction for slope recursion,
-- choosing a unique physical cell so fluid is neither duplicated nor lost.
+R3 therefore does NOT require a second fluid-specific topology implementation.
 
-Before fluid implementation, Phase 1 must provide and test:
-PlanetBlockFrameContext.step(localDirection) -> target physical BlockPos +
-target frame + transported local direction.
+Phase 5 must build a fluid graph/context on top of PlanetBlockStep and keep two
+direction concepts separate:
+- semantic local direction for FlowingFluid/Fluid subclass behavior;
+- physical edge direction for collision/occlusion geometry.
 
-The operation must be deterministic for all 24 directed cube-edge transitions.
+R3 additionally found two vanilla cache assumptions that are invalid on rotated
+faces:
+- FlowingFluid slope cache key uses only physical delta X/Z;
+- wall-occlusion cache omits source/target frame orientation.
+
+See `FLUID_MECHANISM_MATRIX_1_21_1.md` for the complete design.
 
 ### Exact-corner deduplication rule
 
