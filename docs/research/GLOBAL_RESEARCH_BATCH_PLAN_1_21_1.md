@@ -87,7 +87,12 @@ Important:
 existing particle runtime work remains frozen during this research batch; use it
 as evidence, not as a reason to continue coding before the global audit is done.
 
-## Batch R3 — fluids [NEXT]
+## Batch R3 — fluids [COMPLETE]
+
+Result:
+`docs/research/FLUID_MECHANISM_MATRIX_1_21_1.md`
+
+Completion findings are merged into the mechanism map and Phase-5 roadmap.
 
 Scope:
 - FlowingFluid;
@@ -108,7 +113,7 @@ Scope:
 Output:
 complete Phase-5 algorithm map and integration gates with Phase 2/3/4/7.
 
-## Batch R4 — entity/body/interaction/network
+## Batch R4 — entity/body/interaction/network [NEXT]
 
 Scope:
 - Entity.move/collision/step/support/fall;
