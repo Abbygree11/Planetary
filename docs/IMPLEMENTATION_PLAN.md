@@ -94,8 +94,8 @@ Canonical batch plan:
 
 Research batches:
 - R1 block/world semantic topology — COMPLETE;
-- R2 client geometry/render/particles — NEXT;
-- R3 fluids;
+- R2 client geometry/render/particles — COMPLETE;
+- R3 fluids — NEXT;
 - R4 entity/body/interaction/network;
 - R5 AI/navigation + signals/automation/logistics;
 - R6 environment/worldgen/structures/compatibility;
@@ -470,7 +470,7 @@ Must include representative families, not every individual block:
 
 Phase 2 does not close merely because a list of common blocks can be placed.
 
-## Phase 3 — block geometry and rendering subsystem [PARTIAL, BATCH ACCEPTANCE]
+## Phase 3 — block geometry and rendering subsystem [R2 RESEARCH COMPLETE; IMPLEMENTATION PARTIAL, BATCH ACCEPTANCE]
 
 ### 3A — position-aware shape boundary
 
@@ -485,6 +485,9 @@ Implemented:
 Support/occlusion cache policy must remain explicit:
 canonical cached state data is never mutated into a position-specific frame.
 
+Completed R2 matrix:
+`docs/research/CLIENT_RENDER_PARTICLE_MATRIX_1_21_1.md`
+
 ### 3B — static baked models, culling, AO and light
 
 Implemented:
@@ -498,12 +501,15 @@ Implemented:
 - dedicated occlusion cache;
 - grass/mycelium local-UP surface seam handling.
 
-Still required:
-- directional shade/environment-light policy;
-- AO neighbor sampling audit;
-- model random offset vectors as local tangent semantics where applicable;
-- breaking overlay consistency;
-- special models using custom quad direction logic.
+R2 decisions:
+- AO/light adjacency is already driven by transformed PHYSICAL
+  BakedQuad.direction; do not add a second frame rotation;
+- breaking overlay uses the same ModelBlockRenderer.tesselateBlock path;
+- directional shade remains an R6 environment-policy decision;
+- standard OffsetType XZ/XYZ should be authored in canonical local coordinates;
+  arbitrary custom OffsetFunction is a compatibility boundary;
+- special/custom model paths that bypass standard BakedModel remain Phase-10
+  integration work.
 
 ### 3C — block entity / custom renderer frame
 
@@ -524,10 +530,16 @@ Audit renderer families:
 - moving piston;
 - other directional BERs.
 
-Goal:
-find the highest safe renderer-root frame transform so renderers can consume
-canonical-local state/geometry rather than receiving per-renderer coordinate
-hacks.
+R2 decision:
+do NOT globally transform BlockEntityRenderDispatcher.
+
+Use a shared Planet render-frame API selectively:
+- rigid block-local BER family -> root local->world transform is preferred;
+- runtime-direction BER -> classify direction data before transforming;
+- world/camera-space BER -> dedicated policy/adapter only.
+
+This keeps vanilla renderer internals intact while avoiding double-rotation of
+physical hit/camera/world data.
 
 ### 3D — moving/accelerated rendering integration
 
@@ -555,7 +567,7 @@ One batch:
 - ModelData/RenderType compatibility;
 - performance/cache smoke test.
 
-## Phase 4 — particle subsystem [IN PROGRESS, BATCH ACCEPTANCE]
+## Phase 4 — particle subsystem [R2 RESEARCH COMPLETE; IMPLEMENTATION PARTIAL, BATCH ACCEPTANCE]
 
 ### Phase policy
 
@@ -625,15 +637,20 @@ Already manually verified:
 - standing/wall normal+soul torch flame/smoke origins away from exact edges;
 - standing/wall redstone torch visual particle origins away from exact edges.
 
-TerrainParticle accepted architecture:
+TerrainParticle accepted architecture evolved into the audited base-engine
+boundary:
 
-- LocalGravityParticleMoveMixin uses an explicit allowlist;
+- LocalGravityParticleMoveMixin targets the BASE Particle.move method;
+- subclasses overriding move() bypass it naturally and remain explicit custom
+  families;
+- the reusable move algorithm lives in PlanetParticleMoveRuntime behind a
+  Planet-owned access contract;
 - physical AABB/world storage remains vanilla;
 - collision shapes are resolved with PlanetEntityCollision in LOCAL
   Y -> LOCAL X/Z order;
 - stoppedByCollision/onGround/tangent clipping use local axes;
-- private Particle.hasNearBlocks is copied locally rather than accessed through
-  a private @Invoker because runtime mapping proved unstable.
+- version-sensitive vanilla details such as hasNearBlocks are isolated rather
+  than spread through particle subclasses.
 
 Rejected approaches that must not be revived:
 
@@ -645,7 +662,8 @@ Rejected approaches that must not be revived:
 
 - FallingBlock client animateTick emits from local DOWN;
 - FallingDustParticle acceleration and terminal-speed clamp use local DOWN;
-- direct-gravity custom-tick first-pass adapter;
+- shared custom-tick semantic-delta adapter plus dedicated audited custom
+  families;
 - cherry-leaf particle path:
   - local-DOWN emission from CherryLeavesBlock;
   - local support-face test;
@@ -654,8 +672,9 @@ Rejected approaches that must not be revived:
   - local gravity;
   - allowlisted local Particle.move collision;
   - local tangent blocked/removal semantics;
-- accepted TerrainParticle move adapter renamed to LocalGravityParticleMoveMixin
-  and currently allowlists TerrainParticle + CherryParticle.
+- accepted TerrainParticle collision design generalized to the base
+  Particle.move engine boundary; custom move overrides remain separately
+  audited.
 
 Exact-edge torch emitter mismatch remains deferred to the generic
 player/body-vs-canonical BlockState edge policy. Do not special-case torch
