@@ -731,6 +731,33 @@ One batch:
 ## Phase 4 — particle subsystem [R2 RESEARCH COMPLETE; IMPLEMENTATION PARTIAL, BATCH ACCEPTANCE]
 
 
+### 2026-10-08 fourth startup checkpoint — IN-GAME PROBES OBSERVED PASSING
+
+User screenshot after source fixes ending at ba80f72d provides first
+positive in-game evidence that client initialization now reaches an
+active dedicated Planet world and prints the full diagnostics:
+standing/wall 6+24, shape 36+18+6, support 90+90, placement 108,
+frame API 36 local-neighbor checks / 22 deliberately detected raw
+BlockPos.relative mismatches, capabilities 36 local + 36 physical
+pass-through + 36 standard handlers + 1 cache invalidation.
+
+Meaning: the **startup Mixin blocker is no longer observed** in this
+run, and built-in runtime probes report passed. In
+PlanetCompatibilityDiagnostics the raw-relative discrepancy count
+must be nonzero; the 22 is an expected positive diagnostic, not
+22 failed frame transformations.
+
+Gate transition:
+- [OBSERVED PASSING IN USER SCREENSHOT] NeoForge client initialization,
+  Planet world attachment, on-screen built-in probes.
+- [NOT INDEPENDENTLY SHOWN] full post-fix Gradle console transcript;
+  do not invent individual JUnit test pass details.
+- [STILL PENDING GAMEPLAY ACCEPTANCE] full Phase-4 particles across
+  faces/edges/emitters/fluids and foreign mod capabilities integration.
+
+Resume remaining coherent Phase-4 implementation batch and run one
+final subsystem manual matrix, not per-class retests.
+
 ### Latest startup evidence — 2026-10-08 (third user attempt)
 
 User's chained test.ps1/run-client.ps1 reached runClient after the reserved
