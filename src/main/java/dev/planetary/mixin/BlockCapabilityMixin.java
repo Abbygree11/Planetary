@@ -1,6 +1,6 @@
 package dev.planetary.mixin;
 
-import dev.planetary.world.PlanetBlockRuntime;
+import dev.planetary.gravity.PlanetGravityRuntime;
 import dev.planetary.world.PlanetSidedQueryFrame;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -14,16 +14,15 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
- * Adapts Direction-context NeoForge BlockCapabilities to Planet block frames.
+ * Legacy virtual-atlas capability alias bridge only.
  *
- * <p>In the physical Planet world the queried BlockPos remains ordinary world
- * XYZ exactly as NeoForge specifies. Only a non-null physical Direction
- * context is converted to the target block's canonical local BlockState side
- * before provider dispatch. This covers standard item/fluid/energy and custom
- * sided capabilities without knowing the owning mod.</p>
+ * <p>For a physical Planet world, NeoForge gets the exact physical queried
+ * BlockPos and Direction with no hidden rewrite. Providers that intentionally
+ * consume canonical Planet-local sides explicitly opt in via
+ * dev.planetary.api.PlanetCapabilityAdapters at registration time.</p>
  *
- * <p>The older virtual-atlas canonicalization remains only as a legacy
- * fallback while that storage prototype still exists in the codebase.</p>
+ * <p>The old virtual-atlas test/prototype still uses guarded alias routing,
+ * but is never applied to a Level bound to the physical Planet runtime.</p>
  */
 @Mixin(value = BlockCapability.class, remap = false)
 public abstract class BlockCapabilityMixin {
@@ -45,41 +44,11 @@ public abstract class BlockCapabilityMixin {
             return;
         }
 
-        /*
-         * Dedicated Planet worlds use ordinary physical BlockPos storage.
-         * NeoForge's queried pos is therefore authoritative and MUST NOT be
-         * redirected. Only the sided Direction context is reframed into the
-         * target block's canonical local BlockState frame.
-         */
-        var localSide =
-                PlanetBlockRuntime.physicalSideToLocal(
-                        level,
-                        pos,
-                        side
-                );
-        if (localSide.isPresent()) {
-            Direction canonicalSide =
-                    localSide.get();
-
-            if (canonicalSide == side) {
-                return;
-            }
-
-            BlockCapability capability =
-                    (BlockCapability) (Object) this;
-
-            Object result =
-                    PlanetSidedQueryFrame.callWithReentryPermit(
-                            () -> capability.getCapability(
-                                    level,
-                                    pos,
-                                    state,
-                                    blockEntity,
-                                    canonicalSide
-                            )
-                    );
-
-            cir.setReturnValue(result);
+        // Keep NeoForge's original provider dispatch and physical side.
+        // A Level may be bound to Planet even when this particular position
+        // lies outside a debug activation region. Do not activate legacy
+        // alias routing anywhere on such a Level.
+        if (PlanetGravityRuntime.find(level).isPresent()) {
             return;
         }
 
