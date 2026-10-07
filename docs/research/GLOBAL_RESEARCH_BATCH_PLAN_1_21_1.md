@@ -113,7 +113,12 @@ Scope:
 Output:
 complete Phase-5 algorithm map and integration gates with Phase 2/3/4/7.
 
-## Batch R4 — entity/body/interaction/network [NEXT]
+## Batch R4 — entity/body/interaction/network [COMPLETE]
+
+Result:
+`docs/research/ENTITY_BODY_NETWORK_MATRIX_1_21_1.md`
+
+Completion findings are merged into the mechanism map and Phase-7/7B roadmap.
 
 Scope:
 - Entity.move/collision/step/support/fall;
@@ -131,7 +136,7 @@ Scope:
 Output:
 complete Phase-7 + interaction/network half of Phase-7B.
 
-## Batch R5 — AI/navigation + signals/automation/logistics
+## Batch R5 — AI/navigation + signals/automation/logistics [NEXT]
 
 Scope:
 - NodeEvaluator / WalkNodeEvaluator / PathFinder;
