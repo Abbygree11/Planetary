@@ -1,6 +1,7 @@
 package dev.planetary.debug;
 
 import dev.planetary.PlanetaryMod;
+import dev.planetary.api.PlanetCapabilityAdapters;
 import dev.planetary.gravity.PlanetGravityRuntime;
 import dev.planetary.topology.PlanetFace;
 import dev.planetary.topology.PlanetGravityField;
@@ -42,6 +43,17 @@ public final class PlanetCapabilityDiagnostics {
                     Direction.class
             );
 
+    /** Receives the physical queried side without any Planet rewrite. */
+    public static final BlockCapability<Direction, Direction>
+            PHYSICAL_SIDE_ECHO =
+            BlockCapability.createSided(
+                    ResourceLocation.fromNamespaceAndPath(
+                            PlanetaryMod.MOD_ID,
+                            "internal_physical_side_echo"
+                    ),
+                    Direction.class
+            );
+
     private static final ItemStackHandler ITEM_HANDLER =
             new ItemStackHandler(1);
     private static final FluidTank FLUID_HANDLER =
@@ -59,37 +71,50 @@ public final class PlanetCapabilityDiagnostics {
 
         event.registerBlock(
                 SIDE_ECHO,
+                PlanetCapabilityAdapters.canonicalLocalBlock(
+                        (level, pos, state, blockEntity, side) -> side
+                ),
+                Blocks.STONE
+        );
+        event.registerBlock(
+                PHYSICAL_SIDE_ECHO,
                 (level, pos, state, blockEntity, side) -> side,
                 Blocks.STONE
         );
 
         /*
          * Standard NeoForge capability probes are deliberately local-UP-only.
-         * A physical query succeeds only if Planet's generic capability
-         * boundary reframes that physical side to canonical local UP.
+         * A physical query succeeds only because these specific probe
+         * providers explicitly opt into canonical-local interpretation.
          */
         event.registerBlock(
                 Capabilities.ItemHandler.BLOCK,
-                (level, pos, state, blockEntity, side) ->
-                        side == Direction.UP
-                                ? ITEM_HANDLER
-                                : null,
+                PlanetCapabilityAdapters.canonicalLocalBlock(
+                        (level, pos, state, blockEntity, side) ->
+                                side == Direction.UP
+                                        ? ITEM_HANDLER
+                                        : null
+                ),
                 Blocks.STONE
         );
         event.registerBlock(
                 Capabilities.FluidHandler.BLOCK,
-                (level, pos, state, blockEntity, side) ->
-                        side == Direction.UP
-                                ? FLUID_HANDLER
-                                : null,
+                PlanetCapabilityAdapters.canonicalLocalBlock(
+                        (level, pos, state, blockEntity, side) ->
+                                side == Direction.UP
+                                        ? FLUID_HANDLER
+                                        : null
+                ),
                 Blocks.STONE
         );
         event.registerBlock(
                 Capabilities.EnergyStorage.BLOCK,
-                (level, pos, state, blockEntity, side) ->
-                        side == Direction.UP
-                                ? ENERGY_HANDLER
-                                : null,
+                PlanetCapabilityAdapters.canonicalLocalBlock(
+                        (level, pos, state, blockEntity, side) ->
+                                side == Direction.UP
+                                        ? ENERGY_HANDLER
+                                        : null
+                ),
                 Blocks.STONE
         );
     }
@@ -108,6 +133,7 @@ public final class PlanetCapabilityDiagnostics {
                         );
 
         int sideChecks = 0;
+        int physicalSideChecks = 0;
 
         for (PlanetFace face : PlanetFace.values()) {
             BlockPos target =
@@ -157,6 +183,20 @@ public final class PlanetCapabilityDiagnostics {
                 }
 
                 sideChecks++;
+
+                Direction physicalProviderSide = level.getCapability(
+                        PHYSICAL_SIDE_ECHO,
+                        target,
+                        physicalSide
+                );
+                if (physicalProviderSide != physicalSide) {
+                    throw new IllegalStateException(
+                            "Unwrapped physical capability changed at "
+                                    + face + " / " + physicalSide
+                                    + ": got " + physicalProviderSide
+                    );
+                }
+                physicalSideChecks++;
             }
         }
 
@@ -230,6 +270,7 @@ public final class PlanetCapabilityDiagnostics {
 
         return new Result(
                 sideChecks,
+                physicalSideChecks,
                 standardCapabilityChecks,
                 invalidations.get(),
                 cacheExpectedLocal
@@ -353,6 +394,7 @@ public final class PlanetCapabilityDiagnostics {
 
     public record Result(
             int sideChecks,
+            int physicalSideChecks,
             int standardCapabilityChecks,
             int cacheInvalidations,
             Direction cachedProviderSide
