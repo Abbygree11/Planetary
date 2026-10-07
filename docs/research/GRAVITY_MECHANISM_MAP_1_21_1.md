@@ -889,6 +889,48 @@ Keep hit geometry physical, but integrate local fluid topology.
 
 ---
 
+## R4 entity/body/interaction/network research status
+
+R4 COMPLETE.
+
+Concrete Phase-7 / Phase-7B.1-2 matrix:
+`docs/research/ENTITY_BODY_NETWORK_MATRIX_1_21_1.md`
+
+R4 confirmed:
+- Entity position, physical AABB, deltaMovement, Entity.move displacement,
+  packet XYZ, rays/HitResults and externally authored world forces must remain
+  PHYSICAL world-space contracts;
+- local UP/DOWN/tangent, step, onGround, fall distance, jump, climb, buoyancy,
+  body offsets and yaw/pitch semantics belong to a body-local frame;
+- the current partial runtime's LOCAL deltaMovement storage is rejected as the
+  long-term architecture because vanilla network, explosion, leash,
+  ProjectileUtil, Entity.push and mod APIs consume deltaMovement as a physical
+  world vector;
+- accepted player behavior remains desired evidence; the implementation
+  boundary must later migrate to physical velocity plus temporary local
+  projection inside semantic algorithms;
+- existing PlanetEntityCollision is the right generic collision foundation:
+  physical geometry, local-axis solve, physical displacement result;
+- LivingEntity.travel is mostly one local-Y/tangent locomotion family, with
+  explicit physical boundaries for world geometry and external vectors;
+- projectiles split launch/body semantics, physical collision/raycast,
+  class-specific flight and local orientation-from-motion;
+- minecart and boat are dedicated rail/fluid engines, not ordinary Entity
+  subclasses;
+- passenger/seat/leash/sleep attachments are body-local authored offsets while
+  their final positions are physical;
+- dismount is a dedicated local-floor/clearance search;
+- BlockHitResult remains physical across client/server; Phase 2 converts its
+  side only at semantic block-use/placement boundaries;
+- movement/vehicle packet XYZ and teleport relative XYZ are physical, while
+  floating/jump/fall/onGround validation must project displacement into the
+  entity body frame;
+- gravity-face selection includes hysteresis/prediction state, so client/server
+  body-frame agreement needs an explicit synchronization design unless exact
+  deterministic equivalence is proven;
+- NeoForge Entity/Living/Projectile/Vehicle/interaction hooks must stay on the
+  normal runtime paths.
+
 ## 13. Entity mechanics
 
 ## 13.1 Generic Entity.move is the core
