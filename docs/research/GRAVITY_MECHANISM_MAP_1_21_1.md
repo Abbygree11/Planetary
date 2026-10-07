@@ -1392,6 +1392,37 @@ This prevents "test Minecraft one block at a time until the second coming".
 
 ---
 
+## Final R1-R6 cross-mechanism research freeze
+
+Research cross-sweep COMPLETE:
+- docs/research/FINAL_COMPLETENESS_SWEEP_1_21_1.md
+- docs/research/EXTERNAL_COORDINATE_MOD_CASE_STUDIES.md
+
+R1-R6 ownership and shared invariants are the frozen first-pass planning
+architecture. Additional critical implementation risk checks are explicitly
+assigned to the owning phases:
+- Phase 7: migrate current local deltaMovement to the physical world contract
+  already chosen in R4, including external world velocity, packet,
+  passengers, projectile/force transforms and early entity init.
+- Phase 7B.4: real radial sky exposure/source feasibility gate, not an
+  ambient/render-only patch; preserve physical block-light calculations.
+- Phase 8: physical XZ Heightmap preserved and separate PlanetSurfaceQuery;
+  finite Y envelope, radial sea-shell, profile codec/version before terrain.
+- Phase 9: complete StructureStart bbox / refs and rigid portal extent before
+  side effects; no virtual world-wrapper substitute.
+- Phase 10: typed position/direction/normal/AABB/quaternion external
+  integrations, early fallback, unloaded dest, finite bounds and mod-specific
+  API tests, not global primitive transformation.
+- Phase 11: visual smoothing distinct from authoritative entity frame/network.
+
+A core topology graph may need (BlockPos, chart) state; the physical world still
+stores one cell per BlockPos, and physical writes/notifications dedupe when
+appropriate. Cross-phase implementation must reuse the SAME topology kernel.
+
+Batches are dependency-ordered in the final sweep, not necessarily numeric
+Phase 0-11 order. Source-version hook verification remains part of each batch.
+No further global exploratory phase is required before beginning Batch 0.
+
 ## 21. Mandatory rule for future bug reports
 
 When the user reports:
