@@ -818,6 +818,34 @@ Particle work follows the Phase-4 batch plan; no class-by-class user acceptance.
 
 ---
 
+## R3 fluid research status
+
+R3 COMPLETE.
+
+Concrete Phase-5 matrix:
+`docs/research/FLUID_MECHANISM_MATRIX_1_21_1.md`
+
+R3 confirmed:
+- FlowingFluid is one local-topology graph, not isolated DOWN/HORIZONTAL patches;
+- PlanetBlockStep already supplies the required seam-aware edge foundation;
+- semantic local direction and physical edge direction must be carried separately;
+- FlowingFluid slope cache's physical X/Z short key is invalid on rotated faces;
+- FlowingFluid wall-occlusion cache is not frame-complete;
+- FluidState scalar amount stays canonical while height lookup uses local UP and
+  physical shape is position/frame aware;
+- bucket clicked-face placement is physical and should not be rotated;
+- SimpleWaterloggedBlock/LiquidBlockContainer are mostly same-position hooks;
+- NeoForge CreateFluidSourceEvent / FluidType / BaseFlowingFluid must remain in
+  the shared graph path;
+- NeoForge FluidInteractionRegistry also contains world-axis assumptions and is
+  part of Phase 5;
+- bubble columns are a local-UP fluid topology family with entity impulse deferred
+  to Phase 7;
+- entity immersion/current measurement is a Phase-5 geometry + Phase-7 body integration;
+- LiquidBlockRenderer requires a dedicated local fluid-mesh algorithm and cannot
+  be solved by BakedModel/PoseStack rotation;
+- NeoForge fluid sprite/tint/overlay extension points must be preserved.
+
 ## 12. Fluids
 
 Fluids are one coherent algorithm and must remain one phase.
