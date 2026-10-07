@@ -87,16 +87,16 @@ Legend:
 
 | Class/family | Classification | Owner/gate |
 |---|---|---|
-| PortalParticle | CUSTOM trajectory | +world-Y arc is semantic; particle-side adapter required, final portal emitter F9 |
+| PortalParticle | CUSTOM trajectory | local-Y arc implemented; final portal emitter/orientation gate F9 |
 | ReversePortalParticle | FRAME-INDEPENDENT trajectory | straight physical vector; final portal emitter F9 |
-| FlyTowardsPositionParticle | CUSTOM trajectory | explicit -world-Y arc; classify Enchant/Nautilus/Vault providers separately |
+| FlyTowardsPositionParticle | CUSTOM trajectory | local-Y arc implemented; start/vector remain physical source geometry |
 | FlyStraightTowardsParticle | FRAME-INDEPENDENT trajectory | straight start+vector interpolation |
 | PlayerCloudParticle | CUSTOM + F7 | pulls position/velocity toward Player world Y; body-local meaning waits on entity frame policy |
 | TrackingEmitter | EMITTER + F7 | samples entity AABB via getY and adds +0.2 to Y velocity; body-local origin/UP requires Phase 7 integration |
 | ItemPickupParticle | FRAME-INDEPENDENT + F7 | physical interpolation between item/entity positions; no gravity-local axis in class |
 | VibrationSignalParticle | FRAME-INDEPENDENT | follows physical vibration target path |
-| FireworkParticles | nested EMITTER + F7 | explosion geometry mostly physical/isotropic; rocket/trail UP bias and entity velocity require firework/entity audit |
-| ShriekParticle | fixed launch + render orientation | +0.1 local UP implemented; fixed world-X render rotation still requires local-frame render audit |
+| FireworkParticles | nested EMITTER + F7 | Spark base gravity handled by shared engine; explosion/star/burst orientation is authored by Starter/rocket and deferred to entity/rocket frame integration |
+| ShriekParticle | fixed launch + render orientation | +0.1 local UP + local->world render quaternion implemented |
 | AttackSweepParticle | visual | no movement axis semantics in tick |
 | BlockMarker | visual | static physical marker |
 | MobAppearanceParticle | visual | camera/render effect |
@@ -175,13 +175,23 @@ Non-blocked before final batch acceptance:
 3. TrialSpawnerDetectionParticle constructor local vertical bias vs physical
    supplied target velocity.
 4. DustPlume explicit +0.15 local-UP term.
-5. GlowSquid provider-specific vertical/tangent scaling.
-6. PortalParticle local vertical arc.
-7. FlyTowardsPositionParticle local vertical arc, with provider classification.
-8. Shriek render orientation.
-9. campfire and remaining non-fluid emitter-family source sweep.
-10. firework nested emitter classification/adaptation.
-11. generic ParticleUtils axis-helper audit.
-12. weather rows documented as Phase-7B policy gate.
+5. [RECLASSIFIED -> Phase 7] GlowSquid ink provider: source velocity is authored
+   from Squid body orientation; particle class should consume the physical
+   body-produced vector after entity-frame integration.
+6. [IMPLEMENTED] PortalParticle local vertical arc.
+7. [IMPLEMENTED] FlyTowardsPositionParticle local vertical arc.
+8. [IMPLEMENTED] Shriek local-frame render orientation.
+9. [PARTIAL] Campfire emitter implemented; remaining non-fluid emitter-family
+   source sweep is the next Phase-4 batch.
+10. [RECLASSIFIED -> Phase 7 integration] Firework Spark base gravity is already
+    covered by shared Particle.tick. Explosion/star/burst orientation is authored
+    by the Firework Starter/rocket source and must follow the entity/rocket frame
+    decision rather than be guessed inside SparkParticle.
+11. [AUDITED] ParticleUtils is intentionally NOT globally reframed:
+    - spawnParticlesAlongAxis/OnBlockFaces can represent physical block axes;
+    - spawnParticleBelow is semantic only at specific callers (Cherry handled);
+    - spawnSmashAttackParticles is body/ground-owned -> Phase 7;
+    - caller ownership decides adaptation.
+12. [POLICY GATE -> Phase 7B] weather/precipitation rows.
 
 No gameplay acceptance is requested until these non-blocked rows are complete.
