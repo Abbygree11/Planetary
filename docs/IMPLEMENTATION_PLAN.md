@@ -730,6 +730,40 @@ One batch:
 
 ## Phase 4 — particle subsystem [R2 RESEARCH COMPLETE; IMPLEMENTATION PARTIAL, BATCH ACCEPTANCE]
 
+### Phase-4 startup blocker 2026-10-08 — IMPLEMENTED / STARTUP ACCEPTANCE PENDING
+
+User report after previous a9c683f pull:
+- unit tests/compile: BUILD SUCCESSFUL (8 tasks);
+- runClient: FAIL at ParticleEngine.registerProviders during Mixin application;
+- precise failing injection: SemanticTickDeltaParticleMixin
+  planetary$reinterpretTickDeltaBeforeMove; 0/1 successful INVOKEs,
+  scanned 0 target(s) for Particle.move(DDD)V.
+
+Root: Java compiles inherited this.move(DDD) from a concrete subclass tick
+into INVOKEVIRTUAL owner=the concrete subclass, while generic multi-target
+mixin looked for declaring base Particle owner. Six subclasses each have an
+actual tick-owned this.move call. See
+docs/research/PARTICLE_MATRIX_1_21_1.md for evidence and ownership.
+
+Fix now IMPLEMENTED (not yet startup/manual accepted):
+- remove multi-target SemanticTickDeltaParticleMixin;
+- six exact 1.21.1 subclass *TickDeltaMixin adapters, each HEAD capture and
+  pre-move target bound to its concrete INVOKEVIRTUAL owner;
+- shared PlanetSemanticTickDeltaState tracks tick-authored velocity only;
+  preserved physical base velocity, +Y/no-Planet pass-through and RNG;
+- deterministic ASM test checks actual Minecraft bytecode invocation owners
+  plus mixin JSON registration, and fails loudly if hooks drift;
+- Particle.move runtime, TerrainParticle accepted collision, fluid/worldgen,
+  capabilities and all other subsystems not changed by this fix.
+
+Acceptance gate: first test.ps1 must pass (including new bytecode test),
+run-client.ps1 must complete past ParticleEngine init into main menu and
+world; only then resume single Phase-4 gameplay matrix. Do NOT mark PASS
+before user confirms startup. If the bytecode test shows different owner,
+use its reported class/owner to revise only that exact hook.
+
+
+
 ### Phase policy
 
 All particle work is owned by this phase, even when the concrete emitter lives
