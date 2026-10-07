@@ -2038,3 +2038,45 @@ status corrected: R1-R6 + global final + bounded cross-mod review COMPLETE.
 Runtime untouched, no compile or gameplay testing in this audit.
 Next: Batch 0 baseline then P0 provider contract + Phase-1 context kernel
 in one coherent implementation batch; no broad compatibility claim yet.
+
+
+## 2026-10-08 P0 capability-provider context implementation — acceptance PENDING
+
+Implementation on 2.0, not yet built or manually accepted:
+- BlockCapabilityMixin no longer blindly changes Direction for any
+  NeoForge BlockCapability on a physical PlanetGravityRuntime-bound Level.
+  It retains the separate guarded legacy virtual-atlas alias branch.
+- Public PlanetCapabilityAdapters.canonicalLocalBlock and
+  canonicalLocalBlockEntity wrap individual providers at registration.
+  Unknown/unwrapped mod providers continue to receive PHYSICAL Direction.
+  Null, non-Planet world, unattached BE and cache contexts remain unchanged.
+- PlanetCapabilityDiagnostics now wraps its intentionally canonical-LOCAL
+  stone echo and item/fluid/energy probe providers, and adds an independent
+  PHYSICAL_SIDE_ECHO on the SAME STONE block. Both are checked for every
+  gravity face/direction; prior cache invalidation acceptance path retained.
+- PlanetCoordinateContext explicitly distinguishes physical Level/BlockPos
+  from foreign space; PlanetFrameApi's new context overloads reject foreign
+  positions unless a future integration resolves them. Other existing Level
+  overloads still require callers to pass genuine physical coordinates.
+- Added PlanetCapabilityAdaptersTest and PlanetCoordinateContextTest to
+  check local/physical coexistence, six faces, corner, null, unattached BE,
+  non-Planet fallback and fail-closed virtual coordinates.
+
+Root-cause/source note:
+  docs/research/CAPABILITY_PROVIDER_CONTEXT_1_21_1.md
+NeoForge 1.21.1 BlockCapability.getCapability enumerates providers per Block
+and passes original context; exact RegisterCapabilitiesEvent can wrap a
+specific provider. This is safer than the review's initial idea of a global
+(capability, Block) semantic policy/registry, which would also touch other
+providers for that same pair. The resolved chosen design is PER PROVIDER.
+
+Last accepted runtime before patch: old Planet capability-local diagnostic
+(36 sided echo, local-UP standard handlers, cache invalidation) on STONE.
+DO NOT mark new behavior PASS until a user build and runtime probes; no
+third-party Mekanism, AE2, Create acceptance performed. If normal vanilla
+machine IO regresses after physical-default conversion, investigate specific
+receiving family/provider; do not restore blanket side transformation.
+
+Needed next: user git pull && .\\test.ps1 && .\\run-client.ps1,
+login diagnostic chat and single capability subsystem manual matrix.
+No build or client run has been executed by the assistant this turn.
