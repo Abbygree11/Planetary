@@ -965,6 +965,47 @@ Exact-edge torch emitter mismatch remains deferred to the generic
 player/body-vs-canonical BlockState edge policy. Do not special-case torch
 geometry.
 
+New coherent block-local emitter batch (2026-10-08)
+[IMPLEMENTED / BUILD AND GAMEPLAY ACCEPTANCE PENDING]:
+
+- `BlockLocalParticleEmitterGravityMixin` handles seven concrete vanilla
+  block animateTick sources through the same `Level.addParticle`
+  `@ModifyArgs` boundary: Furnace, BlastFurnace, Smoker, BrewingStand,
+  EndRod, RespawnAnchor and EnderChest.
+- The sampled source positions are reinterpreted as canonical local
+  offsets from the physical block center; no vanilla RNG or
+  particle-count changes; sound emissions stay with vanilla.
+- RespawnAnchor and EnderChest source-authored vertical/tangent
+  velocities rotate as local vectors; EndRod Gaussian (isotropic)
+  speed remains physical; other emitters use unchanged zero speed.
+- `PlanetBlockLocalEmitterBatchTest` covers seven representative
+  position samples and local velocity on all six faces.
+- `BlockLocalParticleEmitterInvocationTest` validates the exact
+  Minecraft class-file `animateTick` calls, compiled seven-class
+  Mixin targets, `@ModifyArgs` anchor and JSON registration; no
+  softening `defaultRequire=1`.
+- Source classification and deferred ownership documented in
+  `docs/research/BLOCK_LOCAL_PARTICLE_EMITTERS_1_21_1.md`.
+
+Still open in Phase 4 or its integration gates:
+- AbstractCandleBlock/CandleBlock/CandleCakeBlock emitters: vanilla
+  candle offset lambda and extinguish path require a separate safe
+  family adapter, not a false `CandleBlock.animateTick` injection;
+- EnchantingTable bookshelf-target path: Phase 1/2 local neighbor
+  contract prerequisite;
+- SporeBlossom airborne distribution: position/candidate block
+  topology must rotate together;
+- NetherPortal emitter orientation: Phase 9 portal plane;
+- Phase 5 fluid-owned, Phase 7 body-owned, Phase 7B weather-owned
+  source integration as already specified.
+
+**No new individual block-emitter gameplay test requested.** Finish
+non-blocked source families, then use one Phase-4 acceptance matrix.
+If Gradle class-file contract tests or client startup fail, stop and
+correct that shared integration boundary before expanding this family.
+
+
+
 ### 4.3 Full source audit before any more manual testing
 
 Audit every vanilla 1.21.1 particle class and every vanilla emitter/helper that
