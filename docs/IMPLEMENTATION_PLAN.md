@@ -730,6 +730,45 @@ One batch:
 
 ## Phase 4 — particle subsystem [R2 RESEARCH COMPLETE; IMPLEMENTATION PARTIAL, BATCH ACCEPTANCE]
 
+
+### Latest startup evidence — 2026-10-08 (third user attempt)
+
+User's chained test.ps1/run-client.ps1 reached runClient after the reserved
+Mixin-package relocation, implying the preceding test process exited
+successfully. Client still crashed at ParticleEngine.registerProviders:114:
+`WaterCurrentDownParticleGravityMixin.planetary$rotateCurrentSpiral`
+had 0/1 matching `@At(INVOKE)` calls when targeting
+`Particle.move(DDD)V`.
+
+Root cause belongs to the Phase-4 mixin integration boundary: inherited
+method call owners. Source shows `WaterCurrentDownParticle.tick` and
+`DragonBreathParticle.tick` both call `this.move`, which encodes the
+subclass as the JVM invocation owner. Independent `ShriekParticle.render`
+calls inherited `renderRotatedQuad` twice via its subclass name; the
+existing `@ModifyArg` incorrectly targeted `SingleQuadParticle`.
+
+This bounded corrective batch:
+- [IMPLEMENTED / STARTUP PENDING] retarget WaterCurrentDown and DragonBreath
+  tick injected method INVOKEs to their concrete subclass owners;
+- [IMPLEMENTED / STARTUP PENDING] retarget Shriek render `@ModifyArg` to
+  two Shriek-owned `renderRotatedQuad` calls;
+- [IMPLEMENTED / TEST PENDING] extend `ParticleTickInvocationTargetTest`
+  to all eight subclass tick owners and compiled `@At` annotation targets;
+- [IMPLEMENTED / TEST PENDING] add `ParticleRenderInvocationTargetTest`
+  for both Shriek calls and exact `@ModifyArg` annotation;
+- [DOCUMENTED] source/callsite research in
+  `docs/research/PARTICLE_MIXIN_INVOKE_ANCHORS_1_21_1.md`;
+- [UNCHANGED] particle world motion math, accepted Terrain collision, fluids,
+  RNG/emitters, capability-provider and topology implementation.
+
+Acceptance gate remains a SINGLE combined build+client smoke checkpoint:
+`git pull && .\\test.ps1 && .\\run-client.ps1`.
+First verify all bytecode + pure tests, then main menu and Planet login.
+No Phase-4 batch gameplay PASS or capability provider runtime acceptance
+until that succeeds.
+
+
+
 ### Follow-up 2026-10-08: JUnit test loader failure — FIX IMPLEMENTED / PENDING RECHECK
 
 User's second log after 0ce172f:
