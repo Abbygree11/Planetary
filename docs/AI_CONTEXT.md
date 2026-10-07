@@ -1626,3 +1626,51 @@ not considered manually accepted merely because it is implemented.
 
 AGENTS.md and IMPLEMENTATION_PLAN.md now enforce the research/implementation
 separation.
+
+
+## 2026-10-07 R1 block/world semantic topology research COMPLETE
+Global research batch R1 is complete. No runtime code was changed during R1.
+
+New canonical Phase-2 family matrix:
+    docs/research/BLOCK_WORLD_TOPOLOGY_MATRIX_1_21_1.md
+
+Source audit covered:
+- placement/context families;
+- Directional/HorizontalDirectional/RotatedPillar;
+- FaceAttached + standing/wall + hanging support;
+- physical NeighborUpdater boundary;
+- DoublePlant/door/bed/chest pair topology;
+- CrossCollision/Wall/Multiface/Vine graphs;
+- Bush/GrowingPlant/cactus/sugar-cane/bamboo/scaffolding growth;
+- BaseRailBlock/RailState;
+- FallingBlock/Brushable/support-trigger behavior;
+- SimpleWaterloggedBlock hooks.
+
+Important accepted research conclusions:
+1. NeighborUpdater six-neighbor fan-out stays PHYSICAL.
+2. A canonical local Direction cannot be passed directly to
+   BlockPos.relative; semantic direction and physical step are separate.
+3. HorizontalDirectionalBlock is only shared orientation vocabulary; behavior
+   must be grouped by real algorithm families.
+4. FaceAttachedHorizontalDirectionalBlock, DoublePlantBlock,
+   GrowingPlantBlock and selected other roots are strong family boundaries.
+5. WallBlock is a distinct tangent + local-UP-post algorithm.
+6. MultifaceBlock is an all-six-face attachment graph, distinct from
+   four-tangent connection graphs.
+7. Scaffolding is a local support + tangent distance-propagation graph.
+8. RailState is a dedicated graph engine. In addition to above/below and
+   horizontal assumptions, hasConnection compares physical X/Z and ignores Y;
+   this is invalid on rotated faces. Phase 2F therefore needs a Planet-owned
+   local/traversal rail graph, not a sequence of RailBlock patches.
+9. SimpleWaterloggedBlock default operations are mostly same-position scheduling
+   and remain reachable; fluid topology itself stays Phase 5.
+10. Vanilla build-height is a physical world constraint. Compute the semantic
+    target first, then validate the resulting physical position.
+
+Phase-2 deterministic and single batch runtime acceptance matrices are now
+defined.
+
+Global research advances to R2:
+client geometry/render/particles.
+
+Existing runtime remains frozen at the pre-research partial Phase-4 checkpoint.
