@@ -1005,6 +1005,42 @@ These are dependency-heavy subphases, not ordinary Entity subclasses.
 
 ---
 
+## R5 AI/navigation/automation research status
+
+R5 COMPLETE.
+
+Concrete Phase-6/Phase-7A matrix:
+`docs/research/AI_AUTOMATION_MATRIX_1_21_1.md`
+
+R5 confirmed:
+- ground-navigation graph identity must include traversal chart/face in addition
+  to physical BlockPos; vanilla Node/NodeEvaluator xyz-only identity is
+  insufficient at seams;
+- vanilla PathFinder A* can likely remain while Planet owns chart-aware node
+  cache, neighbor graph and path metadata;
+- the current edge waypoint overshoot and ordinal MoveControl redirects are
+  experimental symptom workarounds, not the long-term architecture;
+- WalkNodeEvaluator floor/step/drop/body-volume/diagonal logic is one local
+  ground-graph family;
+- RandomPos and MoveToBlockGoal are shared target-generation families with
+  local tangent/local vertical semantics;
+- NeoForge block/fluid PathType hooks must remain reachable on physical cells;
+- generic SignalGetter physical six-neighbor enumeration remains physical while
+  Direction-sensitive source-state queries are reframed into the source
+  canonical state frame;
+- redstone wire, diode/comparator, tripwire, powered rail and piston are distinct
+  graph families built on shared signal/topology primitives;
+- powered rail must consume the Phase-2 rail graph rather than maintain a second
+  RailShape traversal;
+- piston push traversal needs a Planet-owned transported graph and introduces a
+  generic block-state transport requirement for oriented states moved across a
+  gravity seam;
+- hopper/dropper/crafter need upstream topology-aware target selection before
+  vanilla/NeoForge sided container/capability queries;
+- dispenser item launch contains an independent local-UP launch term;
+- Crafter/Jigsaw reveal a concrete FrontAndTop canonical-orientation family
+  that supplements R1 Phase 2A.
+
 ## 14. Navigation and AI
 
 Ground navigation combines:
