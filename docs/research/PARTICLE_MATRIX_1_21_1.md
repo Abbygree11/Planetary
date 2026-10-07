@@ -31,7 +31,7 @@ Legend:
 | Particle.tick onGround XZ friction | ParticleGravityMixin + local post correction | implemented |
 | base Particle.move collision ordering | LocalGravityParticleMoveMixin -> PlanetParticleMoveRuntime | implemented; generalized from accepted Terrain fix |
 | local stoppedByCollision/onGround/tangent clipping | PlanetParticleCollisionResponse | implemented |
-| custom tick additive semantic delta before move | SemanticTickDeltaParticleMixin | implemented for audited allowlist |
+| custom tick additive semantic delta before move | six concrete *TickDeltaMixin bridges -> PlanetSemanticTickDeltaState | implemented for audited allowlist; client-startup acceptance PENDING after mismatched INVOKE fix |
 | component-wise world-axis damping -> local axes | PlanetParticleMotion.remapComponentScales | implemented |
 | fixed subclass world-Y launch term | FixedVerticalLaunchParticleMixin/helper | implemented for audited allowlist |
 | block-local emitter coordinates | PlanetParticleEmitter | implemented foundation |
@@ -195,3 +195,39 @@ Non-blocked before final batch acceptance:
 12. [POLICY GATE -> Phase 7B] weather/precipitation rows.
 
 No gameplay acceptance is requested until these non-blocked rows are complete.
+
+
+## Mixin 1.21.1 startup regression (2026-10-08) — FIX IMPLEMENTED / ACCEPTANCE PENDING
+
+User supplied build/launch log at 2.0 HEAD a9c683f: Gradle 8.12
+unit build SUCCESS, but runClient crashed while initializing
+ParticleEngine.registerProviders with MixinTransformerError.
+Root cause in its nested InjectionError:
+SemanticTickDeltaParticleMixin.planetary$reinterpretTickDeltaBeforeMove,
+@At(INVOKE Particle.move(DDD)V) matched 0 target invokes, required 1.
+This is Phase 4, NOT an error in newly added capability providers.
+
+Direct 1.21.1 subclass source (OptiFine source comparison, do not mistake
+for exact NeoForge runtime bytecode) shows every audited custom tick calls
+this.move(xd, yd, zd) in these six classes: DripParticle, WaterDropParticle,
+BubblePopParticle, WakeParticle, CampfireSmokeParticle, BubbleParticle.
+Java bytecode INVOKEVIRTUAL uses the concrete tick class as symbolic owner
+for inherited this.move(...) rather than declaring base Particle owner;
+a controlled javap check reproduced this compiler behavior. The old
+multi-target @At targeted the wrong method owner for those call sites.
+
+Architecture fix: replace one invalid multi-target injector with six narrow
+Mixins targeting concrete class-owned INVOKE signatures. Reuse one bounded,
+per-instance PlanetSemanticTickDeltaState that records physical velocity at
+tick HEAD and converts only subclass-added local semantic delta before move.
+Do NOT change the base Particle.move collision engine, superclass tick,
+custom render/emitter classes, or vanilla RNG/age/remove control flow.
+No require=0 or silent injection skip: defaultRequire=1 preserved.
+
+New bytecode-contract test ParticleTickInvocationTargetTest reads Minecraft
+1.21.1 classes with ASM: every tick invokes one concrete owner move(DDD)V,
+all six mixins are registered, obsolete mixin is absent.
+New runtime code/unit test has NOT been executed by assistant; user must
+run test.ps1 and run-client.ps1 and report startup before gameplay checks.
+Prior accepted TerrainParticle and CherryLeaf behavior stays reference,
+not newly marked PASS by this patch.
