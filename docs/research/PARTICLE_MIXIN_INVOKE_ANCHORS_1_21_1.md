@@ -1,6 +1,6 @@
 # Particle Mixin call-site owner contracts — 1.21.1 / NeoForge 21.1.215
 
-Status: source-researched and code-adjusted; **client startup / gameplay acceptance PENDING**.
+Status: source-researched and code-adjusted; **client startup and in-world probes observed passing 2026-10-08; Phase-4 particle gameplay acceptance PENDING**.
 
 ## Incident chronology
 
@@ -94,3 +94,22 @@ particle methods. Do not generalize or rewrite those without evidence.
    particle emitter/constructor cases are implemented.
 
 No local Gradle build, launch or manual gameplay was run by the assistant.
+
+
+## 2026-10-08 fourth checkpoint: evidence after corrected owners
+
+User-provided Minecraft screenshot shows an active dedicated Planet world
+and messages: gravity attached; standing/wall, shape, support, placement,
+Frame API, and new local-vs-physical capability diagnostic probes all
+report `passed`. The client therefore got past ParticleEngine
+initialization and the previously failing Mixin startup path.
+
+The `22 raw BlockPos.relative mismatches detected` are expected:
+`PlanetCompatibilityDiagnostics` intentionally requires a nonzero
+difference to demonstrate that raw physical neighbors differ from
+local-frame neighbors.
+
+Scope of evidence: positive client-world runtime smoke; no per-particle
+visual/behavior acceptances and no complete Gradle test console log
+supplied for this attempt. Continue to keep the full Phase-4 particle
+batch gameplay matrix and cross-mod acceptance pending.
