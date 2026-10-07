@@ -462,3 +462,16 @@ These belong to Phase 7B/8/9/10 design gates, not a reason for runtime hacks.
 - Phase 9: complete bbox policy + processors + rigid portal rectangles.
 - Phase 10: standard extensions, mod opt-in interfaces, formats/performance.
 - Final global completeness sweep is NEXT. Do not implement R6 runtime yet.
+
+
+## 12. Final global research closure
+
+The final completeness sweep is now complete:
+docs/research/FINAL_COMPLETENESS_SWEEP_1_21_1.md
+and its external-mod evidence appendix:
+docs/research/EXTERNAL_COORDINATE_MOD_CASE_STUDIES.md
+
+The earlier Phase handoff in section 11 was written at R6 completion.
+It no longer means another pending research batch: begin implementation
+Batch 0 only after reviewing the sweep, baseline and explicit product
+gates. Runtime remains unchanged and worldgen acceptance is still pending.
