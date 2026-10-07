@@ -266,6 +266,30 @@ mechanism ownership rather than named-block ownership.
 
 ---
 
+## R1 block/world topology research status
+
+R1 COMPLETE.
+
+Concrete Phase-2 family matrix:
+`docs/research/BLOCK_WORLD_TOPOLOGY_MATRIX_1_21_1.md`
+
+R1 confirmed:
+- physical NeighborUpdater fan-out remains physical;
+- HorizontalDirectionalBlock is property vocabulary, not one behavior family;
+- FaceAttachedHorizontalDirectionalBlock is a strong base-family boundary;
+- DoublePlantBlock is a strong local-vertical pair boundary;
+- MultifaceBlock is a six-face attachment family, distinct from four-tangent
+  CrossCollision graphs;
+- WallBlock is its own tangent + local-UP-post algorithm;
+- GrowingPlantBlock is a strong direction-owned growth family;
+- Scaffolding is a local-DOWN + tangent distance graph;
+- BaseRailBlock + RailState form a dedicated block-topology graph;
+- RailState's physical X/Z identity assumptions require a Planet-owned
+  local/traversal graph, not simple above/below replacement;
+- SimpleWaterloggedBlock default hooks are mostly frame-independent scheduling;
+- build-height remains a physical-world constraint applied after a semantic
+  target position is resolved.
+
 ## 5. Block semantic mechanisms
 
 ## 5.1 Placement input is one shared boundary
