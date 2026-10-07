@@ -723,6 +723,34 @@ Do not fix piston placement and call pistons complete.
 
 ---
 
+## R2 client geometry/render/particle research status
+
+R2 COMPLETE.
+
+Concrete Phase-3/Phase-4 matrix:
+`docs/research/CLIENT_RENDER_PARTICLE_MATRIX_1_21_1.md`
+
+R2 confirmed:
+- physical outer shape queries and canonical support/occlusion state are
+  different boundaries;
+- transformed physical BakedQuad.direction is sufficient to drive vanilla
+  AO/light adjacency; AO must NOT be rotated a second time;
+- breaking overlay uses the same ModelBlockRenderer pipeline;
+- directional world shade is an environment-policy question, not a geometry
+  transform;
+- standard OffsetType XZ/XYZ should be authored/seeded in canonical local
+  coordinates, while arbitrary custom OffsetFunction remains a compatibility
+  boundary;
+- BlockEntityRenderers split into rigid block-local, runtime-direction and
+  world/camera-space families; a global dispatcher transform is unsafe;
+- moving block render and entity render semantics have different owners;
+- Particle base engine and emitter/source semantics are independent;
+- ParticleUtils is caller-semantic and must not be globally reframed;
+- entity/fluid/weather/portal emitter source geometry is an explicit
+  integration gate of the owning phase;
+- custom/accelerated render engines that bypass ModelBlockRenderer require
+  explicit Phase-10 integration rather than raw-vertex interception.
+
 ## 10. Shapes and rendering
 
 ### 10.1 Position-aware block shapes
