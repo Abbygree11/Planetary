@@ -2005,3 +2005,36 @@ docs/IMPLEMENTATION_PLAN.md and FINAL_COMPLETENESS_SWEEP_1_21_1.md.
 NO runtime changes, code build, Minecraft client launch or gameplay acceptance
 during external research/final sweep. Next action is Batch 0 baseline/gates,
 then Phase-1 foundation and dependency-ordered coherent subsystem work.
+
+
+## 2026-10-08 Ultimate third-party compatibility review COMPLETE
+
+Docs-only research: docs/research/ULTIMATE_CROSS_MOD_COMPATIBILITY_REVIEW_1_21_1.md.
+Compared Planet 2.0 code to NeoForge 1.21.1 capability docs and upstream
+Create 1.21.1 kinetic + virtual contraption, AE2 grid/API, Mekanism side
+port/network lifecycle, WorldEdit clipboard, TerraBlender and Distant
+Horizons API concepts. Exact third-party version runtime NOT tested.
+
+NEW P0 CONTRACT RISK: current BlockCapabilityMixin maps EVERY physical
+Direction query to target canonical LOCAL side. Previous stone diagnostics
+intentionally authored LOCAL-aware providers; they do NOT prove all real
+modded providers are safe. Mekanism indexes its own physical side ports
+by Direction.ordinal; AE2 exposes in-world Direction keyed connections.
+Target semantics: unknown external provider PHYSICAL by default; LOCAL
+only declared by receiver provider/Block/BE capability policy. This is
+research-confirmed INTEROPERABILITY RISK, not reproduced live bug, and
+accepted runtime must be preserved while migrating with explicit tests.
+
+NEW P0 FOUNDATION: distinguish actual physical Level/BlockPos from Create
+virtual ContraptionWorld, WorldEdit clipboards, AE2 virtual nodes,
+generation samples, render frame. Connection geometry must carry source
+and target physical/local ports plus signed axial/handedness information;
+Create must still own its kinetic network, AE2 its grid, Mekanism its
+transmitter network. BlockState orientation transport is not enough for
+BlockEntity persisted side config, NBT and attach/detach/load/unload.
+
+Implementation Plan updated with compatibility gate, and stale research
+status corrected: R1-R6 + global final + bounded cross-mod review COMPLETE.
+Runtime untouched, no compile or gameplay testing in this audit.
+Next: Batch 0 baseline then P0 provider contract + Phase-1 context kernel
+in one coherent implementation batch; no broad compatibility claim yet.
