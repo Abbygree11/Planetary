@@ -730,6 +730,30 @@ One batch:
 
 ## Phase 4 — particle subsystem [R2 RESEARCH COMPLETE; IMPLEMENTATION PARTIAL, BATCH ACCEPTANCE]
 
+### Follow-up 2026-10-08: JUnit test loader failure — FIX IMPLEMENTED / PENDING RECHECK
+
+User's second log after 0ce172f:
+- compileTestJava: completed;
+- task :test: FAILED while trying to load
+  dev.planetary.mixin.ParticleTickInvocationTargetTest;
+- exact root cause: Mixin IllegalClassLoadError, because
+  dev.planetary.mixin.* is reserved by planetary.mixins.json.
+  No ASM assertion ran; no evidence yet that the actual Java move
+  invocation targets are correct or incorrect.
+
+Phase-4 corrective checkpoint:
+- move ParticleTickInvocationTargetTest from reserved mixin package to
+  dev.planetary.gravity;
+- ALSO move PlanetSemanticTickDeltaState runtime helper from reserved mixin
+  package to dev.planetary.gravity; use PlanetParticleMoveAccess boundary;
+- six hook Mixins import the same shared implementation; no tick math
+  or hook descriptors changed;
+- enforce reserved package rule in AGENTS.md.
+
+Current gate: new Gradle :test result and client startup are still PENDING.
+Do not treat last failed :test as a runtime/gameplay failure, and do not
+treat successful compileTestJava as enough evidence of startup correctness.
+
 ### Phase-4 startup blocker 2026-10-08 — IMPLEMENTED / STARTUP ACCEPTANCE PENDING
 
 User report after previous a9c683f pull:
