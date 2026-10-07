@@ -164,6 +164,27 @@ be referenced directly` before executing even one JUnit method. A runtime
 helper in the same reserved namespace can fail later while applying Mixins.
 Check both `src/main` and `src/test` before committing new helpers/tests.
 
+### Bytecode-verified Mixin INVOKE sites
+
+For every `@At(value = "INVOKE", target = "...")` or
+`@ModifyArg(s)`/redirect that hooks a potentially inherited method,
+**verify the actual JVM call-site owner in the exact target-version
+bytecode**, not the class declaring the invoked method.
+`this.inheritedMethod(...)` generally emits a concrete
+subclass-owned `INVOKEVIRTUAL`, while `super.method(...)` emits
+`INVOKESPECIAL`. The owner and descriptor are both part of the
+Mixin matching contract.
+
+When introducing or repairing such an anchor, add an ASM test that
+reads target-class bytecode AND compiled Mixin annotations to check
+the exact owner, signature and expected call count. Tests live outside
+the reserved Mixin package and must not load mixin classes via
+reflection. If a Mixin fails to apply during client startup, audit
+other shared-family inherited INVOKE hooks before requesting another
+round of user startup tests. Never use `require = 0` just to conceal
+a mismatch.
+
+
 ## 3C. Separate discovery/research batches from implementation batches
 
 Canonical global audit plan:
