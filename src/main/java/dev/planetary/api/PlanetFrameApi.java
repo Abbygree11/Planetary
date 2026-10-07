@@ -25,6 +25,36 @@ public final class PlanetFrameApi {
     private PlanetFrameApi() {
     }
 
+    /**
+     * Explicit-space overload for integrations. Foreign/virtual coordinates
+     * are not silently interpreted as physical Minecraft positions.
+     */
+    public static Optional<PlanetFace> canonicalBlockFace(
+            PlanetCoordinateContext context
+    ) {
+        Objects.requireNonNull(context, "context");
+        if (context instanceof PlanetCoordinateContext.PhysicalBlock physical) {
+            return canonicalBlockFace(physical.level(), physical.pos());
+        }
+        return Optional.empty();
+    }
+
+    public static Optional<BlockNeighbor> localNeighbor(
+            PlanetCoordinateContext context,
+            Direction sourceLocalDirection
+    ) {
+        Objects.requireNonNull(context, "context");
+        Objects.requireNonNull(sourceLocalDirection, "sourceLocalDirection");
+        if (context instanceof PlanetCoordinateContext.PhysicalBlock physical) {
+            return localNeighbor(
+                    physical.level(),
+                    physical.pos(),
+                    sourceLocalDirection
+            );
+        }
+        return Optional.empty();
+    }
+
     public static Optional<PlanetFace> canonicalBlockFace(
             Level level,
             BlockPos pos
