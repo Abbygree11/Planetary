@@ -42,6 +42,46 @@ public final class PlanetParticleMotion {
         );
     }
 
+    /**
+     * Moves a world-Y position term already applied by vanilla into local Y.
+     *
+     * <p>This is position math, not velocity math. The untouched part of the
+     * trajectory remains in physical world coordinates.</p>
+     */
+    public static Vec3 rotateAddedWorldYPositionTermToLocalY(
+            Vec3 vanillaWorldPosition,
+            PlanetGravityFrame frame,
+            double vanillaWorldYTerm
+    ) {
+        Objects.requireNonNull(
+                vanillaWorldPosition,
+                "vanillaWorldPosition"
+        );
+        Objects.requireNonNull(frame, "frame");
+
+        Vec3 withoutTerm =
+                vanillaWorldPosition.subtract(
+                        0.0D,
+                        vanillaWorldYTerm,
+                        0.0D
+                );
+
+        PlanetFrameVector worldTerm =
+                frame.localToWorld(
+                        new PlanetFrameVector(
+                                0.0D,
+                                vanillaWorldYTerm,
+                                0.0D
+                        )
+                );
+
+        return withoutTerm.add(
+                worldTerm.x(),
+                worldTerm.y(),
+                worldTerm.z()
+        );
+    }
+
     public static Vec3 rotateAddedWorldYTermToLocalY(
             Vec3 currentVelocity,
             PlanetGravityFrame frame,
