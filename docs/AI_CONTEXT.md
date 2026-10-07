@@ -1727,3 +1727,46 @@ now defined.
 
 Global research advances to R3: fluids.
 Existing runtime remains frozen.
+
+
+## 2026-10-07 R3 fluid research COMPLETE
+Global research batch R3 is complete. No runtime code was changed during R3.
+
+New canonical matrix:
+    docs/research/FLUID_MECHANISM_MATRIX_1_21_1.md
+
+Exact target sources included vanilla 1.21.1 and NeoForge branch 1.21.1.
+
+Important findings:
+1. FlowingFluid is one topology graph. PlanetBlockStep already supplies the
+   required seam-aware edge foundation.
+2. Semantic local direction and physical edge direction must be separate.
+   Fluid subclass logic such as Direction.DOWN uses semantic local direction;
+   wall collision uses physical direction.
+3. FlowingFluid.getCacheKey uses only physical delta X/Z and is invalid for
+   rotated/seam slope traversal.
+4. FlowingFluid OCCLUSION_CACHE state-pair+Direction key is not frame-complete
+   once collision shapes are position/frame dependent.
+5. NeoForge source creation must preserve CreateFluidSourceEvent and
+   FluidType.canConvertToSource.
+6. NeoForge BaseFlowingFluid inherits FlowingFluid and is the primary mod-fluid
+   compatibility win if the shared graph boundary is adapted correctly.
+7. FluidInteractionRegistry has its own world-axis enumeration and built-in
+   basalt currentPos.below() assumption; registry integration belongs to Phase 5.
+8. Bucket click direction is physical interaction geometry and should remain
+   physical.
+9. SimpleWaterloggedBlock/LiquidBlockContainer are mostly same-position hooks.
+10. BubbleColumnBlock is a local-UP/local-DOWN fluid topology family; entity
+    velocity impulse is Phase-7 integration.
+11. Pointed-dripstone chain topology remains Phase 2, while fluid-above/root and
+    cauldron drip source lookup integrate in Phase 5.
+12. FluidState.getFlow should remain a PHYSICAL world vector.
+13. NeoForge entity fluid-contact measurement is still world-Y despite FluidType
+    generalization; local immersion/body response belongs to Phase 7.
+14. LiquidBlockRenderer is a standalone world-Y/XZ mesh generator, so Phase 5C
+    needs a dedicated local fluid mesh algorithm.
+15. Preserve NeoForge fluid sprites/tint/overlay/hide-adjacent hooks; custom
+    extension semantics must be re-audited per newer NeoForge port.
+
+Global research advances to R4: entity/body/interaction/network.
+Runtime remains frozen.
