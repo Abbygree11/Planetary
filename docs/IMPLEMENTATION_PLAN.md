@@ -96,8 +96,8 @@ Research batches:
 - R1 block/world semantic topology — COMPLETE;
 - R2 client geometry/render/particles — COMPLETE;
 - R3 fluids — COMPLETE;
-- R4 entity/body/interaction/network — NEXT;
-- R5 AI/navigation + signals/automation/logistics;
+- R4 entity/body/interaction/network — COMPLETE;
+- R5 AI/navigation + signals/automation/logistics — NEXT;
 - R6 environment/worldgen/structures/compatibility;
 - final completeness sweep.
 
@@ -909,9 +909,28 @@ Separate gates:
 - controlled many-mob path-search performance;
 - maxVisitedNodes/no search explosion.
 
-## Phase 7 — entity physics, locomotion and vehicles [PLANNED, BATCH ACCEPTANCE]
+## Phase 7 — entity physics, locomotion and vehicles [R4 RESEARCH COMPLETE; PLANNED IMPLEMENTATION, BATCH ACCEPTANCE]
+
+Completed R4 matrix:
+`docs/research/ENTITY_BODY_NETWORK_MATRIX_1_21_1.md`
 
 A correct player walking baseline does not close this phase.
+
+R4 architecture invariant:
+- `Entity.position`, physical AABB, `deltaMovement`, `Entity.move`
+  displacement and external world forces remain PHYSICAL world-space;
+- local vertical/tangent semantics are temporary projections inside Planet
+  body/locomotion/collision algorithms.
+
+Migration requirement before broad Phase-7 expansion:
+the current partial runtime stores `deltaMovement` in local coordinates while
+inside a Planet field. R4 rejects that as the long-term boundary because
+vanilla/NeoForge networking, explosion, leash, ProjectileUtil, Entity.push and
+third-party entities consume it as physical XYZ.
+
+This does NOT revoke manually accepted player movement/camera/fall behavior.
+Those behaviors remain the target; only the internal storage/adaptation
+boundary must be replaced.
 
 ### 7.1 — generic entity/body collision core
 
@@ -927,9 +946,14 @@ Owns:
 
 Physical world AABB/collision geometry stays physical.
 
+Existing `PlanetEntityCollision` is retained as the generic collision
+foundation: physical colliders/AABB, local-axis solve, physical displacement
+result.
+
 Existing accepted foundations include player local movement/camera baseline,
-packet fall-damage adaptation and several falling-entity fixes, but the generic
-entity audit remains incomplete.
+packet fall-damage adaptation and several falling-entity fixes. R4 research is
+complete, but implementation remains partial and must first migrate away from
+local `deltaMovement` storage.
 
 ### 7.2 — living locomotion
 
@@ -1092,14 +1116,19 @@ Do not call pistons complete from correct FACING alone.
 - Create-like directional machine/pipe stress test;
 - no duplicate neighbor-update storms.
 
-## Phase 7B — interaction, networking, spawn and environment policy [PLANNED, BATCH ACCEPTANCE]
+## Phase 7B — interaction, networking, spawn and environment policy [R4 RESEARCH COMPLETE FOR 7B.1-2; R6 PENDING FOR 7B.3-4, BATCH ACCEPTANCE]
 
 This phase contains mechanisms that must agree with the entity/body frame but are
 not ordinary movement physics.
 
-### 7B.1 — eye/view/raycast/interaction
+### 7B.1 — eye/view/raycast/interaction [R4 RESEARCH COMPLETE]
 
-Audit:
+R4 invariant:
+one physical world ray is produced from body-local eye/view semantics.
+`BlockHitResult` stays physical across networking; Phase 2 converts the
+physical side only when block semantics require a canonical local side.
+
+Audited:
 - eye position/eye height;
 - body up/view vector;
 - yaw/pitch;
@@ -1116,9 +1145,18 @@ one physical world ray is produced from body-local view.
 BlockHitResult stays physical; Phase-2 placement consumes its canonical-local
 interpretation.
 
-### 7B.2 — client/server prediction and validation
+### 7B.2 — client/server prediction and validation [R4 RESEARCH COMPLETE]
 
-Audit together:
+R4 invariant:
+packet/teleport XYZ remains physical. Jump/floating/fall/onGround checks derive
+their semantic vertical component by projecting physical displacement into the
+entity body frame.
+
+Gravity-face/body-frame agreement is a network gate: current hysteresis-based
+selection requires either proven deterministic client/server equivalence or an
+explicit synchronized authoritative face identifier.
+
+Audited together:
 - LocalPlayer prediction;
 - ServerPlayer state;
 - ServerGamePacketListenerImpl floating/flying checks;
