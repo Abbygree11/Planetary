@@ -2130,3 +2130,41 @@ If a new failing INVOKE remains, use the exact owner from the ASM test and
 crash log to correct the one owning adapter; do not disable required
 injections globally. Full Phase-4 visual game acceptance deferred to
 subsystem batch; new startup test NOT yet confirmed by user.
+
+
+## 2026-10-08 Follow-up: NeoForge test-class IllegalClassLoadError (exact root cause)
+
+User ran test.ps1 after prior Phase-4 mixin rewrite. compileTestJava succeeded,
+but :test FAILED before any method of ParticleTickInvocationTargetTest ran:
+
+    Could not execute test class 'dev.planetary.mixin.ParticleTickInvocationTargetTest'
+    Caused by: IllegalClassLoadError: ... is in a defined mixin package
+    dev.planetary.mixin.* owned by planetary.mixins.json and cannot be
+    referenced directly
+
+This overrides the previous speculative theory that the bytecode assertion
+itself failed: it DID NOT RUN. The cause was putting a JUnit test in the
+Mixin-transformer-reserved package. A second bug was exposed by inspection:
+PlanetSemanticTickDeltaState, a regular runtime utility instantiated from
+injected code, also lived in dev.planetary.mixin and risked the same
+IllegalClassLoadError on client initialization.
+
+Fix IMPLEMENTED / build+client acceptance pending:
+- moved the regular per-particle state helper to
+  src/main/java/dev/planetary/gravity/PlanetSemanticTickDeltaState.java;
+- helper now consumes shared PlanetParticleMoveAccess contract instead of
+  referencing Mixin's ParticleGravityAccessor directly;
+- six per-class tick Mixins import shared gravity helper;
+- moved ASM test to src/test/java/dev/planetary/gravity/
+  ParticleTickInvocationTargetTest.java;
+- deleted BOTH old source files from reserved dev.planetary.mixin package;
+- added permanent reserved Mixin package rule to AGENTS.md.
+- no gravity math, particle tick callback algorithms, RNG or saved-state
+  behavior altered.
+
+User evidence establishes compile success BEFORE this relocation but NOT
+a working test suite or game launch after it. No claim of a successful
+Mixin application, or of capabilities acceptance. Next:
+git pull && .\\test.ps1 && .\\run-client.ps1, check test results first,
+then main menu / login. Do not start full particle gameplay acceptance
+until startup passes.
