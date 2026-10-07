@@ -1552,3 +1552,46 @@ GRAVITY_MECHANISM_MAP_1_21_1.md explicitly treats mechanism ownership as the
 future porting boundary.
 
 No runtime code changed in this documentation/process update.
+
+
+## 2026-10-07 Phase 4 batch checkpoint: base/custom particle engine
+Completed one bounded Phase-4 implementation batch after changing the workflow
+to avoid very long monolithic tool runs.
+
+Implemented/shared boundaries:
+- LocalGravityParticleMoveMixin generalized from Terrain/Cherry allowlist to the
+  BASE Particle.move engine boundary; custom move overrides bypass it naturally.
+- PlanetParticleMoveRuntime extracted from the mixin behind
+  PlanetParticleMoveAccess for better cross-version portability.
+- base Particle.tick local gravity + blocked-vertical speedup + ground tangent
+  friction are handled as one shared engine boundary.
+- SemanticTickDeltaParticleMixin replaces the older direct-gravity-only patch
+  for additive custom-tick deltas.
+- constructor helpers cover fixed vertical terms, generated local launch,
+  component scaling and base-bias recovery.
+- BaseAshSmoke family, WhiteAsh, Spell, TrialSpawnerDetection, DustPlume,
+  CampfireSmoke, WaterDrop/Splash, WaterCurrentDown, Snowflake, SquidInk,
+  DragonBreath now have the audited local-axis adapters needed outside the
+  shared engine.
+- PortalParticle and FlyTowardsPositionParticle keep their physical start/vector
+  interpolation but rotate the explicit world-Y trajectory arc into local Y.
+- PlanetRenderTransform now exposes a local->world quaternion; ShriekParticle
+  composes its two vanilla local quad rotations with that frame.
+- Campfire particle emitters are local-frame adapted.
+
+Important classification decisions:
+- ParticleUtils is NOT a global local-frame boundary. The same helpers represent
+  physical block axes, semantic below, and body-ground effects in different
+  callers. Adapt callers at their owning mechanism.
+- GlowSquid ink source velocity is authored from Squid body orientation and is
+  therefore a Phase-7 entity/body integration row, not a particle-local fix.
+- Firework Spark gravity is covered by the shared particle engine. Star/burst
+  orientation is authored by Firework Starter/rocket and is deferred to the
+  Phase-7 rocket/entity frame decision.
+- weather particle source geometry is a Phase-7B environment-policy gate.
+- fluid surface/membership parts remain Phase-5 integration gates.
+
+No gameplay acceptance requested at this checkpoint. Phase 4 remains batch
+acceptance. Next bounded batch: remaining non-fluid emitter/source sweep
+(block/event/entity sources), then documentation cleanup and one build/startup
+checkpoint before the final gameplay matrix.
