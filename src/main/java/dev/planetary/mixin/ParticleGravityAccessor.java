@@ -65,6 +65,9 @@ public interface ParticleGravityAccessor
     @Accessor("zo")
     void planetary$setZo(double value);
 
+    @Accessor("age")
+    int planetary$getAge();
+
     @Accessor("lifetime")
     int planetary$getLifetime();
 
