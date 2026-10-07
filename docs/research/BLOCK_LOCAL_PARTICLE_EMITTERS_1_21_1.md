@@ -1,6 +1,6 @@
 # Phase 4: block-local particle emitter family — Minecraft 1.21.1
 
-Status: **researched, implementation pending verification**, no gameplay PASS.
+Status: **IMPLEMENTED / BUILD+CLIENT+GAMEPLAY ACCEPTANCE PENDING**, no gameplay PASS.
 
 ## Scope and ownership
 
@@ -53,6 +53,17 @@ furnaces without double-transforming their direction inputs.
 For RespawnAnchor and EnderChest only, the vanilla emitted velocity is
 also canonical local, so rotate it once to physical; all other family
 members' supplied zeros/Gaussian vector remain as originally authored.
+
+Implemented in `BlockLocalParticleEmitterGravityMixin` (registered in
+`planetary.mixins.json`). All seven emitters use one `@ModifyArgs` at the
+existing Level.addParticle INVOKE; no redirects or duplicate emission.
+Pure numerical tests: `PlanetBlockLocalEmitterBatchTest` (seven sampled
+coordinates across six frames and two local velocity contracts).
+Runtime bytecode/registration test:
+`BlockLocalParticleEmitterInvocationTest` (the exact seven animateTick
+methods, expected calls, compiled @Mixin list, compiled @ModifyArgs
+anchor, and registered mixin entry). Test classes are in `dev.planetary.gravity`,
+not in NeoForge's reserved Mixin package.
 
 Properties:
 - `+Y` and outside Planet must be exact pass-through, including
