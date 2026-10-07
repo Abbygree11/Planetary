@@ -1967,3 +1967,41 @@ Global batches: R1 ✅ R2 ✅ R3 ✅ R4 ✅ R5 ✅ R6 ✅.
 NEXT: final cross-batch COMPLETENESS SWEEP, architecture freeze,
 dependency-ordered implementation plan. Do not start runtime before sweep.
 No build or gameplay acceptance required for this documentation-only change.
+
+
+## 2026-10-08 Final global research sweep plus external mods COMPLETE
+
+Completed final cross-batch R1-R6 architecture reconciliation, research only.
+New canonical docs:
+- docs/research/EXTERNAL_COORDINATE_MOD_CASE_STUDIES.md
+- docs/research/FINAL_COMPLETENESS_SWEEP_1_21_1.md
+
+External source/experience:
+- FugLord77 GravityChanger 1.21 API exposes physical getWorldVelocity /
+  setWorldVelocity over local entity storage, and constructor-early guard.
+- iPortalTeam Immersive Portals explicitly integrates eye offsets, velocity,
+  local/world directions, quaternion camera frames and fallback when Gravity
+  Changer is absent; virtual world-wrap does not simulate redstone/fluid/AI
+  across portal boundary. Camera/client/server crossing can be asynchronous.
+- VS2 raycasts world->ship->world, transforms particle positions separately
+  from direction/velocity and documents save bugs with passengers, entities
+  in shipyard coords; source issues report unloaded teleports and oversized
+  / invalid AABB performance. Take lessons, NOT code.
+- Cubic Chunks has genuine CubePos/3D provider and separate column/heightmap
+  APIs; unlimited physical Y cannot be supported merely by generator settings.
+- Old Up And Down/Starminer are coverage/product analogs only.
+
+Critically, R4 already REJECTED current local deltaMovement as future design.
+Future entity frame contract = PHYSICAL world deltaMovement, but no runtime
+migration occurred yet. This is a missing implementation gate, not new PASS.
+
+R1-R6 cross-phase ownership is now frozen for first implementation planning.
+Major explicitly OWNED unsolved engineering gates: skylight six faces, finite
+world height/storage limits, format/seed worldgen migration, chart-aware
+corner graph semantics, NeoForge version-specific hooks and saved/passenger
+teleport/AABB guard invariants. Subsequent implementation batches follow
+docs/IMPLEMENTATION_PLAN.md and FINAL_COMPLETENESS_SWEEP_1_21_1.md.
+
+NO runtime changes, code build, Minecraft client launch or gameplay acceptance
+during external research/final sweep. Next action is Batch 0 baseline/gates,
+then Phase-1 foundation and dependency-ordered coherent subsystem work.
