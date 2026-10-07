@@ -231,3 +231,32 @@ New runtime code/unit test has NOT been executed by assistant; user must
 run test.ps1 and run-client.ps1 and report startup before gameplay checks.
 Prior accepted TerrainParticle and CherryLeaf behavior stays reference,
 not newly marked PASS by this patch.
+
+
+### NeoForge 21.1.215 reserved Mixin package discovery — follow-up test failure
+
+The subsequent user run proved compileTestJava succeeds but :test fails
+before JUnit methods execute. Exact nested exception:
+
+    IllegalClassLoadError: dev.planetary.mixin.ParticleTickInvocationTargetTest
+    is in a defined mixin package dev.planetary.mixin.* owned by
+    planetary.mixins.json and cannot be referenced directly
+
+This is NOT a failure of the ASM invocation owner assertion: NeoForge's
+Mixin transformer forbids loading ordinary classes placed inside the
+reserved package of its Mixin config. Audit identified the same issue in
+the runtime helper PlanetSemanticTickDeltaState (not an actual Mixin).
+Both were written to the wrong namespace in the previous change.
+
+Implemented:
+1. JUnit ASM bytecode test moved to dev.planetary.gravity;
+2. shared non-injecting runtime helper moved to dev.planetary.gravity and
+   receives PlanetParticleMoveAccess, the stable runtime access contract;
+3. six actual Mixins remain under dev.planetary.mixin and now import the
+   moved helper;
+4. old helper/test source paths removed; Mixin registration JSON unchanged;
+5. AGENTS.md now forbids all ordinary helpers/tests in Mixin-reserved packages.
+
+No particle physical motion, canonical frame logic, RNG, lifecycle, hook
+descriptor or provider contract changed by this relocation.
+Build/test/NeoForge launch require user verification; no PASS claim yet.
