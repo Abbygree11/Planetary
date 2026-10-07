@@ -292,3 +292,21 @@ runtime change.
 HANDOFF: final global research ends here; the next coding task can start at
 Batch 0 (baseline) then Batch A, followed by dependency-driven subsystem
 implementation. No modifications to runtime have been made in this sweep.
+
+
+## 8. Targeted third-party API compatibility amendment (2026-10-08)
+
+See docs/research/ULTIMATE_CROSS_MOD_COMPATIBILITY_REVIEW_1_21_1.md.
+
+New P0: generic BlockCapabilityMixin rewrites all Direction contexts to
+canonical LOCAL, but NeoForge does not guarantee the same side semantics
+for external providers. Existing local-aware Planet probes remain valid;
+unknown provider should default to PHYSICAL and opt into LOCAL explicitly.
+Verify actual 1.21.1 API and regressions before any runtime migration.
+
+New P0 foundations: coordinate provenance for virtual contraptions and
+clipboards; physical endpoint connection geometry vs path-relative chart;
+signed axial rotation/handedness for Create; separate BlockEntity port/NBT
+transport and graph lifecycle. Existing R1-R6 mechanism owners stand.
+
+All are RESEARCH gates, not executed fixes or accepted cross-mod runtime.
