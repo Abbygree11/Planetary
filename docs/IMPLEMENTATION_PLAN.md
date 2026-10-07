@@ -32,13 +32,15 @@ AS A GENERAL CONTRACT RISK, not an in-game reproduced failure.
 
 **NEW P0 capability contract before broad compatibility claims:**
 - default unknown NeoForge capability provider sides to PHYSICAL;
-- rewrite to canonical LOCAL only for explicitly registered receiver
-  provider/Block/BE-capability semantics; preserve old local echo as an
-  opt-in regression case; preserve null and cache invalidation;
+- rewrite to canonical LOCAL only with a per-provider NeoForge registration
+  wrapper; unlike a capability/block-wide registry, this allows multiple
+  providers on one block to retain their independent physical/local meaning;
+  preserve old local echo as an opt-in regression case; preserve null/cache;
 - calculate correct PHYSICAL adjacent target before selecting receiving side;
 - verify exact NeoForge 21.1.215 integration and a genuine modded machine
-  before changing existing accepted runtime.
-Owner: Phase 1 + Phase 7A.5 + Phase 10. No runtime changes yet.
+  before claiming cross-mod runtime compatibility.
+Owner: Phase 1 + Phase 7A.5 + Phase 10. First P0 implementation is now
+committed with acceptance PENDING; see checkpoint below.
 
 **NEW universal compatibility foundation:**
 - explicit coordinate provenance: physical Level vs virtual Create
@@ -51,8 +53,9 @@ Owner: Phase 1 + Phase 7A.5 + Phase 10. No runtime changes yet.
   implementing a second Create/AE2/Mekanism graph;
 - frame-aware BlockState + BlockEntity/NBT side-settings transport and
   lifecycle/invalidation for moved blocks, with opt-in and rigid fallback;
-- deterministic semantic adapter SPI by capability+provider/Block/BE type,
-  no per-tick reflection or optional-mod hard dependency;
+- per-provider opt-in semantic adapters at NeoForge registration (implemented
+  for block and BlockEntity); other mechanism SPI is future work, with no
+  per-tick reflection or optional-mod hard dependency;
 - exact-version integration matrix for Create, AE2, Mekanism, WorldEdit,
   TerraBlender, custom fluid/entity, Sodium/Embeddium/Iris, Distant Horizons,
   scripted/fake-player automation and vanilla pass-through.
@@ -63,6 +66,41 @@ This is a TARGETED amendment to the frozen R1-R6 map, not another open-ended
 discovery pass. Batch 0 must inventory this contract before code changes;
 implementation proceeds in coherent owning batches with one acceptance
 matrix each.
+
+### Capability provider-direction implementation checkpoint [IMPLEMENTED / ACCEPTANCE PENDING]
+
+Detailed exact NeoForge source and tests:
+docs/research/CAPABILITY_PROVIDER_CONTEXT_1_21_1.md.
+
+Implemented now:
+- public PlanetCapabilityAdapters.canonicalLocalBlock and
+  canonicalLocalBlockEntity register per-provider LOCAL semantics;
+- unknown/unwrapped NeoForge providers retain physical direction and target
+  BlockPos; BlockCapabilityMixin does not rewrite a physical Planet Level,
+  while old virtual-atlas fallback is retained for its separate prototype;
+- diagnostic STONE local echo and standard handlers use explicit opt-in;
+  new independent PHYSICAL_SIDE_ECHO tests 36 more physical dispatches;
+- PlanetCoordinateContext.PhysicalBlock vs ForeignBlock carries declared
+  coordinate provenance, and PlanetFrameApi overloads refuse unresolved
+  foreign BlockPos (no implicit virtual/physical transform);
+- deterministic tests for all faces, a corner, null/unbound side behavior,
+  unattached BlockEntity, physical-vs-foreign separation.
+
+**STATUS: implemented, tests not executed in this session and gameplay
+acceptance pending.** This does NOT establish third-party machines working.
+The old global conversion had been tested only with LOCAL-aware diagnostic
+providers; any existing vanilla/machine-side regression must be researched
+at its owning provider/port semantic layer, not reverted to blanket patch.
+
+Still needed:
+- first user build and startup + single subsystem acceptance;
+- ensure real NeoForge 21.1.215 target compiles/runs; exact upstream
+  branch 1.21.1 call path has been reviewed;
+- real side-specific vanilla hopper/furnace/dispenser + genuine external
+  item/fluid/energy machine on ±X/±Y/±Z and edge/corner;
+- connection signed axis, moving BE data, physically sourced foreign
+  transforms, optional Create/AE2/Mekanism adapters and unrelated modpacks.
+Those are future coherent subsystem gates, not claims for this checkpoint.
 
 ## Final research sweep: frozen cross-phase handoff [2026-10-08]
 
@@ -287,9 +325,9 @@ Implemented foundation:
 Implemented runtime/compat foundation:
 - PlanetBlockRuntime as shared Level + physical BlockPos -> active field/frame boundary
 - block activation evaluated at the physical block center
-- existing mixin currently rewrites physical capability Direction to canonical
-  local BlockState side; its generic compatibility assumption is NOT sound for
-  unknown third-party provider semantics, see latest ultimate audit;
+- physical Planet levels no longer have capability sides silently rewritten
+  by the generic mixin; only explicitly wrapped receiving providers consume
+  canonical local sides. Tests added; in-game acceptance still pending;
 - dedicated physical capability queries keep queried BlockPos authoritative
 - legacy virtual-atlas capability alias routing retained only as fallback
 
@@ -313,8 +351,10 @@ Acceptance:
 - seam step tests for all 24 directed cube-edge transitions
 - VoxelShape rotation tests for asymmetric shapes
 - edge traversal has no alias physical cell; exact corners preserve 4 logical tangent transitions over 3 physical target cells
-- sided NeoForge capability provider receives canonical local side while physical target BlockPos remains unchanged
-- diagnostic capability provider: 36 six-face side mappings + BlockCapabilityCache invalidation
+- opted-in NeoForge provider receives canonical local side with target
+  physical BlockPos unchanged; unwrapped providers receive PHYSICAL side
+- diagnostic local provider: 36 six-face side mappings, plus 36 independent
+  physical echo mappings and BlockCapabilityCache invalidation
 - standard item/fluid/energy providers: local-UP accept + local-DOWN reject on all six faces
 - public PlanetFrameApi local-neighbor primitive
 - Create-like raw BlockPos.relative(local FACING) stress harness across all six faces
@@ -1248,8 +1288,9 @@ Apply to:
 - crafter FrontAndTop.front output;
 - dispenser emission.
 
-Existing generic capability-side adaptation remains valid but cannot repair an
-upstream caller that already chose the wrong physical target.
+Existing capability-local adaptation is now EXPLICIT per receiving provider,
+not generic/global. It cannot repair an upstream caller that already chose
+the wrong physical target; physical is the default for foreign providers.
 
 Dispenser item launch authors its vanilla upward bias in local UP, then emits a
 physical entity velocity. Projectile dispenser hands physical spawn/forward to
