@@ -1674,3 +1674,56 @@ Global research advances to R2:
 client geometry/render/particles.
 
 Existing runtime remains frozen at the pre-research partial Phase-4 checkpoint.
+
+
+## 2026-10-07 R2 client geometry/render/particle research COMPLETE
+Global research batch R2 is complete. No runtime code was changed during R2.
+
+New canonical matrix:
+    docs/research/CLIENT_RENDER_PARTICLE_MATRIX_1_21_1.md
+
+R2 source coverage:
+- BlockState shape/cache boundaries;
+- Block.shouldRenderFace;
+- BlockRenderDispatcher / ModelBlockRenderer;
+- AO/flat-light/shade/breaking overlay;
+- standard OffsetType XZ/XYZ;
+- all BlockEntityRenderer classes inventoried with representative transform
+  call flows;
+- moving block/entity renderer ownership;
+- complete existing ParticleEngine/class audit reconciled with emitter-source
+  ownership;
+- block animateTick / ParticleUtils / LevelRenderer event and weather source
+  families;
+- accelerated/custom renderer compatibility boundary.
+
+Important research conclusions:
+1. Physical outer VoxelShape queries and canonical support/occlusion state are
+   separate layers.
+2. Correct PHYSICAL BakedQuad.direction already drives vanilla AO/light
+   neighbor sampling; rotating AO again would be a double transform.
+3. Breaking overlay uses the same ModelBlockRenderer tesselation path.
+4. ClientLevel directional shade is global world-direction lighting policy and
+   is deferred to R6 environment policy.
+5. Standard vanilla OffsetType should use canonical-local coordinates/seed and
+   then transform the offset physically. Arbitrary custom OffsetFunction is not
+   globally assumed local.
+6. A global BlockEntityRenderDispatcher frame transform is unsafe.
+   BER families are:
+   - rigid block-local;
+   - runtime-direction;
+   - world/camera-space.
+7. Falling/moving block rendering is distinct from vehicle/entity body
+   rendering. Minecart/boat/TNT/item-frame orientation belongs to Phase 7.
+8. Particle motion and emitter/source geometry are independent ownership axes.
+9. ParticleUtils cannot be globally reframed; caller semantics decide.
+10. Entity/fluid/weather/portal emitters are explicit integration gates of
+    Phases 7/5/7B/9 respectively.
+11. Custom accelerated renderers bypassing ModelBlockRenderer require explicit
+    compatibility integration, not raw VertexConsumer interception.
+
+The Phase-3 and Phase-4 deterministic and single runtime acceptance matrices are
+now defined.
+
+Global research advances to R3: fluids.
+Existing runtime remains frozen.
