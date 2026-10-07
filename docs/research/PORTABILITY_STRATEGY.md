@@ -359,3 +359,20 @@ include transformed AABB and loaded/unloaded frame boundaries.
 Historical mods target different Minecraft versions; their source can
 support the design principles but cannot validate the current NeoForge
 21.1.215 mixin integration or mod compatibility.
+
+
+## 16. Sided-provider contract and foreign coordinates
+
+Cross-mod audit: docs/research/ULTIMATE_CROSS_MOD_COMPATIBILITY_REVIEW_1_21_1.md.
+
+NeoForge sided Direction is an API query context, not necessarily a local
+Planet direction. Unknown receivers must retain PHYSICAL side; local
+transformation must be an explicit receiving provider/family policy.
+The generic current BlockCapabilityMixin assumes the latter universally,
+which is a P0 compatibility risk (not a reproduced modded-machine failure).
+
+Create ContraptionWorld, WorldEdit clipboards, AE2 virtual grid nodes and
+external LOD samples carry coordinate provenance distinct from physical Level.
+Do not globally convert BlockPos, Level, Direction or network graph APIs.
+Expose optional typed transforms; preserve signed kinetic/port semantics,
+BlockEntity NBT and cache lifecycle through specific adapters.
