@@ -21,6 +21,7 @@
     "WhiteAshParticleGravityMixin",
     "SpellParticleGravityMixin",
     "TrialSpawnerDetectionParticleGravityMixin",
+    "CurvedTrajectoryParticleGravityMixin",
     "DragonBreathParticleAccessor",
     "DragonBreathParticleGravityMixin",
     "FixedVerticalLaunchParticleMixin",
