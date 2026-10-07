@@ -60,7 +60,12 @@ Output:
 complete Phase-2 ownership map, family list, dependencies to render/redstone/
 entity/fluid phases, and a Phase-2 representative acceptance matrix.
 
-## Batch R2 — client geometry/render/particles [NEXT]
+## Batch R2 — client geometry/render/particles [COMPLETE]
+
+Result:
+`docs/research/CLIENT_RENDER_PARTICLE_MATRIX_1_21_1.md`
+
+Completion findings are merged into the mechanism map and Phase-3/4 roadmap.
 
 Scope:
 - VoxelShape/query/collision/visual/interaction shapes;
@@ -82,7 +87,7 @@ Important:
 existing particle runtime work remains frozen during this research batch; use it
 as evidence, not as a reason to continue coding before the global audit is done.
 
-## Batch R3 — fluids
+## Batch R3 — fluids [NEXT]
 
 Scope:
 - FlowingFluid;
