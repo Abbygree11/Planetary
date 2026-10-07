@@ -260,3 +260,32 @@ Implemented:
 No particle physical motion, canonical frame logic, RNG, lifecycle, hook
 descriptor or provider contract changed by this relocation.
 Build/test/NeoForge launch require user verification; no PASS claim yet.
+
+
+## Phase-4 third startup failure: inherited-call owner sweep (2026-10-08)
+
+The user reached runClient after the prior test loader fix, but client
+initialization failed on WaterCurrentDownParticleGravityMixin
+`planetary$rotateCurrentSpiral`, 0/1 `Particle.move` invokes.
+
+The full relevant tick/quad owner sweep found three remaining hook
+defects in the same version-sensitive boundary:
+
+- WaterCurrentDownParticle.tick -> `WaterCurrentDownParticle;move(DDD)V`;
+- DragonBreathParticle.tick -> `DragonBreathParticle;move(DDD)V`;
+- ShriekParticle.render -> 2 calls to
+  `ShriekParticle;renderRotatedQuad(VertexConsumer,Camera,Quaternionf,F)V`
+  (previous hook targeted SingleQuadParticle owner).
+
+All three method-reference targets are corrected, with no movement or
+render math change. The six split TickDelta Mixins already target their
+concrete owners. Deterministic ASM tests now cover eight tick calls,
+their compiled @Inject/@At targets, both Shriek render invokes, and
+the @ModifyArg/@At target. No "require=0" fallback.
+
+Canonical narrow source inventory, exact descriptors and acceptance:
+`docs/research/PARTICLE_MIXIN_INVOKE_ANCHORS_1_21_1.md`.
+
+**Status: IMPLEMENTED / TEST + CLIENT STARTUP ACCEPTANCE PENDING.**
+Do not mark this or the whole particle subsystem PASS before user
+confirmation. Fluid-membership and body-source gates remain Phase 5/7.
