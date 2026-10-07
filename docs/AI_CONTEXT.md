@@ -1595,3 +1595,34 @@ No gameplay acceptance requested at this checkpoint. Phase 4 remains batch
 acceptance. Next bounded batch: remaining non-fluid emitter/source sweep
 (block/event/entity sources), then documentation cleanup and one build/startup
 checkpoint before the final gameplay matrix.
+
+
+## 2026-10-07 global audit workflow refined into bounded research batches
+User clarified that the whole gravity/mechanism research should be finished
+first, but not as one enormous all-day pass and not as tiny per-class work.
+
+Decision:
+- temporarily freeze further runtime implementation;
+- finish the global architecture audit in six substantial research batches;
+- do not interleave implementation while a research batch is still discovering
+  mechanism ownership;
+- after R1-R6, run one final completeness sweep and only then resume runtime
+  implementation from the dependency-ordered roadmap.
+
+Canonical plan:
+    docs/research/GLOBAL_RESEARCH_BATCH_PLAN_1_21_1.md
+
+Batches:
+- R1 block/world semantic topology;
+- R2 client geometry/render/particles;
+- R3 fluids;
+- R4 entity/body/interaction/network;
+- R5 AI/navigation + signals/automation/logistics;
+- R6 environment/worldgen/structures/compatibility;
+- final completeness sweep.
+
+Current partial particle runtime work is preserved as the freeze point and is
+not considered manually accepted merely because it is implemented.
+
+AGENTS.md and IMPLEMENTATION_PLAN.md now enforce the research/implementation
+separation.
