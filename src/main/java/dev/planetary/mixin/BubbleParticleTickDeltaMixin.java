@@ -1,5 +1,6 @@
 package dev.planetary.mixin;
 
+import dev.planetary.gravity.PlanetSemanticTickDeltaState;
 import net.minecraft.client.particle.BubbleParticle;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
