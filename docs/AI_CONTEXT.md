@@ -2211,3 +2211,42 @@ Report any failing ASM assertion or Mixin's nested InjectionError.
 Required first acceptance: test task green, client main menu and
 Planet login, then capability diagnostic. Phase-4 gameplay acceptance
 remains deferred to the ONE subsystem matrix, not per-class testing.
+
+
+## 2026-10-08 user screenshot: main client/world startup and probes now run
+
+User posted an in-game screenshot after the Phase-4 inherited Mixin
+INVOKE owner audit (HEAD ba80f72d). Direct user-provided runtime
+evidence: Minecraft 1.21.1/NeoForge client reached active Planet
+world; startup no longer blocked by the previously observed particle
+Mixin injection crashes. On-screen probe output:
+
+- Dedicated Planet gravity attached.
+- Standing/wall placement probe passed: 6 standing + 24 wall.
+- Shape probe passed: 36 physical shapes, 18 canonical support/
+  occlusion, 6 full-block identity.
+- Support probe passed: 90 survival + 90 updateShape.
+- Placement probe passed: 108 vanilla states.
+- Frame API probe passed: 36 local-neighbor checks, and 22 raw
+  BlockPos.relative mismatches DETECTED.
+- Capability probe passed: 36 explicit local mappings, 36 physical-
+  side passthrough, 36 standard item/fluid/energy, 1 cache invalidation.
+- Dedicated Planet world active; core=(0, 128, 0), diameter=97.
+
+Important: raw BlockPos.relative mismatches are the deliberately
+EXPECTED failure of treating a physical Direction as local; code in
+PlanetCompatibilityDiagnostics.assertFrameApi (rawMismatches == 0)
+throws. Therefore detecting 22 is positive proof that the typed
+neighbor frame adaptation matters, not a failed test.
+
+Status: CLIENT STARTUP + PLANET LOGIN + DIAGNOSTIC PROBES OBSERVED
+RUNNING/PASSING in user screenshot, clearing the startup-blocker gate.
+This does NOT constitute acceptance of the entire Phase-4 particle
+visual/motion matrix, actual third-party cross-mod machine compatibility,
+edge gameplay or the later worldgen phases. Do not mark those PASS.
+We did not receive a verbatim post-fix Gradle test log; screenshot is
+direct in-game evidence, not a complete transcript of :test.
+
+Next work: resume the coherent remaining Phase-4 particle emitter/
+constructor source inventory and implementation; gameplay acceptance
+deferred to one comprehensive subsystem matrix (AGENTS 7A).
