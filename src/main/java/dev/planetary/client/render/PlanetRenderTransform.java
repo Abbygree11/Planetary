@@ -7,6 +7,7 @@ import dev.planetary.topology.PlanetGravityFrame;
 import dev.planetary.topology.PlanetVector;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
+import org.joml.Quaternionf;
 
 import java.util.Objects;
 
@@ -47,6 +48,19 @@ public final class PlanetRenderTransform {
         rotation.m22(south.z());
 
         return rotation;
+    }
+
+    public static Quaternionf localToWorldQuaternion(
+            PlanetFace face
+    ) {
+        return localToWorldRotation(
+                Objects.requireNonNull(
+                        face,
+                        "face"
+                )
+        ).getNormalizedRotation(
+                new Quaternionf()
+        );
     }
 
     public static void applyAroundBlockCenter(
