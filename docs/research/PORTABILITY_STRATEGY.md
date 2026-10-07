@@ -376,3 +376,20 @@ external LOD samples carry coordinate provenance distinct from physical Level.
 Do not globally convert BlockPos, Level, Direction or network graph APIs.
 Expose optional typed transforms; preserve signed kinetic/port semantics,
 BlockEntity NBT and cache lifecycle through specific adapters.
+
+
+### Chosen 1.21.1 runtime adapter, acceptance pending
+
+PlanetCapabilityAdapters wraps individual NeoForge IBlockCapabilityProvider
+and ICapabilityProvider registrations that explicitly want canonical LOCAL.
+This is safer than a block/capability-wide policy because BlockCapability
+dispatches a LIST of independently registered providers for a Block.
+The physical Planet BlockCapabilityMixin now leaves the query untouched;
+legacy virtual-atlas alias handling remains a separate guarded path.
+Unknown providers see original PHYSICAL Direction as before. See
+docs/research/CAPABILITY_PROVIDER_CONTEXT_1_21_1.md for exact call flow.
+
+PlanetCoordinateContext supports explicitly labelled physical vs foreign
+block coordinates and only permits physical queries through its
+PlanetFrameApi overloads. It does not invent a foreign-to-physical mapping.
+No runtime verification is claimed until build/game acceptance.
