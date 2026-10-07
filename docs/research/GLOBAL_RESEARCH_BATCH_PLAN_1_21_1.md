@@ -162,7 +162,22 @@ Scope:
 Output:
 complete Phase-6 + Phase-7A map and cross-dependencies.
 
-## Batch R6 — environment/worldgen/structures/compatibility [NEXT]
+## Batch R6 — environment/worldgen/structures/compatibility [COMPLETE]
+
+Result:
+`docs/research/ENVIRONMENT_WORLDGEN_STRUCTURE_COMPAT_MATRIX_1_21_1.md`
+
+Research covers Phase 7B.3-4 + Phase 8/9/10, source call paths,
+frame ownership, unresolved product gates, persistence, portability,
+performance and one batch acceptance matrix per mechanism.
+
+Major corrections: vanilla XZ heightmap is not a six-face surface;
+PlanetChunkGenerator currently disables decoration/carvers/initial mobs;
+continuous scalar fields do not transparently transport arbitrary integer-grid
+feature geometry; daylight requires a separate radial skylight source decision;
+sea shell cannot be represented by ChunkGenerator.getSeaLevel global Y;
+rigid structures need whole StructureStart validation before registration.
+
 
 Scope:
 - spawn placement and NaturalSpawner;
@@ -182,7 +197,7 @@ Scope:
 Output:
 complete Phase-7B environment + Phase-8/9/10/11 map.
 
-## Final completeness sweep
+## Final completeness sweep [NEXT — RESEARCH DONE, RUNTIME STILL FROZEN]
 
 After R1-R6:
 
