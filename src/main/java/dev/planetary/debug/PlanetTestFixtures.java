@@ -277,7 +277,7 @@ public final class PlanetTestFixtures {
                     Blocks.TORCH.defaultBlockState());
             case "cherry_leaves" -> put(level, pos,
                     Blocks.CHERRY_LEAVES.defaultBlockState()
-                            .setValue(CherryLeavesBlock.PERSISTENT, true));
+                            .setValue(LeavesBlock.PERSISTENT, true));
             case "redstone_torch" -> put(level, pos,
                     Blocks.REDSTONE_TORCH.defaultBlockState());
             case "campfire" -> put(level, pos,
