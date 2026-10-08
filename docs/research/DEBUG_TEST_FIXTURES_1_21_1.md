@@ -2,7 +2,7 @@
 
 Target: Minecraft 1.21.1 / NeoForge 21.1.215, branch 2.0.
 Status: Phase-2/3 defect inventory confirmed from user report;
-fixture implementation committed, GitHub CI / runtime acceptance pending.
+fixture implementation committed; GitHub CI green, client/runtime acceptance pending.
 
 ## Why this is a Phase-0/1 infrastructure prerequisite
 
