@@ -14,11 +14,10 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.CandleBlock;
 import net.minecraft.world.level.block.CandleCakeBlock;
-import net.minecraft.world.level.block.CherryLeavesBlock;
+import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.EndRodBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.RespawnAnchorBlock;
-import net.minecraft.world.level.block.TorchBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.List;
@@ -333,11 +332,13 @@ public final class PlanetTestFixtures {
             int x,
             int z
     ) {
-        for (int dx = -2; dx <= 2; dx++) {
+        // Build the ring in the SOUTH/UP plane, not EAST/UP:
+        // x + 2 is reserved as a free *natural placement* lane.
+        for (int dz = -2; dz <= 2; dz++) {
             for (int up = 1; up <= 5; up++) {
-                if (Math.abs(dx) == 2 || up == 1 || up == 5) {
-                    put(level, physical(face, x + dx,
-                            FLOOR_RADIUS + up, z),
+                if (Math.abs(dz) == 2 || up == 1 || up == 5) {
+                    put(level, physical(face, x,
+                            FLOOR_RADIUS + up, z + dz),
                             Blocks.OBSIDIAN.defaultBlockState());
                 }
             }
@@ -351,7 +352,9 @@ public final class PlanetTestFixtures {
             BlockPos pos,
             BlockState state
     ) {
-        level.setBlock(pos, state, UPDATE_FLAGS);
+        if (!level.getBlockState(pos).equals(state)) {
+            level.setBlock(pos, state, UPDATE_FLAGS);
+        }
     }
 
     private static void requirePlanet(ServerLevel level) {
