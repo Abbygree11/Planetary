@@ -1,7 +1,8 @@
 # Planetary debug test fixtures — reproducible in-world acceptance
 
 Target: Minecraft 1.21.1 / NeoForge 21.1.215, branch 2.0.
-Status: design accepted for implementation, build/runtime evidence pending.
+Status: Phase-2/3 defect inventory confirmed from user report;
+fixture implementation committed, GitHub CI / runtime acceptance pending.
 
 ## Why this is a Phase-0/1 infrastructure prerequisite
 
@@ -108,3 +109,40 @@ if it obscures the test; do not disable diagnostic assertions.
 
 Build automated reproducible fixtures FIRST, then fix ownership
 families coherently in 2/3/9/4/5 and resume Phase 4 acceptance.
+
+## 2026-10-09 first debug-lab implementation
+
+Created:
+- `src/main/java/dev/planetary/debug/PlanetTestFixtures.java`,
+  bounded six-face layout builder with non-destructive auto-setup,
+  20 paired stations per face, canonical-local reference BlockStates
+  and adjacent vacant natural-placement cells.
+- `src/main/java/dev/planetary/debug/PlanetTestCommands.java`,
+  `/planetary test build`, `go <face>`, `legend`,
+  `rebuild <face>` (the latter is DESTRUCTIVE and opt-in).
+- `PlanetDebugServerEvents.onPlayerLogin`: in the dedicated
+  PlanetChunkGenerator ONLY, when JVM property
+  `planetary.debug.fixtures.auto` is true, attempt first-time
+  no-overwrite six-face install. Only players near the original
+  spawn may be relocated to new +Y lab pad. Other login positions
+  are not changed.
+- `build.gradle` local `runClient` profile supplies that
+  JVM property. Distributed jars don't automatically set it.
+- `PlanetTestFixturesTest`: checks all six frames, distinct pad
+  footprints, 20 named stations and adjacent natural-placement
+  locations, and arrival build heights.
+- `docs/acceptance/PLANET_TEST_LAB.md`: exact 5x4 station map,
+  case list, navigational commands, safety and acceptance contract.
+
+Original per-block bugs are UNCHANGED. In particular a preset
+spore blossom can exist where natural BlockItem placement fails;
+that outcome confirms a Phase-2 gap rather than an emitter PASS.
+An unlit portal frame is a deliberate ignition test and
+does not assert portal geometry is fixed.
+No global Mixin, gravity/particle runtime or world-generation
+codec/biome logic was modified by this infrastructure batch.
+
+The first CI green gate is required for this new code. The first
+user runtime check after green CI should confirm fixture creation
+does not stall/crash, and that the CYAN/LIME pairing really
+separates reference model/emission from natural placement.
