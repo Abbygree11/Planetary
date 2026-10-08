@@ -1,8 +1,8 @@
 # Phase 4 / Phase 1: local volumetric emitter queries (Minecraft 1.21.1)
 
-Status: SOURCE AUDIT COMPLETE; multi-axis traversal API IMPLEMENTED with
-pure tests, awaiting Gradle verification. EnchantingTable/SporeBlossom
-runtime integration NOT YET IMPLEMENTED.
+Status: SOURCE AUDIT COMPLETE. Ordered traversal pure tests confirmed
+BUILD SUCCESSFUL by user. Enchanting-table and spore-blossom
+integration IMPLEMENTED / JUNIT + CLIENT STARTUP + GAMEPLAY PENDING.
 
 ## Source paths (readable vanilla 1.21.1)
 
@@ -146,31 +146,117 @@ rejected to avoid overflow/unbounded traversal.
 - zero offset retains the original traversal frame even on a seam;
 - rejects unbounded integer offset.
 
-Gradle/JUnit NOT run by assistant; no runtime application and no
-gameplay acceptance. Next work must confirm the precise source
-frame / target canonical BlockState frame behavior near *two*
-intersecting seams BEFORE adapting EnchantmentMenu or spore
-candidate occlusion checks. Multi-axis offsets near corners are
-path-defined, not invariant under permuting the axes.
+User explicitly confirmed BUILD SUCCESSFUL for the initial pure
+PlanetLocalBlockOffsetTest checkpoint. Multi-axis offsets near corners
+remain path-defined, not invariant under permuting axes. Runtime
+source integration is a NEW unaccepted change after this checkpoint.
 
 ## Performance / acceptances
 
-Spore volume might require up to 14*30 steps each tick;
-prototype pure walk first. Before any runtime integration
-consider an interior fast path based on proven same-face
-bounds, with edge fallback. Do not cache unbounded by BlockPos.
+Spore volume might require up to 14*30 steps each tick.
+PlanetLocalBlockOffset now has a conservative proven same-face fast path:
+if the local radial score stays strictly greater than the absolute
+endpoints of both tangent scores throughout the X -> Z -> Y path,
+project the offset in one constant-time arithmetic step, resolving
+only the final frame. All ties, seam/corner paths and unsupported
+radial cases fall back to the existing transported cell-by-cell
+algorithm. No persistent maps/caches. This optimization and all
+new runtime adapters still require updated Gradle/JUnit validation.
 
 Milestones:
-1. [IMPLEMENTED/PURE-TEST-PENDING] typed multi-axis displacement
+1. [PREVIOUS PURE TEST ACCEPTED; NEW FAST PATH TEST PENDING] typed multi-axis displacement
    with basis transport and exact one-axis equivalence;
-2. [PENDING] one server+client EnchantingTable
+2. [IMPLEMENTED / RUNTIME UNACCEPTED] one server+client EnchantingTable
    `isValidBookShelf` membership boundary preserving bookshelf
    valid shape, unique counted providers and menu outcomes;
-3. [PENDING] client enchantment particle origin+velocity
+3. [IMPLEMENTED / RUNTIME UNACCEPTED] client enchantment particle origin+velocity
    adapter while preserving vanilla RNG;
-4. [PENDING] client SporeBlossom candidate/occlusion
+4. [IMPLEMENTED / RUNTIME UNACCEPTED] client SporeBlossom candidate/occlusion
    and emission unit-offset adapter preserving all draws;
 5. [PENDING] single combined integration/multi-face/edge
    acceptance batch, with +Y vanilla baseline.
 
 No runtime-related PASS inferred from pure helper code or unit tests.
+
+## 2026-10-08 implementation batch: enchantment and spores
+
+### Shared physical neighbor query
+
+`dev.planetary.world.PlanetLocalBlockProjection.physicalOffset`
+resolves `Level + source BlockPos + signed local(dx,dy,dz)`.
+On a Planet world it delegates to the tested
+`PlanetLocalBlockOffset.traverse` (including +Y near seams);
+outside Planet it preserves vanilla `BlockPos.offset`.
+
+### EnchantingTableBlock: common SERVER + CLIENT membership
+
+Common Mixin `EnchantingTableBookshelfGravityMixin` intercepts only
+two existing `BlockPos.offset` invocations in static
+`EnchantingTableBlock.isValidBookShelf`:
+- `offset(Vec3i)` for bookshelf provider;
+- `offset(int,int,int)` for half-offset power transmitter.
+
+On Planet, both become physical neighbor locations through the shared
+projection. Vanilla `Level.getBlockState`, ENCHANTMENT_POWER_PROVIDER,
+ENCHANTMENT_POWER_TRANSMITTER and short-circuit predicate stay unchanged;
+server `EnchantmentMenu` and client visual samples both consume this
+same static vanilla predicate. No global BlockPos modification, no
+global replacement of enchanting power predicate.
+
+Client-only `EnchantingTableParticleGravityMixin` uses one
+`@ModifyArgs` on the existing `Level.addParticle` INVOKE in
+`animateTick`, rotating sampled local source position and
+ENCHANT particle 'velocity' relative to the same source block frame.
+RNG draw count/order and particle count/vanilla metadata remain
+unmodified.
+
+**Remaining policy gate:** at a 3-face corner multiple authored bookshelf
+offsets might converge to one physical provider. The common predicate
+preserves vanilla offset iteration and uses the chosen X->Z->Y path;
+physical-provider deduplication is a separate enchanting-menu game-rule
+decision, not a particle-specific patch. No claim of gameplay acceptance
+at corners until the complete Phase-2/4 test matrix confirms intent.
+
+### SporeBlossomBlock: atomic source sampler
+
+Client-only `SporeBlossomParticleGravityMixin` injects at
+`animateTick` HEAD and cancels the vanilla method ONLY on rotated
+Planet faces. +Y/ordinary worlds execute vanilla unchanged.
+`PlanetSporeBlossomSourceRuntime.emit` mirrors the bounded Minecraft
+1.21.1 source sampler as a deliberately marked version-sensitive
+integration hotspot:
+1. two random doubles, one FALLING_SPORE_BLOSSOM particle at local y=0.7;
+2. 14 candidate attempts in vanilla order:
+   `Mth.nextInt(-10,10)` for X,
+   `-random.nextInt(10)` for Y,
+   `Mth.nextInt(-10,10)` for Z;
+3. determine physical candidate AND its transported chart via the
+   ordered local volumetric projection;
+4. call the exact vanilla `getBlockState(candidate)` and
+   `isCollisionShapeFullBlock(level,candidate)` at that physical cell;
+5. only on non-full-block candidate sample three `nextDouble` values
+   for local unit sub-cell coordinates, rotate in the destination
+   traversal chart, emit one SPORE_BLOSSOM_AIR.
+
+No extra RNG draws, emission attempts, state changes, or sounds. No
+global Level.addParticle or getBlockState interception. This is a
+deliberate small vanilla source-method copy, isolated for port audits
+because no equally narrow call-site hook guarantees the candidate
+position and sampled local jitter stay coupled without mutable
+thread/global state. The non-particle SporeBlossom canSurvive/updateShape
+paths remain owned by Phase 2.
+
+### Regression coverage
+
+New `VolumeParticleMixinContractTest` checks:
+- two exact `BlockPos.offset` INVOKEs in isValidBookShelf;
+- one enchanting / two spore `Level.addParticle` INVOKEs;
+- exact callback JVM descriptors, staticness and `@At` targets for
+  two `@Redirect`, one `@ModifyArgs` and one cancellable `@Inject`;
+- JSON registration and `defaultRequire=1`.
+New `VolumeParticleFrameTest` checks physical ENCHANT source/vector
+and subcell spore source across all six gravity faces and over a seam.
+
+BUILD/CLIENT STATUS AFTER THIS BATCH: PENDING USER RUN.
+Do not mark this feature or entire Phase 4 gameplay accepted until
+source/consumer tests and visual gameplay acceptance complete.
