@@ -1006,6 +1006,39 @@ correct that shared integration boundary before expanding this family.
 
 
 
+### 2026-10-08 candle emitter source family [IMPLEMENTED / TEST+GAMEPLAY PENDING]
+
+Following the new screenshot proving the seven-emitter Mixin no longer
+prevents startup or Planet world diagnostics, the next coherent
+Phase-4 block-source batch is implemented for both common candle paths.
+
+- `AbstractCandleBlock.animateTick` (CandleBlock + CandleCakeBlock
+  inherited): one `@ModifyArg` at `Iterable.forEach(Consumer)`,
+  rotate offset before original vanilla lambda. Preserve candle
+  probability, smoke/flame count, RNG and ambient sound algorithm.
+- `AbstractCandleBlock.extinguish`: one `@Redirect` at the
+  distinct `Iterable.forEach` site; on rotated Planet Level,
+  preserve candle-offset iteration count and order, rotate origin
+  and vanilla float-derived 0.1F UP smoke velocity; vanilla original
+  `setLit`, extinguish sound and game event execute unchanged.
+  Non-Level virtual contexts / ordinary worlds / +Y pass through.
+- Shared semantic method
+  `PlanetParticleEmitter.rotateUnitBlockEmitterOffset` uses block
+  center to transform corner-relative candle offsets. Covers cake
+  candle offset with Y=1.0 without inferring an incorrect cell.
+- ASM classfile integration test validates both actual vanilla
+  Iterable.forEach signatures and compiled `@ModifyArg/@Redirect`
+  descriptors; pure tests cover all six frames and candle/cake offsets.
+- Full source design: `docs/research/CANDLE_PARTICLE_EMITTERS_1_21_1.md`.
+
+No client game or Gradle test run was performed by assistant after
+these edits. Do not mark candle motion or Phase 4 PASS until user's
+batched acceptance. Next coherent non-fluid source families remain
+EnchantingTable bookshelf topology and SporeBlossom distributed
+airborne sample positions, subject to local-neighbor and topology
+ownership constraints; sources depending on fluids, body/world
+events, weather or portal-plane semantics remain integrated later.
+
 ### 4.3 Full source audit before any more manual testing
 
 Audit every vanilla 1.21.1 particle class and every vanilla emitter/helper that
