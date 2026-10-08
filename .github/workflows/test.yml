@@ -4,9 +4,15 @@ on:
   push:
     branches:
       - "2.0"
+    paths-ignore:
+      - "docs/**"
+      - "AGENTS.md"
   pull_request:
     branches:
       - "2.0"
+    paths-ignore:
+      - "docs/**"
+      - "AGENTS.md"
   workflow_dispatch:
 
 concurrency:
