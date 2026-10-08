@@ -2890,3 +2890,22 @@ NEW execution order documented in IMPLEMENTATION_PLAN:
 & interaction families, (3) Phase-3 special renderers, (4) redo
 blocked subset of Phase-4 integrated acceptance, (5) Phase-5
 fluid subsystem when dependencies are stable.
+
+
+## 2026-10-09 fixture initial GitHub CI compile failure and correction
+
+First full fixture code CI run 37856767439, based on commit
+76a4dd8, reached compileJava but FAILED with one exact Java error:
+`PlanetTestFixtures.java:280` referenced undefined
+`CherryLeavesBlock.PERSISTENT`. The actual Minecraft 1.21.1
+owner is `LeavesBlock.PERSISTENT` (verified against
+net.minecraft.world.level.block.LeavesBlock).
+The original import had already been replaced by LeavesBlock,
+but the static property reference on one source line was missed.
+Corrected in 2.0 commit e663b23 (runtime behavior unchanged).
+This is explicitly NOT a user-local build failure: GitHub Actions
+caught it before user was asked to pull/test.
+
+Second CI run 37857156948 automatically started for the corrected
+commit. Do not claim PASS until compileJava + compileTestJava +
+JUnit both complete SUCCESS. No user runtime test requested yet.
