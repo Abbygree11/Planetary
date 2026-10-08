@@ -2744,3 +2744,41 @@ IMPORTANT NOT ACCEPTED:
 - No unexplained developer tool capability claims: connected
   GitHub API alone cannot execute Gradle, but GitHub Actions
   CI now handles it and job status can be inspected via API.
+
+
+## 2026-10-09 Phase-4 readiness after green code CI / gameplay pending
+
+User asked to continue if everything okay. GitHub Actions for
+code commit afceb3b0 ran Java 21 Gradle 8.12 compileJava +
+compileTestJava + JUnit test and completed SUCCESS (run 37845321513).
+Later HEAD 340c2516 contained documentation-only changes and was
+still executing at the time of the next review; do not invent a
+green HEAD if not observed.
+
+Current source implementation covers all known non-blocked Phase-4
+particle families, including six-face base motion, special custom
+tick/render, diverse block emitters, candle family, shared
+enchantment table provider predicate AND numeric menu bonus, and
+spore-blossom candidate-volume sampling. **NONE of the new
+enchantment/spore runtime hooks has been user-confirmed after
+client startup**. Compile/JUnit green is not sufficient to mark
+real Mixin application PASS.
+
+New canonical acceptance document:
+docs/acceptance/PHASE_4_PARTICLES.md
+- one startup gate (client boots/loads Planet, built-in probes),
+- one coherent cross-face family visual/motion matrix,
+- explicit Phase-5 fluid, Phase-7 body sources, Phase-7B weather,
+  Phase-9 portal layout, Phase-2 triple-corner bookshelf identity
+  deferrals. Source audit and work queue are docs/research/
+  PARTICLE_MATRIX_1_21_1.md and IMPLEMENTATION_PLAN.md.
+
+Next workflow:
+1. Confirm latest branch 2.0 HEAD GitHub Actions CI success.
+2. Because post-candle EnchantmentMenu/Spore Mixins have not yet
+   been runtime smoke-tested, request a single user
+   git pull && .\\run-client.ps1, with main menu/world/probe
+   acceptance. Do not demand repeated local Gradle, CI owns that.
+3. Then one Phase-4 matrix gameplay pass, not per-class testing.
+4. If runtime Mixin crashes, investigate exact nested exception,
+   fix on 2.0 and wait for CI green before asking client retest.
