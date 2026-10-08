@@ -247,6 +247,7 @@ final class VolumeParticleMixinContractTest {
                                                 new ArrayList<>();
                                         private String atValue;
                                         private String atTarget;
+                                        private int atCount;
                                         private boolean cancellable;
 
                                         @Override
@@ -266,30 +267,57 @@ final class VolumeParticleMixinContractTest {
                                         public AnnotationVisitor visitArray(
                                                 String field
                                         ) {
-                                            if (!"method".equals(field)) {
-                                                return null;
+                                            if ("method".equals(field)) {
+                                                // method() is String[] for all
+                                                // three injector annotations.
+                                                return new AnnotationVisitor(Opcodes.ASM9) {
+                                                    @Override
+                                                    public void visit(
+                                                            String ignored,
+                                                            Object value
+                                                    ) {
+                                                        methods.add((String) value);
+                                                    }
+                                                };
                                             }
-                                            return new AnnotationVisitor(Opcodes.ASM9) {
-                                                @Override
-                                                public void visit(
-                                                        String ignored,
-                                                        Object value
-                                                ) {
-                                                    methods.add((String) value);
-                                                }
-                                            };
+
+                                            if ("at".equals(field)) {
+                                                // @Inject.at() is At[] (even
+                                                // when source spells @At("HEAD")).
+                                                // @Redirect/@ModifyArgs.at()
+                                                // is a single At annotation.
+                                                return new AnnotationVisitor(Opcodes.ASM9) {
+                                                    @Override
+                                                    public AnnotationVisitor visitAnnotation(
+                                                            String ignored,
+                                                            String atDescriptor
+                                                    ) {
+                                                        return visitAt(atDescriptor);
+                                                    }
+                                                };
+                                            }
+
+                                            return null;
                                         }
 
                                         @Override
                                         public AnnotationVisitor visitAnnotation(
                                                 String field, String atDescriptor
                                         ) {
-                                            if (!"at".equals(field)
-                                                    || !(prefix + "At;")
-                                                    .equals(atDescriptor)) {
-                                                return null;
-                                            }
+                                            return "at".equals(field)
+                                                    ? visitAt(atDescriptor)
+                                                    : null;
+                                        }
 
+                                        private AnnotationVisitor visitAt(
+                                                String atDescriptor
+                                        ) {
+                                            assertEquals(
+                                                    prefix + "At;",
+                                                    atDescriptor,
+                                                    "Unexpected Mixin @At annotation"
+                                            );
+                                            atCount++;
                                             return new AnnotationVisitor(Opcodes.ASM9) {
                                                 @Override
                                                 public void visit(
@@ -298,8 +326,7 @@ final class VolumeParticleMixinContractTest {
                                                 ) {
                                                     if ("value".equals(field)) {
                                                         atValue = (String) value;
-                                                    } else if (
-                                                            "target".equals(field)) {
+                                                    } else if ("target".equals(field)) {
                                                         atTarget = (String) value;
                                                     }
                                                 }
@@ -308,14 +335,22 @@ final class VolumeParticleMixinContractTest {
 
                                         @Override
                                         public void visitEnd() {
+                                            assertEquals(
+                                                    1,
+                                                    methods.size(),
+                                                    "Expected one target method for " + name
+                                            );
+                                            assertEquals(
+                                                    1,
+                                                    atCount,
+                                                    "Expected one @At for " + name
+                                            );
                                             result.put(name, new Hook(
                                                     descriptor,
                                                     (access & Opcodes.ACC_STATIC)
                                                             != 0,
                                                     kind,
-                                                    methods.size() == 1
-                                                            ? methods.get(0)
-                                                            : methods.toString(),
+                                                    methods.get(0),
                                                     atValue,
                                                     atTarget, cancellable
                                             ));
