@@ -208,6 +208,29 @@ checking BOTH the `@At` owner+descriptor and the **full handler
 method descriptor and staticness**. Never assume that a successful
 `test.ps1` establishes Mixin can transform the target at startup.
 
+### NeoForge-patched methods and Mixin annotation arrays
+
+Do not derive exact JVM call-site counts solely from vanilla/Mojang
+source. NeoForge patches can deliberately introduce extra INVOKEs:
+the 1.21.1 `EnchantingTableBlock.isValidBookShelf` patch adds
+`getEnchantPowerBonus`, making TWO `BlockPos.offset(Vec3i)`
+calls, versus vanilla's one. Check the target NeoForge patch AND the
+actual Gradle-loaded target `.class` bytecode before asserting or
+editing injection counts. Preserve such platform extension points.
+
+When ASM-inspecting `@Inject`/`@Redirect`/`@ModifyArgs`
+annotations, their `method` property is `String[]`, not a scalar.
+Read it using `AnnotationVisitor.visitArray("method")`, assert
+the intended method name/count, and do not mistake `null` from a
+scalar-only visitor for an actual missing Mixin target.
+
+For server-side world-graph mechanics, trace the FULL consumer chain:
+a correct shared `isValidBookShelf` predicate does not automatically
+reframe the separate NeoForge `EnchantmentMenu` numerical
+`getEnchantPowerBonus` block position. Record it as pending
+until a compatible, client/server-consistent adapter exists.
+
+
 
 
 ## 3C. Separate discovery/research batches from implementation batches
