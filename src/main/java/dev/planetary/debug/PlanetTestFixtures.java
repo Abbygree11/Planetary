@@ -9,6 +9,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.AbstractFurnaceBlock;
+import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CampfireBlock;
@@ -283,15 +286,21 @@ public final class PlanetTestFixtures {
             case "soul_campfire" -> put(level, pos,
                     Blocks.SOUL_CAMPFIRE.defaultBlockState()
                             .setValue(CampfireBlock.LIT, true));
-            case "furnace" -> put(level, pos,
-                    Blocks.FURNACE.defaultBlockState()
-                            .setValue(AbstractFurnaceBlock.LIT, true));
-            case "blast_furnace" -> put(level, pos,
-                    Blocks.BLAST_FURNACE.defaultBlockState()
-                            .setValue(AbstractFurnaceBlock.LIT, true));
-            case "smoker" -> put(level, pos,
-                    Blocks.SMOKER.defaultBlockState()
-                            .setValue(AbstractFurnaceBlock.LIT, true));
+            case "furnace" -> {
+                put(level, pos, Blocks.FURNACE.defaultBlockState()
+                        .setValue(AbstractFurnaceBlock.LIT, true));
+                primeFurnace(level, pos, Items.RAW_IRON);
+            }
+            case "blast_furnace" -> {
+                put(level, pos, Blocks.BLAST_FURNACE.defaultBlockState()
+                        .setValue(AbstractFurnaceBlock.LIT, true));
+                primeFurnace(level, pos, Items.RAW_IRON);
+            }
+            case "smoker" -> {
+                put(level, pos, Blocks.SMOKER.defaultBlockState()
+                        .setValue(AbstractFurnaceBlock.LIT, true));
+                primeFurnace(level, pos, Items.BEEF);
+            }
             case "brewing_stand" -> put(level, pos,
                     Blocks.BREWING_STAND.defaultBlockState());
             case "respawn_anchor" -> put(level, pos,
@@ -306,6 +315,24 @@ public final class PlanetTestFixtures {
             default -> throw new IllegalStateException(
                     "Unexpected test station: " + station.name()
             );
+        }
+    }
+
+    /**
+     * Keep furnace emitters active after the first server tick. A naked
+     * LIT=true block with no inputs would promptly extinguish and produce
+     * a misleading "particle broken" test result.
+     */
+    private static void primeFurnace(
+            ServerLevel level,
+            BlockPos pos,
+            net.minecraft.world.item.Item input
+    ) {
+        if (level.getBlockEntity(pos)
+                instanceof AbstractFurnaceBlockEntity furnace) {
+            furnace.setItem(0, new ItemStack(input, 64));
+            furnace.setItem(1, new ItemStack(Items.COAL, 64));
+            furnace.setChanged();
         }
     }
 
