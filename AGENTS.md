@@ -359,6 +359,35 @@ A green unit test suite does NOT prove runtime behavior that depends on
 Minecraft rendering, collision timing, client/server interaction, worldgen,
 random ticks, etc.
 
+### GitHub Actions must be green before asking for a local test
+
+A GitHub Actions `.github/workflows/test.yml` build runs on each push
+to branch `2.0`, using Java 21 and Gradle 8.12. It executes
+`compileJava compileTestJava` and then `test`, and uploads failed
+test reports.
+
+**Mandatory when changing source code or tests:**
+1. Commit changes to branch `2.0`.
+2. Read the corresponding GitHub Actions run status and failures.
+3. If compile or JUnit fails, fix root cause and repeat until the
+   HEAD commit has green compile AND test jobs.
+4. Only after green CI ask the user to run Minecraft client or
+   manually check real gameplay, if needed.
+
+Do not ask the user to find compiler errors that GitHub Actions
+can find. The first workflow run (2026-10-08) caught this contract:
+commit `afceb3b0` ran successfully after correcting an invalid
+`public AnnotationVisitor visit(String,Object)` override to
+`public void visit(String,Object)`.
+
+A green CI validates compilation and JUnit only; it does NOT validate
+Mixin class transformation in a real Minecraft client or the
+behavior of Planet mechanics in gameplay. Such acceptance remains
+distinct and must be reported honestly. If workflow is broken,
+unavailable or not green, disclose that explicitly and do NOT
+pretend the change was build-tested.
+
+
 ## 7. Manual acceptance is a hard gate
 
 Never claim runtime success merely because code compiles, unit tests pass, or a
