@@ -732,6 +732,56 @@ One batch:
 - ModelData/RenderType compatibility;
 - performance/cache smoke test.
 
+### 2026-10-09 numerical EnchantmentMenu bonus integration
+[IMPLEMENTED / BUILD+CLIENT STARTUP+GAMEPLAY ACCEPTANCE PENDING]
+
+User confirmed **BUILD SUCCESSFUL** after corrected handling of
+`@Inject.at(): At[]` in the VolumeParticleMixinContractTest. This
+establishes the pre-menu-runtime JUnit checkpoint and clears the
+previous test-only blocker. No new Minecraft world startup was
+claimed for enchanting/spore source integration.
+
+The NeoForge numerical enchanting power gap is now implemented
+at the correct common CLIENT+SERVER callsite:
+
+- `EnchantmentMenuBookshelfPowerMixin` targets only synthetic
+  `EnchantmentMenu.lambda$slotsChanged$0(ItemStack,Level,BlockPos)V`,
+  which owns the extra NeoForge float `getEnchantPowerBonus`
+  accumulation after shared bookshelf-validity testing.
+- Scoped `@Redirect` covers BOTH physical
+  `BlockPos.offset(Vec3i)` calls (one getBlockState receiver
+  position, one getEnchantPowerBonus context position) with the
+  same already-implemented
+  `PlanetLocalBlockProjection.physicalOffset(level,source,dx,dy,dz)`.
+  This preserves vanilla+NeoForge modded bonus values, menu
+  enchant cost calculation, event hooks, RNG and third-party
+  bookshelf extension points. No global BlockPos hook.
+- Registered in `planetary.mixins.json` COMMON; defaultRequire=1.
+- `EnchantmentMenuBookshelfPowerMixinContractTest` validates actual
+  NeoForge lambda name and JVM descriptor, exactly two
+  BlockPos.offset(Vec3i) calls, exactly one getEnchantPowerBonus
+  and isValidBookShelf INVOKE, compiled redirect signature/
+  instance staticness/target and JSON registration.
+- Source and portability contract: 
+  `docs/research/LOCAL_VOLUME_SOURCE_SAMPLING_1_21_1.md`.
+  The synthetic lambda is intrinsically version-sensitive; validate
+  new Minecraft versions before porting.
+
+Status:
+- Previous pure topology and original volume-ASM tests: PASS (user).
+- Current menu runtime change: IMPLEMENTED / BUILD UNVERIFIED.
+- Enchanting/spore Mixin client+server startup: PENDING.
+- Correct numerical enchant power and visual particles on +Y,
+  rotated faces and edge/corner: gameplay PENDING.
+- Cube three-face corner potential duplicate physical bookshelf
+  provider: still separate Phase-2 policy gate.
+
+**Next required checkpoint:**
+`git pull && .\\test.ps1 && .\\run-client.ps1`;
+verify JUnit first, then client load/Planet world diagnostics and
+absence of Mixin apply/InvalidInjectionError. Batch manual gameplay
+acceptance remains a separate explicit phase gate.
+
 ### 2026-10-09 additional ASM annotation array regression
 [TEST-ONLY FIX IMPLEMENTED / GRADLE RECHECK PENDING]
 
@@ -786,7 +836,7 @@ pos.offset(offset))` in EnchantmentMenu, AFTER calling the shared
 EnchantingTableBookshelfGravityMixin fixes the validity predicate
 but DOES NOT yet reframe the menu's separate raw bonus location.
 Therefore mark server-calculated enchant power as **NOT FINISHED**
-until a focused menu bonus adapter is added and tested for
+until the now-implemented menu bonus adapter is tested for
 +Y/rotated/edge cases while preserving NeoForge modded power bonus
 and event hooks. Do NOT claim overall enchantment gameplay is done.
 
