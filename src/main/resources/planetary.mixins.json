@@ -19,6 +19,7 @@
     "BlockLocalParticleEmitterGravityMixin",
     "AbstractCandleParticleEmitterGravityMixin",
     "EnchantingTableParticleGravityMixin",
+    "SporeBlossomParticleGravityMixin",
     "CampfireSmokeParticleGravityMixin",
     "BaseAshSmokeParticleGravityMixin",
     "WhiteAshParticleGravityMixin",
