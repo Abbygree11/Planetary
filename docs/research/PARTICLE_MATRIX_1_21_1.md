@@ -330,3 +330,39 @@ ACCEPTANCE PENDING. Prior seven-block emission family client startup
 smoke was observed passing in user screenshot, but it does not prove
 these candle hooks apply in game. Phase-4 visual acceptance is one
 subsystem batch later.
+
+
+### 2026-10-08 candle emitter Mixin regression: signature capture, not INVOKE owner
+
+After the first candle implementation (69eb709), user's test command
+reached runClient but the client crashed in bootstrap applying
+`AbstractCandleParticleEmitterGravityMixin.planetary$reframeLitCandleOffsets`.
+Unlike previous Phase-4 owner errors, this was
+`InvalidInjectionException`: `@ModifyArg` handler's callback declared
+`(Consumer, BlockState, Level, BlockPos, RandomSource)`, but
+`@ModifyArg` only accepts the changed `Consumer`, not enclosing method
+arguments. The actual vanilla
+`Iterable.forEach(Consumer)` target itself was correctly matched.
+The ASM annotation target tests had passed without checking the callback
+descriptor.
+
+Root fix: lit animateTick now uses scoped `@Redirect` of exactly the
+same `Iterable.forEach` call; permitted callback arguments are the
+invoked Iterable receiver, the original Consumer, then the enclosing
+animateTick arguments. Delegate once to original forEach with the
+rotated-offset forwarding Consumer only on rotated Planet frames;
+forward the original Consumer unchanged on +Y/non-Planet. Existing
+static extinguish redirect and all vanilla RNG, types and sounds
+stay unchanged.
+
+Added ASM full handler descriptor/staticness tests for both redirect
+paths; injection kind and target checks now expect two Redirects.
+`AGENTS.md` codifies that `@At` checks alone are insufficient;
+all new Mixins need handler signature + injector-kind checks.
+Source/contract details:
+`docs/research/CANDLE_PARTICLE_EMITTERS_1_21_1.md`.
+
+Status: IMPLEMENTED / CLIENT STARTUP RECHECK PENDING. Last observed
+client GOOD checkpoint is the previous seven-block emitter batch,
+before first candle Mixin. Do not expand new particles until this
+bootstrap gate clears; gameplay still Phase-4 batch pending.
