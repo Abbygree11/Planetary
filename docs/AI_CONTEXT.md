@@ -2821,3 +2821,72 @@ docs/acceptance/PHASE_4_PARTICLES.md. No further individual build
 or client-smoke request necessary before this manual gameplay matrix.
 Known fluid/vehicle/body/weather/portal/3-face provider policy gaps
 remain deferred to owning subsequent phases.
+
+
+## 2026-10-09 first Phase-4 manual matrix found Phase-2/3 blockers; dev fixture lab committed
+
+User submitted screenshots and exact 10-row Phase-4 results:
+1 BASE shared particle gravity PASS;
+2 block destruction/collision/falling debris PASS;
+3 vanilla + redstone torch emitters PASS;
+4 cherry leaf particle motion PASS after manual leaf placement,
+  while saplings cannot be planted on side/bottom (Phase-2 growth);
+5 furnace/campfire/local emitter particles reportedly PASS where
+  supported, but End Rod and Ender Chest placement/model are
+  incorrect on side/bottom (Phase-2/3);
+6 candle & candle cake +Y PASS, side/bottom cannot place
+  (Phase-2 support/item placement BLOCKER);
+7 enchantment particle PASS, table/book model visually broken
+  on rotated faces (Phase-3 BE renderer; numeric enchant POWER
+  not yet observed in-game);
+8 spore blossom cannot be installed on rotated faces (Phase-2
+  ceiling support BLOCKER; airborne emission NOT ACCEPTED);
+9 FlintAndSteel cannot ignite rotated/bottom worlds (Phase-2
+  useOn + Phase-9 portal geometry BLOCKER). Water-drip falls
+  in correct local direction but originates at wrong point
+  (Phase-4 emitter / Phase-5 integration). Other particle types
+  too cumbersome to recreate manually;
+10 seam/regression/performance user says OK.
+
+Prior Phase 2/3 research was comprehensive but implementation
+and genuine integrated gameplay acceptance remain PARTIAL.
+Root defects must be assigned to their actual mechanism families;
+not repaired with particle patches merely to make Phase 4 tests pass.
+The exact screenshots prove symptoms, not unique call-path causes.
+User emphasized their earlier warning that skipping prior phases
+was premature. Phase-4 cannot be fully accepted yet; user-confirmed
+rows 1/2/3/10 and part 4 should be retained as accepted, NOT
+retested on each new patch unless touched.
+
+NEW fixture prerequisite planned/researched at
+docs/research/DEBUG_TEST_FIXTURES_1_21_1.md and implemented:
+- PlanetTestFixtures.java builds 20 paired reference / natural-placement
+  stations on 6 face interiors (120 pairs). Physical positions from
+  PlanetGravityFrame, central Planet worldgen only.
+- cyan floor tile = explicitly server-installed canonical-state block
+  to test render/emitter. Lime = EMPTY adjacent vanilla placement
+  test area; must NOT falsely call forced setBlock a placement PASS.
+- stations: end rod/chest, enchantment table + bookshelf, ceiling
+  spore blossom support, candles/cake, cherry leaves, torches,
+  campfires, fueled furnaces, brewing stand, respawn anchor,
+  unlit portal ignition frame, obsidian interaction, dripstone
+  scaffold. Exact grid in docs/acceptance/PLANET_TEST_LAB.md.
+- /planetary test build / legend / go <face> / rebuild <face>
+  commands from PlanetTestCommands, gated to Planet world and
+  permission level 2. Rebuild explicitly destructive within bounded
+  footprint; auto-build is SAFE/no-overwrite.
+- auto-install at login only when Gradle runClient sets
+  -Dplanetary.debug.fixtures.auto=true, not in normal exported jars.
+  Marker guard persists across server restart, previously
+  occupied test region is preserved. Only fresh-spawn players
+  may be auto-relocated to the +Y pad.
+- new pure layout test, Github Actions CI for latest code commit
+  is PENDING at time of authoring. NO GAMEPLAY/STARTUP acceptance
+  yet for fixture infrastructure; do not ask user to compile until
+  CI is successful.
+
+NEW execution order documented in IMPLEMENTATION_PLAN:
+(1) stable fixture infrastructure, (2) Phase-2 placement/survival
+& interaction families, (3) Phase-3 special renderers, (4) redo
+blocked subset of Phase-4 integrated acceptance, (5) Phase-5
+fluid subsystem when dependencies are stable.
