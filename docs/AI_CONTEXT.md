@@ -2377,3 +2377,52 @@ Remaining non-fluid source paths to audit/implement:
 EnchantingTable bookshelf-neighbor topology and SporeBlossom
 distributed-air candidate cells; more portal/body/fluid/weather
 sources are gated by their owning later phase.
+
+
+## 2026-10-08 candle startup regression: InvalidInjectionException (@ModifyArg handler signature)
+
+User's big-paste crash log from the client launched after 69eb709:
+runClient FAILED before Minecraft Bootstrap finished while applying
+planetary.mixins.json:AbstractCandleParticleEmitterGravityMixin to
+AbstractCandleBlock.
+
+Deepest `Caused by`:
+`org.spongepowered.asm.mixin.injection.throwables.InvalidInjectionException`:
+`@ModifyArg injector planetary$reframeLitCandleOffsets targets a method
+with an invalid signature (Ljava/util/function/Consumer;), expected
+(Ljava/util/function/Consumer;L.../BlockState;L.../Level;L.../BlockPos;
+L.../RandomSource;)`.
+
+Root cause: our lit-candle handler declared four enclosing animateTick
+arguments after the Consumer but `@ModifyArg` does not permit that
+capture. The previous ASM test checked only @At owner/call target and
+did not validate the callback method descriptor, so it could not
+catch this class-load failure. GL wrong-thread log is a secondary
+system-report consequence after bootstrap crash, not the root cause.
+
+Corrective implementation on branch 2.0 (BUILD/STARTUP STILL PENDING):
+- For lit animateTick, replace only `@ModifyArg` with `@Redirect`
+  of same `Iterable.forEach(Consumer)` invocation. Handler now
+  takes Iterable receiver, original Consumer, THEN enclosing
+  BlockState/Level/BlockPos/RandomSource; Sponge Mixin official
+  @Redirect source explicitly supports appended target-method args.
+- For +Y/outside Planet call offsets.forEach(originalConsumer)
+  without an extra Consumer allocation. For rotated Planet call
+  offsets.forEach(offset ->
+    originalConsumer.accept(PlanetParticleEmitter.rotateUnitBlockEmitterOffset(
+      offset,frame))).
+  Preserve every vanilla lambda particle, RNG and sound.
+- Static extinguish @Redirect, smoke velocity and stable Planet
+  offset helper unchanged.
+- Add `CandleParticleEmitterInvocationTest` guard for exact compiled
+  **BOTH** Redirect method descriptors and correct staticness,
+  plus updated @At annotation expectations (two Redirects).
+- Update research and roadmap with rejected @ModifyArg path and
+  pending recheck; main startup from previous seven-block source
+  batch remains last confirmed runtime good.
+
+Next gate (must obtain user evidence before proceeding with
+further unaccepted candle-dependent Mixin work):
+git pull && .\\test.ps1 && .\\run-client.ps1
+Expect Gradle tests green and client world attachment/diagnostics;
+CANDLE gameplay and full Phase-4 subsystem gameplay NOT accepted.
