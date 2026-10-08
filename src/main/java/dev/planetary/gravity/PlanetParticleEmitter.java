@@ -107,6 +107,36 @@ public final class PlanetParticleEmitter {
     }
 
     /**
+     * A vanilla candle's getParticleOffsets emits positions relative to
+     * its block CORNER (0,0,0), not its center. Reframe that unit-cube
+     * coordinate around the physical block center and keep it relative to
+     * the same corner. Both lit-candle and extinguish paths share this.
+     *
+     * <p>Offsets can reach y=1.0 for a candle cake. Do not derive the
+     * owning BlockPos from the emitted coordinate.</p>
+     */
+    public static Vec3 rotateUnitBlockEmitterOffset(
+            Vec3 localUnitOffset,
+            PlanetGravityFrame frame
+    ) {
+        Objects.requireNonNull(localUnitOffset, "localUnitOffset");
+        Objects.requireNonNull(frame, "frame");
+
+        PlanetFrameVector physical =
+                frame.localToWorld(new PlanetFrameVector(
+                        localUnitOffset.x - 0.5D,
+                        localUnitOffset.y - 0.5D,
+                        localUnitOffset.z - 0.5D
+                ));
+
+        return new Vec3(
+                physical.x() + 0.5D,
+                physical.y() + 0.5D,
+                physical.z() + 0.5D
+        );
+    }
+
+    /**
      * Vanilla ParticleUtils.spawnParticleBelow samples two tangent coordinates
      * in [0,1) and places the particle at y - 0.05. Relative to the block
      * center that is local Y = -0.55.
