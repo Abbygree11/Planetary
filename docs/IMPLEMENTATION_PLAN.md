@@ -1386,6 +1386,25 @@ However, final correctness of:
 
 is blocked by Phase 5 and will receive an integration re-check there.
 
+### 2026-10-09 Phase-4 coherent acceptance plan prepared
+
+Following completion of block-emitter, candle, enchantment and
+spore source integrations, Phase 4's remaining fluid, body, weather
+and portal dependencies are explicitly gated by later phases.
+The one consolidated user-facing smoke/gameplay checklist is now
+`docs/acceptance/PHASE_4_PARTICLES.md`.
+
+This is a PLAN, **not a gameplay PASS**. Run one NeoForge client
+startup checkpoint with the current shared EnchantmentMenu
+numeric-bonus Mixin after CI is green; the latest client startup
+evidence was from the earlier candle patch and does not validate
+the new enchanting/spore Mixin family. Then execute the coherent
+Phase-4 matrix ONCE to accept non-blocked behavior across +Y,
+rotated faces and owned edge conditions. Deferred cross-phase
+fluids, entity/body, weather, portal plane and triple-face bookcase
+identity remain separately tracked and must NOT be silently
+called complete.
+
 ### 4.6 Single final particle acceptance matrix
 
 Do not request manual testing until the non-blocked Phase 4 implementation is
