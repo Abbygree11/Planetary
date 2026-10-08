@@ -1,0 +1,53 @@
+name: Planetary Java 21 tests
+
+on:
+  push:
+    branches:
+      - "2.0"
+  pull_request:
+    branches:
+      - "2.0"
+  workflow_dispatch:
+
+concurrency:
+  group: planetary-test-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Set up Gradle 8.12 and cache dependencies
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.12"
+
+      - name: Compile production and test sources
+        run: gradle compileJava compileTestJava --no-daemon --warning-mode=none --no-problems-report
+
+      - name: Run JUnit tests
+        run: gradle test --no-daemon --warning-mode=none --no-problems-report
+
+      - name: Publish failure reports
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gradle-test-reports
+          path: |
+            build/reports/tests/test/
+            build/test-results/test/
+          if-no-files-found: ignore
