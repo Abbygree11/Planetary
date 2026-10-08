@@ -1,7 +1,8 @@
 # Phase 4 / Phase 1: local volumetric emitter queries (Minecraft 1.21.1)
 
-Status: SOURCE AUDIT COMPLETE; multi-axis traversal API in implementation;
-EnchantmentTable/SporeBlossom runtime integration NOT YET IMPLEMENTED.
+Status: SOURCE AUDIT COMPLETE; multi-axis traversal API IMPLEMENTED with
+pure tests, awaiting Gradle verification. EnchantingTable/SporeBlossom
+runtime integration NOT YET IMPLEMENTED.
 
 ## Source paths (readable vanilla 1.21.1)
 
@@ -110,6 +111,45 @@ This is a foundation for future client/server adapters;
 it must NOT globally modify vanilla `BlockPos`, globally alter
 bookcase validation, or install a partial SporeBlossom particle
 hook before both complete call paths have been tested.
+
+## Implemented typed traversal foundation (2026-10-08)
+
+`src/main/java/dev/planetary/world/PlanetLocalBlockOffset.java`
+exposes `traverse(PlanetBlockFrameContext source, int localX,
+int localY, int localZ)` returning the target **physical cell plus
+transported traversal chart** in another
+`PlanetBlockFrameContext`. The helper changes no Level/BlockPos
+behavior by itself and is outside reserved Mixin packages.
+
+It implements the explicitly documented axis order X, Z, Y.
+Each cell is resolved through the existing
+`PlanetBlockFrameContext.step` engine, and on every horizontal
+gravity seam, `FaceTransform.transformDirection` remaps
+the **whole remaining EAST/SOUTH local basis**, not only the
+direction of the step currently being completed.
+Local UP remains relative to the current gravity face.
+
+A radial-frame transition inside the core is rejected as
+unsupported instead of guessing an edge transform; this API is
+for shell-local source volumes. Integer.MIN_VALUE offsets are
+rejected to avoid overflow/unbounded traversal.
+
+`src/test/java/dev/planetary/world/PlanetLocalBlockOffsetTest.java`:
+- 450 small signed (dx,dy,dz) samples across all 6 interior faces,
+  comparing to direct same-face localToWorld integer projection;
+- 24 directed face-edge examples (4 x 6), verifying equivalence
+  of one-axis moves with existing `PlanetBlockFrameContext.walk`;
+- six 2D X-then-Z seam-crossing samples verifying the SOUTH axis
+  is explicitly parallel transported via `FaceTransform`;
+- zero offset retains the original traversal frame even on a seam;
+- rejects unbounded integer offset.
+
+Gradle/JUnit NOT run by assistant; no runtime application and no
+gameplay acceptance. Next work must confirm the precise source
+frame / target canonical BlockState frame behavior near *two*
+intersecting seams BEFORE adapting EnchantmentMenu or spore
+candidate occlusion checks. Multi-axis offsets near corners are
+path-defined, not invariant under permuting the axes.
 
 ## Performance / acceptances
 
