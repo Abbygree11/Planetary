@@ -732,6 +732,32 @@ One batch:
 - ModelData/RenderType compatibility;
 - performance/cache smoke test.
 
+### 2026-10-09 additional ASM annotation array regression
+[TEST-ONLY FIX IMPLEMENTED / GRADLE RECHECK PENDING]
+
+User reran after `6e1d0a6` and reported one remaining
+`VolumeParticleMixinContractTest.allFourVolumeMixinHandlersHaveExactSignatureAndAtContract`
+assertion: spore `@Inject` handler had correct descriptor, method
+`animateTick`, kind, non-static, cancellable=true but parser found
+`atValue=null` instead of HEAD. This is NOT proof of a missing or
+incorrect runtime injection.
+
+Official Mixin annotation declarations establish
+`@Inject.at(): At[]` but `@Redirect.at(): At`,
+`@ModifyArgs.at(): At`. The test was still reading all `at`
+as a single nested annotation. Test now supports both ASM
+`visitArray("at") -> visitAnnotation(null,...)` and
+`visitAnnotation("at",...)`, sharing the same strict At parser.
+It additionally asserts one and only one `@At` and target
+method for each compiled injector, retaining exact HEAD/INVOKE,
+descriptors, staticness and cancellable checks.
+
+No runtime/game logic changes. Do not proceed with or mark
+NeoForge numeric bookshelf power adaptation PASS until tests
+and subsequent integration acceptance are verified.
+**User checkpoint:** `git pull && .\\test.ps1` (no client required
+for a test-only correction).
+
 ### 2026-10-08 NeoForge bookshelf tests and numerical bonus gate
 [JUnit TEST FIX IMPLEMENTED / RETEST PENDING; SERVER BONUS INTEGRATION OPEN]
 
