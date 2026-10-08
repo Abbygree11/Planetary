@@ -141,6 +141,8 @@ rejected to avoid overflow/unbounded traversal.
   of one-axis moves with existing `PlanetBlockFrameContext.walk`;
 - six 2D X-then-Z seam-crossing samples verifying the SOUTH axis
   is explicitly parallel transported via `FaceTransform`;
+- 24 triple-face corner examples (4 corners x 6 faces), with
+  deterministic X-then-Z physical route and transported axis;
 - zero offset retains the original traversal frame even on a seam;
 - rejects unbounded integer offset.
 
