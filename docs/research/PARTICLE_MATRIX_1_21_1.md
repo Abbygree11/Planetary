@@ -298,3 +298,35 @@ Canonical narrow source inventory, exact descriptors and acceptance:
 **Status: IMPLEMENTED / TEST + CLIENT STARTUP ACCEPTANCE PENDING.**
 Do not mark this or the whole particle subsystem PASS before user
 confirmation. Fluid-membership and body-source gates remain Phase 5/7.
+
+
+## 2026-10-08 AbstractCandleBlock source family [IMPLEMENTED / ACCEPTANCE PENDING]
+
+CandleBlock and CandleCakeBlock inherit AbstractCandleBlock.animateTick,
+not their own animateTick. The shared vanilla getter supplies block-unit
+local emitter offsets, and the base class uses
+`java.lang.Iterable.forEach(Consumer)` once to run the private lambda
+that emits flame/smoke and optional ambient sound.
+
+Implemented one base-family @ModifyArg: rotate the candle-unit offset
+before forwarding into the exact original Consumer on rotated Planet
+faces. RNG, per-candle emission counts, particle types and sound
+frequency remain vanilla, including +Y and non-Planet pass-through.
+
+The independent static AbstractCandleBlock.extinguish path uses a
+second `Iterable.forEach`. Implemented narrow @Redirect on rotated
+physical Levels only: preserve one smoke per original candle offset
+and same order, rotate local puff origin and float-derived (double)
+0.1F UP speed; do not reimplement vanilla setLit, sound or game event.
+Virtual LevelAccessor and +Y/non-Planet call original Consumer.
+
+Pure tests and ASM annotation/call-site contract tests added in
+`PlanetParticleEmitterTest` and
+`CandleParticleEmitterInvocationTest`. Canonical source research:
+`docs/research/CANDLE_PARTICLE_EMITTERS_1_21_1.md`.
+
+Status: committed on branch 2.0, NEW CLIENT STARTUP AND GAMEPLAY
+ACCEPTANCE PENDING. Prior seven-block emission family client startup
+smoke was observed passing in user screenshot, but it does not prove
+these candle hooks apply in game. Phase-4 visual acceptance is one
+subsystem batch later.
