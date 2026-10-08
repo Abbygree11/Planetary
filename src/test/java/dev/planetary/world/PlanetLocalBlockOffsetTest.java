@@ -133,6 +133,54 @@ final class PlanetLocalBlockOffsetTest {
     }
 
     @Test
+    void threeFaceVerticesHaveADeterministicXThenZPhysicalRoute() {
+        for (PlanetFace face : PlanetFace.values()) {
+            for (int eastSign : new int[]{-1, 1}) {
+                for (int southSign : new int[]{-1, 1}) {
+                    PlanetBlockFrameContext source = context(
+                            physical(
+                                    face,
+                                    SHELL,
+                                    eastSign * SHELL,
+                                    southSign * SHELL
+                            ),
+                            face
+                    );
+
+                    Direction x = eastSign == 1
+                            ? Direction.EAST : Direction.WEST;
+                    Direction z = southSign == 1
+                            ? Direction.SOUTH : Direction.NORTH;
+
+                    PlanetBlockStep first = source.step(x);
+                    FaceTransform fold = PlanetTopology.edgeTransform(
+                            face,
+                            PlanetVanillaDirection.fromVanilla(x)
+                    );
+                    Direction carriedZ = PlanetVanillaDirection.toVanilla(
+                            fold.transformDirection(
+                                    PlanetVanillaDirection.fromVanilla(z)
+                            )
+                    );
+
+                    PlanetBlockFrameContext target =
+                            first.target().step(carriedZ).target();
+
+                    PlanetBlockFrameContext actual =
+                            PlanetLocalBlockOffset.traverse(
+                                    source, eastSign, 0, southSign
+                            );
+
+                    assertEquals(target.pos(), actual.pos(),
+                            face + " corner " + eastSign + "/" + southSign);
+                    assertEquals(target.face(), actual.face(),
+                            face + " corner " + eastSign + "/" + southSign);
+                }
+            }
+        }
+    }
+
+    @Test
     void zeroOffsetsPreserveOriginalTraversalChartEvenAtASeam() {
         for (PlanetFace face : PlanetFace.values()) {
             PlanetBlockFrameContext source = context(
