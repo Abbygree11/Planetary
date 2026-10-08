@@ -2,7 +2,7 @@
 
 Minecraft 1.21.1 · NeoForge 21.1.215 · Planetary branch 2.0
 
-**Status: PLAN PREPARED / GAMEPLAY ACCEPTANCE NOT YET PERFORMED.**
+**Status: CI AND PLANET-WORLD STARTUP CHECKPOINT PASSED / PARTICLE GAMEPLAY ACCEPTANCE PENDING.**
 This is ONE acceptance run for the implemented non-blocked Phase-4
 families, not a series of per-class manual retests.
 
@@ -21,6 +21,19 @@ families, not a series of per-class manual retests.
   successful diagnostic, not 22 failing tests.
 
 CI green does **not** substitute for this one client-transformer check.
+
+User evidence 2026-10-09:
+- GitHub Actions `37846622714` succeeded for the last
+  code/workflow HEAD `a9c5368e` (compile + JUnit).
+- In-game Planet screenshot shows the world running with the support,
+  placement, Frame API and capabilities checks passed; 22 raw relative
+  differences are intentionally detected.
+- Standing/shape diagnostics are not visible in this latest crop.
+- No claim yet that the new particle and numerical enchantment behavior
+  has passed on all six faces.
+
+**Do not rerun Gradle or the same client-startup gate merely to
+begin this matrix.** Continue in the open Planet world if available.
 
 ## Setup for the ONE gameplay acceptance matrix
 
