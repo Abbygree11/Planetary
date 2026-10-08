@@ -341,7 +341,9 @@ per-face destructive rebuild command is available. The
 bounded layout uses true physical positions from six
 `PlanetGravityFrame` bases; development sample reference
 BlockStates do NOT assert natural placement is fixed.
-Tests: `PlanetTestFixturesTest`, GitHub Actions status pending.
+Tests: `PlanetTestFixturesTest`. GitHub Actions run 37857156948
+for last Java commit e663b23 PASSED compileJava, compileTestJava and
+JUnit. Runtime auto-build/client behavior PENDING user acceptance.
 This is a test infrastructure step, not an unverified claim
 that Phase-2/3 defects are resolved.
 
