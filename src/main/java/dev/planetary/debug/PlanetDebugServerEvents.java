@@ -2,6 +2,7 @@ package dev.planetary.debug;
 
 import dev.planetary.PlanetaryMod;
 import dev.planetary.gravity.PlanetGravityRuntime;
+import dev.planetary.topology.PlanetFace;
 import dev.planetary.worldgen.PlanetChunkGenerator;
 import dev.planetary.worldgen.PlanetWorldSettings;
 import net.minecraft.network.chat.Component;
@@ -151,6 +152,41 @@ public final class PlanetDebugServerEvents {
                                 + " cache invalidation."
                 )
         );
+
+        // Only runClient's DEVELOPMENT JVM profile enables this opt-in.
+        // Normal packaged Planetary installs never build debug structures
+        // automatically. Existing blocks in reserved lab regions are never
+        // removed on login, and completed areas use a persistent marker.
+        if (Boolean.getBoolean(PlanetTestFixtures.AUTO_PROPERTY)) {
+            PlanetTestFixtures.BuildStats fixtures =
+                    PlanetTestFixtures.buildAll(level, false);
+
+            player.sendSystemMessage(Component.literal(
+                    "[Planetary Test] Six-face fixture lab: newly built "
+                            + fixtures.built() + ", already present "
+                            + fixtures.alreadyPresent() + ", occupied "
+                            + fixtures.occupied() + " (left untouched). "
+                            + "/planetary test legend, /planetary test go pos_y"
+            ));
+
+            // A first-time dev world spawns two blocks below our isolated
+            // reference lab. Move ONLY players still at the default fresh
+            // spawn to its arrival pad; never relocate returning builders.
+            if (fixtures.built() > 0
+                    && player.position().distanceToSqr(
+                            PlanetWorldSettings.spawn()) < 16.0D) {
+                net.minecraft.core.BlockPos arrival =
+                        PlanetTestFixtures.arrival(PlanetFace.POS_Y);
+                player.teleportTo(
+                        level,
+                        arrival.getX() + 0.5D,
+                        arrival.getY() + 0.5D,
+                        arrival.getZ() + 0.5D,
+                        player.getYRot(),
+                        player.getXRot()
+                );
+            }
+        }
 
         if (player.getAbilities().flying) {
             player.getAbilities().flying = false;
