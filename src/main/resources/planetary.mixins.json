@@ -18,6 +18,7 @@
     "CampfireParticleEmitterGravityMixin",
     "BlockLocalParticleEmitterGravityMixin",
     "AbstractCandleParticleEmitterGravityMixin",
+    "EnchantingTableParticleGravityMixin",
     "CampfireSmokeParticleGravityMixin",
     "BaseAshSmokeParticleGravityMixin",
     "WhiteAshParticleGravityMixin",
@@ -51,6 +52,7 @@
   ],
   "mixins": [
     "BlockCapabilityMixin",
+    "EnchantingTableBookshelfGravityMixin",
     "ChunkSourceMixin",
     "EntityGravityMixin",
     "LevelMixin",
