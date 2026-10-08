@@ -2250,3 +2250,61 @@ direct in-game evidence, not a complete transcript of :test.
 Next work: resume the coherent remaining Phase-4 particle emitter/
 constructor source inventory and implementation; gameplay acceptance
 deferred to one comprehensive subsystem matrix (AGENTS 7A).
+
+
+## 2026-10-08 Phase-4 block-local animateTick emitter family — code checkpoint
+
+User confirmed we should continue autonomously using roadmap and avoid
+tiny class-by-class gameplay tests; latest user screenshot proves client
+startup and in-world diagnostics now run, but Phase-4 manual matrix
+still NOT accepted.
+
+Detailed vanilla family source inventory:
+docs/research/BLOCK_LOCAL_PARTICLE_EMITTERS_1_21_1.md
+Looked up 1.21.1 source (comparative OptiFine decompilation) for
+Furnace, BlastFurnace, Smoker, BrewingStand, EndRod, RespawnAnchor,
+EnderChest, AbstractCandleBlock/CandleBlock/CandleCakeBlock,
+EnchantingTable, SporeBlossom, NetherPortal. Seven first classes
+each own animateTick and call Level.addParticle (Furnace twice);
+their final sampled positions have canonical block-LOCAL meaning.
+RespawnAnchor local UP and EnderChest local vertical/tangent momentum
+are also local; EndRod Gaussian velocity is isotropic and left
+physical. Candle uses getParticleOffsets lambda/static helper and
+different extinguish path, so is explicitly NOT in this mixin.
+
+IMPLEMENTED on branch 2.0 (BUILD/STARTUP/GAMEPLAY UNVERIFIED after patch):
+- src/main/java/dev/planetary/mixin/
+  BlockLocalParticleEmitterGravityMixin.java, 7-class @Mixin,
+  one @ModifyArgs at actual Level.addParticle(ParticleOptions,6*double)
+  inside each animateTick.
+- On rotated Planet frames only: preserve the vanilla random samples,
+  adapt origin relative to center with existing
+  PlanetParticleEmitter.transformVanillaLocalEmitter;
+  rotate local momentum for RespawnAnchor/EnderChest with
+  PlanetParticleMotion.localVelocityToWorld.
+- +Y/non-Planet is byte-for-byte pass-through through the injected
+  callback; emit count, RNG, vanilla addParticle and sound never
+  overwritten; no caching/state added. Other sources use original
+  Gaussian/zero velocity.
+- json client mixin registration added, defaultRequire=1 retained.
+- src/test/java/dev/planetary/gravity/
+  BlockLocalParticleEmitterInvocationTest.java verifies exact seven
+  animateTick class-file invoke owners/call counts (Furnace=2),
+  compiled @Mixin targets/@ModifyArgs anchor and JSON entry.
+- PlanetBlockLocalEmitterBatchTest.java checks seven representative
+  emitted positions and 2 local authored motion vectors for all
+  six frames (+Y baseline and invertibility).
+
+Still pending: candles (different lambda/extinguish mechanism),
+enchanting table bookshelf local-neighbor graph, spore blossom
+distribution-space sampling; fluid/portal/weather/body sources
+belong to owning later integration phases. All statuses recorded in
+IMPLEMENTATION_PLAN and PARTICLE_MATRIX; no per-source gameplay
+requests before coherent Phase-4 batch acceptance.
+
+IMPORTANT: assistant did NOT run Gradle/JUnit or launch game for this
+patch. Do NOT label as PASS merely because source exists in GitHub.
+Next: continue remaining non-blocked emitter family if no required
+baseline failure; eventually user runs
+git pull && .\\test.ps1 && .\\run-client.ps1
+and whole Phase-4 gameplay matrix.
