@@ -270,6 +270,81 @@ After the completed research sweep:
 - PARTIAL: architecture exists and some behavior is verified, but the phase is not closed.
 - PLANNED: no runtime implementation should be considered stable yet.
 
+## 2026-10-09 cross-phase acceptance correction: reopen Phase 2/3 before Phase 5
+
+The previous practice of moving on to Phase 4 because pure tests and
+startup probes passed was premature. In the user's FIRST complete manual
+Phase-4 gameplay review, particle core motion, block debris, torches,
+cherry-leaf behavior and seam/load tests were explicitly accepted.
+However placement and rendering mechanisms from earlier phases blocked
+nearly every representative advanced emitter. This is NOT a Phase-4
+green acceptance, and is concrete evidence the previous Phase-2/3
+**integration** is incomplete regardless of research completeness.
+
+Evidence, mechanism ownership and blocked test prerequisites:
+`docs/research/DEBUG_TEST_FIXTURES_1_21_1.md`.
+
+- [PHASE 2 — OPEN] End Rod canonical `FACING` placement vs physical
+  orientation; Ender Chest horizontal orientation; candle/candle-cake
+  support/placement; spore-blossom hanging-support checks; side/bottom
+  sapling survival; flint-and-steel useOn/ignition direction.
+- [PHASE 3 — OPEN] Ender Chest special renderer and enchanting-table
+  book/model renderer on side and bottom faces.
+- [PHASE 4/5 — OPEN] Water-drip emitter source origin, even though
+  physical falling direction is accepted.
+- [PHASE 9 — OPEN] Portal ignition/plane/frame (flint-and-steel
+  entry is Phase 2, portal formation is Phase 9).
+- [PHASE 4 — ACCEPTED SPECIFIC FAMILY ONLY] shared gravity, debris,
+  torches, manually provided cherry-leaf particles and seam/load.
+  Source attributions and remaining family behavior untested remain
+  explicitly pending. The user could not reproduce all custom
+  particle families manually.
+- [PHASE 0/1 — MECHANISM TESTS ACCEPTED, NOT WHOLE PHASE] topology,
+  capability and placement unit probes remain valuable but cannot
+  substitute for complete in-world interactions.
+
+**NEW EXECUTION ORDER (mechanism-family work, not one-off patches):**
+1. Build safe reproducible six-face debug test labs in the dedicated
+   Planet world; compare directly installed canonical reference
+   blocks (render/emission) with adjacent EMPTY vanilla player
+   placement spots (BlockItem/useOn/support). Automate repetitive
+   setup ONLY in development runClient, preserve existing player
+   builds. Reference: `docs/acceptance/PLANET_TEST_LAB.md`.
+2. Reopen Phase-2 placement + survival + interaction families as
+   one coherent group with actual server/client block item calls.
+   Add automated tests for the newly found missing families, not
+   only primitive placement/torches. Solve by stable family
+   boundaries; retain the previously accepted torches etc.
+3. Reopen Phase-3 static/BER rendering families for the Ender
+   Chest and enchanting-table/book; do not mistake missing renderer
+   rotations for BlockState placement.
+4. Resume combined Phase-4 gameplay acceptance after these
+   blockers are fixed. Keep fluid/body/weather/portal integrations
+   in their owning later phases. Phase 5 must not be treated as
+   next unconditionally while Phase-2/3 blockers remain.
+5. Once coherent family and integration gates PASS in game, proceed
+   through Phase 5 fluid mechanisms.
+
+Do not mark any entire phase closed on the basis of a successful
+GitHub CI run, a short bootstrap screenshot, or the absence of
+a Mixin crash. Phase acceptance requires the behavior and its
+dependent integration path to work on all relevant gravity faces.
+
+### Debug fixture infrastructure (2026-10-09)
+
+`PlanetTestFixtures` and `PlanetTestCommands` implement a
+reproducible lab on +Y/-Y/+X/-X/+Z/-Z with 20 reference/placement
+pair stations per face. `runClient` development JVM property
+enables collision-safe automatic initial construction; original
+save structures are not overwritten automatically. An explicit
+per-face destructive rebuild command is available. The
+bounded layout uses true physical positions from six
+`PlanetGravityFrame` bases; development sample reference
+BlockStates do NOT assert natural placement is fixed.
+Tests: `PlanetTestFixturesTest`, GitHub Actions status pending.
+This is a test infrastructure step, not an unverified claim
+that Phase-2/3 defects are resolved.
+
 ## Phase 0 — stable dedicated Planet runtime [PARTIAL]
 
 Goal: one dedicated Planet world, no legacy debug behavior, no accidental work in
