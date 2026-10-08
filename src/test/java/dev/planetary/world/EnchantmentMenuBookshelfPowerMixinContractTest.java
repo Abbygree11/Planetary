@@ -202,7 +202,7 @@ final class EnchantmentMenuBookshelfPowerMixinContractTest {
                                         }
 
                                         @Override
-                                        public AnnotationVisitor visit(
+                                        public void visit(
                                                 String field,
                                                 Object value
                                         ) {
