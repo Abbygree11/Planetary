@@ -51,7 +51,7 @@ final class VolumeParticleMixinContractTest {
     void vanillaBookshelfPredicateAndParticleBodiesPreserveTargets()
             throws IOException {
         assertEquals(
-                List.of(OFFSET_BLOCK, OFFSET_COORDS),
+                List.of(OFFSET_BLOCK, OFFSET_BLOCK, OFFSET_COORDS),
                 callsites(BLOCKS + "EnchantingTableBlock.class",
                         "isValidBookShelf", SHELF, "offset")
         );
@@ -239,7 +239,12 @@ final class VolumeParticleMixinContractTest {
                                     }
 
                                     return new AnnotationVisitor(Opcodes.ASM9) {
-                                        private String targetMethod;
+                                        // Mixin @Redirect/@Inject/@ModifyArgs
+                                        // method() is declared as String[],
+                                        // so javac encodes even one name as an
+                                        // annotation array, not a scalar.
+                                        private final List<String> methods =
+                                                new ArrayList<>();
                                         private String atValue;
                                         private String atTarget;
                                         private boolean cancellable;
@@ -248,10 +253,31 @@ final class VolumeParticleMixinContractTest {
                                         public void visit(String field,
                                                 Object value) {
                                             if ("method".equals(field)) {
-                                                targetMethod = (String) value;
+                                                // Defensive support for tools
+                                                // that emit scalar annotation
+                                                // values instead of arrays.
+                                                methods.add((String) value);
                                             } else if ("cancellable".equals(field)) {
                                                 cancellable = (Boolean) value;
                                             }
+                                        }
+
+                                        @Override
+                                        public AnnotationVisitor visitArray(
+                                                String field
+                                        ) {
+                                            if (!"method".equals(field)) {
+                                                return null;
+                                            }
+                                            return new AnnotationVisitor(Opcodes.ASM9) {
+                                                @Override
+                                                public void visit(
+                                                        String ignored,
+                                                        Object value
+                                                ) {
+                                                    methods.add((String) value);
+                                                }
+                                            };
                                         }
 
                                         @Override
@@ -286,7 +312,11 @@ final class VolumeParticleMixinContractTest {
                                                     descriptor,
                                                     (access & Opcodes.ACC_STATIC)
                                                             != 0,
-                                                    kind, targetMethod, atValue,
+                                                    kind,
+                                                    methods.size() == 1
+                                                            ? methods.get(0)
+                                                            : methods.toString(),
+                                                    atValue,
                                                     atTarget, cancellable
                                             ));
                                         }
