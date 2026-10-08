@@ -184,6 +184,31 @@ other shared-family inherited INVOKE hooks before requesting another
 round of user startup tests. Never use `require = 0` just to conceal
 a mismatch.
 
+### Injection handler signatures, not just @At targets
+
+A valid bytecode `@At(target=...)` and a passing JVM instruction-owner
+test do NOT guarantee an injector can apply. On Minecraft 1.21.1 we
+saw `@ModifyArg` target `Iterable.forEach(Consumer)` match correctly,
+but client startup FAIL because its callback declared
+`(Consumer, BlockState, Level, BlockPos, RandomSource)`.
+
+**Handler contracts differ by injector type:**
+- `@ModifyArg` accepts only the single invoked argument being changed.
+  It cannot append enclosing target-method arguments.
+- `@ModifyArgs` accepts `Args` plus optional enclosing method arguments;
+  it incurs argument-bundle/boxing overhead.
+- `@Redirect` for instance INVOKE accepts the invoked **receiver**
+  followed by invoked call args, then optional enclosing method args.
+  The handler's staticness must match the enclosing target method.
+- `@Inject` has its own CallbackInfo/context conventions.
+
+Before committing a new/changed Mixin injection, verify the chosen
+injector kind's official API contract and add an ASM classfile test
+checking BOTH the `@At` owner+descriptor and the **full handler
+method descriptor and staticness**. Never assume that a successful
+`test.ps1` establishes Mixin can transform the target at startup.
+
+
 
 ## 3C. Separate discovery/research batches from implementation batches
 
