@@ -1386,6 +1386,27 @@ However, final correctness of:
 
 is blocked by Phase 5 and will receive an integration re-check there.
 
+### 2026-10-09 post-enchantment/Spore startup gate — OBSERVED PASS
+
+The user provided a new in-world Planet screenshot after the
+EnchantingTable/SporeBlossom/EnchantmentMenu source Mixins.
+Support 90+90, placement 108, Frame API 36, capability
+36+36+36+1 all report passed; the 22 raw BlockPos.relative
+mismatches are EXPECTED. Dedicated Planet world is active at
+(0,128,0), diameter 97. The screenshot does not display the
+older standing/shape checks, and does not validate particle
+orientation or actual enchantment power.
+
+GitHub Actions run 37846622714 at code HEAD a9c5368e completed
+SUCCESS (Java 21 compileJava/compileTestJava and JUnit).
+
+[PASS] code CI and client/Planet world startup checkpoint.
+[PENDING] ONE user gameplay session for the non-blocked Phase-4
+particle source/motion families and real enchantment power,
+as described in `docs/acceptance/PHASE_4_PARTICLES.md`.
+Keep Phase 5/7/7B/9 integration deferred; do not declare Phase 4
+closed from successful startup alone.
+
 ### 2026-10-09 Phase-4 coherent acceptance plan prepared
 
 Following completion of block-emitter, candle, enchantment and
