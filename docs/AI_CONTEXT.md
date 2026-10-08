@@ -2426,3 +2426,56 @@ further unaccepted candle-dependent Mixin work):
 git pull && .\\test.ps1 && .\\run-client.ps1
 Expect Gradle tests green and client world attachment/diagnostics;
 CANDLE gameplay and full Phase-4 subsystem gameplay NOT accepted.
+
+
+## 2026-10-08 user screenshot after candle @Redirect signature fix, and next topology source gate
+
+User provided another in-game screenshot after code ending at ad53f3a7.
+It shows an active Planet world (core 0/128/0, diameter 97) and
+the familiar diagnostic messages: 90 survival + 90 updateShape
+support tests passed, 108 vanilla placement states passed, 36
+local-neighbor Frame API tests passed, 22 expected physical raw
+BlockPos.relative differences detected, 36 local capability mappings,
+36 physical passthrough, 36 standard item/fluid/energy and one
+cache invalidation passed. This is direct evidence the candle
+@Redirect no longer prevents client bootstrap/Planet login.
+It is NOT a visible candle/particle behavior PASS.
+
+NEXT ROOT RESEARCH (completed):
+- docs/research/LOCAL_VOLUME_SOURCE_SAMPLING_1_21_1.md.
+- EnchantingTableBlock.BOOKSHELF_OFFSETS uses 3D local ring samples,
+  isValidBookShelf static helper checks physical provider/transmitter
+  positions, and EnchantmentMenu uses that helper SERVER-SIDE to
+  compute enchantment level. Must adapt one shared query for both
+  client particles AND server enchant gameplay; particle-only hook
+  is wrong.
+- SporeBlossomBlock.animateTick does 1 falling spore then 14
+  candidate local cells. Each checks collision shape BEFORE the
+  THREE extra random double samples/emission. Global-Y-only cell
+  selection is wrong on rotated faces; require transformed sampled
+  candidate + matched transported-frame unit-cell coordinates.
+- Existing PlanetBlockFrameContext.walk handles one direction,
+  not simultaneous local X/Z/Y displacements. Near corners, axis
+  order matters.
+
+CODE IMPLEMENTED on branch 2.0, NOT YET VERIFIED:
+- src/main/java/dev/planetary/world/PlanetLocalBlockOffset.java
+  static traverse(sourceContext,dx,dy,dz), deterministic X->Z->Y
+  ordered topology; steps via existing PlanetBlockFrameContext,
+  after seam maps the **entire** EAST/SOUTH basis via FaceTransform,
+  preserving local UP semantics. Returns target context with real
+  physical BlockPos; rejects radial face flips without an edge
+  transform and overflow MIN_VALUE offsets.
+- src/test/java/dev/planetary/world/PlanetLocalBlockOffsetTest.java
+  verifies 6-face interior 450 cells, 24 directed edge one-axis
+  equivalents to walk, six X->Z transported seams, 24 triple-face
+  corner samples, zero offset and invalid integer.
+- This new API is pure/non-injected and NOT used by production
+  block/particle code yet. No change to Mixin registrations, world
+  generation, accepted collisions or capabilities. Research
+  documents and roadmap updated with prerequisite and ownership.
+
+Before hooking EnchantingTable membership or SporeBlossom block
+samples, run Gradle JUnit (user checkpoint). Do not assume PASS
+from committed code. No per-source manual gameplay tests yet;
+whole Phase-4 gameplay matrix remains pending.
