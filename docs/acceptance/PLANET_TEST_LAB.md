@@ -2,7 +2,7 @@
 
 Target: Minecraft 1.21.1 / NeoForge 21.1.215, `2.0`.
 
-**Status: fixture code added / client acceptance pending.** Passing JUnit
+**Status: Java 21 compile + all JUnit PASSED on GitHub CI; first client fixture-generation acceptance pending.** Passing JUnit
 or smoke startup alone does not prove individual placement/render cases.
 
 ## Quick use (development `runClient` only)
