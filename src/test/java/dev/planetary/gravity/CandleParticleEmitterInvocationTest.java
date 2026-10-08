@@ -13,6 +13,8 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -156,15 +158,9 @@ final class CandleParticleEmitterInvocationTest {
                                         boolean visible
                                 ) {
                                     String expectedKind;
-                                    if ("Lorg/spongepowered/asm/mixin/injection/"
-                                            .concat("ModifyArg;")
-                                            .equals(descriptor)) {
-                                        expectedKind = "ModifyArg";
-                                    } else if (
-                                            "Lorg/spongepowered/asm/mixin/"
+                                    if ("Lorg/spongepowered/asm/mixin/"
                                             .concat("injection/Redirect;")
-                                            .equals(descriptor)
-                                    ) {
+                                            .equals(descriptor)) {
                                         expectedKind = "Redirect";
                                     } else {
                                         return null;
@@ -222,7 +218,7 @@ final class CandleParticleEmitterInvocationTest {
         anchors.sort(String::compareTo);
         assertEquals(
                 List.of(
-                        "ModifyArg:" + FOR_EACH,
+                        "Redirect:" + FOR_EACH,
                         "Redirect:" + FOR_EACH
                 ),
                 anchors,
@@ -241,6 +237,74 @@ final class CandleParticleEmitterInvocationTest {
             );
             assertTrue(json.contains("\"defaultRequire\": 1"));
         }
+    }
+
+    /**
+     * 2026-10-08 startup regression: @ModifyArg cannot capture the enclosing
+     * animateTick arguments and rejected
+     * (Consumer, BlockState, Level, BlockPos, RandomSource).
+     *
+     * Both @Redirect handlers MUST accept the invoked receiver Iterable,
+     * its Consumer, THEN the enclosing vanilla method arguments, and
+     * the redirect for static extinguish MUST itself be static.
+     */
+    @Test
+    void redirectHandlersHaveCorrectReceiverAndEnclosingArgumentDescriptors()
+            throws IOException {
+        Map<String, String> handlers = new HashMap<>();
+        String litName = "planetary$reframeLitCandleOffsets";
+        String extinguishName = "planetary$reframeExtinguishSmoke";
+
+        try (InputStream bytes = open(MIXIN + ".class")) {
+            new ClassReader(bytes).accept(
+                    new ClassVisitor(Opcodes.ASM9) {
+                        @Override
+                        public MethodVisitor visitMethod(
+                                int access,
+                                String name,
+                                String descriptor,
+                                String signature,
+                                String[] exceptions
+                        ) {
+                            if (!litName.equals(name)
+                                    && !extinguishName.equals(name)) {
+                                return null;
+                            }
+                            handlers.put(name, descriptor);
+                            assertEquals(
+                                    extinguishName.equals(name),
+                                    (access & Opcodes.ACC_STATIC) != 0,
+                                    "Mixin redirect must match target staticness"
+                            );
+                            return null;
+                        }
+                    },
+                    ClassReader.SKIP_CODE
+                            | ClassReader.SKIP_DEBUG
+                            | ClassReader.SKIP_FRAMES
+            );
+        }
+
+        assertEquals(
+                Map.of(
+                        litName,
+                        "(Ljava/lang/Iterable;"
+                                + "Ljava/util/function/Consumer;"
+                                + "Lnet/minecraft/world/level/block/state/BlockState;"
+                                + "Lnet/minecraft/world/level/Level;"
+                                + "Lnet/minecraft/core/BlockPos;"
+                                + "Lnet/minecraft/util/RandomSource;)V",
+                        extinguishName,
+                        "(Ljava/lang/Iterable;"
+                                + "Ljava/util/function/Consumer;"
+                                + "Lnet/minecraft/world/entity/player/Player;"
+                                + "Lnet/minecraft/world/level/block/state/BlockState;"
+                                + "Lnet/minecraft/world/level/LevelAccessor;"
+                                + "Lnet/minecraft/core/BlockPos;)V"
+                ),
+                handlers,
+                "Mixin @Redirect signatures drifted from vanilla source"
+        );
     }
 
     private static InputStream open(String resource) {
