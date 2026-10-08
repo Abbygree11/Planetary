@@ -316,7 +316,11 @@ Implemented foundation:
 - target-local side-toward-source mapping on PlanetBlockStep for support/capability queries
 - ordered straight local walk across multiple gravity-boundary crossings
 - four seam-aware local tangent steps with explicit three-face corner singularity semantics
-- explicit decision to reject unordered local offset(dx,dy,dz) as path-ambiguous
+- explicit decision to reject **unordered** local offset(dx,dy,dz) as
+  path-ambiguous at cube corners; NEW ordered three-axis displacement
+  `PlanetLocalBlockOffset.traverse(context, dx, dy, dz)` uses X->Z->Y
+  with full EAST/SOUTH basis transport across each face edge.
+  [PURE API IMPLEMENTED / JUNIT ACCEPTANCE PENDING]
 - traversal chart separated from canonical position-only BlockState frame
 - explicit canonical block tie policy: X axis, then Y, then Z
 - canonical seam-aware support-neighbor/face resolution via PlanetBlockSupportQuery
@@ -727,6 +731,54 @@ One batch:
 - falling block + moving piston representative moving renderer;
 - ModelData/RenderType compatibility;
 - performance/cache smoke test.
+
+### 2026-10-08 block-local volumetric particle sources (Phases 1/2/4)
+[RESEARCH FROZEN; TOPOLOGY HELPER IMPLEMENTED / TEST+RUNTIME PENDING]
+
+Following user screenshot after candle signature fix ad53f3a7:
+Planet world enters normally and prior support/placement/frame/capability
+probe diagnostics report passed again. Candle Mixin client bootstrap
+blocker cleared in this run; flame/smoke *behavior* is still unaccepted.
+
+EnchantmentTable/SporeBlossom source research showed a shared
+multi-cell local offset problem that must precede runtime Mixin work:
+- EnchantingTableBlock.isValidBookShelf is also used from SERVER
+  EnchantmentMenu, not only from client animateTick. Changing just
+  ENCHANT particle coordinates makes game progression inconsistent.
+- SporeBlossomBlock.animateTick picks 14 LOCAL (x,z,y) candidate cells,
+  checks each cell's physical collision shape, and only then draws
+  three random sub-cell emission offsets. Rotating only the final
+  particle would query incorrect world-Y block occupancy.
+- Existing PlanetBlockFrameContext.walk transports a SINGLE tangent
+  direction; simultaneous multi-axis offsets are path-dependent at
+  a three-face vertex.
+
+Implemented a reusable ordered local-volume cell traversal boundary
+`dev.planetary.world.PlanetLocalBlockOffset`: source
+`PlanetBlockFrameContext`, signed local dx/dy/dz, physical
+destination plus transported chart, deterministic X -> Z -> Y order
+and full tangent-basis transport via FaceTransform on a face seam.
+Radial frame changes near the planet core are rejected explicitly
+instead of guessed. No runtime Mixin added yet.
+
+Added `PlanetLocalBlockOffsetTest` with six-face interior values,
+24 directed face-edge comparisons against existing walk,
+six two-axis transported-edge cases, 24 three-face corner routes,
+zero offset and invalid-integer guards.
+**Gradle tests not executed by assistant; acceptance PENDING.**
+
+Detailed call flows, ownership, RNG order, performance and integration
+plan: `docs/research/LOCAL_VOLUME_SOURCE_SAMPLING_1_21_1.md`.
+
+NEXT:
+1. Verify the pure new test on the user's Gradle JUnit runner.
+2. Add ONE consistent EnchantingTable server+client bookshelf membership
+   resolution at the static check boundary and particle velocity/origin
+   transformation with vanilla RNG order preserved.
+3. Integrate SporeBlossom candidate physical occupancy and per-cell
+   emission using transported chart, preserving exact vanilla 14
+   iterations and conditional random draws.
+4. Do not claim either feature done until whole gameplay matrix runs.
 
 ## Phase 4 — particle subsystem [R2 RESEARCH COMPLETE; IMPLEMENTATION PARTIAL, BATCH ACCEPTANCE]
 
