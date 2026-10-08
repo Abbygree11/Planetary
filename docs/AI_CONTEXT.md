@@ -2308,3 +2308,20 @@ Next: continue remaining non-blocked emitter family if no required
 baseline failure; eventually user runs
 git pull && .\\test.ps1 && .\\run-client.ps1
 and whole Phase-4 gameplay matrix.
+
+
+## 2026-10-08 user screenshot after seven block emitter Mixin (second smoke)
+
+After Phase-4 block-local emitters commit b9e5e64c, user posted a new
+in-game Planet diagnostic screenshot with the same complete positive
+messages as the earlier baseline: gravity attached, standing/wall
+6+24, shape 36+18+6, support 90+90, placement 108, frame API 36
+local neighbor checks and 22 EXPECTED raw physical mismatches,
+capabilities 36 local / 36 physical / 36 standard, cache invalidation 1.
+Planet world active core=(0,128,0), diameter=97. This is direct
+evidence that the newly added seven-block emitter mixin does NOT
+prevent NeoForge client startup / Planet login / automatic diagnostics.
+No visual candle/furnace/other emitter-specific behavior was
+manually tested, and no full Gradle log is supplied. Preserve
+startup gate as observed passing and entire particle gameplay
+matrix as PENDING; continue coherent Phase-4 emitter implementation.
