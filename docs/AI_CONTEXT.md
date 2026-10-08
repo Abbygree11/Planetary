@@ -2640,3 +2640,60 @@ numerical NeoForge `getEnchantPowerBonus` still uses raw physical
 pos.offset and requires targeted Phase-2 integration once tests
 pass. Existing user-confirmed screenshot last proves candle
 startup only, not new enchanting/spore runtime paths.
+
+
+## 2026-10-09 user confirmed Gradle green; numerical NeoForge enchanting bonus adapter
+
+User: **BUILD SUCCESSFUL** after `VolumeParticleMixinContractTest`
+corrections to ASM `@Inject.at(): At[]` parsing. This is verified
+JUnit acceptance for existing enchanting/spore volume Mixins
+**before** the new menu adapter. No post-fix user client-world
+startup evidence was supplied.
+
+Root completeness audit:
+NeoForge EnchantingTableBlock.isValidBookShelf has two
+`BlockPos.offset(Vec3i)` for its modded-power predicate plus one
+`offset(III)` for transmitter. Our COMMON EnchantingTableBookshelfGravityMixin
+correctly reframes all, so provider validity in both client and server
+is canonical. However NeoForge EnchantmentMenu.slotsChanged's
+`ContainerLevelAccess.execute` callback separately sums
+`getBlockState(pos.offset(offset)).getEnchantPowerBonus(level,
+pos.offset(offset))` for numerical enchanting strength.
+Both menu offset calls had remained unadapted physical XYZ.
+Official source patch confirmed exact site; Parchment mapping and
+independent 1.21.1 mixins confirmed method name
+`lambda$slotsChanged$0(ItemStack,Level,BlockPos)V`.
+
+NEW implementation on branch 2.0 (RUNTIME STARTUP PENDING):
+- COMMON `EnchantmentMenuBookshelfPowerMixin`
+  @Redirect into synthetic instance lambda$slotsChanged$0
+  of exactly `BlockPos.offset(Vec3i)`, applied at its two
+  NeoForge callsites. Handler receives source BlockPos+local
+  Vec3i and enclosing ItemStack,Level,BlockPos; maps via
+  `PlanetLocalBlockProjection.physicalOffset`.
+  Thus getBlockState receiver, getEnchantPowerBonus context
+  and previously validated isValidBookShelf provider all agree.
+- Non-Planet and vanilla +Y still map to same physical positions;
+  NeoForge method bonus (float), EnchantmentHelper cost integer
+  conversion, onEnchantmentLevelSet hooks, random seed, UI and
+  modded bookshelf extension point are PRESERVED/UNCHANGED.
+- Mixin registered in common planetary.mixins.json.
+- Added `EnchantmentMenuBookshelfPowerMixinContractTest`
+  outside reserved package, asserting exact synthetic
+  instance lambda signature, TWO BlockPos.offset(Vec3i)
+  invokes, one getEnchantPowerBonus call and predicate INVOKE,
+  exact compiled @Redirect method[]/@At, handler JVM descriptor
+  and correct registration. No run by assistant.
+- Details in `docs/research/LOCAL_VOLUME_SOURCE_SAMPLING_1_21_1.md`
+  and `docs/IMPLEMENTATION_PLAN.md`.
+- LIMIT: lambda name is version-sensitive; cross-mod @Redirect
+  competing at same INVOKE might conflict. Keep port audit.
+- Edge 3-face unique physical provider bonus counting remains
+  phase-2 design pending; do not claim gameplay accepted.
+
+NEXT user gate:
+`git pull && .\\test.ps1 && .\\run-client.ps1`.
+Need green test and user-confirmed menu/world startup, then
+full enchanting/spore gameplay acceptance later with whole
+Phase-4 matrix. Do not claim current menu/particle behavior PASS
+from last green JUnit (which preceded this code).
