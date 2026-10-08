@@ -260,3 +260,68 @@ and subcell spore source across all six gravity faces and over a seam.
 BUILD/CLIENT STATUS AFTER THIS BATCH: PENDING USER RUN.
 Do not mark this feature or entire Phase 4 gameplay accepted until
 source/consumer tests and visual gameplay acceptance complete.
+
+
+## 2026-10-08 user JUnit failure: NeoForge bookshelf patch / annotation encoding
+
+The user ran `test.ps1` on the preceding enchanting/spore
+implementation and reported **TWO failing methods** in
+`VolumeParticleMixinContractTest`; Java compilation succeeded and
+other failures were not reported. **No runClient from that chained
+command was evidenced**, so new Mixins have NOT yet passed startup.
+
+1. `vanillaBookshelfPredicateAndParticleBodiesPreserveTargets`
+   expected one `BlockPos.offset(Vec3i)` and one
+   `BlockPos.offset(III)` in `isValidBookShelf`. Actual
+   NeoForge-transformed test class contains **two**
+   `offset(Vec3i)` calls and one `offset(III)`, in that order.
+   Exact cause confirmed in the official NeoForge source patch:
+   `patches/net/minecraft/world/level/block/EnchantingTableBlock.java.patch`.
+   NeoForge replaces vanilla provider tag test with:
+   `level.getBlockState(pos.offset(offset)).getEnchantPowerBonus(level,
+   pos.offset(offset)) != 0`. Thus the two identical Vec3i offsets
+   are **intentional mod-extensibility support**, not a rogue JVM
+   call or a reason to suppress one redirect. Existing
+   `EnchantingTableBookshelfGravityMixin` provider @Redirect
+   targets both calls and maps both to the same physical location.
+   The test's exact expected invocation list was corrected to
+   `[OFFSET_BLOCK, OFFSET_BLOCK, OFFSET_COORDS]`.
+
+2. `allFourVolumeMixinHandlersHaveExactSignatureAndAtContract`
+   read a scalar annotation `method` field via ASM
+   `AnnotationVisitor.visit`. Mixin's `@Redirect.method` is
+   actually declared `String[]`, so even one method name is
+   encoded as an ARRAY visited through `visitArray("method")`.
+   The test therefore read `targetMethod=null`, although exact
+   `@At` targets, handler descriptors and staticness already
+   matched. The test parser now handles the method array and
+   requires exactly one expected method name; do NOT modify
+   correct production callback signatures to work around this
+   test-only parsing error.
+
+**Important newly uncovered GAMEPLAY integration gap, NOT fixed by
+the two test corrections:**
+`patches/net/minecraft/world/inventory/EnchantmentMenu.java.patch`
+in NeoForge adds separate SERVER-side bonus lookups within its
+`slotsChanged` calculation:
+`level.getBlockState(pos.offset(offset)).getEnchantPowerBonus(level,
+pos.offset(offset))` after a successful isValidBookShelf predicate.
+These raw `pos.offset(offset)` expressions DO NOT automatically
+follow the remapped physical provider positions established by
+`EnchantingTableBookshelfGravityMixin`. Therefore
+CLIENT + SERVER bookshelf VALIDITY is shared, but SERVER *numerical
+enchantment power* may still use the wrong physical location on
+rotated faces. This is **Phase-2/4 integration PENDING**, not a
+test regression and must be resolved at the actual
+NeoForge `EnchantmentMenu` extension boundary, retaining
+`getEnchantPowerBonus` and any `EventHooks.onEnchantmentLevelSet`
+behavior. Do not replace NeoForge bonus with vanilla fixed +1,
+and do not globally intercept `BlockPos.offset`.
+
+Official patch references:
+- `https://github.com/neoforged/NeoForge/blob/3c1fcb4f4efd6ed0cf60375e8094902426ddc973/patches/net/minecraft/world/level/block/EnchantingTableBlock.java.patch`
+- `https://github.com/neoforged/NeoForge/blob/3c1fcb4f4efd6ed0cf60375e8094902426ddc973/patches/net/minecraft/world/inventory/EnchantmentMenu.java.patch`
+
+Test-only fix implemented in branch 2.0. New Gradle output still
+required; Minecraft client startup and enchanting power gameplay
+remain NOT ACCEPTED.
