@@ -16,7 +16,12 @@ neoForge {
     version = '21.1.215'
 
     runs {
-        client { client() }
+        client {
+            client()
+            // Dedicated test-world fixtures: ONLY for the local development
+            // runClient profile. Normal distributed mod jars never auto-build.
+            jvmArgument '-Dplanetary.debug.fixtures.auto=true'
+        }
     }
 
     mods {
