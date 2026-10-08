@@ -733,7 +733,8 @@ One batch:
 - performance/cache smoke test.
 
 ### 2026-10-08 block-local volumetric particle sources (Phases 1/2/4)
-[RESEARCH FROZEN; TOPOLOGY HELPER IMPLEMENTED / TEST+RUNTIME PENDING]
+[SOURCE AUDIT COMPLETE; PURE TRAVERSAL TEST ACCEPTED; TWO RUNTIME
+MECHANISMS IMPLEMENTED / BUILD+CLIENT+GAMEPLAY ACCEPTANCE PENDING]
 
 Following user screenshot after candle signature fix ad53f3a7:
 Planet world enters normally and prior support/placement/frame/capability
@@ -765,20 +766,51 @@ Added `PlanetLocalBlockOffsetTest` with six-face interior values,
 24 directed face-edge comparisons against existing walk,
 six two-axis transported-edge cases, 24 three-face corner routes,
 zero offset and invalid-integer guards.
-**Gradle tests not executed by assistant; acceptance PENDING.**
+**User confirmed BUILD SUCCESSFUL** for the initial pure
+PlanetLocalBlockOffsetTest suite. Runtime integration and the new
+interior optimization were committed AFTER that successful test and
+remain unaccepted.
 
 Detailed call flows, ownership, RNG order, performance and integration
 plan: `docs/research/LOCAL_VOLUME_SOURCE_SAMPLING_1_21_1.md`.
 
-NEXT:
-1. Verify the pure new test on the user's Gradle JUnit runner.
-2. Add ONE consistent EnchantingTable server+client bookshelf membership
-   resolution at the static check boundary and particle velocity/origin
-   transformation with vanilla RNG order preserved.
-3. Integrate SporeBlossom candidate physical occupancy and per-cell
-   emission using transported chart, preserving exact vanilla 14
-   iterations and conditional random draws.
-4. Do not claim either feature done until whole gameplay matrix runs.
+IMPLEMENTATION NOW PRESENT ON BRANCH 2.0:
+1. New `PlanetLocalBlockProjection.physicalOffset(Level,BlockPos,x,y,z)`
+   is the explicit physical-world offset adapter for LOCAL 3D block
+   samples. No global BlockPos override.
+2. Common `EnchantingTableBookshelfGravityMixin` redirects just the
+   two existing provider/transmitter BlockPos.offset calls in the
+   shared static predicate used by EnchantmentMenu (SERVER) and
+   EnchantingTableBlock.animateTick (CLIENT). Retains original
+   tags and vanilla branching.
+3. Client `EnchantingTableParticleGravityMixin` reframes one
+   ENCHANT origin and local bookshelf-sampled velocity, retaining
+   vanilla RNG/emission count.
+4. Client `SporeBlossomParticleGravityMixin` delegates ONLY
+   rotated Planet animateTick to
+   `PlanetSporeBlossomSourceRuntime`, the deliberately isolated
+   1.21.1 source-sampler copy. Two initial random doubles, exactly
+   14 sampled candidate cells in vanilla X/Y/Z draw order,
+   physical collision-full-block checks, three conditional
+   random jitter draws and per-candidate transported chart
+   all remain coupled. No cancellation on +Y/normal worlds.
+5. `PlanetLocalBlockOffset` now uses a proven strict face-dominance
+   fast path for interior samples, with the exact existing
+   transported walk on seams/ties/corners.
+6. `VolumeParticleMixinContractTest` checks actual MC INVOKEs,
+   all four Mixin handler descriptors/staticness and config.
+   `VolumeParticleFrameTest` covers all six face normals,
+   enchanted source vectors and edge-crossing spore subcell jitter.
+
+**NEXT GATE: git pull && .\\test.ps1 && .\\run-client.ps1.**
+The previous initial traversal test suite had BUILD SUCCESSFUL,
+but this runtime integration, fastpath, bytecode tests and client
+Mixins have NOT yet been run/accepted by the user. Gameplay
+matrix remains deferred. At a 3-face corner, unique bookshelf
+counting vs. overlapping physical provider positions is a
+separate Phase-2 rule to verify; do not infer acceptance.
+
+All source details: `docs/research/LOCAL_VOLUME_SOURCE_SAMPLING_1_21_1.md`.
 
 ## Phase 4 — particle subsystem [R2 RESEARCH COMPLETE; IMPLEMENTATION PARTIAL, BATCH ACCEPTANCE]
 
