@@ -367,12 +367,18 @@ to branch `2.0`, using Java 21 and Gradle 8.12. It executes
 test reports.
 
 **Mandatory when changing source code or tests:**
-1. Commit changes to branch `2.0`.
+1. Commit Java, Gradle or other build-affecting changes to branch `2.0`.
 2. Read the corresponding GitHub Actions run status and failures.
 3. If compile or JUnit fails, fix root cause and repeat until the
-   HEAD commit has green compile AND test jobs.
+   latest **code-changing** commit has green compile AND test jobs.
 4. Only after green CI ask the user to run Minecraft client or
    manually check real gameplay, if needed.
+
+Documentation-only changes under `docs/**` or to `AGENTS.md` do
+not affect Java compilation or tests and should not restart/cancel
+an expensive NeoForge Gradle job. The CI workflow intentionally ignores
+such docs-only pushes; compare the latest code-changing commit
+against the last successful build, not blindly the current HEAD SHA.
 
 Do not ask the user to find compiler errors that GitHub Actions
 can find. The first workflow run (2026-10-08) caught this contract:
