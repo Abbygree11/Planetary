@@ -325,3 +325,53 @@ Official patch references:
 Test-only fix implemented in branch 2.0. New Gradle output still
 required; Minecraft client startup and enchanting power gameplay
 remain NOT ACCEPTED.
+
+
+## 2026-10-09 second user JUnit follow-up: @Inject.at uses array encoding
+
+After the prior NeoForge offset-count and `method: String[]`
+ASM visitor fixes, the user reran tests and reported ONE remaining
+failure in `VolumeParticleMixinContractTest.
+allFourVolumeMixinHandlersHaveExactSignatureAndAtContract`.
+
+Observed actual compiled `SporeBlossomParticleGravityMixin` hook:
+- exact handler JVM descriptor: matches expected;
+- handler instance/staticness: matches expected;
+- injector kind: `Inject`, correct;
+- `targetMethod=animateTick`, correct after previous visitor fix;
+- `cancellable=true`, correct;
+- `atTarget=null`, expected for HEAD;
+- `atValue=null`, **unexpected in the test**, though the source
+  declares `@Inject(at = @At("HEAD"))`.
+
+Root cause is another **ASM test parser encoding bug**, not a
+runtime source/hook failure. Official SpongePowered/Mixin source
+declares `Inject.at(): At[]` whereas `Redirect.at(): At` and
+`ModifyArgs.at(): At`. In the class file, a single `@At("HEAD")`
+inside an `@Inject` is still visited by ASM as
+`visitArray("at")` followed by
+`visitAnnotation(null, "Lorg/spongepowered/asm/mixin/injection/At;")`.
+The previous test supported only the direct nested
+`visitAnnotation("at", ...)` form. Therefore `atValue` stayed null.
+
+Implemented the exact test-only fix:
+- both array and direct At forms now delegate to one validated
+  `visitAt` visitor for `value`/`target`;
+- enforce **exactly one** target method and **exactly one** At
+  annotation for each of the four hooks (strict contract, no
+  weakening of assertions);
+- preserve full handler descriptors, staticness, annotation kind,
+  `cancellable`, `HEAD` and `INVOKE` target checks;
+- no changes to production Mixins or particle/world behavior.
+
+Official declaration source:
+`github.com/SpongePowered/Mixin`,
+`src/main/java/org/spongepowered/asm/mixin/injection/Inject.java`
+and `Redirect.java`, `ModifyArgs.java`.
+
+**Status: FIX IMPLEMENTED / USER GRADLE RECHECK PENDING**.
+Do not interpret one test assertion as all tests passing, and do not
+claim client/world bootstrap accepted for the recently added
+EnchantingTable/SporeBlossom production Mixins.
+NeoForge EnchantmentMenu numeric bookshelf bonus remains an
+independent known gameplay gap (unfixed).
