@@ -2479,3 +2479,78 @@ Before hooking EnchantingTable membership or SporeBlossom block
 samples, run Gradle JUnit (user checkpoint). Do not assume PASS
 from committed code. No per-source manual gameplay tests yet;
 whole Phase-4 gameplay matrix remains pending.
+
+
+## 2026-10-08 Pure three-axis offset Gradle acceptance, Phase-4 enchanting/spore integration
+
+User replied **BUILD SUCCESSFUL** after pulling branch 2.0 HEAD
+6010863e and running the previously requested `git pull && .\test.ps1`.
+That is real user-local confirmation of JUnit passing for the initial
+`PlanetLocalBlockOffsetTest`. NOT a new game/client smoke, because
+this checkpoint was pure topology code with no new Mixins.
+
+Next coherent source implementation researched in
+`docs/research/LOCAL_VOLUME_SOURCE_SAMPLING_1_21_1.md`
+and written to branch 2.0 (NEW RUNTIME TEST/CLIENT UNVERIFIED):
+
+- `PlanetLocalBlockProjection.physicalOffset(level,pos,dx,dy,dz)`:
+  explicit source-local physical coordinate bridge, ordinary world
+  retains exact vanilla BlockPos.offset. On Planet uses transported
+  ordered 3D projection (even from +Y if crossing an edge).
+- `EnchantingTableBookshelfGravityMixin`, registered in COMMON mixins:
+  precisely two @Redirects inside the static
+  EnchantingTableBlock.isValidBookShelf for BlockPos.offset(Vec3i)
+  (provider) and BlockPos.offset(III) (transmitter). Hooks receive
+  original BlockPos receiver/call args and enclosing Level/tablePos/
+  offset context. Original vanilla getBlockState and block tags
+  remain the gameplay policy; EnchantmentMenu(server) and
+  animateTick(client) both call this exact static predicate.
+  This avoids desynchronizing particles from enchantment power.
+- `EnchantingTableParticleGravityMixin`, CLIENT:
+  one @ModifyArgs at animateTick Level.addParticle to rotate original
+  sampled ENCHANT origin and authored local bookshelf velocity,
+  no extra random samples/particle calls.
+- `SporeBlossomParticleGravityMixin`, CLIENT:
+  @Inject at animateTick HEAD, cancellable, delegates on rotated
+  Planet ONLY to PlanetSporeBlossomSourceRuntime.emit. Vanilla
+  ordinary worlds/+Y run unmodified.
+  Runtime mirrors tiny 1.21.1 vanilla source sampler: sample 2
+  random doubles for first FALLING_SPORE_BLOSSOM at local y=0.7;
+  14 attempts of Mth.nextInt(-10,10) X,
+  -random.nextInt(10) Y, Mth.nextInt(-10,10) Z;
+  candidate physical cell and transported chart from
+  PlanetLocalBlockOffset.traverse; getBlockState and
+  isCollisionShapeFullBlock on correct physical candidate;
+  ONLY if non-full sample three nextDouble() local jitter and
+  emit SPORE_BLOSSOM_AIR with that candidate's chart.
+  All vanilla probabilities/RNG order and emission counts conserved.
+  This is a version-sensitive SOURCE METHOD COPY because candidate
+  and jitter must remain coupled and must not rely on mutable global
+  state. Carefully re-review during version ports.
+- `PlanetLocalBlockOffset` now has strict same-face-dominance
+  arithmetic fast path, one target frame resolution; all seams,
+  ties and corners use existing cell-by-cell FaceTransform walk.
+  No cache or per-tick persistent state.
+- `VolumeParticleMixinContractTest` inspects actual 1.21.1
+  class-file offset/addParticle call-sites, all four Mixin
+  handlers' EXACT JVM descriptors/staticness plus annotations
+  and mixin registration. `VolumeParticleFrameTest` checks
+  enchantment source/motion and spore subcell chart on all faces.
+
+Known gameplay integration complexities intentionally NOT marked PASS:
+- enchanted bookshelf offsets near cube vertex may converge to the
+  same physical provider (requires later Phase-2 count-policy audit);
+- SporeBlossom canSurvive/updateShape are Phase-2 block support;
+  source sampler itself is Phase-4 particles;
+- source bytecode/different NeoForge transformed class semantics
+  must be confirmed by user Gradle/client; the assistant cannot run
+  the actual game in the connected GitHub environment;
+- normal/non-Planet and +Y must remain vanilla; accepted earlier
+  emitter particle physics/capabilities must regress-test at the
+  ONE final particle gameplay matrix.
+
+Next user checkpoint because multiple new method-level Mixins:
+git pull && .\\test.ps1 && .\\run-client.ps1
+Expect BUILD SUCCESSFUL including two new tests, menu + Planet
+startup diagnostics and no Mixin InvalidInjectionException.
+No claim of runtime/gameplay PASS on new changes yet.
