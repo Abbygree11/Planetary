@@ -2325,3 +2325,55 @@ No visual candle/furnace/other emitter-specific behavior was
 manually tested, and no full Gradle log is supplied. Preserve
 startup gate as observed passing and entire particle gameplay
 matrix as PENDING; continue coherent Phase-4 emitter implementation.
+
+
+## 2026-10-08 candle light and extinguish emitter package — IMPLEMENTED, PENDING ACCEPTANCE
+
+After the previous seven-emitter Mixin, user provided second screenshot:
+dedicated Planet world starts, same standing/wall, shape, support,
+placement, local-neighbor and capabilities diagnostics all PASSED.
+This proves startup, NOT visible emitter alignment on all faces.
+
+Next bounded Phase-4 implementation follows
+docs/research/CANDLE_PARTICLE_EMITTERS_1_21_1.md. Vanilla 1.21.1
+AbstractCandleBlock owns BOTH source paths, inherited by CandleBlock
+and CandleCakeBlock:
+
+- lit animateTick invokes Iterable.forEach(Consumer) of
+  getParticleOffsets(state), lambda adds BlockPos and executes the
+  original smoke/chance/ambient sound/flame logic with RandomSource;
+- static extinguish invokes another Iterable.forEach(Consumer), its
+  lambda emits exactly one smoke per supplied offset with world +Y
+  (double)0.1F and vanilla method subsequently plays extinguish
+  sound and sends a game event.
+
+IMPLEMENTED in branch 2.0, NO Gradle/client acceptance yet:
+- stable PlanetParticleEmitter.rotateUnitBlockEmitterOffset maps
+  block-CORNER local offset around center and back into physical
+  unit-block coordinates, supports candle-cake local offset y=1;
+- single AbstractCandleParticleEmitterGravityMixin on BASE family
+  uses @ModifyArg at lit animateTick forEach to wrap the vanilla
+  Consumer on rotated Planet frames only; original lambda retains
+  RNG/sound/particle execution;
+- second @Redirect on extinguish forEach on rotated Level only.
+  Emits exact same number/order smoke from rotated offsets, with
+  float-accurate 0.1F local-up momentum. Original setLit,
+  extinguish sound and block game-event remain VANILLA.
+  Non-Level LevelAccessor, +Y, non-Planet delegate to original
+  forEach unchanged. No global LevelAccessor interception.
+- client Mixin JSON registration added, defaultRequire=1 unchanged.
+- PlanetParticleEmitterTest extended to 1–4 candle + cake offsets
+  on six frames and float-derived smoke velocity; new
+  CandleParticleEmitterInvocationTest reads vanilla
+  AbstractCandleBlock ASM classfile to assert the two exact
+  java/lang/Iterable.forEach invokes and checks compiled Mixin
+  @Mixin/@ModifyArg/@Redirect annotation targets plus JSON registration.
+
+KNOWN RISK: new java/lang/Iterable.forEach @ModifyArg/@Redirect mixin
+integration has never been exercised in live client by assistant.
+Tests and startup must be checked before PASS. Do not request tiny
+per-candle gameplay retests: wait for the full Phase-4 gameplay matrix.
+Remaining non-fluid source paths to audit/implement:
+EnchantingTable bookshelf-neighbor topology and SporeBlossom
+distributed-air candidate cells; more portal/body/fluid/weather
+sources are gated by their owning later phase.
