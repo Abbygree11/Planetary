@@ -204,6 +204,86 @@ final class PlanetParticleEmitterTest {
         );
     }
 
+    @Test
+    void candleAndCandleCakeUnitOffsetsRotateAroundBlockCenter() {
+        Vec3[] authoredUnitOffsets = {
+                // Vanilla CandleBlock offsets for 1-4 candles.
+                new Vec3(0.5D, 0.5D, 0.5D),
+                new Vec3(0.375D, 0.44D, 0.5D),
+                new Vec3(0.625D, 0.5D, 0.44D),
+                new Vec3(0.5D, 0.313D, 0.625D),
+                new Vec3(0.375D, 0.44D, 0.5D),
+                new Vec3(0.56D, 0.5D, 0.44D),
+                new Vec3(0.44D, 0.313D, 0.56D),
+                new Vec3(0.625D, 0.44D, 0.56D),
+                new Vec3(0.375D, 0.44D, 0.375D),
+                new Vec3(0.56D, 0.5D, 0.375D),
+                // CandleCakeBlock uses local top, exactly v=1.0.
+                new Vec3(0.5D, 1.0D, 0.5D)
+        };
+
+        for (PlanetFace face : PlanetFace.values()) {
+            PlanetGravityFrame frame = new PlanetGravityFrame(face);
+            for (Vec3 unitOffset : authoredUnitOffsets) {
+                Vec3 converted =
+                        PlanetParticleEmitter.rotateUnitBlockEmitterOffset(
+                                unitOffset, frame
+                        );
+
+                // Vanilla lambda adds the integer block corner afterward.
+                Vec3 world = new Vec3(
+                        POS.getX() + converted.x,
+                        POS.getY() + converted.y,
+                        POS.getZ() + converted.z
+                );
+                assertVec(
+                        world,
+                        expectedFromLocal(
+                                frame,
+                                unitOffset.x - 0.5D,
+                                unitOffset.y - 0.5D,
+                                unitOffset.z - 0.5D
+                        )
+                );
+
+                if (face == PlanetFace.POS_Y) {
+                    assertVec(converted, unitOffset);
+                }
+            }
+        }
+    }
+
+    @Test
+    void candleExtinguishPuffUsesExactFloatDerivedLocalUp() {
+        Vec3 vanillaPuff = new Vec3(
+                0.0D,
+                (double) 0.1F,
+                0.0D
+        );
+
+        for (PlanetFace face : PlanetFace.values()) {
+            PlanetGravityFrame frame = new PlanetGravityFrame(face);
+            Vec3 physical =
+                    PlanetParticleMotion.localVelocityToWorld(
+                            vanillaPuff, frame
+                    );
+
+            PlanetFrameVector recovered =
+                    frame.worldToLocal(new PlanetFrameVector(
+                            physical.x, physical.y, physical.z
+                    ));
+
+            assertVec(
+                    new Vec3(
+                            recovered.x(),
+                            recovered.y(),
+                            recovered.z()
+                    ),
+                    vanillaPuff
+            );
+        }
+    }
+
     private static Vec3 expectedFromLocal(
             PlanetGravityFrame frame,
             double x,
