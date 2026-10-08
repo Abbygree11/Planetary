@@ -2554,3 +2554,52 @@ git pull && .\\test.ps1 && .\\run-client.ps1
 Expect BUILD SUCCESSFUL including two new tests, menu + Planet
 startup diagnostics and no Mixin InvalidInjectionException.
 No claim of runtime/gameplay PASS on new changes yet.
+
+
+## 2026-10-08 user Gradle failure in VolumeParticleMixinContractTest: TWO assertions
+
+User ran Gradle tests after Phase-4 volumetric EnchantingTable/Spore
+source integration HEAD 35f2c5df and pasted two test failures.
+No client launch success/failure after this point was supplied:
+
+1. allFourVolumeMixinHandlersHaveExactSignatureAndAtContract:
+   expected Redirect targetMethod=isValidBookShelf but observed null.
+   Actual compiled handler descriptors, staticness and @At INVOKE
+   targets all matched. Root: ASM test only implemented
+   AnnotationVisitor.visit("method"), but Mixin annotation's method
+   property is String[], encoded through visitArray("method").
+   Fix: read both the real array and optional scalar defensively,
+   require one method for the expected handler. No runtime callback
+   method changes.
+
+2. vanillaBookshelfPredicateAndParticleBodiesPreserveTargets:
+   expected Vec3i offset + III offset; actual NeoForge target class
+   has Vec3i offset, Vec3i offset, III offset.
+   ROOT source: official NeoForge EnchantingTableBlock.java.patch,
+   which changes the provider predicate from vanilla
+   is(BlockTags.ENCHANTMENT_POWER_PROVIDER) to
+   getEnchantPowerBonus(level,pos.offset(offset)) != 0,
+   therefore two Vec3i offset calls. Existing provider @Redirect
+   matches BOTH. ASM test now asserts exactly the three call sites.
+   No production runtime code changed to fix these tests.
+
+IMPORTANT NEWLY DISCOVERED REAL GAP, NOT A JUNIT ASSERTION BUG:
+NeoForge EnchantmentMenu.java.patch separately accumulates
+numerical bookcases += level.getBlockState(pos.offset(offset))
+.getEnchantPowerBonus(level, pos.offset(offset)) AFTER the
+isValidBookShelf check. Those raw menu offsets remain PHYSICAL and
+are NOT converted by our shared isValidBookShelf hook. On rotated
+faces, valid local bookshelves may be detected but enchant power
+still use the wrong physical block. This requires a separate
+bounded server EnchantmentMenu bonus query adapter, retaining
+NeoForge getEnchantPowerBonus and EventHooks hooks; not done yet.
+DO NOT CLAIM functional enchantment power correct/accepted.
+Source patch cited in
+docs/research/LOCAL_VOLUME_SOURCE_SAMPLING_1_21_1.md.
+New AGENTS.md rule: inspect transformed NeoForge call counts
+and read Mixin annotation String[] correctly.
+
+Tests corrected on branch 2.0; no Gradle/Minecraft run by assistant.
+Immediate user gate: git pull && .\\test.ps1
+Only if passing can next round address menu numerical bonus and
+then game startup / final Phase-4 gameplay matrix.
