@@ -35,6 +35,42 @@ User evidence 2026-10-09:
 **Do not rerun Gradle or the same client-startup gate merely to
 begin this matrix.** Continue in the open Planet world if available.
 
+## User's first full gameplay report — 2026-10-09
+
+This review **supersedes** the earlier "all gameplay pending" status
+for the specifically tested rows; it DOES NOT close Phase 4.
+
+| Check | Actual user result | Acceptance |
+|---|---|---|
+| 1 shared gravity | works | PASS (user) |
+| 2 destruction, collision, falling debris | works | PASS (user) |
+| 3 torch and redstone torch particle emitters | works | PASS (user) |
+| 4 cherry leaf particles | works after manual leaves; saplings cannot be planted off +Y | PARTICLES PASS; natural growth Phase-2/10 blocked |
+| 5 block-local emitters | works where blocks can be placed; End Rod / Ender Chest models/placement wrong | PARTICLES PARTIAL; Phase-2/3 blocked |
+| 6 candles/cake candle | +Y works; cannot place on side/bottom faces | +Y PASS; rotated Phase-2 blocked |
+| 7 enchanting table | ENCHANT particles reportedly work; table/book rendered wrong | PARTICLES observed OK; Phase-3 renderer FAIL; power still unaccepted |
+| 8 spore blossom | cannot place on side/bottom faces | Phase-2 support blocked, Phase-4 particles untested |
+| 9 special sources | flint/steel cannot ignite portals off +Y; water drops fall correctly, emitter is shifted; other cases too difficult to stage | WATER DROP MOTION PASS; source origin FAIL; portal Phase-2/9 blocked |
+| 10 seams/regression/load | works | PASS (user) |
+
+Images supplied show an Ender Chest appearance anomaly,
+a horizontal-looking End Rod, an enchanting table without the
+expected book pose, and a separate block placement/test structure;
+each image is evidence of the symptom, NOT a complete root cause.
+
+**Policy correction:** prior phases 0–3 were only partially
+implemented despite extensive completed research and green
+diagnostic probes. Reopen Phase-2 canonical placement/survival,
+Phase-3 BlockEntityRenderer and Phase-2/9 ignition before attempting
+to declare Phase-4 feature families fully accepted.
+
+A new self-staging lab was implemented to eliminate the need for
+manual assembly: `docs/acceptance/PLANET_TEST_LAB.md`.
+Use paired CYAN *direct reference* / LIME *natural player placement*
+sites to distinguish rendering faults from placement failures.
+When these missing mechanisms are corrected, retest ONLY their
+blocked rows rather than asking to repeat rows 1/2/3/10.
+
 ## Setup for the ONE gameplay acceptance matrix
 
 - Use creative mode for source blocks and repeatable observation.
