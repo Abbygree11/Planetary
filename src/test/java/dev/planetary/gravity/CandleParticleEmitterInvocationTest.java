@@ -89,6 +89,7 @@ final class CandleParticleEmitterInvocationTest {
             );
         }
 
+        actual.sort(String::compareTo);
         assertEquals(
                 List.of(
                         "animateTick:" + FOR_EACH,
@@ -218,6 +219,7 @@ final class CandleParticleEmitterInvocationTest {
         }
 
         assertEquals(List.of(VANILLA), targets);
+        anchors.sort(String::compareTo);
         assertEquals(
                 List.of(
                         "ModifyArg:" + FOR_EACH,
