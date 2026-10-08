@@ -224,6 +224,16 @@ Read it using `AnnotationVisitor.visitArray("method")`, assert
 the intended method name/count, and do not mistake `null` from a
 scalar-only visitor for an actual missing Mixin target.
 
+The `at` member also depends on injector kind. Confirmed against
+SpongePowered Mixin source: `@Inject.at()` is an `At[]` array,
+whereas `@Redirect.at()` and `@ModifyArgs.at()` each return one
+`At`. An ASM visitor must handle `visitArray("at")` ->
+`visitAnnotation(null, At-descriptor)` for `@Inject`, as well as
+`visitAnnotation("at", At-descriptor)` for the others. Require the
+documented number of `@At` entries, instead of silently accepting
+`atValue=null` as evidence of a missing annotation.
+
+
 For server-side world-graph mechanics, trace the FULL consumer chain:
 a correct shared `isValidBookShelf` predicate does not automatically
 reframe the separate NeoForge `EnchantmentMenu` numerical
