@@ -732,6 +732,41 @@ One batch:
 - ModelData/RenderType compatibility;
 - performance/cache smoke test.
 
+### 2026-10-09: compiler regression fixed and automatic CI enabled
+
+After the NeoForge `EnchantmentMenuBookshelfPowerMixin` addition, the
+user ran `test.ps1` and got `compileTestJava FAILED`:
+`EnchantmentMenuBookshelfPowerMixinContractTest.java:205` incorrectly
+overrode ASM `AnnotationVisitor.visit(String,Object)` as returning
+`AnnotationVisitor` instead of `void`. Java rejected the override
+before any JUnit test could start. Root cause: earlier code authoring
+without compiling. The failing test WAS NOT a gameplay failure.
+
+Fixed the one wrong callback signature, audited remaining
+`AnnotationVisitor` and `MethodVisitor` overrides in the file, and
+added `.github/workflows/test.yml` (push to branch 2.0 + manual
+dispatch). It runs Java 21, Gradle 8.12, separately
+`compileJava compileTestJava` and `test`, with report upload
+if unsuccessful. No Gradle wrapper is committed; setup-gradle
+provisions the same Gradle version as `bootstrap-gradle.ps1`.
+
+**VERIFIED on GitHub Actions**: run 37845321513 for commit
+`afceb3b0fc9c675eb1d7c319a161920156474e1a` completed
+SUCCESS: production and test compilation passed, JUnit test task
+passed on clean Ubuntu runner.
+
+Development gate tightened in `AGENTS.md`: do NOT ask user to
+compile/test new code before corresponding branch HEAD receives
+green CI; fix compiler/JUnit errors in GitHub Actions first.
+CI green does NOT establish client Mixin startup or the intended
+enchanting/spore in-game behavior.
+
+Minecraft client/world/Phase-4 gameplay acceptance after this
+runtime menu change remains PENDING. The next *user* checkpoint,
+once the branch has green CI, is `git pull && .\\run-client.ps1`
+to confirm actual NeoForge bootstrap and Planet login; defer
+all-faces gameplay to the coherent Phase-4 acceptance matrix.
+
 ### 2026-10-09 numerical EnchantmentMenu bonus integration
 [IMPLEMENTED / BUILD+CLIENT STARTUP+GAMEPLAY ACCEPTANCE PENDING]
 
