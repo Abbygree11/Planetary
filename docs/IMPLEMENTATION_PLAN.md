@@ -732,6 +732,46 @@ One batch:
 - ModelData/RenderType compatibility;
 - performance/cache smoke test.
 
+### 2026-10-08 NeoForge bookshelf tests and numerical bonus gate
+[JUnit TEST FIX IMPLEMENTED / RETEST PENDING; SERVER BONUS INTEGRATION OPEN]
+
+User's Gradle test for the new enchant/spore batch failed in two
+VolumeParticleMixinContractTest assertions:
+
+- Exact vanilla bookshelf INVOKE list changed under NeoForge:
+  `BlockPos.offset(Vec3i)` executes TWICE (provider `getBlockState`
+  and `getEnchantPowerBonus` position), followed by one
+  `BlockPos.offset(III)` for the transmitter. Official NeoForge
+  EnchantingTableBlock patch confirms this is intentional; the
+  existing provider redirect is already shared by BOTH invocations.
+  Test expected list updated from 2 to 3, without weakening it.
+- ASM visitor did not read Mixin annotation's
+  `method: String[]` and reported `targetMethod=null`, despite
+  exact @At and handler descriptor match. Fixed by reading
+  `visitArray("method")` (and tolerating alternate scalar encoding)
+  for @Redirect, @ModifyArgs, @Inject.
+
+New functionality/design caveat uncovered by reading NeoForge's
+`EnchantmentMenu.java.patch`: numerical enchantment strength
+is accumulated separately using
+`level.getBlockState(pos.offset(offset)).getEnchantPowerBonus(...,
+pos.offset(offset))` in EnchantmentMenu, AFTER calling the shared
+`EnchantingTableBlock.isValidBookShelf`. The existing
+EnchantingTableBookshelfGravityMixin fixes the validity predicate
+but DOES NOT yet reframe the menu's separate raw bonus location.
+Therefore mark server-calculated enchant power as **NOT FINISHED**
+until a focused menu bonus adapter is added and tested for
++Y/rotated/edge cases while preserving NeoForge modded power bonus
+and event hooks. Do NOT claim overall enchantment gameplay is done.
+
+Next gate: user runs `git pull && .\\test.ps1` to confirm exact
+test corrections. Only then proceed with the missing bonus path
+and runtime client smoke on the coherent integration batch;
+do not ask for a world startup after a test-only correction.
+
+Source detail:
+`docs/research/LOCAL_VOLUME_SOURCE_SAMPLING_1_21_1.md`.
+
 ### 2026-10-08 block-local volumetric particle sources (Phases 1/2/4)
 [SOURCE AUDIT COMPLETE; PURE TRAVERSAL TEST ACCEPTED; TWO RUNTIME
 MECHANISMS IMPLEMENTED / BUILD+CLIENT+GAMEPLAY ACCEPTANCE PENDING]
@@ -778,8 +818,8 @@ IMPLEMENTATION NOW PRESENT ON BRANCH 2.0:
 1. New `PlanetLocalBlockProjection.physicalOffset(Level,BlockPos,x,y,z)`
    is the explicit physical-world offset adapter for LOCAL 3D block
    samples. No global BlockPos override.
-2. Common `EnchantingTableBookshelfGravityMixin` redirects just the
-   two existing provider/transmitter BlockPos.offset calls in the
+2. Common `EnchantingTableBookshelfGravityMixin` redirects the
+   provider (two NeoForge call sites) and transmitter (one) offset calls in the
    shared static predicate used by EnchantmentMenu (SERVER) and
    EnchantingTableBlock.animateTick (CLIENT). Retains original
    tags and vanilla branching.
