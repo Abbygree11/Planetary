@@ -20,12 +20,15 @@ Reference: `hackersense/OptiFine-Source`, 1.21.1
   candle: with probability <0.3 SMOKE, with probability <0.17
   CANDLE_AMBIENT sound + two additional floats, always SMALL_FLAME.
   Sound XYZ is computed from the emitted position +0.5 each.
-- **Correct minimal injection:** `@ModifyArg` replacing only the
-  `Consumer` argument to `Iterable.forEach` in `animateTick`.
-  On rotated Planet blocks, wrap the original consumer so it receives
-  transformed absolute-local unit coordinates. Vanilla forEach,
-  random/sound/sprite/particle APIs and call sequence all execute.
-  On ordinary levels/+Y return original consumer exactly.
+- **Correct minimal injection (after runtime correction):** scoped
+  `@Redirect` for `Iterable.forEach` in `animateTick`.
+  The redirect receives the invoked Iterable + Consumer followed by
+  enclosing `animateTick(state,level,pos,random)` arguments. On rotated
+  Planet blocks it calls `offsets.forEach(offset -> originalConsumer.accept(
+  rotateUnitBlockEmitterOffset(offset, frame)))`; vanilla original
+  consumer still generates every particle and sound in the same order.
+  Outside Planet/+Y, call `offsets.forEach(originalConsumer)` unchanged.
+  `@ModifyArg` is INVALID with captured enclosing arguments.
 
 ### `AbstractCandleBlock.extinguish(Player?, state, LevelAccessor, pos)`
 
@@ -74,8 +77,9 @@ exactly one call per target method. The lambda's own synthetic
 body must not be targeted by name.
 
 Add contract tests reading the **actual** Minecraft
-`AbstractCandleBlock.class` and Mixin `@ModifyArg/@Redirect`
-compiled annotations without loading Mixin via reflection. Respect
+`AbstractCandleBlock.class` and both Mixin `@Redirect`
+compiled annotations, PLUS each redirect handler's full JVM descriptor
+and required staticness, without loading Mixin via reflection. Respect
 `defaultRequire=1`; do not mute mismatch errors.
 
 Pure tests: transformed offset round trip on all six faces,
@@ -85,7 +89,9 @@ offset (0.5,1.0,0.5), extinguish exact 0.1F UP velocity.
 ## Risks and acceptance
 
 - `forEach` callback is a Java method with one `Consumer` argument:
-  `@ModifyArg(index=0)` must preserve vanilla lambda invocation,
+  scoped `@Redirect` can capture the receiver Iterable, its Consumer
+  and original animateTick arguments; do not use `@ModifyArg` with
+  source method arguments. Preserve vanilla lambda invocation,
   with no extra random samples or particle calls.
 - `@Redirect` inside static `extinguish` must capture its
   method arguments and operate only on Level-backed Planet worlds.
@@ -107,10 +113,10 @@ Implemented in `dev.planetary.mixin.AbstractCandleParticleEmitterGravityMixin`
 and registered in `planetary.mixins.json`, with version-stable
 `PlanetParticleEmitter.rotateUnitBlockEmitterOffset`:
 
-- `@ModifyArg` on `AbstractCandleBlock.animateTick` wraps the
-  existing `Iterable.forEach` Consumer and rotates only its sampled
-  local block-unit offsets. The original lambda creates flame/smoke
-  and optional ambient sound, consuming the same RNG values.
+- `@Redirect` on `AbstractCandleBlock.animateTick` redirects only
+  the existing `Iterable.forEach` call and forwards sampled local
+  block-unit offsets into the original Consumer. The original lambda
+  creates flame/smoke and optional ambient sound, consuming the same RNG.
 - `@Redirect` on static `AbstractCandleBlock.extinguish`
   leaves original iterable dispatch untouched in +Y, non-Planet or
   non-Level spaces; rotated physical Planet worlds emit exactly one
@@ -125,11 +131,62 @@ Added semantic unit tests in `PlanetParticleEmitterTest` for
 six faces, +Y vanilla equivalence and puff velocity round trip.
 `CandleParticleEmitterInvocationTest` checks exact
 `INVOKEINTERFACE java/lang/Iterable.forEach(Consumer)`
-for BOTH vanilla methods and inspects compiled `@ModifyArg`,
-`@Redirect`, `@Mixin` annotations and JSON registration
+for BOTH vanilla methods and inspects compiled `@Redirect`,
+`@Mixin` annotations, handler JVM descriptors/staticness and JSON registration
 without Mixin classloading.
 
 No assistant Gradle build, client launch or gameplay acceptance
 performed. Check on user's next batched build/startup checkpoint;
 do not ask them to test lit/extinguish candles individually until
 the full Phase-4 gameplay matrix is ready.
+
+## 2026-10-08 user startup failure after first candle patch — root cause and remedy
+
+User provided full runClient crash log:
+`org.spongepowered.asm.mixin.injection.throwables.InvalidInjectionException`
+while applying `AbstractCandleParticleEmitterGravityMixin`, before
+Minecraft bootstrap completed. Message:
+
+    @ModifyArg injector planetary$reframeLitCandleOffsets targets a
+    method with an invalid signature (Ljava/util/function/Consumer;),
+    expected (Ljava/util/function/Consumer;L.../BlockState;L.../Level;
+    L.../BlockPos;L.../RandomSource;)
+
+This points to the callback's **INCOMPATIBLE argument capture contract**
+rather than a missing target or a math/RNG bug. Mixin's `@ModifyArg`
+handler must take only the argument being changed; it cannot capture
+the surrounding `animateTick` arguments as our first implementation
+attempted. Our first ASM regression only checked injection owner/target,
+not handler descriptor, and therefore failed to catch this mistake.
+
+**Rejected:** original `@ModifyArg` on `animateTick` with appended
+BlockState, Level, BlockPos, RandomSource. It compiled and JUnit tests
+ran, but NeoForge runtime Mixin transformation rejected the method.
+
+**Corrective patch (IMPLEMENTED / RE-STARTUP PENDING):**
+- change lit `animateTick` callback into `@Redirect` for the exact
+  same `Iterable.forEach` INVOKE, with handler parameters in the
+  documented Mixin redirect order: Iterable receiver, Consumer arg,
+  then enclosing BlockState, Level, BlockPos, RandomSource.
+- inside the redirect, original `Iterable.forEach` executes exactly
+  once. On active rotated Planet, wrap the original Consumer to
+  reinterpret only block-local unit offsets. Ordinary/+Y executes
+  the unmodified Consumer, no extra lambda allocation.
+- leave static `extinguish` redirect, smoke puff velocity, semantic
+  offset helper and original candle sound/state/RNG behavior unchanged.
+- add ASM regression that asserts BOTH redirect method signatures
+  verbatim and checks static-vs-instance receiver contract; update
+  compiled Mixin annotation expectations from ModifyArg+Redirect
+  to Redirect+Redirect.
+
+Reference for signature rule: SpongePowered/Mixin
+`org.spongepowered.asm.mixin.injection.Redirect` JavaDoc:
+method redirects can append **enclosing target method arguments**
+after the invoked receiver and arguments; unlike `ModifyArg`.
+Official source: github.com/SpongePowered/Mixin/blob/master/
+src/main/java/org/spongepowered/asm/mixin/injection/Redirect.java
+
+**No code change to accepted non-candle emitters or gravity math.
+No new client confirmation yet.** Do not mark candle implementation
+PASS until Gradle + bootstrap + Planet login and later full Phase-4
+gameplay matrix.
