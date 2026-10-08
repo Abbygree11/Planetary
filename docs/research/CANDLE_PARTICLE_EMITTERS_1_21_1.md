@@ -1,6 +1,6 @@
 # Phase 4: candle particle emitters (1.21.1 / NeoForge 21.1.215)
 
-Status: source architecture audited; runtime implementation/test acceptance PENDING.
+Status: **IMPLEMENTED / BUILD, CLIENT AND GAMEPLAY ACCEPTANCE PENDING**.
 
 ## Vanilla call flow (comparative 1.21.1 source)
 
@@ -100,3 +100,36 @@ Status remains IMPLEMENTED / gameplay acceptance pending only after
 code exists and user confirms startup. One Phase-4 subsystem
 manual acceptance checks candles, candle-cakes, extinguishing smoke
 on +Y and rotated faces, plus previous accepted particles.
+
+## 2026-10-08 code checkpoint (acceptance pending)
+
+Implemented in `dev.planetary.mixin.AbstractCandleParticleEmitterGravityMixin`
+and registered in `planetary.mixins.json`, with version-stable
+`PlanetParticleEmitter.rotateUnitBlockEmitterOffset`:
+
+- `@ModifyArg` on `AbstractCandleBlock.animateTick` wraps the
+  existing `Iterable.forEach` Consumer and rotates only its sampled
+  local block-unit offsets. The original lambda creates flame/smoke
+  and optional ambient sound, consuming the same RNG values.
+- `@Redirect` on static `AbstractCandleBlock.extinguish`
+  leaves original iterable dispatch untouched in +Y, non-Planet or
+  non-Level spaces; rotated physical Planet worlds emit exactly one
+  smoke particle per original candle offset, reframe its origin,
+  and rotate the exact double-cast of `0.1F` local-up velocity.
+  The original method still does `setLit`, sound and game event.
+- No global particle emission intercept, no candle subclass patch,
+  no new world-axis fallback, no change to candle blockstate/render.
+
+Added semantic unit tests in `PlanetParticleEmitterTest` for
+1–4-candle offset samples and candle-cake v=1.0 position on all
+six faces, +Y vanilla equivalence and puff velocity round trip.
+`CandleParticleEmitterInvocationTest` checks exact
+`INVOKEINTERFACE java/lang/Iterable.forEach(Consumer)`
+for BOTH vanilla methods and inspects compiled `@ModifyArg`,
+`@Redirect`, `@Mixin` annotations and JSON registration
+without Mixin classloading.
+
+No assistant Gradle build, client launch or gameplay acceptance
+performed. Check on user's next batched build/startup checkpoint;
+do not ask them to test lit/extinguish candles individually until
+the full Phase-4 gameplay matrix is ready.
