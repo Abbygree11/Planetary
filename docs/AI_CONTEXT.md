@@ -2782,3 +2782,42 @@ Next workflow:
 3. Then one Phase-4 matrix gameplay pass, not per-class testing.
 4. If runtime Mixin crashes, investigate exact nested exception,
    fix on 2.0 and wait for CI green before asking client retest.
+
+
+## 2026-10-09 in-game startup confirmation after enchanting/spore/menu Mixins
+
+User posted a Planet in-game screenshot following client launch after
+the new enchanting-table, spore-blossom and EnchantmentMenu numerical
+bonus Mixins. Screen shows:
+- support probe passed 90 survival + 90 updateShape;
+- placement probe passed 108 vanilla state checks;
+- Frame API probe passed 36 local-neighbor checks;
+- 22 raw BlockPos.relative mismatches DETECTED (expected positive diagnostic,
+  not failed tests);
+- capability probe passed 36 local-side mappings, 36 physical-side
+  pass-through, 36 item/fluid/energy checks, 1 cache invalidation;
+- Dedicated Planet world active, core (0,128,0), diameter 97.
+
+This is direct evidence that the post-candle EnchantingTable,
+SporeBlossom and EnchantmentMenu Mixins do not prevent the client from
+entering Planet world; the screenshot shows that the listed in-world
+compatibility probes passed. Earlier standing/shape lines are out of
+this screenshot's viewport and should not be claimed from this image.
+
+Independently GitHub Actions run 37846622714 on branch 2.0 HEAD
+a9c5368e3687bce2ca417f486452f097e1798058 completed SUCCESS,
+including compileJava/compileTestJava and JUnit suite.
+
+Acceptance status:
+- CI / build+JUnit: PASS, independent GitHub CI;
+- client startup / Planet attach / visible probes: OBSERVED PASS from
+  user screenshot;
+- actual enchantment POWER, bookshelf placement near a seam, spore
+  distribution, candle/block particle orientation, visual full six-face
+  matrix: GAMEPLAY ACCEPTANCE PENDING, NOT PASS.
+
+Canonical one-session acceptance matrix:
+docs/acceptance/PHASE_4_PARTICLES.md. No further individual build
+or client-smoke request necessary before this manual gameplay matrix.
+Known fluid/vehicle/body/weather/portal/3-face provider policy gaps
+remain deferred to owning subsequent phases.
