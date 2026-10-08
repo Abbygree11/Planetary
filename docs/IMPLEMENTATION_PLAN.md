@@ -1006,6 +1006,39 @@ correct that shared integration boundary before expanding this family.
 
 
 
+### 2026-10-08 candle emitter startup regression — FIX IMPLEMENTED, RECHECK PENDING
+
+User supplied runClient log after the 69eb709 candle patch:
+Mixin apply FAILED before Bootstrap finished. Exact
+`InvalidInjectionException` in
+`AbstractCandleParticleEmitterGravityMixin.planetary$reframeLitCandleOffsets`:
+`@ModifyArg` callback expected a sole `Consumer` but the injected
+method declared `Consumer, BlockState, Level, BlockPos, RandomSource`.
+Mixin `@ModifyArg` does NOT support capturing target method args.
+This failure is a Mixin handler descriptor mismatch, NOT particle
+motion, origin, OpenGL, Java or previously accepted mechanics.
+
+[IMPLEMENTED / NEW BUILD+CLIENT ACCEPTANCE PENDING]:
+- change lit candle `animateTick` hook from invalid `@ModifyArg`
+  to supported `@Redirect` on the same
+  `Iterable.forEach(Consumer)` call, receiving Iterable receiver,
+  Consumer argument and the four enclosing method args;
+- use the original `Iterable.forEach` once, forwarding original
+  vanilla Consumer untouched for +Y/non-Planet and transformed local
+  offsets for rotated Planet; RNG/emission/sound sequence unchanged;
+- keep static extinguish handler and smoke motion unchanged;
+- expand ASM test to require both Redirect annotation targets AND
+  exact JVM callback descriptors/staticness. Prior test passed while
+  the invalid handler signature escaped detection.
+- detailed root cause, rejected `@ModifyArg` path and official Mixin
+  redirect signature contract are in
+  `docs/research/CANDLE_PARTICLE_EMITTERS_1_21_1.md`.
+
+No gameplay acceptance; **MANDATORY** one Gradle test+client startup
+checkpoint before expanding the Phase-4 source family further.
+Keep existing seven-block emitter client/world startup acceptance
+as previous last observed good baseline.
+
 ### 2026-10-08 candle emitter source family [IMPLEMENTED / TEST+GAMEPLAY PENDING]
 
 Following the new screenshot proving the seven-emitter Mixin no longer
@@ -1013,7 +1046,7 @@ prevents startup or Planet world diagnostics, the next coherent
 Phase-4 block-source batch is implemented for both common candle paths.
 
 - `AbstractCandleBlock.animateTick` (CandleBlock + CandleCakeBlock
-  inherited): one `@ModifyArg` at `Iterable.forEach(Consumer)`,
+  inherited): one `@Redirect` at `Iterable.forEach(Consumer)`,
   rotate offset before original vanilla lambda. Preserve candle
   probability, smoke/flame count, RNG and ambient sound algorithm.
 - `AbstractCandleBlock.extinguish`: one `@Redirect` at the
@@ -1027,8 +1060,9 @@ Phase-4 block-source batch is implemented for both common candle paths.
   center to transform corner-relative candle offsets. Covers cake
   candle offset with Y=1.0 without inferring an incorrect cell.
 - ASM classfile integration test validates both actual vanilla
-  Iterable.forEach signatures and compiled `@ModifyArg/@Redirect`
-  descriptors; pure tests cover all six frames and candle/cake offsets.
+  Iterable.forEach signatures and compiled `@Redirect` anchors **plus
+  full handler descriptors/staticness**; pure tests cover all six
+  frames and candle/cake offsets.
 - Full source design: `docs/research/CANDLE_PARTICLE_EMITTERS_1_21_1.md`.
 
 No client game or Gradle test run was performed by assistant after
