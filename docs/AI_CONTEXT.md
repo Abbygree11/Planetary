@@ -2909,3 +2909,37 @@ caught it before user was asked to pull/test.
 Second CI run 37857156948 automatically started for the corrected
 commit. Do not claim PASS until compileJava + compileTestJava +
 JUnit both complete SUCCESS. No user runtime test requested yet.
+
+
+## 2026-10-09 six-face fixture lab CI green; runtime acceptance pending
+
+Second GitHub Actions CI run 37857156948 for the latest Java/Gradle
+change e663b23ea935b48380a8f80e047644bf06c0a1a9 completed SUCCESS:
+- Compile production and test sources: success;
+- JUnit tests: success;
+- includes new PlanetTestFixturesTest.
+No user-local compile was needed to find/correct the initial
+CherryLeavesBlock property reference bug.
+All subsequent branch 2.0 commits through this note update ONLY
+documentation/acceptance/research files, ignored by CI design.
+
+Version of lab now ready for ONE client test:
+- runClient dev JVM automatically requests first-time safe six-face
+  fixture install on the dedicated Planet world only.
+- Auto-install never force-clears player builds and repeats nothing
+  where a persistent gold marker exists.
+- Preset cyan sample vs empty lime placement cell isolates Phase-3
+  rendering/particle motion from Phase-2 natural placement.
+- /planetary test go <face> navigation, /planetary test legend,
+  /planetary test build and explicit destructive rebuild <face>.
+- 20 stations x six faces, portal unlit, fueled furnace stations;
+  drip source and non-reproducible entity particle families
+  remain genuine deferred integration, not fake passes.
+
+STATUS: CI PASS; actual fixture appearance, startup time and
+state survival PENDING first user launch. NEXT: ask only
+`git pull && .\\run-client.ps1` (no test.ps1; CI owns tests).
+If occupied past saves skip face pads, use a fresh test save or
+explicit one-face rebuild only after user has considered local
+builds. On success begin Phase-2/3 families with the lab.
+Do not mark Phase-4 completely done or blindly start Phase-5.
