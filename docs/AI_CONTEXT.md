@@ -2603,3 +2603,40 @@ Tests corrected on branch 2.0; no Gradle/Minecraft run by assistant.
 Immediate user gate: git pull && .\\test.ps1
 Only if passing can next round address menu numerical bonus and
 then game startup / final Phase-4 gameplay matrix.
+
+
+## 2026-10-09 remaining ASM unit regression: Inject.at is At[] (test-only fix)
+
+User followed up after the two `VolumeParticleMixinContractTest`
+fixes with one remaining failure:
+`allFourVolumeMixinHandlersHaveExactSignatureAndAtContract`.
+Actual SporeBlossomParticleGravityMixin data decoded by ASM:
+- expected/actual JVM handler signature MATCH,
+- targetMethod animateTick MATCH,
+- kind Inject, static=false, cancellable=true MATCH,
+- expected atValue HEAD but parsed atValue null.
+
+Confirmed in official SpongePowered/Mixin Java annotation sources:
+`@Inject.at(): At[]`, while `@Redirect.at(): At` and
+`@ModifyArgs.at(): At`. The test previously handled only direct
+`visitAnnotation("at",...)`, not
+`visitArray("at") -> visitAnnotation(null, At)`, even when
+the Java annotation source spells just `@At("HEAD")`.
+
+FIX committed in branch `2.0`:
+- `VolumeParticleMixinContractTest.hooks`: shared `visitAt`
+  visitor called from both direct single-At and array-At forms.
+- Additional strict assert: EXACTLY ONE target method and one
+  @At per registered handler. Retains all original bytecode
+  invocation, descriptor, staticness, cancellable and target
+  checks; no runtime source changed.
+- AGENTS.md, roadmap, local-volume research updated with this
+  exact failure and test architecture.
+
+Status: TEST-ONLY FIX IMPLEMENTED / USER `git pull && .\\test.ps1`
+PENDING. DO NOT claim Gradle, startup or source behavior accepted.
+Known future runtime issue untouched: server EnchantmentMenu
+numerical NeoForge `getEnchantPowerBonus` still uses raw physical
+pos.offset and requires targeted Phase-2 integration once tests
+pass. Existing user-confirmed screenshot last proves candle
+startup only, not new enchanting/spore runtime paths.
