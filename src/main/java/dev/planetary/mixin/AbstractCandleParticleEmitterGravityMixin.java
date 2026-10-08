@@ -16,7 +16,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 import java.util.Optional;
@@ -34,15 +33,15 @@ import java.util.function.Consumer;
  */
 @Mixin(AbstractCandleBlock.class)
 public abstract class AbstractCandleParticleEmitterGravityMixin {
-    @ModifyArg(
+    @Redirect(
             method = "animateTick",
             at = @At(
                     value = "INVOKE",
                     target = "Ljava/lang/Iterable;forEach(Ljava/util/function/Consumer;)V"
-            ),
-            index = 0
+            )
     )
-    private Consumer<Vec3> planetary$reframeLitCandleOffsets(
+    private void planetary$reframeLitCandleOffsets(
+            Iterable<Vec3> offsets,
             Consumer<Vec3> vanillaConsumer,
             BlockState state,
             Level level,
@@ -54,15 +53,16 @@ public abstract class AbstractCandleParticleEmitterGravityMixin {
 
         if (frameOptional.isEmpty()
                 || frameOptional.get().face() == PlanetFace.POS_Y) {
-            return vanillaConsumer;
+            offsets.forEach(vanillaConsumer);
+            return;
         }
 
         PlanetGravityFrame frame = frameOptional.get();
-        return originalOffset -> vanillaConsumer.accept(
+        offsets.forEach(originalOffset -> vanillaConsumer.accept(
                 PlanetParticleEmitter.rotateUnitBlockEmitterOffset(
                         originalOffset, frame
                 )
-        );
+        ));
     }
 
     @Redirect(
