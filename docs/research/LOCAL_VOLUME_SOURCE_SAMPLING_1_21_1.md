@@ -375,3 +375,113 @@ claim client/world bootstrap accepted for the recently added
 EnchantingTable/SporeBlossom production Mixins.
 NeoForge EnchantmentMenu numeric bookshelf bonus remains an
 independent known gameplay gap (unfixed).
+
+
+## 2026-10-09 user pure JUnit GREEN and NeoForge numeric enchant bonus completion
+
+After `VolumeParticleMixinContractTest` was repaired to handle
+`@Inject.at(): At[]`, user explicitly confirmed **BUILD SUCCESSFUL**.
+This confirms Gradle tests for the new Phase-4 EnchantingTable / Spore
+source integration, but user did NOT provide new client-world startup
+evidence after these Mixins. The remaining **functional** issue
+previously marked pending was separate NeoForge menu bonus queries.
+
+### Exact NeoForge 1.21.1 menu source
+
+From official `neoforged/NeoForge`
+`patches/net/minecraft/world/inventory/EnchantmentMenu.java.patch`,
+inside the `ContainerLevelAccess.execute` callback of
+`EnchantmentMenu.slotsChanged`:
+
+    float bookcases = 0;
+    for (BlockPos offset : EnchantingTableBlock.BOOKSHELF_OFFSETS) {
+        if (EnchantingTableBlock.isValidBookShelf(level, pos, offset)) {
+            bookcases += level.getBlockState(pos.offset(offset))
+                .getEnchantPowerBonus(level, pos.offset(offset));
+        }
+    }
+    // Float -> int enchant cost, plus onEnchantmentLevelSet hooks.
+
+The static vanilla predicate is ALREADY projected correctly by
+`EnchantingTableBookshelfGravityMixin`; however these TWO explicit
+menu `pos.offset(offset)` expressions still use physical XYZ.
+
+Parchment mapping for 1.21.1 and Fabric 1.21.1 independent Mixin
+implementations identify the enclosing Java synthetic method as
+`EnchantmentMenu.lambda$slotsChanged$0` with exact descriptor
+
+    (Lnet/minecraft/world/item/ItemStack;
+     Lnet/minecraft/world/level/Level;
+     Lnet/minecraft/core/BlockPos;)V
+
+This synthetic lambda IS an instance method (uses menu fields).
+This descriptor/name must be verified again against actual
+NeoForge-transformed class bytes by the new test before runtime
+startup; the name is a portability-sensitive site.
+
+### Runtime adaptation (IMPLEMENTED / ACCEPTANCE PENDING)
+
+`dev.planetary.mixin.EnchantmentMenuBookshelfPowerMixin` (COMMON
+client/server Mixin, registered in `planetary.mixins.json`)
+narrowly redirects ONLY the two
+`BlockPos.offset(Vec3i)` INVOKEs in
+`lambda$slotsChanged$0`.
+
+Its nonstatic redirect handler receives the invoked physical
+BlockPos receiver and local Vec3i offset, followed by enclosing
+ItemStack, Level and table BlockPos. Both original expressions
+are replaced with the SAME
+`PlanetLocalBlockProjection.physicalOffset(level, source, dx,dy,dz)`
+as the common `isValidBookShelf` validity check.
+
+The returned position is physically authoritative and identical
+for BOTH NeoForge consumers:
+1. `level.getBlockState(physicalProviderPos)`;
+2. `getEnchantPowerBonus(level, physicalProviderPos)`.
+
+The original NeoForge provider's float bonus, block extension hook,
+power conversion to enchant costs, `EventHooks.onEnchantmentLevelSet`,
+UI random seed and enchantment result logic are untouched.
+For non-Planet worlds the shared projector returns the unchanged
+`BlockPos.offset(Vec3i)` coordinates. No global BlockPos
+override, zero persistent cache/thread-local state, and no copied
+enchantment algorithm.
+
+### Regression contract
+
+`src/test/java/dev/planetary/world/
+EnchantmentMenuBookshelfPowerMixinContractTest.java` reads
+actual NeoForge `EnchantmentMenu.class` bytecode:
+- exact lambda name+descriptor and instance method;
+- two (no more/no less) calls to
+  `BlockPos.offset(Vec3i)` inside the lambda;
+- one `getEnchantPowerBonus` call and one
+  `EnchantingTableBlock.isValidBookShelf` call;
+- compiled Mixin `@Mixin` target, Redirect `method[]`,
+  exact `@At(INVOKE)` target, handler JVM descriptor and instance
+  staticness;
+- common JSON registration and `defaultRequire=1`.
+
+This is a separate version-sensitive engine integration adapter:
+when porting Minecraft/NeoForge, verify the synthetic lambda
+bytecode and patch source before enabling. Any third-party
+interception at the same precise callsite is a compatibility risk.
+
+### Remaining status
+
+- [PASS / user-confirmed] Previous `test.ps1` including the original
+  four volume-particle Mixin contracts after parser fixes.
+- [IMPLEMENTED / Gradle recheck pending] New menu numerical
+  bonus adapter and its ASM regression.
+- [STARTUP + GAMEPLAY PENDING] New EnchantingTable/Spore
+  Mixins as a whole; no subsequent user gameplay confirmation.
+- [PENDING PHASE-2 POLICY] Bookcase physical-provider duplication
+  near three-face corners. Vanilla/NeoForge counts authored offsets;
+  possible duplicate providers require explicit design decision.
+- [PENDING PHASE-4 ACCEPTANCE] Full visual emitter gameplay matrix,
+  including +Y, rotated faces, edge and corner.
+
+Next gate: `git pull && .\\test.ps1 && .\\run-client.ps1`.
+The menu class has a new synthetic-lambda @Redirect. Verify tests
+THEN client + Planet world startup. Do NOT claim successful
+runtime transformation before user evidence.
