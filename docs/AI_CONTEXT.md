@@ -2697,3 +2697,50 @@ Need green test and user-confirmed menu/world startup, then
 full enchanting/spore gameplay acceptance later with whole
 Phase-4 matrix. Do not claim current menu/particle behavior PASS
 from last green JUnit (which preceded this code).
+
+
+## 2026-10-09 user frustration: compileTestJava failure and permanent green-CI rule
+
+User's latest local compile after adding EnchantmentMenuBookshelfPower
+reported TWO javac diagnostics caused by ONE bug:
+`EnchantmentMenuBookshelfPowerMixinContractTest.java`,
+wrong ASM override `public AnnotationVisitor visit(String,Object)`
+should be `public void visit(String,Object)`.
+No JUnit tests executed; compileTestJava stopped first. The user
+explicitly objected to repeated uncompiled commits and long
+back-and-forth. This is valid feedback; avoid doing that again.
+
+Fix committed to `2.0` (a52b3a0), exactly the invalid override
+corrected; inspected all remaining visitor callbacks in that test.
+No production Mixin/world code was altered.
+
+**NEW PERSISTENT DEV WORKFLOW**: created
+`.github/workflows/test.yml` in commit
+`afceb3b0fc9c675eb1d7c319a161920156474e1a`.
+On every `2.0` push: Java 21 setup, Gradle 8.12 setup/cache,
+Gradle compileJava compileTestJava, then Gradle test,
+upload test reports on failures.
+Verified by reading GitHub Actions job status:
+run ID `37845321513`, job `113544635577`, complete SUCCESS:
+both Gradle compilation and JUnit tasks returned SUCCESS.
+Public run URL:
+`https://github.com/Abbygree11/Planetary/actions/runs/37845321513`.
+
+AGENTS.md now **requires** assistant to monitor green Github CI
+for latest code changes BEFORE requesting any manual user build
+or Minecraft game check. Avoid replacing GitHub green test evidence
+with source inspection claims. For commits that only change
+documentation after the green test, GitHub Actions still runs,
+and CI should remain green; follow up on branch HEAD if needed.
+
+IMPORTANT NOT ACCEPTED:
+- NeoForge client startup after EnchantmentMenuBookshelfPowerMixin
+  is not yet confirmed. CI JUnit does not run actual client
+  transformation. Next game check once branch CI is green:
+  git pull && .\\run-client.ps1, main menu + Planet world probes.
+- Enchanting numerical power on rotated faces, spore particles,
+  boundary/corner behavior, and Phase-4 complete gameplay matrix
+  remain unaccepted.
+- No unexplained developer tool capability claims: connected
+  GitHub API alone cannot execute Gradle, but GitHub Actions
+  CI now handles it and job status can be inspected via API.
