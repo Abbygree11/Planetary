@@ -54,6 +54,7 @@
   "mixins": [
     "BlockCapabilityMixin",
     "EnchantingTableBookshelfGravityMixin",
+    "EnchantmentMenuBookshelfPowerMixin",
     "ChunkSourceMixin",
     "EntityGravityMixin",
     "LevelMixin",
