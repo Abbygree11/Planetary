@@ -3,6 +3,10 @@ package dev.planetary.world;
 import dev.planetary.topology.FaceTransform;
 import dev.planetary.topology.PlanetDirection;
 import dev.planetary.topology.PlanetTopology;
+import dev.planetary.topology.PlanetGravityFrame;
+import dev.planetary.topology.PlanetVector;
+import dev.planetary.topology.PlanetCore;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 
 import java.util.Objects;
@@ -35,6 +39,23 @@ public final class PlanetLocalBlockOffset {
     ) {
         Objects.requireNonNull(source, "source");
 
+        if (localX == Integer.MIN_VALUE
+                || localY == Integer.MIN_VALUE
+                || localZ == Integer.MIN_VALUE) {
+            throw new IllegalArgumentException("Unbounded local offset");
+        }
+
+        // Most samples are well within one face. A conservative dominance
+        // bound proves every intermediate X -> Z -> Y step remains on that
+        // face, so there is no need to resolve 1..30 frame steps per sampled
+        // SporeBlossom candidate. Edge/corner cases keep the full traversal.
+        PlanetBlockFrameContext interior = sameFaceInterior(
+                source, localX, localY, localZ
+        );
+        if (interior != null) {
+            return interior;
+        }
+
         Basis basis = new Basis(
                 Direction.EAST,
                 Direction.SOUTH
@@ -46,6 +67,69 @@ public final class PlanetLocalBlockOffset {
         current = traverseAxis(current, basis, localY, Axis.UP);
 
         return current;
+    }
+
+    /**
+     * Exact fast path only when one source gravity face strictly dominates
+     * both tangent coordinates along the entire ordered multi-axis path.
+     * At ties or near edges, use the general transported-chart walk.
+     */
+    private static PlanetBlockFrameContext sameFaceInterior(
+            PlanetBlockFrameContext source,
+            int x,
+            int y,
+            int z
+    ) {
+        PlanetGravityFrame frame = source.frame();
+        PlanetCore core = source.field().core();
+        BlockPos pos = source.pos();
+        long dx = (long) pos.getX() - core.x();
+        long dy = (long) pos.getY() - core.y();
+        long dz = (long) pos.getZ() - core.z();
+        PlanetVector east = frame.worldEast();
+        PlanetVector south = frame.worldSouth();
+        PlanetVector up = frame.worldUp();
+
+        long tangentX = dx * east.x() + dy * east.y() + dz * east.z();
+        long tangentZ = dx * south.x() + dy * south.y() + dz * south.z();
+        long radial = dx * up.x() + dy * up.y() + dz * up.z();
+
+        long smallestRadial = Math.min(radial, radial + y);
+        long widestEast = Math.max(
+                Math.abs(tangentX), Math.abs(tangentX + x)
+        );
+        long widestSouth = Math.max(
+                Math.abs(tangentZ), Math.abs(tangentZ + z)
+        );
+
+        if (smallestRadial <= Math.max(widestEast, widestSouth)) {
+            return null;
+        }
+
+        long targetX = (long) pos.getX()
+                + (long) east.x() * x
+                + (long) south.x() * z
+                + (long) up.x() * y;
+        long targetY = (long) pos.getY()
+                + (long) east.y() * x
+                + (long) south.y() * z
+                + (long) up.y() * y;
+        long targetZ = (long) pos.getZ()
+                + (long) east.z() * x
+                + (long) south.z() * z
+                + (long) up.z() * y;
+
+        if (targetX < Integer.MIN_VALUE || targetX > Integer.MAX_VALUE
+                || targetY < Integer.MIN_VALUE || targetY > Integer.MAX_VALUE
+                || targetZ < Integer.MIN_VALUE || targetZ > Integer.MAX_VALUE) {
+            return null;
+        }
+
+        return PlanetBlockFrameContext.resolve(
+                source.field(),
+                new BlockPos((int) targetX, (int) targetY, (int) targetZ),
+                source.face()
+        ).orElseThrow();
     }
 
     private static PlanetBlockFrameContext traverseAxis(
