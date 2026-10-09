@@ -3160,3 +3160,91 @@ connection drops again. Current dynamic register census CI must
 provide actual NeoForge registered BLOCK/ITEM owners to
 complete stage3 final coverage map. Initial source-only 40-row
 crosswalk is explicitly preliminary, not a full acceptance.
+
+
+## 2026-10-09 full real-owner NeoForge registry census v2 CI GREEN
+
+Continued bounded full-Phase-2 research after user's previous
+long-run UI connection loss. Three independent source audit
+files are now saved in `docs/research`:
+- PHASE2_SOURCE_OWNER_AUDIT_WAVE_A_1_21_1.md: physical
+  BlockPlaceContext, synthetic DirectionalPlaceContext,
+  specialized BlockItem, late BLOCK_STATE component,
+  NeoForge tool ability and sound hooks;
+- PHASE2_SOURCE_OWNER_AUDIT_WAVE_B_1_21_1.md: support
+  override bypasses SeaPickle/Cocoa/Lantern/Amethyst,
+  Bush/Crop, Sapling/column growth, GrowingPlant Head/Body,
+  Multiface/Vine, Scaffolding and RailState graphs;
+- PHASE2_SOURCE_OWNER_AUDIT_WAVE_C_1_21_1.md:
+  Door/Bed/DoublePlant/Chest physical pair transitions,
+  Trapdoor/FenceGate orientation+interaction,
+  Crafter/Jigsaw FrontAndTop, bookshelf hit slots,
+  structure template/alternate creation bypasses.
+
+P01–P40 preliminary crosswalk to existing Planetary adapters
+committed as PHASE2_PLANETARY_COVERAGE_SEED_1_21_1.tsv;
+5 PARTIAL_FOUNDATION, 14 PARTIAL_FAMILY, 18 GAP,
+3 CROSS_PHASE = 40 investigative categories, ALL
+registered owner/gameplay acceptance REVIEW_PENDING.
+These are NOT counts of actual broken blocks.
+
+Phase2RegistryOrientationCensusTest uses true bootstrapped
+NeoForge 21.1.215 registries, exports real IDs, class
+hierarchies, actual declared nearest lifecycle method
+owner, all ancestor declarations and BlockState property
+domains, specialized Item use/placement owner chain.
+GitHub Actions uploads generated TSV artifact. First
+attempt had relative output path error, corrected with
+absolute Gradle test systemProperty path. First successful
+CI run 37987135612: 1060 BLOCK IDs, 241 concrete classes,
+1333 ITEM IDs, 87 item concrete classes, 925 BlockItems,
+1712 property instances, 527 initial property-candidates.
+Second code revision aa395729 improves candidate names
+attached/attachment/in_wall/bottom and maps full class
+hierarchy+effective owners.
+
+**GitHub Actions run 37988064055 finished SUCCESS** for code
+aa395729: compileJava and compileTestJava SUCCESS,
+all JUnit SUCCESS, output summary and artifact upload SUCCESS.
+Second-version candidate count 528. The artifact is available
+under https://github.com/Abbygree11/Planetary/actions/runs/37988064055
+and stored in current model workspace as
+/mnt/data/phase2_registry_v2.zip (tool-scoped, not a
+persistent user project path). Generated TSV source was
+inspected by pandas:
+- Block getStateForPlacement effective owners: 103;
+- Block canSurvive: 60;
+- Block updateShape: 103;
+- setPlacedBy: 15; neighborChanged: 25;
+- rotate:61; mirror:57;
+- useItemOn:24; useWithoutItem:52;
+- Item getPlacementState:
+  BlockItem 862, StandingAndWallBlockItem 58,
+  GameMasterBlockItem 5;
+- Item updatePlacementContext:
+  BlockItem 924, ScaffoldingBlockItem 1;
+- 1060 total blocks, including 532 false by simple
+  property name heuristic: many still have positional
+  checks (SeaPickle/Cactus/SugarCane/etc).
+Report:
+docs/research/PHASE2_EFFECTIVE_OWNER_FINDINGS_1_21_1.md.
+The effective owner scan is a Java reflection classification
+of nearest declared method, NOT bytecode-level semantics
+or full BlockBehaviour.BlockStateBase state-cache ownership.
+
+docs/research/PHASE2_NEOFORGE_REGISTRY_FINDINGS_1_21_1.md
+and PHASE2_REGISTERED_FAMILY_PRIORITY_MAP_1_21_1.md
+document source verified counts and priorities.
+Roadmap UPDATED to Stage 2A+B+C source/audit GREEN,
+Stage 3 ongoing real owner disposition/matrix,
+Stage 4 mechanism wave A-E implementation PENDING.
+
+NO new production Mixins or gameplay behavior changed in
+this research phase. NO new user-local Gradle/client check
+required. Previously accepted particles remain accepted.
+Next deliver Stage-3 review of 241 effective block classes,
+87 item concrete classes, compiled override/BlockStateBase
+and all P01-P40 owner semantics; then implement coherent
+family waves A-E and CI/client gameplay batches.
+Never promise entire Phase 2 done solely from research
+or this JUnit census.
