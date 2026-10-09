@@ -1,6 +1,6 @@
 # Phase 2 Stage 3A-4 — redstone connection, sensing and signal-facing owners
 
-**Status:** ACTIVE / 2 of 4 bounded research packages completed; no gameplay PASS.
+**Status:** ACTIVE / 3 of 4 bounded research packages completed; no gameplay PASS.
 Branch `2.0`, Minecraft 1.21.1 / NeoForge 21.1.215.
 This card does **NOT** mark additional classes reviewed.
 
@@ -50,28 +50,26 @@ where needed.
 
 - [x] **1.** Select a coherent subset of **8–11** of these 11 still pending concrete classes, verify exact NeoForge 21.1.215 reflection owners and pinned Minecraft 1.21.1 source placement, neighbor/update, support, scheduled tick and interaction/alternative authors. Preserve exact `P01–P40` labels only when proven; commit evidence and promote only actually reviewed TSV rows. Split if 11 are too different. **DONE 2026-10-10 / 3A-4.1:** [8-class 8-ID source and exact NeoForge declaring owner audit](../../research/PHASE2_STAGE3A_REDSTONE_SOURCE_OWNER_AUDIT_1_21_1.md). TripWire/Hook, RedStoneWire, Repeater, Comparator, Observer, Target, RedstoneLamp reviewed; **3 other candidates (4 IDs: DetectorRail, PoweredRail and DaylightDetector) still PENDING**. Total 63 reviewed/178 pending, no ASM/Signal/gameplay PASS.
 - [x] **2.** Independently join actual item creator records and examine off-item redstone writers (neighborChanged, signal sources, projectiles/entity detection, scheduled ticks, BlockEntity) with exact creation/notification chains. Commit evidence without claiming Phase 7A acceptance. **DONE 2026-10-10 / 3A-4.2:** [original NeoForge 1333 ITEM census join + pinned source alternate-author audit](../../research/PHASE2_STAGE3A_REDSTONE_ITEM_ALTERNATE_AUTHORS_1_21_1.md), 8/8 registered placed blocks, **6 ordinary BlockItems + 2 ItemNameBlockItem aliases** (`minecraft:string`→`minecraft:tripwire`, `minecraft:redstone`→`minecraft:redstone_wire`). All 7 item methods declare in `BlockItem`; separate cable, wire, diode, BE, observer, projectile and lamp writers documented. Counts stay 63 reviewed/178 pending; bytecode/runtime/7A/gameplay pending.
-- [ ] **3.** Separate physical directions from local edge semantics and redstone signal port identity at every seam; investigate recursion, update order, rail/tension graphs, dynamic shape/cached support and Phase 2/7A contract. Commit explicit hypotheses and tests, not runtime PASS.
+- [x] **3.** Separate physical directions from local edge semantics and redstone signal port identity at every seam; investigate recursion, update order, rail/tension graphs, dynamic shape/cached support and Phase 2/7A contract. Commit explicit hypotheses and tests, not runtime PASS. **DONE 2026-10-10 / 3A-4.3:** [source-level signal ports, physical update callbacks, tripwire 41-step walk, wire POWER recursion/shape caching, diode/observer tick priority and 2-way ports](../../research/PHASE2_STAGE3A_REDSTONE_PORT_TOPOLOGY_1_21_1.md). Rails/daylight source glimpses used only for Phase 7A/P28 handoff, NOT class promotion. All eight existing reviewed class dispositions and three deferred candidates retain their status; ASM/Planet/gameplay PENDING.
 - [ ] **4.** Independently reconcile every newly reviewed class against original ZIP and keep every other class including deferred candidates visibly `REVIEW_PENDING`; checkpoint and queue next independent family.
 
 ## Resume
 
-**Last completed:** **Stage 3A-4.2**, original NeoForge
-registered ITEM join for the eight previously reviewed
-redstone/tension classes: **8 exact BLOCK IDs → 8 ITEM IDs**,
-six ordinary `BlockItem` plus two `ItemNameBlockItem`
-(`string`/tripwire, `redstone`/wire).
-[Item and alternate state-writer audit](../../research/PHASE2_STAGE3A_REDSTONE_ITEM_ALTERNATE_AUTHORS_1_21_1.md).
-Tick, BlockEntity, entity, projectile, wire power and cable
-state paths source-reviewed separately from Item placement.
+**Last completed:** **Stage 3A-4.3** redstone
+source-local properties vs physical neighbour callback
+vs target-local face vs signal-getter `Direction`
+vs transported multi-cell walk.
+[Exact source/Planet architecture chart](../../research/PHASE2_STAGE3A_REDSTONE_PORT_TOPOLOGY_1_21_1.md).
+8 reviewed classes remain reviewed; **3 original
+rail/daylight candidates are still pending**.
+No NeoForge patched bytecode, runtime or gameplay PASS.
 
-Full ledger unchanged: **63/241 source+reflection reviewed**
-(170/1060 BLOCK IDs); **178/241 REVIEW_PENDING**
-(890/1060 IDs). `DetectorRailBlock`,
-`PoweredRailBlock` and `DaylightDetectorBlock` remain
-deferred pending (4 IDs). All ASM/Planet/runtime/gameplay
-acceptance PENDING.
+Full ledger remains **63/241** source+reflection
+reviewed (170 IDs) and **178/241 REVIEW_PENDING**
+(890 IDs), 1060 registered IDs total.
 
-**NEXT FIRST unchecked task:** checkbox **3** above,
-one separate source-vs-target port/tick/update/topology
-analysis including rail/tension Phase 7A split;
-one commit then stop. Do not start new Java fixes.
+**NEXT FIRST unchecked action:** checkbox **4**
+above: final independent exact CI ZIP vs all
+63 reviewed ID+method owners and statuses,
+and a bounded next-family card. One commit
+then stop; Stage 3A and Phase 2 not finished.

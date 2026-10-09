@@ -513,6 +513,44 @@ family without proving why it is a unique algorithm owner.
   recursion and scheduled priority, Phase 2/7A
   contract. Single independent docs commit.
 
+### 2026-10-10 micro-checkpoint — Stage 3A-4.3 redstone port/topology source evidence
+
+- Card `docs/phases/phase-02/02b-redstone-signal-owners.md`
+  checkbox **3/4 DONE**, only checkbox 4 remains.
+- Detailed research
+  `docs/research/PHASE2_STAGE3A_REDSTONE_PORT_TOPOLOGY_1_21_1.md`
+  uses pinned comparative 1.21.1 source and existing
+  PlanetBlockFrameContext.walk, StateFrame, NeighborQuery,
+  ShapeRuntime. **No runtime/JVM bytecode/gameplay tests**.
+- Five distinct directions: source-local state
+  `FACING`/tangent, physical neighbor change/BlockPos,
+  target-local inward face, signal-getter query-side
+  contract, seam `transportedDirection`; no global
+  Direction rewrite.
+- TripWire/Hook write up to 41-cell ordered cable with
+  both hooks, physical notifications, trigger AABB;
+  wire `RedstoneSide` (NONE/SIDE/UP) and cached
+  geometry separate from POWER recursive callback path,
+  `shouldSignal` mutable instance field; DiodeBlock
+  input FACING/side-lock versus opposite notification
+  cell; Comparator BE output; Observer watched input
+  and opposite output+2-tick pulse; target hit
+  physical and lamp delayed off. Scheduled timing and
+  priorities should remain vanilla-compatible.
+- Rail/daylight sources read only for cross-phase
+  handoff (P28/P36): **DetectorRailBlock,
+  PoweredRailBlock, DaylightDetectorBlock continue
+  to be `REVIEW_PENDING`**, not source-reviewed.
+- Ledger unchanged **63/241 reviewed (170 registered IDs),
+  178 pending (890 IDs), 1060 registered IDs**;
+  all ASM/Planet/gameplay acceptances REVIEW_PENDING.
+- **NEXT first incomplete task:** Stage 3A-4.4
+  checkbox 4, exact original CI ZIP class
+  source-review counts, ID sets, signature owner
+  and per-gate status reconciliation, queue
+  next limited owner family in separate card.
+  ONE bounded commit, then stop.
+
 ## Resume procedure after interrupted answer
 
 1. Read AGENTS.md, this checkpoint, the latest roadmap

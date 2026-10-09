@@ -3653,3 +3653,42 @@ Planet adaptation/Phase7A runtime and gameplay gates
 REVIEW_PENDING. Next task 3A-4.3 physical-vs-local
 redstone signal port and tick/recursion graph contract.
 No production code changed.
+
+
+## 2026-10-10 Phase2 Stage3A-4.3 redstone port/topology source chart
+
+Finished bounded task 3/4 on
+`docs/phases/phase-02/02b-redstone-signal-owners.md`.
+New research
+`docs/research/PHASE2_STAGE3A_REDSTONE_PORT_TOPOLOGY_1_21_1.md`.
+Pinned Minecraft 1.21.1 Java comparative sources
+plus PlanetBlockStateFrame, PlanetBlockNeighborQuery,
+PlanetBlockFrameContext.walk and BlockStateShapeRuntime
+establish FIVE different direction semantics:
+source-local state property port, PHYSICAL neighborPos
+and notification direction, target-local back-to-source
+support face, `getSignal/getDirectSignal` API
+queried side, and transported seam continuation.
+Tripwire/Hook scans up to 41 real cells with both
+endpoints and ATTACHED/POWERED writes; single-step
+Direction rotation insufficient across seam. Wire
+RedstoneSide NONE/SIDE/UP DOT/CROSS source shape caches
+distinct from synchronous POWER propagation, upward/
+downward corner neighbor notifications, and shared
+`shouldSignal` flag recursion guard. DiodeBlock
+FACING input + clockwise/counterclockwise side lock
+but opposite physical output notification,
+ComparatorBlockEntity output and tick priority,
+Observer watched FACING versus opposite output and
+2-tick pulse. Target projectile physical hit plane,
+Lamp delayed off signal. Rail P28+PoweredRail eight-step
+and DetectorRail entity-trigger, DaylightDetector
+brightness sources scanned CONTEXT ONLY: three classes
+remain REVIEW_PENDING (four IDs). No runtime code,
+ASM test, build or gameplay PASS.
+Ledger STILL **63/241 SOURCE_REVIEWED_INTEGRATION_PENDING**
+(170/1060 IDs), **178/241 REVIEW_PENDING** (890/1060).
+All 241 ASM/Planet/game acceptance fields pending.
+NEXT first unchecked microtask Stage 3A-4.4,
+original ZIP exact class/ID/owner/status reconciliation
+and next small owner-family card. One commit per response.

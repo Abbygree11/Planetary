@@ -1,3 +1,29 @@
+## 2026-10-10 Stage 3A-4.3 source-local vs physical redstone signal-port chart
+
+[Complete eight-reviewed-class signal port, callback,
+seam-walk, shape-cache, and timing contract](PHASE2_STAGE3A_REDSTONE_PORT_TOPOLOGY_1_21_1.md)
+separates source-local BlockState port, **real physical
+neighborPos**, target-local inward face, signal-getter
+API Direction, and transported continuation direction.
+TripWireBlock + TripWireHookBlock multi-cell up to
+41-step cable state, RedStoneWireBlock
+NONE/SIDE/UP+DOT/CROSS geometry, synchronous POWER
+notification/instance `shouldSignal` recursion guard,
+DiodeBlock/Repeater/Comparator FACING versus
+physical opposite neighbor output and scheduled tick
+priorities, ComparatorBlockEntity, Observer two-tick
+watched/output sides, target projectile face and
+lamp four-tick off were investigated via **pinned
+comparative source** and Planet frame infrastructure.
+
+Original rail/daylight classes (3 classes/4 IDs) were
+read ONLY for P28/7A architectural boundary, **not
+promoted**. **Totals still 63/241 source+reflection
+reviewed (170 IDs) / 178 REVIEW_PENDING (890 IDs)**;
+all ASM/Planet/gameplay gate fields remain pending.
+Next microtask **3A-4.4** exact original ZIP and
+status reconciliation / next bounded owner-family card.
+
 ## 2026-10-10 Stage 3A-4.2 exact redstone item and alternative authors (NO NEW CLASSES)
 
 [ITEM + alternate writer source audit](PHASE2_STAGE3A_REDSTONE_ITEM_ALTERNATE_AUTHORS_1_21_1.md):

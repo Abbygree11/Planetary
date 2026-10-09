@@ -17,7 +17,7 @@
 | 2.3A-1 | [01-block-owners.md](phase-02/01-block-owners.md) | **DONE (микропакеты, только исследование)** | 24/241 class source-reviewed; 217 pending, без игрового PASS |
 | 2.3A-2 | [02-block-owners-rest.md](phase-02/02-block-owners-rest.md) | **DONE (4 research packages only)** | Exact ZIP reconciliation 47/241 reviewed and 194 pending; **not** full Stage 3A |
 | 2.3A-3 | [02a-block-graph-owners.md](phase-02/02a-block-graph-owners.md) | **DONE (4 research packages only)** | Exact original ZIP source owner/item/shape graph reconciliation; 55 reviewed, 186 pending |
-| 2.3A-4 | [02b-redstone-signal-owners.md](phase-02/02b-redstone-signal-owners.md) | **ACTIVE, 2/4** | 8 reviewed candidate signal classes, **8 exact ITEM creators** (6 BlockItem + 2 ItemNameBlockItem) + alternate state authors; rail/daylight 3 classes pending |
+| 2.3A-4 | [02b-redstone-signal-owners.md](phase-02/02b-redstone-signal-owners.md) | **ACTIVE, 3/4** | Signal port direction chart, source/target physical callbacks, cable walk, wire recursion and tick ordering researched; rail/daylight 3 classes still pending |
 | 2.3B | [03-item-creators.md](phase-02/03-item-creators.md) | TODO | Item/alternative-author coverage |
 | 2.3C | [04-lifecycle-neoforge.md](phase-02/04-lifecycle-neoforge.md) | TODO | Bytecode/patch/dispatch evidence and gate |
 | 2.4A | [05-implementation-a.md](phase-02/05-implementation-a.md) | TODO | Context/FACING/AXIS/rotation state families |
@@ -47,14 +47,14 @@ redstone/tension/diode/observer/target/lamp; 3
 в исторических строках пакетной таблицы выше —
 не текущая статистика.
 
-**Следующая самостоятельная работа:** [3A-4.3
-signal direction/port + source-vs-target seam contracts](phase-02/02b-redstone-signal-owners.md),
-для восьми исследованных классов: локальные порты и
-физические события, 41-блочная растяжка, рекурсия
-проводов, порядок тиков, красный камень (Phase 7A).
-В 3A-4.2 исходный ITEM реестр подтвердил **8 ITEMS**:
-6 обычных `BlockItem` и 2 `ItemNameBlockItem`
-(`string` и `redstone`). Статусы классов неизменны.
-Один bounded research packet + commit, без premature runtime PASS.
+**Следующая самостоятельная работа:** [3A-4.4](phase-02/02b-redstone-signal-owners.md),
+итоговая сверка всех 63 source-reviewed классов и пяти
+владельцев методов с оригинальным NeoForge CI ZIP,
+статусы трёх неразобранных rail/daylight классов,
+составление следующей небольшой исследовательской карточки.
+[3A-4.3 source/target chart](../research/PHASE2_STAGE3A_REDSTONE_PORT_TOPOLOGY_1_21_1.md)
+завершил исходниковую проверку сигналов, тиков, 41-шагового
+натяжения и redstone-wire обновлений — **не runtime PASS**.
+Один маленький пакет/коммит за отдельный ответ.
 
 Обновление этого файла означает только, что появился маршрут и checkpoint, **не что Phase 2 исправлена**.

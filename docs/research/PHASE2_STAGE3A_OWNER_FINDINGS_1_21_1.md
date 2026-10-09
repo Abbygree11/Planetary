@@ -392,6 +392,34 @@ TargetBlock and RedstoneLamp. Item component
 remain pending; no ASM/Planet/7A/gameplay PASS.
 NEXT 3A-4.3 signal port/chart/timing contract.
 
+## 2026-10-10 Stage 3A-4.3 redstone source/target signal-port and causality contract
+
+[Eight-class port/graph/timer and frame analysis](PHASE2_STAGE3A_REDSTONE_PORT_TOPOLOGY_1_21_1.md)
+compares pinned vanilla 1.21.1 Java with
+PlanetBlockStateFrame, NeighborQuery and
+BlockFrameContext.walk. Local signal ports,
+physical notification Direction, neighbor-local
+inward face, signal getter queried Direction
+and seam-transported direction are explicitly
+distinct. Key future acceptance gates:
+TripWireHook.calculateState must traverse ordered
+physical cable cells up to 41 (including seams)
+and update both hooks + segment states; RedStoneWire
+NONE/SIDE/UP DOT/CROSS versus POWER propagation,
+up/down corner notifications, `shouldSignal`
+instance reentrancy and correct local/physical shape;
+DiodeBlock front/side input vs opposite output
+callback and tick priority; ComparatorBlockEntity
+analog output; Observer FACING watched side versus
+physically opposite signal output and two-tick pulse.
+Rails (BaseRailBlock/RailState, PoweredRail eight-step
+path, DetectorRail entity sensor) and daylight
+sky-signal inputs were viewed ONLY to establish a
+separate P28/Phase7A boundary, **not full owners**.
+No class promotion, runtime code change or PASS:
+63/241 reviewed (170 IDs), 178 pending (890 IDs).
+Next 3A-4.4 status/registry reconciliation.
+
 ## Remaining Stage 3A work
 
 1. Read actual `phase2-neo1211-registry-census` artifact's
