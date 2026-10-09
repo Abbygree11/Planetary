@@ -121,6 +121,30 @@ unsupported review labels. Next: 12 confirmed registered concrete
 inspect method bodies, subclass overrides, real call paths and
 NeoForge patch/bytecode scope before assigning first reviewed rows.
 
+## 2026-10-10 BushBlock 12-class subclass-method audit
+
+Second bounded checkpoint is now complete: **12 real concrete Java
+classes / 18 registered Block IDs**, representing 18 of 19 actual
+`BushBlock` subclass IDs whose effective `canSurvive` owner is
+NOT `BushBlock`. The 19th ID is `SeaPickleBlock`.
+Source call paths and actual compiled registry owner signatures are
+documented in [PHASE2_STAGE3A_BUSH_DESCENDANT_AUDIT_1_21_1.md](PHASE2_STAGE3A_BUSH_DESCENDANT_AUDIT_1_21_1.md).
+
+Important new confirmed algorithm paths: `CropBlock.getGrowthSpeed`
+XZ soil/crop neighborhood; `DoublePlantBlock` Y-axis pair update,
+upper placement and `DoubleHighBlockItem` pre-write;
+`PitcherCropBlock` age-triggered pair rather than ordinary
+`setPlacedBy`; `SmallDripleafBlock` water/soil/FACING pairing;
+`TallSeagrassBlock` full source-water dependency; standing/hanging
+`MangrovePropaguleBlock`; `MushroomBlock` independent canSurvive
+and 3D random spread. Shared Bush support works **only** for
+the delegated branch and does NOT imply subclass acceptance.
+
+**Status: RESEARCHED source owners; NeoForge bytecode/actual Mixin
+runtime, 241-class dispositions, item lifecycle and gameplay still
+open.** The next distinct micro-task records dispositions in TSV;
+do not start implementation based on an incomplete mapping.
+
 ## Remaining Stage 3A work
 
 1. Read actual `phase2-neo1211-registry-census` artifact's

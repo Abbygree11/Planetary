@@ -3312,3 +3312,21 @@ Research details: PHASE2_STAGE3A_OWNER_FINDINGS_1_21_1.md.
 Next checkpoint: 2.3A-1 micro-task 2 (12 concrete BushBlock descendants).
 User organization: ONE CHAT PER PHASE, ONE COMMITTED MICRO-TASK PER RESPONSE.
 No runtime/test changes; no new CI or gameplay check requested.
+
+
+## 2026-10-10 Phase 2, Stage 3A: BushBlock descendant audit checkpoint
+
+Step 2 of docs/phases/phase-02/01-block-owners.md DONE:
+12 real registered concrete descendants, 18 registered IDs,
+source evidence and effective NeoForge method-owner signature
+joins in docs/research/PHASE2_STAGE3A_BUSH_DESCENDANT_AUDIT_1_21_1.md.
+This covers 18 of 19 Bush hierarchy block IDs overriding inherited
+canSurvive; SeaPickleBlock is the nineteenth and already has initial
+cluster-level research. Observed distinct mechanisms: CropBlock farmland
+XZ growthSpeed, DoublePlant world-Y paired lifecycle, PitcherCrop
+age-triggered pair, small dripleaf soil/water/direction, full-water
+tall seagrass, standing vs hanging mangrove, mushroom independent
+survival/3D spread. Source evidence is comparative, not exact patched
+NeoForge bytecode. All gameplay and full family acceptance remain pending.
+No production code changed; no CI/client rerun needed. NEXT: step 3/4
+first 12 evidence-backed class-level TSV dispositions, others pending.

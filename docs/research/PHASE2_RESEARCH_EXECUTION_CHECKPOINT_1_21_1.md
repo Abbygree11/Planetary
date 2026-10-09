@@ -150,6 +150,23 @@ family without proving why it is a unique algorithm owner.
   in `docs/phases/phase-02/01-block-owners.md`. Do not advance
   directly to implementation.
 
+### 2026-10-10 micro-checkpoint: Stage 3A / 2.3A-1 task 2 complete
+
+- Reviewed 12 concrete `BushBlock` descendants, 18 registered
+  Block IDs; independently joined exact-method owners with raw
+  registry TSV and checked comparative 1.21.1 Java class methods.
+- All 18 have non-Bush effective `canSurvive`, leaving exactly
+  one sibling outside this set (`SeaPickleBlock`; previously
+  researched but not gameplay-accepted).
+- Source findings and narrowly scoped implementation contracts:
+  `PHASE2_STAGE3A_BUSH_DESCENDANT_AUDIT_1_21_1.md`.
+- **No TSV owner dispositions yet**: that is the next separate
+  micro-task 3/4. **No NeoForge ASM/Mixin runtime or game acceptance**,
+  no code changes; doc-only checkpoint, no CI rerun.
+- Next: create first evidence-backed 12-class
+  `PHASE2_BLOCK_OWNER_DISPOSITION_1_21_1.tsv`,
+  without claiming 241/241 semantic proof.
+
 ## Resume procedure after interrupted answer
 
 1. Read AGENTS.md, this checkpoint, the latest roadmap
