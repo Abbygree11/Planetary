@@ -91,6 +91,12 @@
     "BasePressurePlateBlockGravityMixin",
     "PressurePlateBlockTriggerGravityMixin",
     "WeightedPressurePlateBlockTriggerGravityMixin",
+    "BushBlockLocalSupportMixin",
+    "CandleBlockLocalSupportMixin",
+    "CakeFamilyLocalSupportMixin",
+    "SporeBlossomLocalSupportMixin",
+    "EndRodLocalPlacementMixin",
+    "EnderChestLocalPlacementMixin",
     "DoorBlockGravityMixin",
     "BedBlockGravityMixin",
     "PointedDripstoneBlockGravityMixin"
