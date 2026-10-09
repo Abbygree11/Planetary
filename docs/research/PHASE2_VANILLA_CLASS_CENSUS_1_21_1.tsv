@@ -179,43 +179,43 @@ ObserverBlock	PLACEMENT_INPUT_FULL_OR_HORIZONTAL;SIGNAL_MACHINE_INTERACTION	SOUR
 PiglinWallSkullBlock	ATTACHMENT_STANDING_WALL_OR_HANGING	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Family candidate by source name; source patterns: getShape; directionProperties=true; worldAxisCalls=false. Inheritance/overrides/NeoForge review pending
 PinkPetalsBlock	HALF_ROTATION_AND_SHAPE	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Family candidate by source name; source patterns: getStateForPlacement,rotate,mirror,getShape; directionProperties=true; worldAxisCalls=false. Inheritance/overrides/NeoForge review pending
 PipeBlock	SOURCE_SCANNED_WORLD_AXIS_CANDIDATE	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: no lifecycle matches
-PitcherCropBlock	MULTIBLOCK_PAIR_LAYOUT	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
-PlayerHeadBlock	ATTACHMENT_STANDING_WALL_OR_HANGING	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
-PlayerWallHeadBlock	ATTACHMENT_STANDING_WALL_OR_HANGING	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
-PointedDripstoneBlock	FALLING_CHAIN_TRIGGER	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
+PitcherCropBlock	MULTIBLOCK_PAIR_LAYOUT	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Family candidate by source name; source patterns: getStateForPlacement,canSurvive,updateShape,setPlacedBy,randomTick,getShape; directionProperties=true; worldAxisCalls=true. Inheritance/overrides/NeoForge review pending
+PlayerHeadBlock	ATTACHMENT_STANDING_WALL_OR_HANGING	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Family candidate by source name; source patterns: none; directionProperties=false; worldAxisCalls=false. Inheritance/overrides/NeoForge review pending
+PlayerWallHeadBlock	ATTACHMENT_STANDING_WALL_OR_HANGING	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Family candidate by source name; source patterns: none; directionProperties=false; worldAxisCalls=false. Inheritance/overrides/NeoForge review pending
+PointedDripstoneBlock	FALLING_CHAIN_TRIGGER	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Family candidate by source name; source patterns: getStateForPlacement,canSurvive,updateShape,randomTick,tick,getShape; directionProperties=false; worldAxisCalls=true. Inheritance/overrides/NeoForge review pending
 Portal	SOURCE_SCANNED_OTHER_OR_INHERITED	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: no lifecycle matches
-PotatoBlock	LOCAL_SURVIVAL_AND_PLANT_GROWTH	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
+PotatoBlock	LOCAL_SURVIVAL_AND_PLANT_GROWTH	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Family candidate by source name; source patterns: getShape; directionProperties=false; worldAxisCalls=false. Inheritance/overrides/NeoForge review pending
 PowderSnowBlock	SOURCE_SCANNED_OTHER_OR_INHERITED	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: no lifecycle matches
 PoweredBlock	SOURCE_SCANNED_OTHER_OR_INHERITED	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: no lifecycle matches
-PoweredRailBlock	RAIL_SLOPE_GRAPH	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
-PressurePlateBlock	LOCAL_SUPPORT_CENTER_CEILING	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
+PoweredRailBlock	RAIL_SLOPE_GRAPH	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Family candidate by source name; source patterns: rotate,mirror; directionProperties=false; worldAxisCalls=true. Inheritance/overrides/NeoForge review pending
+PressurePlateBlock	LOCAL_SUPPORT_CENTER_CEILING	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Family candidate by source name; source patterns: none; directionProperties=false; worldAxisCalls=false. Inheritance/overrides/NeoForge review pending
 PumpkinBlock	SOURCE_SCANNED_STATE_ORIENTATION_CANDIDATE	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: useItemOn
-RailBlock	RAIL_SLOPE_GRAPH	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
+RailBlock	RAIL_SLOPE_GRAPH	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Family candidate by source name; source patterns: rotate,mirror; directionProperties=true; worldAxisCalls=false. Inheritance/overrides/NeoForge review pending
 RailState	RAIL_SLOPE_GRAPH	SOURCE_METHODS_SPOT_CHECKED	Family candidate; confirm subclass overrides and platform patches
 RedStoneOreBlock	SOURCE_SCANNED_WORLD_AXIS_CANDIDATE	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: useItemOn,randomTick
-RedStoneWireBlock	SIGNAL_MACHINE_INTERACTION	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
+RedStoneWireBlock	SIGNAL_MACHINE_INTERACTION	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Family candidate by source name; source patterns: getStateForPlacement,canSurvive,updateShape,neighborChanged,onPlace,rotate,mirror,useWithoutItem,getShape; directionProperties=true; worldAxisCalls=true. Inheritance/overrides/NeoForge review pending
 RedstoneLampBlock	SOURCE_SCANNED_OTHER_OR_INHERITED	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: getStateForPlacement,neighborChanged,tick
-RedstoneTorchBlock	ATTACHMENT_STANDING_WALL_OR_HANGING	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
-RedstoneWallTorchBlock	ATTACHMENT_STANDING_WALL_OR_HANGING	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
+RedstoneTorchBlock	ATTACHMENT_STANDING_WALL_OR_HANGING	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Family candidate by source name; source patterns: neighborChanged,onPlace,tick; directionProperties=false; worldAxisCalls=true. Inheritance/overrides/NeoForge review pending
+RedstoneWallTorchBlock	ATTACHMENT_STANDING_WALL_OR_HANGING	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Family candidate by source name; source patterns: getStateForPlacement,canSurvive,updateShape,rotate,mirror,getShape; directionProperties=true; worldAxisCalls=false. Inheritance/overrides/NeoForge review pending
 RenderShape	SOURCE_SCANNED_OTHER_OR_INHERITED	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: no lifecycle matches
-RepeaterBlock	LOCAL_SUPPORT_CENTER_CEILING;SIGNAL_MACHINE_INTERACTION	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
+RepeaterBlock	LOCAL_SUPPORT_CENTER_CEILING;SIGNAL_MACHINE_INTERACTION	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Family candidate by source name; source patterns: getStateForPlacement,updateShape,useWithoutItem; directionProperties=true; worldAxisCalls=true. Inheritance/overrides/NeoForge review pending
 RespawnAnchorBlock	SIGNAL_MACHINE_INTERACTION	SOURCE_METHODS_SPOT_CHECKED	Inspected source methods and inherited behavior; verify all NeoForge subclass paths
-RodBlock	HALF_ROTATION_AND_SHAPE	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
+RodBlock	HALF_ROTATION_AND_SHAPE	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Family candidate by source name; source patterns: rotate,mirror,getShape; directionProperties=true; worldAxisCalls=false. Inheritance/overrides/NeoForge review pending
 RootedDirtBlock	SOURCE_SCANNED_WORLD_AXIS_CANDIDATE	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: no lifecycle matches
-RootsBlock	LOCAL_SURVIVAL_AND_PLANT_GROWTH	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
+RootsBlock	LOCAL_SURVIVAL_AND_PLANT_GROWTH	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Family candidate by source name; source patterns: getShape; directionProperties=false; worldAxisCalls=false. Inheritance/overrides/NeoForge review pending
 RotatedPillarBlock	PLACEMENT_INPUT_FULL_OR_HORIZONTAL	SOURCE_METHODS_SPOT_CHECKED	Family candidate; confirm subclass overrides and platform patches
-Rotation	STATE_ROTATION_AND_STRUCTURE	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
+Rotation	STATE_ROTATION_AND_STRUCTURE	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Family candidate by source name; source patterns: rotate; directionProperties=false; worldAxisCalls=true. Inheritance/overrides/NeoForge review pending
 SaplingBlock	LOCAL_SURVIVAL_AND_PLANT_GROWTH	SOURCE_METHODS_SPOT_CHECKED	Family candidate; confirm subclass overrides and platform patches
 ScaffoldingBlock	TANGENT_GRAPH_AND_SIX_FACE_GRAPH;FALLING_CHAIN_TRIGGER	SOURCE_METHODS_SPOT_CHECKED	Family candidate; confirm subclass overrides and platform patches
 SculkBehaviour	SOURCE_SCANNED_OTHER_OR_INHERITED	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: no lifecycle matches
 SculkBlock	SOURCE_SCANNED_WORLD_AXIS_CANDIDATE	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: no lifecycle matches
 SculkCatalystBlock	SOURCE_SCANNED_OTHER_OR_INHERITED	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: tick
-SculkSensorBlock	SIGNAL_MACHINE_INTERACTION	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
+SculkSensorBlock	SIGNAL_MACHINE_INTERACTION	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Family candidate by source name; source patterns: getStateForPlacement,updateShape,onPlace,tick,getShape; directionProperties=false; worldAxisCalls=true. Inheritance/overrides/NeoForge review pending
 SculkShriekerBlock	SOURCE_SCANNED_WORLD_AXIS_CANDIDATE	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: getStateForPlacement,updateShape,tick
 SculkSpreader	SOURCE_SCANNED_WORLD_AXIS_CANDIDATE	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: no lifecycle matches
-SculkVeinBlock	TANGENT_GRAPH_AND_SIX_FACE_GRAPH	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
+SculkVeinBlock	TANGENT_GRAPH_AND_SIX_FACE_GRAPH	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Family candidate by source name; source patterns: updateShape; directionProperties=false; worldAxisCalls=false. Inheritance/overrides/NeoForge review pending
 SeaPickleBlock	LOCAL_SUPPORT_CENTER_CEILING;FLUID_WATERLOGGED_CONTEXT	SOURCE_METHODS_SPOT_CHECKED	Inspected source methods and inherited behavior; verify all NeoForge subclass paths
-SeagrassBlock	LOCAL_SURVIVAL_AND_PLANT_GROWTH	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
+SeagrassBlock	LOCAL_SURVIVAL_AND_PLANT_GROWTH	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Family candidate by source name; source patterns: getStateForPlacement,updateShape,getShape; directionProperties=true; worldAxisCalls=true. Inheritance/overrides/NeoForge review pending
 ShulkerBoxBlock	PLACEMENT_INPUT_FULL_OR_HORIZONTAL;STATE_ROTATION_AND_STRUCTURE	SOURCE_METHODS_SPOT_CHECKED	Inspected source methods and inherited behavior; verify all NeoForge subclass paths
 SignBlock	ATTACHMENT_STANDING_WALL_OR_HANGING	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
 SimpleWaterloggedBlock	FLUID_WATERLOGGED_CONTEXT	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
