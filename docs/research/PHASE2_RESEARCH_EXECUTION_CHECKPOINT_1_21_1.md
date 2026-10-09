@@ -415,6 +415,37 @@ family without proving why it is a unique algorithm owner.
   card after that distinct microtask is done.
   No tests or game client claimed.
 
+### 2026-10-10 micro-checkpoint — Stage 3A-3.4 registry integrity
+
+- Card `docs/phases/phase-02/02a-block-graph-owners.md`:
+  **all four BOUNDED research steps DONE**, but **entire
+  Stage 3A and Phase 2 are incomplete**.
+- Original NeoForge CI ZIP 11643813158 SHA256:
+  `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`. Independently compared all **241**
+  exact class names and count of **1060** registered IDs,
+  plus each of **55** source-reviewed classes'
+  **162 exact block ID strings** and five declaring
+  method owners by complete signatures.
+- All four independent FNV-1a 32-bit diagnostic digests
+  MATCH between source ZIP and committed branch TSV:
+  0xf188a064 roster, 0x5e998532 reviewed IDs,
+  0x98207d0 owners, 0x1f4133ac combined.
+- Eight graph classes (69 IDs) retain reviewed/reflection
+  tier; **69/69 corresponding ordinary BlockItems**
+  independently verified in original item registry.
+  TripWireBlock, TripWireHookBlock and 184 additional
+  classes stay `REVIEW_PENDING`. All acceptance fields
+  remain REVIEW_PENDING.
+- Cumulative **55 source+reflection-reviewed / 186 pending**
+  classes, 162 vs 898 registered BLOCK IDs.
+- **New card:** `docs/phases/phase-02/02b-redstone-signal-owners.md`
+  11 real *still pending* signal/rail/tension classes,
+  12 block IDs. **NEXT FIRST unchecked task: Stage
+  3A-4.1 item 1**, separate small source/refl owner
+  audit of a coherent 8–11-class subset.
+- No Java code change, CI build, applied-Mixin ASM
+  or in-game PASS. Research only.
+
 ## Resume procedure after interrupted answer
 
 1. Read AGENTS.md, this checkpoint, the latest roadmap

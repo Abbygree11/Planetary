@@ -1,3 +1,24 @@
+## 2026-10-10 Stage 3A-3.4 exact original CI reconciliation (current numbers)
+
+[Independent original ZIP vs full ledger integrity report](PHASE2_STAGE3A_GRAPH_COHORT_RECONCILIATION_1_21_1.md)
+confirms all **241** registered concrete class names and
+per-class ID counts match **1060** original CI BLOCK rows.
+All **55** source+NeoForge reflection-reviewed classes match
+their **162 exact registered IDs** and five exact signature
+method-declaring owners; four independent FNV diagnostic
+fingerprints MATCH. All eight graph classes / **69** IDs
+also have 69 exact distinct ordinary BlockItems in
+original ITEM registry; TripWireBlock/TripWireHookBlock
+remain untouched pending. All **186** other classes
+(898 IDs) explicitly `REVIEW_PENDING`. **No ASM, Planet
+runtime or gameplay PASS**, and no TSV disposition changed.
+
+The `2.3A-3` research-card checkboxes are all complete,
+not the Phase-2/Stage-3A acceptance gates.
+NEXT: [2.3A-4 exact candidate signal class card](../phases/phase-02/02b-redstone-signal-owners.md),
+11 still-pending classes / 12 registered block IDs.
+All earlier guide counts are HISTORICAL checkpoints.
+
 ## 2026-10-10 Stage 3A-3.3 graph shape/cache/physical callback source audit (no class changes)
 
 [New exact source-vs-target and shape/callback chart](PHASE2_STAGE3A_GRAPH_SHAPE_CALLBACK_CHART_1_21_1.md)

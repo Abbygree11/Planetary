@@ -3559,3 +3559,35 @@ All 8 reviewed graph classes and 69 IDs remain research-only;
 TripWire and hook still pending. NEXT microtask 3A-3.4
 exact census/ledger/status reconciliation and queue next
 small family. No Java or tests changed.
+
+
+## 2026-10-10 Phase 2 Stage 3A-3.4 exact full registry/source owner reconciliation
+
+Bounded research-only Stage 3A-3.4 **completed and committed**,
+closing task 4/4 on
+`docs/phases/phase-02/02a-block-graph-owners.md`,
+NOT closing Stage 3A / Phase 2. Original
+CI artifact `11643813158` ZIP SHA256 7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e:
+1060 registered BLOCK IDs, 241 concrete Java classes,
+1333 ITEM IDs, 1712 property registry rows. Independently
+compared whole 241-class exact class roster/per-class count
+and each of the **55** source+reflection reviewed classes'
+exact **162 registered IDs** + 5 exact method-declaration
+owner signatures. All four FNV-1a source ZIP vs GitHub TSV
+fingerprints match (0xf188a064, 0x5e998532,
+0x98207d0, 0x1f4133ac). Eight graph classes (69 BLOCK
+IDs) have 69 distinct ordinary BlockItems by exact
+placed_block join. TripWireBlock + TripWireHookBlock
+remain among 186 REVIEW_PENDING classes (898 IDs).
+All 241 NeoForge ASM, Planetary runtime and game acceptance
+gates still REVIEW_PENDING. No Java/runtime code, no
+CI or gameplay performed.
+Research file:
+`docs/research/PHASE2_STAGE3A_GRAPH_COHORT_RECONCILIATION_1_21_1.md`.
+**NEXT FIRST microtask**: card
+`docs/phases/phase-02/02b-redstone-signal-owners.md`
+task 1, 11 *not-yet-reviewed* redstone/tension/rail/sensing
+candidate classes = 12 BLOCK IDs. Select at most one
+coherent 8–11 class subfamily, source+compiled reflection,
+commit that as next independent package. Do not claim
+ASM/functional signal/gameplay PASS.

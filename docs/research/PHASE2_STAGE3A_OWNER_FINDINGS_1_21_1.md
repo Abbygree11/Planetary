@@ -325,6 +325,26 @@ test matrix recorded. No class/ID statuses promoted:
 186 REVIEW_PENDING (898 IDs), all ASM and game fields
 pending. Next Stage 3A-3.4 final cohort invariant check.
 
+## 2026-10-10 Stage 3A-3.4 original CI ledger and next-family gate
+
+[Exact reconciled 241-class / 55-reviewed class evidence](PHASE2_STAGE3A_GRAPH_COHORT_RECONCILIATION_1_21_1.md):
+the original NeoForge 21.1.215 ZIP was independently
+parsed and four canonical digests match current branch:
+0xf188a064 (class roster/count), 0x5e998532 (55 exact
+ID sets), 0x98207d0 (55 sets of 5 method declaring
+owners), and 0x1f4133ac (reviewed IDs+owners combined).
+69 source-reviewed graph BLOCK IDs have 69 ordinary
+registered BlockItems, with 2 TripWire classes
+explicitly still `REVIEW_PENDING`. Current totals:
+**55/241** source+reflection reviewed (162 IDs) and
+**186/241** source REVIEW_PENDING (898 IDs).
+All NeoForge ASM/Planet/gameplay fields unchanged
+REVIEW_PENDING; **Stage 3A itself remains incomplete**.
+Follow-on [card 3A-4](../phases/phase-02/02b-redstone-signal-owners.md)
+has 11 actual still-pending redstone/tension/directed
+signal classes / 12 IDs. No new class source audits
+or runtime acceptance in this reconciliation batch.
+
 ## Remaining Stage 3A work
 
 1. Read actual `phase2-neo1211-registry-census` artifact's
