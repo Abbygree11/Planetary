@@ -3248,3 +3248,25 @@ and all P01-P40 owner semantics; then implement coherent
 family waves A-E and CI/client gameplay batches.
 Never promise entire Phase 2 done solely from research
 or this JUnit census.
+
+
+## 2026-10-10 resumable full Phase-2 research checkpoint
+
+User explicitly confirmed the mandate to research and repair all
+orientation-related Minecraft 1.21.1 engine mechanism families,
+not example blocks, and to split the long investigation into
+independently persisted stages after a response-disconnection.
+Existing repository work is substantial: P01-P40 atlas,
+293/121 comparative source-file inventories, source waves A/B/C,
+NeoForge registry owner census 1060/1333, CI run 37988064055
+green. NOT a full proven owner disposition or gameplay acceptance.
+
+Committed canonical staged checkpoint at
+docs/research/PHASE2_RESEARCH_EXECUTION_CHECKPOINT_1_21_1.md.
+At this note, next step Stage 3A: block owner/override dispositions
+for all actual 241 concrete block implementation classes, then
+Stage 3B: items and alternate placement, 3C: compiled/NeoForge
+lifecycle, Stage 4: complete common-mechanism implementation waves,
+Stage 5: full acceptance matrix. Persist each completed stage and
+resume earliest incomplete stage; DO NOT redo existing source
+or fake a 241/241 reviewed claim from heuristics.
