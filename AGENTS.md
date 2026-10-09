@@ -326,6 +326,29 @@ During implementation:
   missing mechanism;
 - update the roadmap if new research changes phase ownership.
 
+## 3D. Interrupted-chat recovery: one bounded micro-task per answer
+
+Short, independently committed tasks are now **mandatory** because several
+extended Phase-2 investigations lost the response connection.
+
+Navigation: `docs/phases/README.md` and `docs/phases/phase-XX.md`.
+The active orientation audit is `docs/phases/phase-02.md`, with smaller
+`docs/phases/phase-02/*.md` stage cards.
+
+- At each turn, work on **one** first-incomplete micro-task only. Read its
+  dependencies from the canonical roadmap/research; do not repeat completed
+  research or prematurely jump to the next wave.
+- Before continuing, commit an independent useful result to GitHub branch 2.0.
+  Each micro-task has evidence/status and a clear next-step pointer.
+- End the response after the committed checkpoint; do not start an unbounded
+  series of additional micro-tasks in the same response.
+- When a connection drops, the next attempt resumes from actual GitHub
+  commits and uncompleted checkbox, not from transient chat thinking.
+- Keep true statuses separate: source research, implemented code,
+  green CI, and user-accepted game behavior.
+- This is a scheduling/documentation change, not permission to patch
+  individual blocks while ignoring their full algorithm family.
+
 ## 4. Research is mandatory BEFORE implementation
 
 Before implementing a non-trivial mechanic, feature, compatibility layer, or bug
