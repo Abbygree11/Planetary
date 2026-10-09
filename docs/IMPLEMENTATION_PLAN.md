@@ -562,6 +562,34 @@ Progress and source provenance are committed separately after
 each bounded stage; document any CI error/fix. Previously
 accepted particle families remain immutable regression baselines.
 
+### 2026-10-09 first actual NeoForge registry census — CI GREEN
+
+**Verified on GitHub Actions run 37987135612**, Java 21,
+NeoForge 21.1.215: production/test compilation SUCCESS, JUnit
+SUCCESS, and generated report artifact uploaded SUCCESS.
+The earlier first attempt passed JUnit but missed the artifact
+because it used a worker-relative report path; absolute Gradle
+report directory fix now verified.
+
+Actual registered counts: 1060 BLOCK IDs (241 concrete classes),
+1333 ITEM IDs (87 concrete classes, 925 BlockItems),
+1712 BlockState property instances. 527 block IDs are
+potential orientation candidates under the **initial**
+property-name heuristic, not confirmed gameplay coverage.
+The count alone misses important non-property positional
+mechanisms (sea pickles, sugar cane, cactus, cave vines,
+scaffolding) and additional attached/attachment/in_wall/bottom
+state domains. Source changes after the successful run
+include new effective method owner/hierarchy report and
+these extra flags; **new CI is pending for that revision**.
+
+Authoritative verified observations and artifact:
+`docs/research/PHASE2_NEOFORGE_REGISTRY_FINDINGS_1_21_1.md`.
+Do NOT mark stage 3 final until all actual 241 class
+owner chains, subclass bypasses and specialized 1333
+item paths have verified semantic P01–P40 dispositions,
+and a strict fail-unclassified test is enabled.
+
 ### Mandatory next bounded engineering step: executable census
 
 Before editing another arbitrary placement class:
