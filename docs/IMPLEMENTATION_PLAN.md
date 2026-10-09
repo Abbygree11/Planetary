@@ -590,6 +590,44 @@ owner chains, subclass bypasses and specialized 1333
 item paths have verified semantic P01–P40 dispositions,
 and a strict fail-unclassified test is enabled.
 
+### 2026-10-09 actual override-owner census v2 — verified CI GREEN
+
+Latest diagnostic Java revision `aa395729` compiles/tests and
+publishes the real registry artifact in GitHub Actions run
+**37988064055 SUCCESS**. Unlike the first report, this one
+includes each runtime concrete class's full superclass chain
+and effective **nearest declared implementation owner** of
+each named lifecycle method, not simply all ancestors.
+Registered counts remain 1060 BLOCK IDs and 1333 ITEM IDs;
+the expanded tentative name heuristic marks 528 instead of
+527 block candidates, but this is NOT a coverage pass.
+
+Unique observed nearest implementation owners per named
+Block method: **103** `getStateForPlacement`, **60**
+`canSurvive`, **103** `updateShape`, **15**
+`setPlacedBy`, **25** `neighborChanged`, **61**
+`rotate`, **57** `mirror`, **24** `useItemOn` and
+**52** `useWithoutItem`. The Item real dispatch includes
+`BlockItem` and overridden StandingAndWall/
+GameMasterBlockItem getPlacementState, ScaffoldingBlockItem
+updatePlacementContext, and independent useOn/tool classes.
+
+Canonical evidence and risk boundaries:
+`docs/research/PHASE2_EFFECTIVE_OWNER_FINDINGS_1_21_1.md`.
+A nearest Java method declaration is a candidate owner, not
+a substitute for inspecting actual bytecode INVOKEs, state-level
+`BlockBehaviour.BlockStateBase`, NeoForge hooks, and semantic
+subclass override. All registered classes still need a
+P01–P40 source-owner disposition.
+
+**NEXT INDEPENDENT ENGINEERING STEP:** classify the actual
+owner clusters, including state/cache and alternate item
+creation, map the resulting reviewed IDs/owners to
+`PHASE2_PLANETARY_COVERAGE_SEED_1_21_1.tsv`, freeze
+whole-family wave A (P01–P16) implementation and its
+pass/fail CI gates. Do not resume named-block patching
+or claim Phase2 solved merely from this JUnit scan.
+
 ### Mandatory next bounded engineering step: executable census
 
 Before editing another arbitrary placement class:
