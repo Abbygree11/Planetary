@@ -3725,3 +3725,51 @@ Nonregistered RailState and BaseRailBlock crucial
 for slope and connectivity. DaylightDetectorBlock
 separately pending, not part of rail group.
 No bytecode/runtime/game acceptance has been established.
+
+
+## 2026-10-10 Phase 2 Stage 3A-5.1 rail exact NeoForge source and runtime owner review
+
+User shorthand `кк` means execute one next first
+uncompleted microtask, commit, checkpoint, stop.
+Stage 3A-5.1 task 1 on
+`docs/phases/phase-02/02c-rail-owners.md`
+completed as docs-only research:
+`docs/research/PHASE2_STAGE3A_RAIL_SOURCE_OWNER_AUDIT_1_21_1.md`.
+Original NeoForge 21.1.215 CI artifact 11643813158
+SHA256 7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e
+compiled reflection exact nearest declaring owners
+reviewed for 3 additional concrete rail classes
+(4 registered block IDs): RailBlock (minecraft:rail),
+DetectorRailBlock (detector_rail), PoweredRailBlock
+(powered_rail and activator_rail).
+All five core owners: BaseRailBlock
+(getStateForPlacement, canSurvive, updateShape);
+BlockBehaviour (randomTick); Block (setPlacedBy).
+Additional owner onPlace DetectorRailBlock for
+detector, BaseRailBlock for other two;
+neighborChanged BaseRailBlock all;
+scheduled tick DetectorRailBlock only.
+Pinned comparative Minecraft 1.21.1 source
+BaseRailBlock, RailState, RailBlock,
+DetectorRailBlock, PoweredRailBlock and RailShape:
+RailState.place/connectTo writes this and neighbor
+rails; getRail tries same, world above and below;
+RailState.hasConnection compares X,Z but ignores
+Y; `RailShape.ASCENDING_*` hardcodes world above
+and horizontal cardinal. RailBlock curved 3-way
+signal switching; DetectorRail minecart-trigger
+scheduled 20-tick check and connection notifications;
+PoweredRail 8-step recursive power, requires same
+block instance (powered vs activator not auto-joined).
+WATERLOGGED updateShape schedules fluid ticks, not
+rail network shape updates. RailState and BaseRailBlock
+are nonregistered but essential owner classes.
+**66/241 source+reflection reviewed classes,
+174/1060 registered IDs**; **175/241 REVIEW_PENDING,
+886/1060 registered IDs**, including
+DaylightDetectorBlock (left separate).
+All NeoForge patched ASM/Mixin/Planetary implementation
+and gameplay verdicts PENDING; no Java or tests.
+NEXT Stage 3A-5.2 task 2 on rail card:
+original ITEM placed_block join, alternate
+entity/rail/power writers. ONE separate commit.

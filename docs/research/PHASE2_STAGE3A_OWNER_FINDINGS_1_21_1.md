@@ -446,6 +446,36 @@ All 241 patched NeoForge ASM/Planet runtime/gameplay
 gates still REVIEW_PENDING.
 Stage 3A and Phase 2 incomplete.
 
+## 2026-10-10 Stage 3A-5.1 rail topology actual owner audit
+
+[Detailed original NeoForge and pinned Minecraft
+rail owner source evidence](PHASE2_STAGE3A_RAIL_SOURCE_OWNER_AUDIT_1_21_1.md):
+3 newly source+compiled runtime declaration
+reviewed concrete classes (4 BLOCK IDs),
+RailBlock, DetectorRailBlock and PoweredRailBlock
+(activator + powered). All five core nearest
+owners inherited:
+BaseRailBlock placement/survive/updateShape,
+BlockBehaviour randomTick and Block setPlacedBy.
+Graph update actually delegated from BaseRailBlock
+onPlace/neighborChanged/updateDir to `RailState`
+which walks actual physical cells and writes
+neighbor rails. Notably `RailState.hasConnection`
+compares physical X and Z while ignoring Y;
+ascending shapes use world above/below and
+horizontal cardinals, requiring source/target local
+chart contract across cube faces and seams.
+RailBlock.updateState at 3-way redstone junction,
+DetectorRailBlock own onPlace/scheduled minecart
+power check, PoweredRailBlock up-to-eight segment
+power walk/source variant check identified.
+Rail water logging preserved as separate Phase5
+concern. DaylightDetectorBlock still unreviewed.
+**66/241** SOURCE_REVIEWED_INTEGRATION_PENDING
+(174 IDs), **175/241** REVIEW_PENDING (886 IDs).
+All ASM/Planet/gameplay gates remain pending.
+Next 3A-5.2 exact item and alternate authors.
+
 ## Remaining Stage 3A work
 
 1. Read actual `phase2-neo1211-registry-census` artifact's

@@ -1,3 +1,34 @@
+## 2026-10-10 Stage 3A-5.1 — rail exact owner + RailState graph (3 new classes)
+
+[Original NeoForge 21.1.215 compiled declaration owner
+plus pinned vanilla rail-graph source review](PHASE2_STAGE3A_RAIL_SOURCE_OWNER_AUDIT_1_21_1.md)
+newly source+reflection audits RailBlock (1 BLOCK ID),
+DetectorRailBlock (1), PoweredRailBlock (2
+IDs: activator_rail and powered_rail): **3/241
+new class rows, 4 IDs**, all five effective owners
+at BaseRailBlock/BaseRailBlock/BaseRailBlock/
+BlockBehaviour/Block respectively.
+Nonregistered BaseRailBlock and **RailState**
+perform placement, survival, neighbor onPlace,
+slope support, per-cell graph re-evaluation and
+multi-rail state mutation; RailState has hardcoded
+physical XZ-only connection check, world-Y
+above/below and world-horizontal scan. RailBlock
+can turn and change track at 3-neighbor powered
+junction; detector scheduled minecart sensing,
+PoweredRail eight-step graph power scan are
+distinct Phase7A signal pathways. `updateShape`
+primarily schedules water ticks (P37), not rail
+graph writes. No NeoForge patched ASM, integration
+or gameplay acceptance claimed.
+
+**New ledger totals: 66/241 source+reflection
+reviewed (174/1060 IDs), 175 REVIEW_PENDING
+(886/1060 IDs)**. DaylightDetectorBlock still
+REVIEW_PENDING. Next Stage 3A-5.2 original ITEM
+and alternative authored state paths.
+Historical earlier counts below are past snapshots.
+
 ## 2026-10-10 Stage 3A-4.4 primary CI ZIP original full-lattice reconciliation
 
 [Exact 241-class and 63-source-reviewed owner

@@ -18,7 +18,7 @@
 | 2.3A-2 | [02-block-owners-rest.md](phase-02/02-block-owners-rest.md) | **DONE (4 research packages only)** | Exact ZIP reconciliation 47/241 reviewed and 194 pending; **not** full Stage 3A |
 | 2.3A-3 | [02a-block-graph-owners.md](phase-02/02a-block-graph-owners.md) | **DONE (4 research packages only)** | Exact original ZIP source owner/item/shape graph reconciliation; 55 reviewed, 186 pending |
 | 2.3A-4 | [02b-redstone-signal-owners.md](phase-02/02b-redstone-signal-owners.md) | **DONE (4 research packages only)** | Exact original ZIP reconciliation for 63 source+reflection reviewed classes/170 IDs; 178 pending, all gameplay gates pending |
-| 2.3A-5 | [02c-rail-owners.md](phase-02/02c-rail-owners.md) | **NEXT** | Rails: 3 still-pending registered concrete classes / 4 IDs, with nonregistered BaseRailBlock/RailState; daylight separately pending |
+| 2.3A-5 | [02c-rail-owners.md](phase-02/02c-rail-owners.md) | **ACTIVE 1/4** | 3 rail classes / 4 exact BLOCK IDs source+NeoForge owner reviewed; RailState multi-cell topology and slopes audited; daylight separate pending |
 | 2.3B | [03-item-creators.md](phase-02/03-item-creators.md) | TODO | Item/alternative-author coverage |
 | 2.3C | [04-lifecycle-neoforge.md](phase-02/04-lifecycle-neoforge.md) | TODO | Bytecode/patch/dispatch evidence and gate |
 | 2.4A | [05-implementation-a.md](phase-02/05-implementation-a.md) | TODO | Context/FACING/AXIS/rotation state families |
@@ -36,11 +36,11 @@
 
 ## Точка продолжения
 
-**Актуальный статус после 2.3A-4.4 (2026-10-10):**
+**Актуальный статус после 2.3A-5.1 (2026-10-10):**
 в оригинальном NeoForge 21.1.215 CI артефакте
 **241 класс / 1060 зарегистрированных BLOCK IDs**;
-**63/241** `SOURCE_REVIEWED_INTEGRATION_PENDING`
-(170 IDs) и **178/241** `REVIEW_PENDING` (890 IDs).
+**66/241** `SOURCE_REVIEWED_INTEGRATION_PENDING`
+(174 IDs) и **175/241** `REVIEW_PENDING` (886 IDs).
 Пять владельцев методов для 63 классов и точные ID
 повторно сравнены с оригинальным ZIP: четыре хеша
 **совпали**. Завершены только четыре
@@ -49,13 +49,17 @@
 статусы `REVIEW_PENDING`. Старые числа в таблице
 выше — исторические snapshots.
 
-**Следующий независимый пакет:** [3A-5.1
-rail-owner census/source graph](phase-02/02c-rail-owners.md),
-три реальные pending класса рельсов: RailBlock,
-DetectorRailBlock, PoweredRailBlock (4 block IDs),
-с анализом не-регистровых BaseRailBlock/RailState
-и локальных уклонов. DaylightDetectorBlock остаётся
-pending и будет исследован отдельно. Один пакет,
-один коммит, никаких заявлений о runtime PASS.
+**Последний завершённый микропакет: 3A-5.1** — 
+[оригинальные NeoForge владельцы 3 классов рельсов и source-анализ RailState](../research/PHASE2_STAGE3A_RAIL_SOURCE_OWNER_AUDIT_1_21_1.md).
+После него **66/241** классов source+reflection reviewed
+(**174/1060 IDs**), **175/241** REVIEW_PENDING (**886 IDs**).
+`DaylightDetectorBlock` не классифицирован. Гейты
+ASM/Planetary runtime/gameplay у всех 241 классов pending.
+
+**Следующая самостоятельная работа:** [3A-5.2,
+исходный ITEM registry / alternate rail authors](phase-02/02c-rail-owners.md),
+проверка конкретных создателей четырёх рельсов и
+отдельных minecart/rail-signal/structure update путей.
+Один микро-пакет и один отдельный коммит.
 
 Обновление этого файла означает только, что появился маршрут и checkpoint, **не что Phase 2 исправлена**.

@@ -594,6 +594,49 @@ family without proving why it is a unique algorithm owner.
   single next bounded microtask, commit, checkpoint,
   answer; do NOT launch an unbounded series.
 
+### 2026-10-10 micro-checkpoint — Stage 3A-5.1 rail owner/graph source audit
+
+- Card `docs/phases/phase-02/02c-rail-owners.md`,
+  checkbox **1/4 DONE**; checkboxes 2,3,4 open.
+  Audited 3 original pending concrete rail classes /
+  4 BLOCK IDs: RailBlock/minecraft:rail,
+  DetectorRailBlock/minecraft:detector_rail,
+  PoweredRailBlock/minecraft:activator_rail +
+  minecraft:powered_rail. Full record
+  `docs/research/PHASE2_STAGE3A_RAIL_SOURCE_OWNER_AUDIT_1_21_1.md`.
+- Original NeoForge 21.1.215 CI ZIP artifact 11643813158
+  SHA256 `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`.
+  Compiled nearest exact core method signatures
+  ALL three owners: place/survive/updateShape =
+  BaseRailBlock, randomTick BlockBehaviour,
+  setPlacedBy Block. Extra onPlace detector-specific,
+  BaseRailBlock neighborChanged and onPlace other
+  families, scheduled tick DetectorRailBlock only,
+  rotate/mirror per subclass.
+- Comparative pinned 1.21.1 source `BaseRailBlock`,
+  `RailState`, `RailBlock`, `DetectorRailBlock`,
+  `PoweredRailBlock`, `RailShape` audited.
+  RailState `place/connectTo` changes this and
+  multiple neighboring rail BlockStates, uses
+  physical XZ-only comparison and physical world-Y
+  above/below assumptions, separate source-local
+  chart/slope policy required. RailBlock curve
+  signal junction, detector entity 20-tick,
+  powered rail up to 8 recursed segments distinct.
+  `updateShape` waterlog fluid tick ≠ rail graph.
+- Full ledger **66/241** class source+reflection
+  reviewed (174 BLOCK IDs), **175/241**
+  REVIEW_PENDING (886 IDs), still **1060** total.
+  DaylightDetectorBlock remains pending, all
+  241 NeoForge ASM/Planet runtime/gameplay
+  acceptance statuses REVIEW_PENDING.
+- **NEXT FIRST unchecked task**: Stage 3A-5.2,
+  card checkbox 2: independent actual original
+  ITEM `placed_block` join for 4 rail IDs,
+  minecart/off-item state authors and
+  power/detector network causal write paths.
+  One bounded commit; no Java game patch.
+
 ## Resume procedure after interrupted answer
 
 1. Read AGENTS.md, this checkpoint, the latest roadmap
