@@ -204,10 +204,22 @@ public final class PlanetTestFixtures {
             // BlockItem/placement and canSurvive can be tested by player.
             put(level, physical(face, x - 1, FLOOR_RADIUS, z),
                     Blocks.CYAN_CONCRETE.defaultBlockState());
+            // Grass is the required natural substrate for a sapling.
+            // It is deliberately still the GREEN placement lane.
             put(level, physical(face, x + 1, FLOOR_RADIUS, z),
-                    Blocks.LIME_CONCRETE.defaultBlockState());
+                    station.name().equals("cherry_leaves")
+                            ? Blocks.GRASS_BLOCK.defaultBlockState()
+                            : Blocks.LIME_CONCRETE.defaultBlockState());
 
             buildReference(level, face, station);
+
+            // Hanging spore blossoms require a physical LOCAL ceiling
+            // above the player's EMPTY placement target as well as above
+            // the cyan reference. This tests real BlockItem/useOn.
+            if (station.name().equals("spore_blossom")) {
+                put(level, physical(face, x + 1, FLOOR_RADIUS + 2, z),
+                        Blocks.STONE.defaultBlockState());
+            }
         }
 
         // The persistent gold marker is written LAST. It is never used as
