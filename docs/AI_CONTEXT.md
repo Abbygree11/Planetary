@@ -3023,3 +3023,59 @@ new Mixins could still fail to transform at Minecraft startup or
 be semantically incomplete. Next single client + family spot-check
 on +/-X, -Y using six-face fixtures, not another hand-built suite.
 Existing accepted particle behavior must remain unchanged.
+
+
+## 2026-10-09 Phase-2 interrupted response recovery and staged whole-mechanism audit
+
+User requested comprehensive non-per-block Phase-2 orientation audit, after
+long previous response disconnected: deliver the SAME comprehensive scope
+in independently committed research/engineering stages so progress survives.
+Only branch 2.0, no main modifications.
+
+On inspecting repo HEAD fc3d98d7, the interrupted attempt
+ACTUALLY SAVED earlier research/roadmap:
+- ORIENTATION_MECHANISMS_ATLAS_1_21_1.md P01-P40 owner families;
+- PHASE2_VANILLA_CLASS_CENSUS_1_21_1.tsv all 293 top-level
+  comparative block java files (53 representative source method
+  spotchecks, 240 pattern-only; NOT registered block ids);
+- PHASE2_ITEM_CREATION_CENSUS_1_21_1.tsv all 121 item package
+  files (pattern-only; NOT registered IDs);
+- PHASE2_ORIENTATION_ACCEPTANCE_1_21_1.md full six-face release gates;
+- AGENTS.md new hard phase2 mechanism completeness rule and
+  IMPLEMENTATION_PLAN P0 comprehensive census/owner requirements.
+Preserve them, do NOT redo the entire audit monolithically.
+
+NEW Stage 2A independent source research:
+docs/research/PHASE2_SOURCE_OWNER_AUDIT_WAVE_A_1_21_1.md
+compared Mojang 1.21.1 source for BlockItem/place/updatePlacementContext/
+getPlacementState/canPlace/setPlacedBy/late DataComponents.BLOCK_STATE,
+DirectionalPlaceContext synthetic player, StandingAndWallBlockItem,
+HangingSignItem, ScaffoldingBlockItem, PlaceOnWaterBlockItem, FireCharge,
+FlintAndSteel, tools, and precise historical NeoForge patches.
+Important NeoForge ItemAbilities.FIRESTARTER_LIGHT hook and sound API
+must not be accidentally overwritten by copying vanilla BlockItem.
+
+NEW Stage 2A executable registry census:
+src/test/java/dev/planetary/world/Phase2RegistryOrientationCensusTest.java
+uses actual bootstrapped MC BuiltInRegistries.BLOCK/ITEM (ModDevGradle),
+captures registry IDs, class names, orientation candidate property
+names+legal domains, method declaration chains, BlockItem link.
+Writes four files to build/reports/planetary. All orientations
+explicitly REVIEW_PENDING, not accepted. CI workflow uploads as
+phase2-neo1211-registry-census artifact and prints counts.
+CI run 37986315706 started for last code change a0141fa8;
+may still be pending when this note is read. Do not claim PASS
+without exact CI success. This research/test patch changes NO
+runtime/Mixin or accepted particle behavior.
+
+The next independent stages:
+2B inspect actual registry census plus superclass/override families
+support/survival/update/tangent/pairs/rails;
+3 compare actual owners vs Planetary current adapters with
+IMPLEMENTED/GAP/CROSS_PHASE/NA/REVIEW_PENDING dispositions;
+4 implement whole mechanism waves A-E, green Java CI,
+client startup and physical six-face natural placement acceptance.
+No actual finished Phase-2 gameplay claim yet.
+
+Prior user accepted particles and shared gravity; Phases 2/3
+remain unclosed until integration.
