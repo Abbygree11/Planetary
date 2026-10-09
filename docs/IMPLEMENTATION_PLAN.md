@@ -482,7 +482,7 @@ Do NOT request one runtime test per block. Finish coherent family adapters and
 run one Phase-2 family acceptance matrix.
 
 ### 2026-10-09 Phase-2 family-wide placement/support batch 1
-[IMPLEMENTED / CI+RUNTIME ACCEPTANCE PENDING]
+[IMPLEMENTED / JAVA21 CI PASS / CLIENT+GAMEPLAY ACCEPTANCE PENDING]
 
 Following accepted particle motion and user-observed inability to
 place candles/cake, spore blossoms, saplings, and incorrect placement
