@@ -3079,3 +3079,61 @@ No actual finished Phase-2 gameplay claim yet.
 
 Prior user accepted particles and shared gravity; Phases 2/3
 remain unclosed until integration.
+
+
+## 2026-10-09 Phase-2 source wave B and provisional forty-family crosswalk
+
+Following the interrupted audit recovery, completed second
+independently checkpointed source research note:
+`docs/research/PHASE2_SOURCE_OWNER_AUDIT_WAVE_B_1_21_1.md`.
+Direct comparative Mojang 1.21.1 source inspected:
+SeaPickleBlock overrides canSurvive and independently calls below(),
+so existing BushBlock canSurvive Mixin does NOT affect sea pickle;
+CocoaBlock overrides support using state.FACING; LanternBlock
+HANGING/canSupportCenter/waterlogging own algorithm;
+AmethystClusterBlock six-facing support and physical callback update;
+CropBlock preserves polymorphic super.canSurvive but adds light gate;
+SaplingBlock actual randomTick above/light; Cactus/SugarCane above/below
+and growth column scans; GrowingPlantBlock+Head+Body growthDirection
+and head/body role transitions; ScaffoldingBlockItem/Block distance;
+MultifaceBlock six-face attachments and VineBlock distinct spread;
+BaseRailBlock supportRigid and RailState adjacency/sloped tracks.
+These are named SOURCE OWNERS, not just user-symptom patches.
+No runtime behavior changed during this source research.
+
+Added initial comparison
+`docs/research/PHASE2_PLANETARY_COVERAGE_SEED_1_21_1.tsv`:
+exact 40 P01-P40 mechanism rows mapped to source-present
+Planetary helpers/Mixins or explicit gaps. PRE-REGISTRY
+source-only disposition counts:
+5 PARTIAL_FOUNDATION, 14 PARTIAL_FAMILY, 18 GAP,
+3 CROSS_PHASE. All rows
+`PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS`, actual six-face
+natural-placement `NOT_VERIFIED`. These are NOT 40 tested
+groups and not 18 factual runtime regressions, just known gaps.
+
+CI audit pipeline note:
+New Phase2RegistryOrientationCensusTest Java compilation and
+JUnit suite passed in GitHub Actions 37986315706, but overall
+workflow FAILED at the newly added "Show registered orientation
+census" step: file not found at
+`build/reports/planetary/phase2-neo1211-summary.txt`.
+Most likely source is custom NeoForge unit test worker's CWD:
+the test wrote a RELATIVE report path, while workflow expected
+repository-root build/reports. An unverified diagnosis, not a
+conclusion about test execution.
+
+Corrective code commits b9157a0 and da2d01a:
+test reads system property `planetary.phase2.censusReportDir`,
+Gradle test task passes explicit absolute location under
+project build/reports/planetary. GitHub CI run 37987135612
+launched for the second commit; monitor its actual report
+counts and success before marking Stage2A executable census
+accepted. If report STILL missing, inspect test XML/execution,
+don't weaken coverage gate.
+
+Mandatory next: finalize real registered owner & property data,
+then replace preliminary 40-row crosswalk review-pending with
+source-verified owner dispositions and run family-wide repairs
+across waves A-E. No additional player build requests during
+research; accepted Phase-4 particles unchanged.
