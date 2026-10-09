@@ -82,7 +82,16 @@ Flint-and-steel station intentionally stays unlit to test the
 real `useOn` ignition path. Furnace block entities receive input
 and coal to avoid extinguishing immediately after setBlock.
 Spore blossom is placed below a real physical local-UP supporting
-stone. Discrepancy between a visible reference and a failed adjacent
+stone. The empty GREEN placement location also has a physical
+LOCAL-UP stone ceiling so players can use normal placement there.
+
+The Cherry Leaves station has a preinstalled leaf block on CYAN.
+Its GREEN adjacent placement spot uses natural **grass block soil**
+instead of lime concrete so that a cherry sapling can be planted
+through the actual `BushBlock.mayPlaceOn` path. Tree growth/light
+behavior remains a separate Phase-2/10 acceptance item.
+
+Discrepancy between a visible reference and a failed adjacent
 player placement is a **Phase-2 mechanism** failure, not evidence
 that particles are broken.
 
