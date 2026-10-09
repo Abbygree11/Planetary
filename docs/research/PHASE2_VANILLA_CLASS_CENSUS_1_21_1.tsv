@@ -172,44 +172,44 @@ NetherPortalBlock	SIGNAL_MACHINE_INTERACTION	INDEXED_ONLY	Family candidate; conf
 NetherSproutsBlock	LOCAL_SURVIVAL_AND_PLANT_GROWTH	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
 NetherVines	LOCAL_SURVIVAL_AND_PLANT_GROWTH	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
 NetherWartBlock	LOCAL_SURVIVAL_AND_PLANT_GROWTH	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
-NetherrackBlock	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
-NoteBlock	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
+NetherrackBlock	SOURCE_SCANNED_WORLD_AXIS_CANDIDATE	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: no lifecycle matches
+NoteBlock	SOURCE_SCANNED_WORLD_AXIS_CANDIDATE	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: getStateForPlacement,updateShape,neighborChanged,useItemOn,useWithoutItem
 NyliumBlock	LOCAL_SURVIVAL_AND_PLANT_GROWTH	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
 ObserverBlock	PLACEMENT_INPUT_FULL_OR_HORIZONTAL;SIGNAL_MACHINE_INTERACTION	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
 PiglinWallSkullBlock	ATTACHMENT_STANDING_WALL_OR_HANGING	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
 PinkPetalsBlock	HALF_ROTATION_AND_SHAPE	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
-PipeBlock	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
+PipeBlock	SOURCE_SCANNED_WORLD_AXIS_CANDIDATE	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: no lifecycle matches
 PitcherCropBlock	MULTIBLOCK_PAIR_LAYOUT	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
 PlayerHeadBlock	ATTACHMENT_STANDING_WALL_OR_HANGING	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
 PlayerWallHeadBlock	ATTACHMENT_STANDING_WALL_OR_HANGING	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
 PointedDripstoneBlock	FALLING_CHAIN_TRIGGER	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
-Portal	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
+Portal	SOURCE_SCANNED_OTHER_OR_INHERITED	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: no lifecycle matches
 PotatoBlock	LOCAL_SURVIVAL_AND_PLANT_GROWTH	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
-PowderSnowBlock	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
-PoweredBlock	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
+PowderSnowBlock	SOURCE_SCANNED_OTHER_OR_INHERITED	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: no lifecycle matches
+PoweredBlock	SOURCE_SCANNED_OTHER_OR_INHERITED	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: no lifecycle matches
 PoweredRailBlock	RAIL_SLOPE_GRAPH	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
 PressurePlateBlock	LOCAL_SUPPORT_CENTER_CEILING	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
-PumpkinBlock	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
+PumpkinBlock	SOURCE_SCANNED_STATE_ORIENTATION_CANDIDATE	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: useItemOn
 RailBlock	RAIL_SLOPE_GRAPH	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
 RailState	RAIL_SLOPE_GRAPH	SOURCE_METHODS_SPOT_CHECKED	Family candidate; confirm subclass overrides and platform patches
-RedStoneOreBlock	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
+RedStoneOreBlock	SOURCE_SCANNED_WORLD_AXIS_CANDIDATE	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: useItemOn,randomTick
 RedStoneWireBlock	SIGNAL_MACHINE_INTERACTION	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
-RedstoneLampBlock	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
+RedstoneLampBlock	SOURCE_SCANNED_OTHER_OR_INHERITED	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: getStateForPlacement,neighborChanged,tick
 RedstoneTorchBlock	ATTACHMENT_STANDING_WALL_OR_HANGING	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
 RedstoneWallTorchBlock	ATTACHMENT_STANDING_WALL_OR_HANGING	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
-RenderShape	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
+RenderShape	SOURCE_SCANNED_OTHER_OR_INHERITED	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: no lifecycle matches
 RepeaterBlock	LOCAL_SUPPORT_CENTER_CEILING;SIGNAL_MACHINE_INTERACTION	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
 RespawnAnchorBlock	SIGNAL_MACHINE_INTERACTION	SOURCE_METHODS_SPOT_CHECKED	Inspected source methods and inherited behavior; verify all NeoForge subclass paths
 RodBlock	HALF_ROTATION_AND_SHAPE	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
-RootedDirtBlock	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
+RootedDirtBlock	SOURCE_SCANNED_WORLD_AXIS_CANDIDATE	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: no lifecycle matches
 RootsBlock	LOCAL_SURVIVAL_AND_PLANT_GROWTH	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
 RotatedPillarBlock	PLACEMENT_INPUT_FULL_OR_HORIZONTAL	SOURCE_METHODS_SPOT_CHECKED	Family candidate; confirm subclass overrides and platform patches
 Rotation	STATE_ROTATION_AND_STRUCTURE	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
 SaplingBlock	LOCAL_SURVIVAL_AND_PLANT_GROWTH	SOURCE_METHODS_SPOT_CHECKED	Family candidate; confirm subclass overrides and platform patches
 ScaffoldingBlock	TANGENT_GRAPH_AND_SIX_FACE_GRAPH;FALLING_CHAIN_TRIGGER	SOURCE_METHODS_SPOT_CHECKED	Family candidate; confirm subclass overrides and platform patches
-SculkBehaviour	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
-SculkBlock	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
-SculkCatalystBlock	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
+SculkBehaviour	SOURCE_SCANNED_OTHER_OR_INHERITED	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: no lifecycle matches
+SculkBlock	SOURCE_SCANNED_WORLD_AXIS_CANDIDATE	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: no lifecycle matches
+SculkCatalystBlock	SOURCE_SCANNED_OTHER_OR_INHERITED	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: tick
 SculkSensorBlock	SIGNAL_MACHINE_INTERACTION	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
 SculkShriekerBlock	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
 SculkSpreader	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
