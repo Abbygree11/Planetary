@@ -95,32 +95,32 @@ DispenserBlock	PLACEMENT_INPUT_FULL_OR_HORIZONTAL	INDEXED_ONLY	Family candidate;
 DoorBlock	MULTIBLOCK_PAIR_LAYOUT;SIGNAL_MACHINE_INTERACTION	SOURCE_METHODS_SPOT_CHECKED	Family candidate; confirm subclass overrides and platform patches
 DoubleBlockCombiner	MULTIBLOCK_PAIR_LAYOUT	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
 DoublePlantBlock	MULTIBLOCK_PAIR_LAYOUT	SOURCE_METHODS_SPOT_CHECKED	Family candidate; confirm subclass overrides and platform patches
-DragonEggBlock	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
-DropExperienceBlock	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
+DragonEggBlock	SOURCE_SCANNED_ITEM_INTERACTION_CANDIDATE	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: useWithoutItem
+DropExperienceBlock	SOURCE_SCANNED_OTHER_OR_INHERITED	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: no lifecycle matches
 DropperBlock	PLACEMENT_INPUT_FULL_OR_HORIZONTAL	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
-EnchantingTableBlock	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
-EndGatewayBlock	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
+EnchantingTableBlock	SOURCE_SCANNED_ITEM_INTERACTION_CANDIDATE	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: useWithoutItem
+EndGatewayBlock	SOURCE_SCANNED_OTHER_OR_INHERITED	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: no lifecycle matches
 EndPortalBlock	SIGNAL_MACHINE_INTERACTION	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
 EndPortalFrameBlock	SIGNAL_MACHINE_INTERACTION	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
 EndRodBlock	PLACEMENT_INPUT_FULL_OR_HORIZONTAL	SOURCE_METHODS_SPOT_CHECKED	Family candidate; confirm subclass overrides and platform patches
 EnderChestBlock	PLACEMENT_INPUT_FULL_OR_HORIZONTAL	SOURCE_METHODS_SPOT_CHECKED	Family candidate; confirm subclass overrides and platform patches
-EntityBlock	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
-EquipableCarvedPumpkinBlock	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
+EntityBlock	SOURCE_SCANNED_OTHER_OR_INHERITED	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: no lifecycle matches
+EquipableCarvedPumpkinBlock	SOURCE_SCANNED_OTHER_OR_INHERITED	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: no lifecycle matches
 FaceAttachedHorizontalDirectionalBlock	PLACEMENT_INPUT_FULL_OR_HORIZONTAL	SOURCE_METHODS_SPOT_CHECKED	Family candidate; confirm subclass overrides and platform patches
-Fallable	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
+Fallable	SOURCE_SCANNED_OTHER_OR_INHERITED	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: no lifecycle matches
 FallingBlock	FALLING_CHAIN_TRIGGER	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
-FarmBlock	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
+FarmBlock	SOURCE_SCANNED_WORLD_AXIS_CANDIDATE	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: getStateForPlacement,canSurvive,updateShape,randomTick,tick
 FenceBlock	TANGENT_GRAPH_AND_SIX_FACE_GRAPH	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
 FenceGateBlock	HALF_ROTATION_AND_SHAPE;SIGNAL_MACHINE_INTERACTION	SOURCE_METHODS_SPOT_CHECKED	Family candidate; confirm subclass overrides and platform patches
 FireBlock	SIGNAL_MACHINE_INTERACTION	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
-FletchingTableBlock	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
+FletchingTableBlock	SOURCE_SCANNED_ITEM_INTERACTION_CANDIDATE	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: useWithoutItem
 FlowerBlock	LOCAL_SURVIVAL_AND_PLANT_GROWTH	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
 FlowerPotBlock	LOCAL_SURVIVAL_AND_PLANT_GROWTH	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
-FrogspawnBlock	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
-FrostedIceBlock	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
+FrogspawnBlock	SOURCE_SCANNED_WORLD_AXIS_CANDIDATE	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: canSurvive,updateShape,onPlace,tick
+FrostedIceBlock	SOURCE_SCANNED_OTHER_OR_INHERITED	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: neighborChanged,onPlace,tick
 FungusBlock	LOCAL_SURVIVAL_AND_PLANT_GROWTH	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
 FurnaceBlock	PLACEMENT_INPUT_FULL_OR_HORIZONTAL	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
-GameMasterBlock	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
+GameMasterBlock	SOURCE_SCANNED_OTHER_OR_INHERITED	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: no lifecycle matches
 GlazedTerracottaBlock	PLACEMENT_INPUT_FULL_OR_HORIZONTAL	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
 GlowLichenBlock	TANGENT_GRAPH_AND_SIX_FACE_GRAPH	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
 GrassBlock	LOCAL_SURVIVAL_AND_PLANT_GROWTH	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
@@ -128,9 +128,9 @@ GrindstoneBlock	ATTACHMENT_STANDING_WALL_OR_HANGING	INDEXED_ONLY	Family candidat
 GrowingPlantBlock	LOCAL_SURVIVAL_AND_PLANT_GROWTH	SOURCE_METHODS_SPOT_CHECKED	Family candidate; confirm subclass overrides and platform patches
 GrowingPlantBodyBlock	LOCAL_SURVIVAL_AND_PLANT_GROWTH	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
 GrowingPlantHeadBlock	LOCAL_SURVIVAL_AND_PLANT_GROWTH	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
-HalfTransparentBlock	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
+HalfTransparentBlock	SOURCE_SCANNED_OTHER_OR_INHERITED	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: no lifecycle matches
 HangingRootsBlock	ATTACHMENT_STANDING_WALL_OR_HANGING;LOCAL_SURVIVAL_AND_PLANT_GROWTH	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
-HayBlock	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
+HayBlock	SOURCE_SCANNED_STATE_ORIENTATION_CANDIDATE	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: no lifecycle matches
 HeavyCoreBlock	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
 HoneyBlock	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
 HopperBlock	PLACEMENT_INPUT_FULL_OR_HORIZONTAL	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
