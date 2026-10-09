@@ -323,6 +323,39 @@ family without proving why it is a unique algorithm owner.
   a bounded P25/P26 connectivity subset. Do not
   skip directly to Stage 3B or implementation.
 
+### 2026-10-10 micro-checkpoint — Stage 3A-3.1 connected graph owners
+
+- Current card: `docs/phases/phase-02/02a-block-graph-owners.md`,
+  task **1/4 DONE**, remaining 2/3/4 unchecked.
+- New class-level source research:
+  `docs/research/PHASE2_STAGE3A_CONNECTIVITY_GRAPHS_1_21_1.md`.
+  Original NeoForge CI artifact 11643813158 SHA256
+  `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`
+  used for exact 8 class IDs and nearest method
+  declaration owners, source compared against pinned
+  Minecraft 1.21.1 Java.
+- Eight reviewed / 69 registered IDs:
+  FenceBlock 12, FenceGateBlock 11, WallBlock 25,
+  IronBarsBlock 2, StainedGlassPaneBlock 16, VineBlock 1,
+  GlowLichenBlock 1, SculkVeinBlock 1.
+  Distinct algorithms: local 4 tangents P25,
+  perpendicular gate/wall P27, five-face vine P26
+  support fallback + spread, six-face MultifaceBlock
+  full-face support and spreading.
+  Source `FenceBlockGravityMixin` exists, no
+  runtime handler evidence; all ASM/gameplay pending.
+- **TripWireBlock** and **TripWireHookBlock**
+  *not reviewed*, remain in the 186 `REVIEW_PENDING`;
+  P36 redstone interaction needed separately.
+- New ledger: **55/241** source+reflection reviewed
+  (162/1060 associated block IDs), **186/241**
+  REVIEW_PENDING (898/1060 IDs).
+- **NEXT FIRST incomplete task**: 2.3A-3.2,
+  real ITEM/alternative creation and interaction
+  author paths for the already selected eight.
+  One standalone research commit, no runtime Java
+  changes in this task.
+
 ## Resume procedure after interrupted answer
 
 1. Read AGENTS.md, this checkpoint, the latest roadmap

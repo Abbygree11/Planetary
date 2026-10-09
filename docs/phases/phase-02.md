@@ -16,7 +16,7 @@
 |---|---|---|---|
 | 2.3A-1 | [01-block-owners.md](phase-02/01-block-owners.md) | **DONE (микропакеты, только исследование)** | 24/241 class source-reviewed; 217 pending, без игрового PASS |
 | 2.3A-2 | [02-block-owners-rest.md](phase-02/02-block-owners-rest.md) | **DONE (4 research packages only)** | Exact ZIP reconciliation 47/241 reviewed and 194 pending; **not** full Stage 3A |
-| 2.3A-3 | [02a-block-graph-owners.md](phase-02/02a-block-graph-owners.md) | **NEXT** | 10 candidate connectivity classes / 71 IDs **still pending**; 8–10 per independent source research package |
+| 2.3A-3 | [02a-block-graph-owners.md](phase-02/02a-block-graph-owners.md) | **ACTIVE, 1/4** | 8 connectivity classes / 69 IDs audited by source+reflection; 2 TripWire classes still pending |
 | 2.3B | [03-item-creators.md](phase-02/03-item-creators.md) | TODO | Item/alternative-author coverage |
 | 2.3C | [04-lifecycle-neoforge.md](phase-02/04-lifecycle-neoforge.md) | TODO | Bytecode/patch/dispatch evidence and gate |
 | 2.4A | [05-implementation-a.md](phase-02/05-implementation-a.md) | TODO | Context/FACING/AXIS/rotation state families |
@@ -34,6 +34,6 @@
 
 ## Точка продолжения
 
-Следующая самостоятельная работа — **2.3A-3**, P25/P26 connection/attachment graph classes из [следующей карточки](phase-02/02a-block-graph-owners.md), только один подпакет за ответ. В [реестре](../research/PHASE2_BLOCK_OWNER_DISPOSITION_1_21_1.tsv) source-reviewed 47/241 классов (93/1060 IDs); 194 класса остаются REVIEW_PENDING. Это не проверка NeoForge байткода/игрового поведения и не завершение Phase 2.
+Следующая самостоятельная работа — **2.3A-3, микропакет 2**: item/alternate author for the eight just-audited P25/P26 graph classes in [current card](phase-02/02a-block-graph-owners.md). Всего 55/241 source+reflection reviewed (162 IDs), 186/241 pending. Not implementation. В [реестре](../research/PHASE2_BLOCK_OWNER_DISPOSITION_1_21_1.tsv) source-reviewed 47/241 классов (93/1060 IDs); 194 класса остаются REVIEW_PENDING. Это не проверка NeoForge байткода/игрового поведения и не завершение Phase 2.
 
 Обновление этого файла означает только, что появился маршрут и checkpoint, **не что Phase 2 исправлена**.

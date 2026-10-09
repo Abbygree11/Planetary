@@ -270,6 +270,28 @@ Next **Stage 2.3A-3** has a separate
 [10-class actual-registry connectivity candidate card](../phases/phase-02/02a-block-graph-owners.md);
 those candidates are *not* classified in this checkpoint.
 
+## 2026-10-10 Stage 3A-3.1 eight connected-graph class owners
+
+[Verified source + NeoForge reflection audit](PHASE2_STAGE3A_CONNECTIVITY_GRAPHS_1_21_1.md):
+8 new classes / **69 actual registered block IDs**,
+`FenceBlock`, `FenceGateBlock`, `WallBlock`,
+`IronBarsBlock`, `StainedGlassPaneBlock`,
+`VineBlock`, `GlowLichenBlock`,
+`SculkVeinBlock`. The source base
+`CrossCollisionBlock` is distinct from `MultifaceBlock`,
+and `WallBlock` uses above-cell collision-face
+and post/LOW/TALL calculations, not Fence flags.
+Existing FenceBlockGravityMixin source is not evidence
+of other families' runtime correctness. TripWire and
+TripWireHook remain source REVIEW_PENDING
+(2 IDs), intentionally deferred from redstone network.
+Full current 241-class TSV distribution:
+**55 SOURCE_REVIEWED_INTEGRATION_PENDING**
+(162 IDs); **186 REVIEW_PENDING** (898 IDs).
+All 241 ASM/adapter/gameplay gates pending.
+Next first task Stage 3A-3.2: item creation and
+spreading/interaction alternative author join.
+
 ## Remaining Stage 3A work
 
 1. Read actual `phase2-neo1211-registry-census` artifact's

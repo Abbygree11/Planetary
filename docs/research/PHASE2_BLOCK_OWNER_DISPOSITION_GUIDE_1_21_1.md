@@ -1,3 +1,19 @@
+## Current verified Phase-2 owner-disposition ledger (updated 2026-10-10, Stage 3A-3.1)
+
+| Quantity | Current |
+|---|---:|
+| Registered concrete block classes in exact original CI census | **241** |
+| `SOURCE_REVIEWED_INTEGRATION_PENDING`, exact reflection owners | **55** (162 registered block IDs) |
+| `REVIEW_PENDING` class-level source/owner disposition | **186** (898 block IDs) |
+| All BLOCK registry IDs | **1060** |
+| NeoForge patched ASM, Planet adapter acceptance and gameplay PASS | **Not established** |
+
+[First connected-graph source owner audit](PHASE2_STAGE3A_CONNECTIVITY_GRAPHS_1_21_1.md):
+8 new classes (69 IDs), with P25/P26/P27 **different algorithms**.
+The two TripWire candidates remain `REVIEW_PENDING`.
+All older counts and “next” pointers below are historical
+source-batch snapshots rather than current ledger totals.
+
 # Phase 2 Stage 3A — class-level owner-disposition ledger
 
 **Target:** Minecraft 1.21.1 / NeoForge 21.1.215 / Planetary `2.0`.

@@ -3473,3 +3473,29 @@ docs/phases/phase-02/02a-block-graph-owners.md,
 microtask 1, 10 candidate P25/P26 graph owner classes
 (71 registry IDs), source audit ONLY next turn.
 No production code, tests, or game run modified.
+
+
+## 2026-10-10 Phase2 Stage3A-3.1 connected graph class owner audit
+
+Independent eight-class/source research package (task 1/4) completed:
+FenceBlock, FenceGateBlock, WallBlock, IronBarsBlock,
+StainedGlassPaneBlock, VineBlock, GlowLichenBlock and
+SculkVeinBlock; **69** exact registered IDs sourced from original
+NeoForge 21.1.215 CI ZIP 11643813158 and pinned comparative 1.21.1
+Java source. Mechanisms: P25 tangent 4-neighbor boolean links,
+FenceGate FACING/IN_WALL/perpendicular wall and redstone P36;
+P27 WallSide NONE/LOW/TALL plus source-local above collision
+DOWN face shape and UP post; IronBarsBlock inherited by
+StainedGlassPaneBlock; P26 Vine UP+4 with upper vine support fallback,
+random spread; 6-face MultifaceBlock inherited by GlowLichenBlock
+and SculkVeinBlock, distinct full support OR collision face
+predicate, face-removal updates, bonemeal and sculk spread authors.
+FenceBlockGravityMixin already exists SOURCE_ONLY; no game PASS.
+Audit: docs/research/PHASE2_STAGE3A_CONNECTIVITY_GRAPHS_1_21_1.md.
+Ledger now 55/241 class SOURCE_REVIEWED_INTEGRATION_PENDING
+(162/1060 associated block IDs), 186 pending (898 IDs).
+TripWireBlock and TripWireHookBlock explicitly remain REVIEW_PENDING,
+not conflated with fence/face algorithm. All ASM/Planet adapter
+/gameplay acceptance REVIEW_PENDING; no runtime code change.
+NEXT card docs/phases/phase-02/02a-block-graph-owners.md
+step 2/4: full registered ITEM + alternative author / interactions.
