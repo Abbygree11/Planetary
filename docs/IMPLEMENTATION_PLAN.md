@@ -440,6 +440,98 @@ Acceptance:
 - public PlanetFrameApi local-neighbor primitive
 - Create-like raw BlockPos.relative(local FACING) stress harness across all six faces
 
+## 2026-10-09 Phase-2 ORIENTATION COMPLETENESS P0 GATE — RESEARCH ATLAS FROZEN
+
+The user specifically forbids future per-block bugfix roulette: **any
+orientation, placement, survival or block-interaction defect must trigger a
+WHOLE owner-family research and implementation process**. Previous partial
+family Mixins (including EndRod, EnderChest, Candles, SporeBlossom)
+are not evidence that all FACING/support mechanisms are solved.
+
+Authoritative new research and release acceptance:
+- `docs/research/ORIENTATION_MECHANISMS_ATLAS_1_21_1.md`:
+  **P01–P40** distinct mechanics with exact source-owner hypotheses,
+  class/subclass bypasses, frame semantics, implementation status,
+  acceptance and cross-phase ownership.
+- `docs/research/PHASE2_VANILLA_CLASS_CENSUS_1_21_1.tsv`:
+  first-pass comparative-source indexing+pattern checks for **all
+  293 top-level Java files** in the Minecraft 1.21.1 block package.
+  Of these, 53 carry direct representative method spot checks and
+  240 only source-pattern scanning. These are files/classes,
+  **not registered block IDs or 293 accepted gameplay mechanics**.
+- `docs/research/PHASE2_ITEM_CREATION_CENSUS_1_21_1.tsv`:
+  all **121** top-level Item source files have first-pass
+  useOn/use/placement-method and direction pattern inspection.
+  Specialized items, no-player contexts and late BLOCK_STATE
+  component application remain semantically unaccepted.
+- `docs/acceptance/PHASE2_ORIENTATION_ACCEPTANCE_1_21_1.md`:
+  exhaustive-by-mechanism CI/ASM/in-game acceptance contract,
+  paired CYAN reference vs natural LIME player-placed test.
+- Existing deeper R1 block topology and source audits remain
+  valid foundations; new atlas closes their evidence/status gaps.
+
+**The source-name inventory and first-pass pattern scans are now
+COMPLETE, not the per-owner/NeoForge bytecode SEMANTIC audit.**
+No additional runtime Java or Mixin implementation was made in
+this research-only audit, and no new gameplay acceptance is claimed.
+
+### Mandatory next bounded engineering step: executable census
+
+Before editing another arbitrary placement class:
+
+1. Add a version-pinned JUnit/ASM census of **all registered BLOCK
+   and ITEM IDs** from the actual NeoForge 21.1.215 bootstrap,
+   mapping each to concrete class, superclass chain, selected
+   implementation owner of `getStateForPlacement`,
+   `canSurvive`, `updateShape`, `neighborChanged`,
+   `setPlacedBy`, `canBeReplaced`, `rotate`, `mirror`,
+   `useItemOn/useWithoutItem`, and specialized Item
+   `useOn/use/updatePlacementContext/getPlacementState`.
+2. Enumerate all orientation-bearing BlockState PROPERTY domains,
+   including 6D/4D FACING, AXIS, ROTATION_16, FrontAndTop,
+   AttachFace, HALF, hinge/pair, rail shape, multi-face/walls.
+   Do not infer orientation from field name alone.
+3. Match every implementation owner and override to a P01–P40
+   family, shared Planet semantic adapter or an explicit
+   REVIEW/NOT_APPLICABLE disposition. Fail CI for unrecognized
+   orientation-bearing owners, not by silently ignoring them.
+   Preserve unmodified vanilla for truly physical/non-Planet paths.
+4. Inspect the **actual** NeoForge compiled bytecode and injected
+   method contracts with ASM; source-only maps are insufficient.
+5. Freeze/fill each owning implementation wave (below), then green
+   GitHub Actions and six-face+edge natural placement/collision/
+   render acceptance before claiming completion.
+
+### Phase-2 implementation waves after source/registry census
+
+- **A: placement authoring P01–P16**: BlockPlaceContext and synthetic
+  placement, normal and specialty BlockItems, six/horizontal
+  FACING, axis, 16-way yaw, FrontAndTop, AttachFace, HANGING,
+  slab/stair/trapdoor halves. Revisit previous per-class Mixins.
+- **B: support/survival/update P22–P24**: real local support,
+  physical-neighbor updates, per-algorithm
+  isSolid/canSupportCenter/canSupportRigid, fluid tick
+  pass-through, subclass override completeness.
+- **C: pairs/interaction P17–P21, P34**: door/bed/double plant/
+  double chest and inventories, flint/fire charge, chiseled
+  bookshelf selection hit, bonemeal interactions.
+- **D: graphs/growth/rails/falling P25–P33**: four-way tangent,
+  six-face attachments, walls/posts, plants/columns, scaffold,
+  rail/slope graph, trigger chains, water-support variants.
+- **E: alternate creation/compat P35–P40**: state components
+  after placement, structure mirror/rotate, setblock/fill,
+  dispenser/automation/fake players, BlockEntity metadata,
+  foreign virtual coordinate provenance, cross-phase integration.
+
+A phase completion checklist requires ZERO unclassified
+orientation-bearing source owners and actual P01–P40 coverage
+evidence. GitHub compilation and existing small diagnostic probes
+are valuable but **NOT** acceptance of real rotated block
+placement. Phase 3 BER, Phase 5 fluid and Phase 7A automation
+are separately owned but must be tracked as integration gates.
+The Phase-4 particle PASS observations remain accepted and
+must not be disturbed by Phase-2 work.
+
 ## Phase 2 — block semantic subsystem [R1 RESEARCH COMPLETE; IMPLEMENTATION PARTIAL, BATCH ACCEPTANCE]
 
 Detailed mechanism ownership:
