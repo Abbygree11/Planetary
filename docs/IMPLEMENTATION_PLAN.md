@@ -512,6 +512,26 @@ updates, tangent graphs, pairs, rails, redstone interfaces.
 Missing family or false physical/canonical assumption requires
 explicit disposition. Do NOT equate name scan with verified owner.
 
+**Stage 3 PRELIMINARY CROSSWALK — SAVED, NOT VERIFIED:**
+`docs/research/PHASE2_PLANETARY_COVERAGE_SEED_1_21_1.tsv`
+maps ALL P01–P40 owner families to existing Planetary helper/Mixin
+evidence and explicitly lists missing or cross-phase algorithms.
+The initial source-only classifications are 5 PARTIAL_FOUNDATION,
+14 PARTIAL_FAMILY, 18 GAP and 3 CROSS_PHASE — **these are
+research-planning buckets, not registered block counts, test
+results, or completed implementation verdicts.** EVERY row has
+`verified_registered_owners=PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS`
+and gameplay `NOT_VERIFIED`. Stage 3 remains pending finalization
+against the bootstrapped per-ID registry and compiled owner chains.
+
+**Stage 2B SOURCE BYPASS AUDIT — SAVED:**
+`docs/research/PHASE2_SOURCE_OWNER_AUDIT_WAVE_B_1_21_1.md`
+confirms concrete source-owner overrides in SeaPickle, Cocoa,
+Lantern, AmethystCluster, GrowingPlant head/body, Cactus,
+SugarCane, Multiface, Vine, Scaffolding and RailState.
+A BushBlock canSurvive Mixin does NOT automatically cover these
+independent override methods or complete their tick/graph behavior.
+
 **Stage 3 — PENDING:** compare every actual owner and alternate
 BlockItem author to Planetary's existing stable Frame API / thin
 Mixins, produce one authoritative P01–P40 implementation/coverage
