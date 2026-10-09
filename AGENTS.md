@@ -112,6 +112,60 @@ Prefer this hierarchy:
 
 Do not call an object "done" because one of its mechanisms works.
 
+## 3A.1 Phase-2 orientation research COMPLETENESS hard gate
+
+If an orientation, attachment, natural placement, survival, neighbor,
+connection, interaction or multiblock state problem is found, **do not
+write a named-block patch first**. Identify the actual vanilla/NeoForge
+algorithm owner, enumerate its base class and overridden siblings,
+ALL creation and maintenance paths, and only then freeze a
+whole-family implementation contract.
+
+The mandatory Phase-2 sources are:
+- `docs/research/ORIENTATION_MECHANISMS_ATLAS_1_21_1.md`,
+  the **40 P01–P40 orientation-bearing engine owner groups**;
+- `docs/research/PHASE2_VANILLA_CLASS_CENSUS_1_21_1.tsv`
+  (all 293 comparative-source top-level block package Java files);
+- `docs/research/PHASE2_ITEM_CREATION_CENSUS_1_21_1.tsv`
+  (121 top-level vanilla item Java files);
+- `docs/acceptance/PHASE2_ORIENTATION_ACCEPTANCE_1_21_1.md`
+  with complete release/CI/gameplay acceptance requirements.
+
+**Coverage must be mechanistic, not selected example blocks:**
+- inspect physical hit, `BlockPlaceContext` AND
+  `DirectionalPlaceContext`/null-player/fake placement, specialized
+  `BlockItem.updatePlacementContext`, `BlockItem.getPlacementState`,
+  alternate `Item.useOn/use`, replace/stack logic, blockstate
+  components applied *after* initial placement;
+- inspect `getStateForPlacement`, `canSurvive`, `updateShape`,
+  `neighborChanged`, pair/connection/growth graphs, interactions,
+  structures/commands, state mirror/rotation/BE metadata;
+- inspect **subclass overrides** to catch `BushBlock` descendants
+  redefining support and `HorizontalDirectionalBlock` descendants
+  authoring placement separately;
+- separate semantic PHYSICAL clicked normal, player BODY/view,
+  target CANONICAL BlockState, path-dependent TRAVERSAL, foreign
+  virtual worlds and client RENDER/BER;
+- preserve the exact NeoForge patch and third-party extension
+  contracts, not merely Mojang reference source behavior.
+
+**A name-index or string source-pattern scan is NOT a semantic
+implementation audit.** Census of top-level Java source files is NOT
+a census of actual registered BLOCK/ITEM IDs. Actual NeoForge
+compiled registry/bytecode owner/override inventory and exhaustive
+property domain classification are required before marking
+orientation mechanism coverage complete. Missing orientation-bearing
+owners fail coverage CI or remain explicitly REVIEW_PENDING.
+
+Only after the whole owner family and bypass list are researched
+may you add a stable semantic helper + narrow one-or-more versioned
+Mixins. Class-specific adapters are allowed ONLY for demonstrably
+unique algorithm owners, not as an excuse to skip sibling coverage.
+Green compile/JUnit, applied Mixin in client, and complete
+six-face/natural-placement/seam gameplay are **separate** statuses;
+none implies another. A forced fixture-set BlockState is not a
+successful player-placement test.
+
 ## 3B. Cross-version portability is a hard architecture gate
 
 Canonical strategy: `docs/research/PORTABILITY_STRATEGY.md`.
