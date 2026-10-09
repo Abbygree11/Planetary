@@ -2943,3 +2943,66 @@ If occupied past saves skip face pads, use a fresh test save or
 explicit one-face rebuild only after user has considered local
 builds. On success begin Phase-2/3 families with the lab.
 Do not mark Phase-4 completely done or blindly start Phase-5.
+
+
+## 2026-10-09 Phase-2 family-wide support+placement implementation, acceptance pending
+
+User requested substantial Phase-2 repair following manual results:
+particles are fine but actual placements and orientations on rotated/
+negative-Y faces are faulty; prior Phase-0/1/2/3 diagnostic probes
+only covered partial mechanisms. Plan must treat Phases 2/3 as OPEN
+until integrated gameplay passes, not skip straight to Phase 5.
+
+NEW research (comparative MC 1.21.1, exact ownership):
+docs/research/PHASE2_PLACEMENT_SUPPORT_FAMILIES_1_21_1.md
+BlockItem canPlace -> canSurvive; BushBlock canSurvive delegates to
+polymorphic mayPlaceOn on world-Y below; Cake/CandleCake require
+isSolid() physical support; Candle requires canSupportCenter;
+SporeBlossom requires local UP ceiling and no water; updateShape
+gets PHYSICAL neighborPos; End Rod state FACING is local but
+its clicked face and neighbor block inspection are PHYSICAL;
+Ender Chest horizontal FACING must be translated from player-body
+frame to target-local frame, while preserving WATERLOGGED.
+
+IMPLEMENTED in branch 2.0, GREEN compile+JUnit for first package
+run 37940713012, code commit b43ea8f3:
+- BushBlockLocalSupportMixin @Redirect on actual canSurvive below()
+  returns local-DOWN physical support position, preserves virtual
+  subclass mayPlaceOn and vanilla updateShape.
+- CandleBlockLocalSupportMixin canSurvive local-DOWN with
+  PlanetBlockSupportRuntime.canSupportCenter; updateShape RETURN
+  handles physical support removal without skipping water ticks.
+- CakeFamilyLocalSupportMixin targets CakeBlock+CandleCakeBlock:
+  canSurvive local-DOWN support position keeps original isSolid();
+  updateShape identifies physical support-neighbor rather than
+  raw world-DOWN direction.
+- SporeBlossomLocalSupportMixin local-UP canSupportCenter,
+  preserves !level.isWaterAt; updateShape physical ceiling neighbor.
+- PlanetDirectionalPlacement stable helper + EndRodLocalPlacementMixin
+  preserves physical hit/adjacent neighbor and converts both rod
+  and neighbor local FACING via their own canonical frames.
+- EnderChestLocalPlacementMixin RETURN changes only FACING via
+  existing PlanetFrameApi.localHorizontalDirection; waterlogged
+  part remains vanilla.
+- All six registered in common mixins JSON defaultRequire=1.
+- Phase2PlacementFamilyMixinContractTest confirms class-file
+  canSurvive below/above INVOKEs, actual declared methods,
+  compiled exact handler JVM descriptors and registration.
+
+After that first green run, fixture code needed minor correction
+because natural cherry sapling placement lane was polished andesite,
+and spore blossom lane lacked a local-UP ceiling. Commit a7c480b0
+changes only PlanetTestFixtures: cherry_leaves GREEN slot now uses
+grass soil; spore_blossom GREEN empty slot now has a STONE ceiling
+at local-UP +1 from empty placement position. Other automatic
+fixture safety and 20 station pairs unchanged. NEW CI run
+37941416965 is IN PROGRESS for that fixture code; do not claim green
+yet until it completes.
+
+No user runtime acceptance of new Phase-2 Mixins as of this note.
+Remaining broad phase 2 includes many more placement/update families,
+plant growth/light, portal ignition, three-face corners. Phase-3 BER
+for Ender Chest and enchanting book remains a separate OPEN owner.
+The first combined Phase-2 family gameplay acceptance can now be
+done on CYAN reference/LIME empty+soil+ceiling stations once
+current code CI turns green and client successfully starts.
