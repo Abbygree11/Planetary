@@ -481,6 +481,61 @@ later owning phase.
 Do NOT request one runtime test per block. Finish coherent family adapters and
 run one Phase-2 family acceptance matrix.
 
+### 2026-10-09 Phase-2 family-wide placement/support batch 1
+[IMPLEMENTED / CI+RUNTIME ACCEPTANCE PENDING]
+
+Following accepted particle motion and user-observed inability to
+place candles/cake, spore blossoms, saplings, and incorrect placement
+of End Rod/Ender Chest on rotated faces, audited actual 1.21.1
+BlockItem.canPlace/getPlacementState, BushBlock polymorphic mayPlaceOn,
+CandleBlock support+water ticks, CakeBlock/CandleCakeBlock support,
+SporeBlossomBlock ceiling/water support, EndRodBlock physical
+neighbor/FACING and EnderChestBlock horizontal player facing.
+
+Detailed canonical source + ownership:
+`docs/research/PHASE2_PLACEMENT_SUPPORT_FAMILIES_1_21_1.md`.
+
+One coherent runtime batch:
+- `BushBlockLocalSupportMixin`: base family, only remaps the
+  physical position returned by `BlockPos.below()` inside
+  canSurvive, keeping overridden mayPlaceOn and updateShape vanilla.
+- `CandleBlockLocalSupportMixin`: local DOWN canSupportCenter
+  via existing PlanetBlockSupportRuntime; RETURN updateShape
+  support invalidation preserving vanilla water tick scheduling.
+- `CakeFamilyLocalSupportMixin`: two class targets
+  CakeBlock+CandleCakeBlock; preserve exact isSolid support predicate
+  on physical local-DOWN neighbor and physical neighborPos
+  comparison for support removal.
+- `SporeBlossomLocalSupportMixin`: local UP support
+  canSupportCenter (and vanilla !isWaterAt); physical support
+  neighbor update rather than raw direction==UP.
+- `PlanetDirectionalPlacement`: semantic helper for End Rod
+  target-local FACING and end rod neighbor FACING compared in
+  that neighbor's own physical frame; Ender Chest player
+  horizontal FACING mapped to target frame.
+- `EndRodLocalPlacementMixin`: implements original tiny rod
+  neighbor toggle with correct frame semantics while keeping
+  neighbor BlockPos lookup PHYSICAL.
+- `EnderChestLocalPlacementMixin`: RETURN adapter changes only
+  FACING; original WATERLOGGED block state remains vanilla.
+- All six mixins registered in common JSON with defaultRequire=1.
+- New `Phase2PlacementFamilyMixinContractTest` checks
+  exact vanilla canSurvive/placement/updateShape method ownership,
+  support `below()/above()` bytecode calls, compiled Mixin callback
+  descriptors and registration.
+
+No Phase-3 BER patches, no global BlockPos, BlockPlaceContext or
+world-position monkey patches, no overwrite of third-party
+Plant.mayPlaceOn. Exact faces/edges and update survival
+**not accepted** until CI and actual in-game fixture test.
+
+Remaining Phase-2 owners explicitly still OPEN:
+generic stair/trapdoor/chest/crop/fence/rail/multiblock and
+other placement/update families, vegetation growTree/light
+direction, FlintAndSteelItem ignition and Phase-9 portal shape.
+Phase 3 EnderChest and enchanting book special renderers
+separately OPEN. Do not mark whole phase done.
+
 ### 2A — placement input and canonical state orientation
 
 Vanilla mechanisms:
