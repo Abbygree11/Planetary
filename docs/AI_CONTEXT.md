@@ -3006,3 +3006,20 @@ for Ender Chest and enchanting book remains a separate OPEN owner.
 The first combined Phase-2 family gameplay acceptance can now be
 done on CYAN reference/LIME empty+soil+ceiling stations once
 current code CI turns green and client successfully starts.
+
+
+## 2026-10-09 Phase-2 family package and corrected fixture code CI PASS
+
+GitHub Actions run 37940713012 (Java source and new six-family
+Mixin contract test, commit b43ea8f3) completed SUCCESS for
+compileJava, compileTestJava and full JUnit.
+After a fixture support adjustment (grass soil for cherry sapling
+and real ceiling for GREEN spore blossom natural placement lane),
+subsequent run 37941416965 for code commit a7c480b0 ALSO
+completed SUCCESS: both compilations and JUnit green.
+Thus latest Phase-2 code is compiled/tested automatically. No user
+runtime login and natural placement confirmation since this patch;
+new Mixins could still fail to transform at Minecraft startup or
+be semantically incomplete. Next single client + family spot-check
+on +/-X, -Y using six-face fixtures, not another hand-built suite.
+Existing accepted particle behavior must remain unchanged.
