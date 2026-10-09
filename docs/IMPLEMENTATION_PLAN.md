@@ -524,6 +524,19 @@ results, or completed implementation verdicts.** EVERY row has
 and gameplay `NOT_VERIFIED`. Stage 3 remains pending finalization
 against the bootstrapped per-ID registry and compiled owner chains.
 
+**Stage 2C SOURCE PAIR/INTERACTION AUDIT — SAVED:**
+`docs/research/PHASE2_SOURCE_OWNER_AUDIT_WAVE_C_1_21_1.md`
+inspects separate vanilla 1.21.1 owner algorithms:
+DoorBlock hinge+upper placement+physical updateShape,
+BedBlock pair/interaction, DoublePlantBlock split-half placement,
+ChestBlock double pairing/DoubleBlockCombiner,
+TrapDoorBlock/FenceGateBlock mixed click+redstone,
+CrafterBlock/JigsawBlock FrontAndTop orthogonal orientation,
+ChiseledBookShelfBlock physical hit slot interaction,
+and StructureTemplate placeInWorld rotate/mirror/BE state.
+Source-level behavior is confirmed; exact 21.1.215
+compiled owner + natural gameplay acceptance is NOT.
+
 **Stage 2B SOURCE BYPASS AUDIT — SAVED:**
 `docs/research/PHASE2_SOURCE_OWNER_AUDIT_WAVE_B_1_21_1.md`
 confirms concrete source-owner overrides in SeaPickle, Cocoa,
