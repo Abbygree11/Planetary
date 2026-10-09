@@ -3394,3 +3394,28 @@ No item path accepted, no NeoForge patched bytecode or gameplay
 PASS, and no production code changed. NEXT microtask 2.3A-2.2,
 verify compiled NeoForge method owners and creation/interaction
 bypass of these 11, then update 11 ledger evidence cells.
+
+
+## 2026-10-10 Phase2 2.3A-2.2 attachment owner reflection and item join
+
+Recovered original GitHub Actions CI ZIP 11643813158
+SHA256 7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e,
+parsed original block and item TSVs. For 11 attachment
+classes from previous 2.3A-2.1 package, compiled NeoForge
+21.1.215 nearest method-declaration reflection owners
+confirmed, 29 actual registered BLOCK IDs recorded and
+26 Item registry creators audited: 3 StandingAndWallBlockItem
+and 23 simple BlockItem. WallTorchBlock 2 IDs and
+RedstoneWallTorchBlock 1 ID have no direct BlockItem:
+the standing torch item selects wall variant. Eight
+relevant Planetary Mixins inspected and registered;
+no dedicated LanternBlock or AmethystClusterBlock
+support Mixin in scanned source directory. Changes saved
+to PHASE2_STAGE3A_FACE_ATTACHMENT_AUDIT_1_21_1.md
+addendum and 241-row disposition TSV, with all 35
+reviewed rows now `REFLECTION_OWNER_VERIFIED`.
+35 source-reviewed classes (81 IDs); 206 class pending
+(979 IDs). ASM INVOKE, NeoForge patch body, actual Mixin
+handler application and gameplay remain REVIEW_PENDING.
+NEXT FIRST undone: 2.3A-2.3, small non-FACING class group.
+No Java code changes and no additional CI/gameplay result.

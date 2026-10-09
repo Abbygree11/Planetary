@@ -232,6 +232,35 @@ family without proving why it is a unique algorithm owner.
   authors, then update TSV evidence levels in a separate commit.
   Other 206 classes not auto-promoted.
 
+### 2026-10-10 micro-checkpoint: Stage 3A-2.2 attachment exact reflection owners
+
+- Original CI ZIP artifact 11643813158 at commit aa395729
+  downloaded and SHA256 verified (7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e).
+- For all 11 previously source-reviewed face-attachment
+  concrete classes, verified class hierarchy and exact
+  `getStateForPlacement`, `canSurvive`, `updateShape`,
+  `randomTick`, `setPlacedBy` method declaration owners;
+  `neighborChanged`, scheduled tick and `useWithoutItem`
+  relevant owners checked independently.
+- Reconciled 29 exact registered block IDs and 26 registered
+  BlockItems (3 StandingAndWallBlockItem; 23 simple BlockItem).
+  Wall torch (2 IDs) and redstone wall torch (1 ID) have
+  no direct BlockItem registration; variants selected by
+  standing torch items.
+- Inspected 8 actually registered Planetary Mixin adapter
+  classes; no dedicated LanternBlock or AmethystCluster
+  support Mixin found. Existence != correctness/game pass.
+- 11 `registry_dispatch_evidence` now
+  REFLECTION_OWNER_VERIFIED; all 35 source-reviewed
+  classes covered by reflection. Class/ID totals unchanged:
+  35/241 reviewed (81 IDs) and 206/241 pending (979 IDs).
+- **No patch-body / INVOKE-site ASM checks or gameplay pass**;
+  all those ledger fields remain REVIEW_PENDING.
+  No production code changed; no new CI required.
+- Next FIRST pending card item:
+  `docs/phases/phase-02/02-block-owners-rest.md`,
+  task 3 (2.3A-2.3), small non-FACING class family.
+
 ## Resume procedure after interrupted answer
 
 1. Read AGENTS.md, this checkpoint, the latest roadmap

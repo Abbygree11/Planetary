@@ -218,3 +218,125 @@ patched-class method owners and creation/interaction
 authors, update provenance levels in the same TSV,
 then proceed to a new 8–15-class group. One answer,
 one committed checkpoint.
+
+
+## 2026-10-10 addendum — CI artifact exact owner and item reconciliation
+
+**Stage 2.3A-2.2 (bounded micro-task)**, original **unmodified**
+ZIP `phase2-neo1211-registry-census`, artifact ID `11643813158`,
+run [37988064055](https://github.com/Abbygree11/Planetary/actions/runs/37988064055),
+source revision `aa39572950a15403ea0a9003eefccf3bf6675ff7`,
+verified SHA-256
+`7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`.
+Decoded **original** `phase2-neo1211-block-registry.tsv` and
+`phase2-neo1211-item-registry.tsv` (1060/1333 rows respectively),
+not just a previously written summary or inferred ID strings.
+
+**Outcome:** for all **11 classes / 29 BLOCK IDs**, compiled NeoForge
+21.1.215 **reflection exact-signature nearest declaration owners**
+match the four source owner columns above
+(`getStateForPlacement(BlockPlaceContext)`,
+`canSurvive(BlockState,LevelReader,BlockPos)`,
+`updateShape(BlockState,Direction,BlockState,LevelAccessor,BlockPos,BlockPos)`,
+`randomTick(BlockState,ServerLevel,BlockPos,RandomSource)`),
+plus `setPlacedBy(Level,BlockPos,BlockState,LivingEntity,ItemStack)`
+= `Block` for all eleven. Signatures were matched independently,
+not by method names alone. `neighborChanged` is inherited from
+`BlockBehaviour` except **`RedstoneTorchBlock` and
+`RedstoneWallTorchBlock`**, which resolve to
+`RedstoneTorchBlock`. Distinguish `randomTick`
+(owner `BlockBehaviour` for all eleven) from **scheduled**
+`tick`: `RedstoneTorchBlock` declares the scheduled tick for
+both redstone torch classes, and `ButtonBlock` has its own
+scheduled tick. This corrects a source-only uncertainty, **not**
+a new bytecode/ASM or Mixin runtime pass.
+
+Real IDs and registered item creator paths:
+
+| Concrete block class | Original CI registered BLOCK IDs (minecraft namespace omitted) | Registered block-item creation path | Source-visible Planet adapter or limitation |
+|---|---|---|---|
+| `TorchBlock` | `soul_torch,torch` | `StandingAndWallBlockItem:2` | `BaseTorchBlockSupportMixin;StandingAndWallBlockItemMixin` |
+| `WallTorchBlock` | `soul_wall_torch,wall_torch` | `NO_DIRECT_BLOCK_ITEM` | `WallTorchBlockSupportMixin;StandingAndWallBlockItemMixin` |
+| `RedstoneTorchBlock` | `redstone_torch` | `StandingAndWallBlockItem:1` | `BaseTorchBlockSupportMixin;StandingAndWallBlockItemMixin` |
+| `RedstoneWallTorchBlock` | `redstone_wall_torch` | `NO_DIRECT_BLOCK_ITEM` | `WallTorchBlockSupportMixin(static helper);RedstoneWallTorchSupportMixin(update);StandingAndWallBlockItemMixin` |
+| `LadderBlock` | `ladder` | `BlockItem:1` | `LadderBlockSupportMixin` |
+| `LanternBlock` | `lantern,soul_lantern` | `BlockItem:2` | `NO_LANTERN_BLOCK_SUPPORT_MIXIN` |
+| `SporeBlossomBlock` | `spore_blossom` | `BlockItem:1` | `SporeBlossomLocalSupportMixin` |
+| `AmethystClusterBlock` | `amethyst_cluster,large_amethyst_bud,medium_amethyst_bud,small_amethyst_bud` | `BlockItem:4` | `NO_AMETHYST_CLUSTER_SUPPORT_MIXIN` |
+| `EndRodBlock` | `end_rod` | `BlockItem:1` | `EndRodLocalPlacementMixin` |
+| `LeverBlock` | `lever` | `BlockItem:1` | `FaceAttachedHorizontalDirectionalBlockSupportMixin` |
+| `ButtonBlock` | `acacia_button,bamboo_button,birch_button,cherry_button,crimson_button,dark_oak_button,jungle_button,mangrove_button,oak_button,polished_blackstone_button,spruce_button,stone_button,warped_button` | `BlockItem:13` | `FaceAttachedHorizontalDirectionalBlockSupportMixin` |
+
+**Independent item census check:** 29 block IDs correspond to 26
+directly registered `BlockItem` subclasses (3
+`StandingAndWallBlockItem` + 23 ordinary `BlockItem`);
+`wall_torch`, `soul_wall_torch`, and
+`redstone_wall_torch` have **no individually registered
+BlockItem**. Their authoritative player-item entrypoint
+is `StandingAndWallBlockItem.getPlacementState` on the
+standing torch item, which calls wall block placement and
+chooses the candidate by hit/direction. This is exactly
+why `Block.getStateForPlacement` alone cannot prove
+natural wall-torch placement.
+
+Additional **compiled** method declaration owners:
+`useWithoutItem` = `LeverBlock` / `ButtonBlock`
+for those classes; `useItemOn` = `BlockBehaviour`
+for all 11. All other classes' `useWithoutItem`
+resolve to `BlockBehaviour`. This excludes
+`RedstoneTorchBlock` signal/tick correctness, which has
+other methods not included in the scanned use owners.
+
+**Existing code evidence (source-reviewed):** the eight
+mixins `BaseTorchBlockSupportMixin`,
+`WallTorchBlockSupportMixin`,
+`RedstoneWallTorchSupportMixin`,
+`LadderBlockSupportMixin`,
+`FaceAttachedHorizontalDirectionalBlockSupportMixin`,
+`SporeBlossomLocalSupportMixin`,
+`EndRodLocalPlacementMixin`, and
+`StandingAndWallBlockItemMixin`
+exist under `src/main/java/dev/planetary/mixin/` and
+are registered in `src/main/resources/planetary.mixins.json`
+(`mixins` array). Source hooks are only *potential*
+adapters; this confirms their **existence and registration**,
+not bytecode application or gameplay. No dedicated
+`LanternBlockSupportMixin` or
+`AmethystClusterBlockSupportMixin` was found in that
+mixin directory; those paths remain **known source
+integration gaps**, pending a whole-owner implementation
+wave. `SporeBlossomLocalSupportMixin` exists but
+user-level placement/survival is still unaccepted.
+
+All eleven TSV rows now set
+`registry_dispatch_evidence=REFLECTION_OWNER_VERIFIED`
+and include the **actual ID list** from the original ZIP
+instead of `SEE_REGISTRY_ARTIFACT_ID_JOIN_PENDING`.
+Evidence tier improved, **disposition counts do not
+change**: 35/241 classes source-reviewed (81/1060 IDs),
+206/241 classes pending (979/1060 IDs).
+
+### Critical remaining distinction: reflection is NOT ASM
+
+Reflection locates the nearest declared implementation in
+the NeoForge runtime class hierarchy. This ZIP **does not**
+contain JVM class files, Mixin transformed method bodies,
+`INVOKEVIRTUAL` / `INVOKESTATIC` call-site evidence,
+NeoForge patches or active handler match counts.
+Therefore `neoforge_patch_bytecode_review`,
+`planet_adapter_acceptance` and
+`gameplay_acceptance` stay `REVIEW_PENDING`
+for **all eleven**. Particularly audit whether an
+injected HEAD shortcut skips NeoForge extension hooks,
+whether redstone input/output uses the target chart
+at seams, and how physical neighbor callbacks feed
+the class-specific updateShape. Those are Stage 3C /
+later implementation and acceptance gates, not
+claims completed in this research-only packet.
+
+**Next** (separate turn): complete card 2.3A-2
+micro-task 3 with a bounded new family that has
+**no FACING** and independent local vertical/graph
+semantics (e.g. sea pickles/cactus/sugar cane or
+a different natural support/growth cluster). Do not
+auto-approve whole registered class roster.

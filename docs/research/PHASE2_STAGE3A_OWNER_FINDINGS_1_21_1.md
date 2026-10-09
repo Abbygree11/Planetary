@@ -209,6 +209,25 @@ ASM/Planet/gameplay PASS. New 11 rows explicitly say
 Next: 2.3A-2.2 exact patch-bytecode and alternate authors,
 separate checkpoint.
 
+## 2026-10-10 Stage 2.3A-2.2 attachment exact runtime-owner confirmation
+
+Re-opened original CI ZIP artifact 11643813158. All 11
+attachment classes in the
+[face-attachment audit addendum](PHASE2_STAGE3A_FACE_ATTACHMENT_AUDIT_1_21_1.md#2026-10-10-addendum--ci-artifact-exact-owner-and-item-reconciliation)
+now have source-to-NeoForge **exact-signature reflection owner**
+reconciliation and **29 actual block IDs** (not names guessed).
+Their 26 registered block-item creators consist of 3
+StandingAndWallBlockItem and 23 BlockItem. The three
+wall-torch block IDs have no direct registered BlockItem;
+their items select wall variants through StandingAndWall.
+8 Planetary mixin classes exist AND appear in mixin config;
+LanternBlock and AmethystClusterBlock have no dedicated
+support mixin in the inspected directory. 11 new rows promoted
+to REFLECTION_OWNER_VERIFIED; total remains
+**35/241 source-reviewed** (81/1060 IDs). **ASM invocation,
+patch methods, Planet integration correctness and gameplay
+remain REVIEW_PENDING**. Next: 2.3A-2.3 non-FACING family.
+
 ## Remaining Stage 3A work
 
 1. Read actual `phase2-neo1211-registry-census` artifact's
