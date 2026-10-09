@@ -45,4 +45,9 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    // NeoForge's unit-test worker can use a working directory other
+    // than the repository root. Publish the census to a fixed absolute
+    // build path so GitHub Actions can reliably collect it.
+    systemProperty 'planetary.phase2.censusReportDir',
+            layout.buildDirectory.dir('reports/planetary').get().asFile.absolutePath
 }
