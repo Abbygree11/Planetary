@@ -3622,3 +3622,34 @@ NEXT FIRST incomplete task: card
 `docs/phases/phase-02/02b-redstone-signal-owners.md`
 checkbox 2: actual item registry and alternative authors.
 No production Java/test changed.
+
+
+## 2026-10-10 Phase2 Stage3A-4.2 eight registered signal-item authors and off-item state writers
+
+Completed task 2/4 on `docs/phases/phase-02/02b-redstone-signal-owners.md`
+and committed research
+`docs/research/PHASE2_STAGE3A_REDSTONE_ITEM_ALTERNATE_AUTHORS_1_21_1.md`.
+Original NeoForge 21.1.215 CI artifact ZIP 11643813158,
+SHA256 7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e.
+All 8 source-reviewed BLOCK IDs join exactly to 8 registered
+ITEMs by placed_block. **6 BlockItem + 2 ItemNameBlockItem**:
+minecraft:string creates minecraft:tripwire,
+minecraft:redstone creates minecraft:redstone_wire.
+For all eight, seven effective method declarations
+useOn/place/updatePlacementContext/getPlacementState/placeBlock/
+canPlace/registerBlocks resolve to BlockItem. ItemNameBlockItem
+source overrides getDescriptionId only, not place.
+BlockItem DataComponents.BLOCK_STATE overrides after initial
+setBlock but before setPlacedBy and can write directional
+state components. Nonitem authors: cable segment->hook
+calculateState, TripWire entity intersection + shears,
+RedStoneWire neighbor POWER self-suppression, DiodeBlock
+prioritized ticks, ComparatorBlockEntity output NBT,
+Observer pulse, TargetBlock projectile hit, lamp light
+timer. No new class status promotions: 63/241 reviewed
+(170 registered BLOCK IDs), 178 pending (890 IDs);
+rail/daylight 3 classes still pending. All NeoForge ASM,
+Planet adaptation/Phase7A runtime and gameplay gates
+REVIEW_PENDING. Next task 3A-4.3 physical-vs-local
+redstone signal port and tick/recursion graph contract.
+No production code changed.

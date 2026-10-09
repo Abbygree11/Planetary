@@ -333,3 +333,25 @@ registry for these eight, including wire
 redstone dust item, tripwire string, comparator
 and repeater; verify non-item signal writers and
 full producer/consumer interactions.
+
+
+## 2026-10-10 Stage 3A-4.2 original ITEM + off-item state authors
+
+[Exact ITEM-registry join and independent alternate
+author source audit](PHASE2_STAGE3A_REDSTONE_ITEM_ALTERNATE_AUTHORS_1_21_1.md):
+all eight classes/8 block IDs match eight registered
+`placed_block` item entries, **six ordinary BlockItems
+and two ItemNameBlockItem aliases**: `string`
+places `tripwire`, `redstone` places `redstone_wire`.
+The seven compiled item lifecycle signatures inherit
+declarations from `BlockItem` for all eight.
+TripWire/Hook cable writes, RedStoneWire neighbor power
+updates, Diode and Comparator scheduled changes with
+ComparatorBlockEntity output, Observer pulses, Target
+projectile hit output, Lamp light/timer updates are
+non-item authors. Item component `BLOCK_STATE` can
+write after placement, before setPlacedBy.
+**No new class status promotion**: 63 reviewed / 178
+pending, 170 / 890 registered BLOCK IDs; all ASM,
+Planetary adaptation and gameplay PENDING.
+NEXT microtask 3A-4.3 frame/port/tick/graph contract.

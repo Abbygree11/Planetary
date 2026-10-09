@@ -1,3 +1,27 @@
+## 2026-10-10 Stage 3A-4.2 exact redstone item and alternative authors (NO NEW CLASSES)
+
+[ITEM + alternate writer source audit](PHASE2_STAGE3A_REDSTONE_ITEM_ALTERNATE_AUTHORS_1_21_1.md):
+eight reviewed redstone/tension BLOCK IDs join exactly to
+eight actual original NeoForge 21.1.215 ITEM entries,
+**6 ordinary `BlockItem` + 2 `ItemNameBlockItem`**:
+`minecraft:string` creates `minecraft:tripwire`;
+`minecraft:redstone` creates `minecraft:redstone_wire`.
+Seven compiled item lifecycle method declarations for
+ALL eight resolve to `BlockItem`, including aliases.
+Separate authors: tripwire cable `calculateState`,
+power/shape/neighbor updates, observer/diode
+scheduled ticks, comparator BE output, target projectile
+and lamp delay; Item `BLOCK_STATE` component changes
+may occur before `setPlacedBy`. No automatic
+Phase 7A correctness derived.
+
+**Current ledger unchanged:** 63/241 class source+reflection
+reviewed (170 BLOCK IDs), **178 REVIEW_PENDING** (890 IDs).
+Deferred DetectorRail/PoweredRail/DaylightDetector remain
+pending. ASM, Planet adapter acceptance and gameplay
+all REVIEW_PENDING. Next 3A-4.3 source/target signal
+frame and callback/propagation audit.
+
 ## 2026-10-10 Stage 3A-4.1 exact signal graph source+NeoForge declaring owner review
 
 [8 registered signal-class source+reflection audit](PHASE2_STAGE3A_REDSTONE_SOURCE_OWNER_AUDIT_1_21_1.md)

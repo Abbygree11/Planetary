@@ -370,6 +370,28 @@ reviewed** (170 IDs); **178/241 REVIEW_PENDING**
 and gameplay acceptance remain pending.
 Next 3A-4.2 item/non-item state-author research.
 
+## 2026-10-10 Stage 3A-4.2 exact signal ITEM census and off-item writers
+
+[Eight reviewed signal-class registered items and additional
+state authors](PHASE2_STAGE3A_REDSTONE_ITEM_ALTERNATE_AUTHORS_1_21_1.md):
+independent original NeoForge ITEM `placed_block`
+join confirms 8/8 exact block creators, split
+6 `BlockItem` and 2 `ItemNameBlockItem`:
+`minecraft:string` -> `minecraft:tripwire`,
+`minecraft:redstone` -> `minecraft:redstone_wire`.
+All 7 item signature nearest declaring owners
+resolve to `BlockItem` for all 8. Other source-authored
+state writers include cable graph, entity press,
+RedStoneWire POWER propagation, DiodeBlock scheduled
+and neighbor updates, ComparatorBlockEntity
+persisted OutputSignal, Observer pulse, projectile
+TargetBlock and RedstoneLamp. Item component
+`BLOCK_STATE` can mutate newly placed properties.
+**No new disposition**: 63 reviewed/178 pending,
+170/890 registered IDs. Rail and daylight sensors
+remain pending; no ASM/Planet/7A/gameplay PASS.
+NEXT 3A-4.3 signal port/chart/timing contract.
+
 ## Remaining Stage 3A work
 
 1. Read actual `phase2-neo1211-registry-census` artifact's

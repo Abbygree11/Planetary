@@ -477,6 +477,42 @@ family without proving why it is a unique algorithm owner.
   BE, scheduled pulse, cable scanning, redstone wire
   propagation). Keep Stage 7A acceptance separate.
 
+### 2026-10-10 micro-checkpoint: Stage 3A-4.2 ITEM owners and signal alternate writers
+
+- Card `docs/phases/phase-02/02b-redstone-signal-owners.md`,
+  **2/4 DONE**. Research:
+  `PHASE2_STAGE3A_REDSTONE_ITEM_ALTERNATE_AUTHORS_1_21_1.md`.
+- Original 21.1.215 CI ZIP 11643813158 SHA256
+  `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`.
+  Eight registered BLOCK IDs map exactly to eight ITEM
+  records using `placed_block`: **6 BlockItem**,
+  **2 ItemNameBlockItem** (string->tripwire,
+  redstone->redstone_wire). 7 exact item method
+  declaration owners all `BlockItem`; ItemNameBlockItem
+  itself only provides distinct getDescriptionId.
+- Source-only other writers: TripWireBlock
+  entityInside/checkPressed/playerWillDestroy,
+  TripWireHookBlock.calculateState across two hooks
+  and up to 41 cells, RedStoneWireBlock
+  updatePowerStrength/calculateTargetStrength,
+  DiodeBlock scheduled priorities/repeater lock,
+  ComparatorBlockEntity OutputSignal persistence,
+  ObserverBlock two-tick, TargetBlock projectile hit,
+  RedstoneLampBlock LIT/timer.
+  BlockItem `DataComponents.BLOCK_STATE` override
+  occurs before `setPlacedBy`. Do NOT conflate
+  item authors with power graph.
+- Ledger unchanged **63/241 source+reflection reviewed**
+  (170/1060 BLOCK IDs), **178/241 REVIEW_PENDING**
+  (890/1060 IDs). DetectorRail, PoweredRail,
+  DaylightDetector deferred. All ASM/Planet/gameplay
+  acceptance PENDING. No Java/code/CI/game changes.
+- **NEXT FIRST unchecked task:** 3A-4.3 (card
+  checkbox 3) exact physical-vs-local signal
+  direction, port, cable and notification topology,
+  recursion and scheduled priority, Phase 2/7A
+  contract. Single independent docs commit.
+
 ## Resume procedure after interrupted answer
 
 1. Read AGENTS.md, this checkpoint, the latest roadmap
