@@ -261,6 +261,39 @@ family without proving why it is a unique algorithm owner.
   `docs/phases/phase-02/02-block-owners-rest.md`,
   task 3 (2.3A-2.3), small non-FACING class family.
 
+### 2026-10-10 micro-checkpoint: Stage 3A-2.3 non-FACING growth graphs
+
+- Card `docs/phases/phase-02/02-block-owners-rest.md`
+  task **3/4 DONE**. Committed research
+  `PHASE2_STAGE3A_NONFACING_GROWTH_GRAPHS_1_21_1.md`.
+- 12 actual runtime concrete classes / 12 registered block
+  IDs with NO candidate orientation property audited:
+  8 GrowingPlant head/body variants, SugarCaneBlock,
+  CactusBlock, BambooStalkBlock, BambooSaplingBlock.
+  Exact-signature method declaring owners and item alias
+  mappings checked from original 21.1.215 ZIP
+  (SHA256 `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`);
+  body comparisons from pinned source.
+- Registered item census: 7 directly registered BlockItems,
+  five block states without own BlockItem; important
+  `minecraft:bamboo` item can author
+  `minecraft:bamboo_sapling` via BambooStalkBlock placement.
+- Source semantics: P29 head/body directional graph,
+  P30 vertical columns and horizontal substrate/support
+  adjacency, P37 kelp/water and Phase5, berries
+  `useWithoutItem` P34, direct bonemeal writers.
+  No dedicated plant/growth Mixin found by filename in
+  current Planetary mixin list, not proof of unhooked behavior.
+- Ledger after commit: **47** class-level source +
+  NeoForge reflection owners reviewed (93 block IDs);
+  **194** class-level REVIEW_PENDING (967 IDs).
+  241 classes / 1060 IDs unchanged; no ASM,
+  NeoForge patched-body, gameplay pass.
+- **NEXT first unfinished microtask 2.3A-2.4**:
+  final exact registry census/disposition invariants and
+  evidence formatting check, one separate response.
+  No production Java code changed.
+
 ## Resume procedure after interrupted answer
 
 1. Read AGENTS.md, this checkpoint, the latest roadmap

@@ -228,6 +228,29 @@ to REFLECTION_OWNER_VERIFIED; total remains
 patch methods, Planet integration correctness and gameplay
 remain REVIEW_PENDING**. Next: 2.3A-2.3 non-FACING family.
 
+## 2026-10-10 Stage 2.3A-2.3: non-FACING source+runtime growth graph owners
+
+Added [12-class growth graph source and actual NeoForge
+reflection owners audit](PHASE2_STAGE3A_NONFACING_GROWTH_GRAPHS_1_21_1.md):
+`kelp/kelp_plant`, `cave_vines/cave_vines_plant`,
+`weeping_vines/weeping_vines_plant`,
+`twisting_vines/twisting_vines_plant`, `sugar_cane`,
+`cactus`, `bamboo`, `bamboo_sapling`.
+All 12 were `has_orientation_candidate=false` in the original CI
+census. None should be classified orientation-independent on
+this heuristic: head/body use non-state `growthDirection`,
+SugarCane and Cactus use horizontal checks, Bamboo
+creates sapling states and chains age/height.
+The original item census found 7 direct block item
+authors and 5 block state variants with no registered
+own item. One exact-signature overload in `KelpBlock`
+would be misattributed by method-name-only join.
+Cumulative ledger now **47 source+reflection reviewed /
+194 REVIEW_PENDING** of 241 classes and
+**93 / 967** associated registered block IDs. No runtime
+ASM / Mixin application or gameplay gate accepted.
+Next is 2.3A-2.4 final census/disposition audit, separately.
+
 ## Remaining Stage 3A work
 
 1. Read actual `phase2-neo1211-registry-census` artifact's

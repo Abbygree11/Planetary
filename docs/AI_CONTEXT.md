@@ -3419,3 +3419,30 @@ reviewed rows now `REFLECTION_OWNER_VERIFIED`.
 handler application and gameplay remain REVIEW_PENDING.
 NEXT FIRST undone: 2.3A-2.3, small non-FACING class group.
 No Java code changes and no additional CI/gameplay result.
+
+
+## 2026-10-10 Phase 2 stage 2.3A-2.3 non-FACING growth graph review
+
+Docs-only committed microtask (step 3/4) for 12 previously
+REVIEW_PENDING block classes without FACING or any named
+orientation property. Source+NeoForge runtime reflection
+owners taken from original CI artifact 11643813158
+(SHA256 7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e).
+Groups: 4 GrowingPlant head/body pairs (Kelp, CaveVines,
+WeepingVines, TwistingVines) with virtual growthDirection
+UP/DOWN and head/body conversion, plus SugarCane,
+Cactus, BambooStalk and BambooSapling, featuring local
+horizontal support/water/forbidden-neighbor checks,
+vertical columns and direct generation. BambooStalk
+getStateForPlacement can author BAMBOO_SAPLING even
+though BAMBOO_SAPLING has no registered own item.
+CaveVines and CaveVinesPlant override useWithoutItem
+for berries. KelpBlock getStateForPlacement has
+BlockPlaceContext vs LevelAccessor overloaded signatures
+with different declaring owners. Research:
+docs/research/PHASE2_STAGE3A_NONFACING_GROWTH_GRAPHS_1_21_1.md.
+241-row disposition: 47 source/compiled reflection reviewed
+classes covering 93 registered IDs; 194 REVIEW_PENDING
+covering 967 registered IDs. No patch-body/ASM or gameplay
+acceptance, no production code change. NEXT task 2.3A-2.4:
+registry/status invariant audit, separate committed turn.

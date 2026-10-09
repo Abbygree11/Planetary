@@ -15,7 +15,7 @@
 | Пакет | Файл | Статус | Выход |
 |---|---|---|---|
 | 2.3A-1 | [01-block-owners.md](phase-02/01-block-owners.md) | **DONE (микропакеты, только исследование)** | 24/241 class source-reviewed; 217 pending, без игрового PASS |
-| 2.3A-2 | [02-block-owners-rest.md](phase-02/02-block-owners-rest.md) | **ACTIVE** | 11 face-attachment классов source-reviewed; ещё 206 concrete classes pending |
+| 2.3A-2 | [02-block-owners-rest.md](phase-02/02-block-owners-rest.md) | **ACTIVE, 3/4** | Дополнительно 12 non-FACING graph classes; всего 47 reviewed / 194 pending |
 | 2.3B | [03-item-creators.md](phase-02/03-item-creators.md) | TODO | Item/alternative-author coverage |
 | 2.3C | [04-lifecycle-neoforge.md](phase-02/04-lifecycle-neoforge.md) | TODO | Bytecode/patch/dispatch evidence and gate |
 | 2.4A | [05-implementation-a.md](phase-02/05-implementation-a.md) | TODO | Context/FACING/AXIS/rotation state families |
@@ -33,6 +33,6 @@
 
 ## Точка продолжения
 
-Следующая самостоятельная работа — **2.3A-2**, первая малая порция следующих владельцев. В [реестре](../research/PHASE2_BLOCK_OWNER_DISPOSITION_1_21_1.tsv) source-reviewed 35/241 классов (81/1060 IDs); 206 классов остаются REVIEW_PENDING. Это не проверка NeoForge байткода/игрового поведения и не завершение Phase 2.
+Следующая самостоятельная работа — **2.3A-2**, первая малая порция следующих владельцев. В [реестре](../research/PHASE2_BLOCK_OWNER_DISPOSITION_1_21_1.tsv) source-reviewed 47/241 классов (93/1060 IDs); 194 класса остаются REVIEW_PENDING. Это не проверка NeoForge байткода/игрового поведения и не завершение Phase 2.
 
 Обновление этого файла означает только, что появился маршрут и checkpoint, **не что Phase 2 исправлена**.

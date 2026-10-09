@@ -175,3 +175,28 @@ Compiled nearest method declaration is **not** ASM INVOKE-site
 or NeoForge-patched method-body verification. `neoforge_patch_bytecode_review`,
 `planet_adapter_acceptance` and `gameplay_acceptance`
 remain REVIEW_PENDING.
+
+
+## 2026-10-10 Stage 2.3A-2.3: non-FACING growth topology
+
+[New source + compiled reflection audited 12-class family](PHASE2_STAGE3A_NONFACING_GROWTH_GRAPHS_1_21_1.md)
+covers **12 block IDs that have no candidate orientation
+property**, yet their state lifecycle depends on UP/DOWN,
+tangent XZ, grow/survive/scheduled ticks, directional
+head/body graph, water, direct bonemeal creation and
+item-placed alternate states.
+
+Exact total is now **47 SOURCE_REVIEWED_INTEGRATION_PENDING**
+classes (**93** block IDs), with
+**194 REVIEW_PENDING** classes (**967** block IDs);
+**241** classes and **1060** registry IDs unchanged.
+All 47 source-reviewed have an exact compiled NeoForge
+reflection declaring owner join. **NeoForge patched-method
+ASM, actual Planet adapter correctness and gameplay**
+remain REVIEW_PENDING even for these 47.
+5 of the new runtime variant blocks have no directly
+registered BlockItem, including `bamboo_sapling`
+which is authored by `BambooStalkBlock.getStateForPlacement`
+on an ordinary bamboo item placement.
+Earlier summaries' figures are historical snapshots;
+these current totals supersede them.
