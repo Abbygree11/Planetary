@@ -3137,3 +3137,26 @@ then replace preliminary 40-row crosswalk review-pending with
 source-verified owner dispositions and run family-wide repairs
 across waves A-E. No additional player build requests during
 research; accepted Phase-4 particles unchanged.
+
+
+## 2026-10-09 Phase-2 source wave C multiblock/structure audit
+
+Added docs/research/PHASE2_SOURCE_OWNER_AUDIT_WAVE_C_1_21_1.md:
+source inspected DoorBlock (upper part, hinge, updateShape, open),
+BedBlock (head/foot and interactions), DoublePlantBlock (upper/lower),
+ChestBlock (left/right pairing + waterlogged + BER consumer),
+TrapDoorBlock (clicked face/half, power, water ticks),
+FenceGateBlock (IN_WALL graph + powered OPEN interaction),
+CrafterBlock and JigsawBlock (FrontAndTop legal 3D pairs),
+ChiseledBookShelfBlock (hit-region-to-slot not covered by FACING
+model rotation), StructureTemplate (direct physical placement
+with mirror/rotate + block entity metadata; bypasses
+BlockPlaceContext). This research is owned by P09/P16-P21/P34-P40,
+with phases 3/5/7A/9 integration explicitly named.
+No runtime Java/Mixin patches added by wave C.
+
+All stage files are durable in GitHub branch 2.0, even if answer
+connection drops again. Current dynamic register census CI must
+provide actual NeoForge registered BLOCK/ITEM owners to
+complete stage3 final coverage map. Initial source-only 40-row
+crosswalk is explicitly preliminary, not a full acceptance.
