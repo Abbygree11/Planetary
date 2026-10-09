@@ -3270,3 +3270,26 @@ lifecycle, Stage 4: complete common-mechanism implementation waves,
 Stage 5: full acceptance matrix. Persist each completed stage and
 resume earliest incomplete stage; DO NOT redo existing source
 or fake a 241/241 reviewed claim from heuristics.
+
+
+## 2026-10-10 connection-loss mitigation: phase cards in docs/phases
+
+User reports three successive long research responses hanging/disconnecting.
+All previous Phases 0–11 (including 7A and 7B) are now split into
+independently resumable working checklists under `docs/phases/`.
+Active Phase 2 is further split into ten stage files under
+`docs/phases/phase-02/`; each stage file has even smaller checkbox
+micro-tasks. Canonical roadmap + research remain authoritative.
+
+IMPORTANT: existing Phase-2 research (P01–P40, 293 source block files,
+121 source item files, NeoForge registry class/owner census and prior
+successful CI) MUST NOT be repeated. Resume precisely Stage 3A owner
+disposition from existing `PHASE2_STAGE3A_OWNER_FINDINGS_1_21_1.md`,
+starting with one evidence-reviewed group of 8–15 owner classes in
+`docs/phases/phase-02/01-block-owners.md`. Never claim 241/241
+audit pass from heuristic categories.
+
+No runtime code/test was changed in this documentation-only restructure.
+No new Gradle or client run required. Every next interaction should
+complete ONE small bounded task, commit it, update checkbox/status,
+and end with a short summary + exact next task.
