@@ -125,6 +125,31 @@ family without proving why it is a unique algorithm owner.
 - Produce `PHASE2_FINAL_COVERAGE_MATRIX_1_21_1.md`
   identifying each owner and acceptance proof.
 
+### 2026-10-10 micro-checkpoint: Stage 3A / 2.3A-1 task 1 complete
+
+- Original CI artifact `11643813158` from successful run
+  `37988064055` downloaded and raw BLOCK/ITEM/PROPERTY TSV
+  schema and uniqueness/row counts verified (1060 / 1333 / 1712);
+  241 registered concrete block classes, all audit rows still
+  explicitly pending.
+- Cross-reconciled `PHASE2_EFFECTIVE_OWNER_FINDINGS` and all
+  22 existing `PHASE2_STAGE3A_OWNER_FINDINGS` algorithm-family
+  entries against real `java_class`, `class_hierarchy` and
+  `effective_method_owners` fields.
+- Clarified **103** effective
+  `getStateForPlacement(BlockPlaceContext)` declared owners vs
+  **104** across every same-name overload; 11 block IDs have
+  multiple `getStateForPlacement` overload signatures.
+- Detected **59** actual `BushBlock` hierarchy IDs across **29**
+  registered concrete classes, but only **40** still dispatch
+  `canSurvive` to `BushBlock` (19 bypass via override).
+- **No new semantic owner dispositions, runtime changes or game
+  acceptance** in this checkpoint. Documentation-only commit.
+- Next FIRST incomplete micro-task: 2.3A-1 task 2 — deep source
+  review of 12 named concrete `BushBlock` descendants defined
+  in `docs/phases/phase-02/01-block-owners.md`. Do not advance
+  directly to implementation.
+
 ## Resume procedure after interrupted answer
 
 1. Read AGENTS.md, this checkpoint, the latest roadmap

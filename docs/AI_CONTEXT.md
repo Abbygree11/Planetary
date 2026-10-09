@@ -3293,3 +3293,22 @@ No runtime code/test was changed in this documentation-only restructure.
 No new Gradle or client run required. Every next interaction should
 complete ONE small bounded task, commit it, update checkbox/status,
 and end with a short summary + exact next task.
+
+
+## 2026-10-10 Phase-2 micro-checkpoint: original registry artifact verified
+
+Stage 3A, card 2.3A-1, micro-task 1/4 DONE: the original run
+37988064055 downloadable artifact (ID 11643813158) was independently
+parsed, confirming 1060 unique BLOCK IDs, 241 concrete block types,
+1333 ITEM IDs, 87 item types, 925 BlockItems, 1712 state properties,
+528/532 name-heuristic split. All 22 initial owner clusters were
+reconciled to real type/hierarchy/effective method-owner evidence;
+NO 241/241 semantic review or gameplay acceptance is claimed.
+The published 103 getStateForPlacement owner number is specific to
+BlockPlaceContext; including all same-name overloads gives 104 distinct
+owner class names. BushBlock hierarchy holds 59 registry IDs across
+29 concrete classes, only 40 of which dispatch canSurvive to BushBlock.
+Research details: PHASE2_STAGE3A_OWNER_FINDINGS_1_21_1.md.
+Next checkpoint: 2.3A-1 micro-task 2 (12 concrete BushBlock descendants).
+User organization: ONE CHAT PER PHASE, ONE COMMITTED MICRO-TASK PER RESPONSE.
+No runtime/test changes; no new CI or gameplay check requested.

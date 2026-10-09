@@ -335,6 +335,7 @@ Navigation: `docs/phases/README.md` and `docs/phases/phase-XX.md`.
 The active orientation audit is `docs/phases/phase-02.md`, with smaller
 `docs/phases/phase-02/*.md` stage cards.
 
+- User workflow: **one ChatGPT chat per roadmap phase**. Treat this as a collaboration convention, not as an automatic capability to create conversations. Every new phase chat resumes from this file, its phase card and GitHub checkpoints; chat history is not the canonical source.
 - At each turn, work on **one** first-incomplete micro-task only. Read its
   dependencies from the canonical roadmap/research; do not repeat completed
   research or prematurely jump to the next wave.

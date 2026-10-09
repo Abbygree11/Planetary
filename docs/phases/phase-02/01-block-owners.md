@@ -8,7 +8,7 @@
 
 ## Независимые микропакеты (по ОДНОМУ на отдельный ответ)
 
-- [ ] **1.** Сверить фактические источники PHASE2_EFFECTIVE_OWNER_FINDINGS и PHASE2_STAGE3A_OWNER_FINDINGS с NeoForge registry-derived типами.
+- [x] **1.** Сверить фактические источники PHASE2_EFFECTIVE_OWNER_FINDINGS и PHASE2_STAGE3A_OWNER_FINDINGS с NeoForge registry-derived типами. **DONE (2026-10-10)**: оригинальный CI ZIP `11643813158`, run `37988064055`, 1060 block IDs / 241 concrete classes; проверены 22 опубликованных owner-кластера (НЕ 241 семантический аудит), 103 `BlockPlaceContext` owners vs 104 owners при включении перегрузок. Подробности: [Stage 3A owner findings](../../research/PHASE2_STAGE3A_OWNER_FINDINGS_1_21_1.md#2026-10-10-verified-reconciliation-of-original-ci-artifact).
 - [ ] **2.** Выбрать 8–15 ещё не разобранных effective-owner классов **одного семейства** и проверить каждый call-path: placement, canSurvive, updateShape, tick, interaction (применимость), overrides.
 - [ ] **3.** Сохранить в PHASE2_BLOCK_OWNER_DISPOSITION_1_21_1.tsv первые evidence-backed строки и добавить ссылку на source/owner; неизвестное оставить REVIEW_PENDING.
 - [ ] **4.** Повторить такой маленький набор в СЛЕДУЮЩЕЙ итерации, не в одном гигантском ответе.
@@ -19,7 +19,7 @@
 
 ### Checkpoint для следующего захода
 
-- Последний подтверждённый подпакет: **не зафиксирован в этой карточке**.
+- Последний подтверждённый подпакет: **1/4 — сверка ZIP-артефакта, registry IDs, hierarchy и effective owner dimension** (2026-10-10). **Семантических новых owner-disposition строк: 0; 241 concrete classes ещё НЕ закрыты.**
 - Последний рабочий commit: смотреть HEAD ветки `2.0`, не выдумывать SHA.
-- Следующее действие: первый `[ ]` сверху. После успешного подпакета отметить `[x]`, ссылку на исходники/тест/CI, commit SHA и следующий шаг.
+- Следующее действие: **подпакет 2/4**, взять 12 concrete descendants `BushBlock` с собственными путями проверки опоры/выживания: `BeetrootBlock`, `CarrotBlock`, `CropBlock`, `PotatoBlock`, `TorchflowerCropBlock`, `DoublePlantBlock`, `TallFlowerBlock`, `PitcherCropBlock`, `SmallDripleafBlock`, `TallSeagrassBlock`, `MangrovePropaguleBlock`, `MushroomBlock`. Эти классы найдены в registry/hierarchy, но ещё не отмечены как полностью семантически исследованные. Проверить отдельно owner каждого точного метода, `mayPlaceOn` virtual dispatch, placement, survival, shape, tick/growth, neighbor, interactions, paired creation and subclass overrides; записать доказательства прежде, чем присваивать disposition. При необходимости дробить 12 на меньшие однородные группы, не выдавая непроверенное за DONE. После успешного подпакета отметить `[x]`, ссылку на исходники/тест/CI, commit SHA и следующий шаг.
 - Если соединение оборвалось до коммита — эта работа считается незавершённой.

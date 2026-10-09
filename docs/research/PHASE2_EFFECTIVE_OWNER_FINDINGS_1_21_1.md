@@ -56,6 +56,44 @@ MANY distinct methods. Class-based exact owner counts include
 abstract family owners and subclass override groups; they
 must be interpreted with the state-frame semantic contract.
 
+## 2026-10-10: independent artifact reconciliation and overload scope
+
+The original uploaded artifact (not a copied summary) was re-opened:
+[GitHub Actions run 37988064055](https://github.com/Abbygree11/Planetary/actions/runs/37988064055),
+artifact ID `11643813158`, name `phase2-neo1211-registry-census`,
+from code revision `aa39572950a15403ea0a9003eefccf3bf6675ff7`.
+ZIP SHA-256:
+`7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`.
+
+The three raw TSVs independently confirm 1060 unique block IDs,
+241 concrete block classes, 1333 unique item IDs, 87 concrete item
+classes, 925 BlockItems, 1712 unique block/property pairs,
+528 orientation-name candidates and 532 non-candidate block IDs.
+All 1060 rows remain unreviewed: 528 `REVIEW_PENDING` and
+532 `NON_PROPERTY_PATH_REVIEW_PENDING`. No gameplay acceptance implied.
+
+**Important method-signature distinction:** the published **103**
+`getStateForPlacement` declaring owners counts only the exact
+`getStateForPlacement(BlockPlaceContext)` signature.
+The complete `effective_method_owners` TSV also includes same-name
+overloads; across ALL their parameter signatures, there are **104**
+distinct declaring class names. Eleven registered block IDs have
+more than one same-name overload, often with different owners:
+`GrowingPlantBlock`/`GrowingPlantHeadBlock`,
+`MultifaceBlock`, `FireBlock`, and `KelpBlock`
+are among these paths. This is **not** a regression or a
+103-versus-104 class-count contradiction: method dimensions differ.
+Always use the full signature when joining owner dispositions.
+The previously published exact-signature counts for `canSurvive`,
+`updateShape`, `setPlacedBy`, `neighborChanged`,
+`rotate`, `mirror`, `useItemOn` and `useWithoutItem`
+reconcile with the artifact.
+
+This was a data/provenance reconciliation, NOT new semantic source
+review or compiled INVOKE-site verification. The next task is the
+first 8–15 concrete-class semantic audit; see
+[`01-block-owners.md`](../phases/phase-02/01-block-owners.md).
+
 ## Item creation owners: bypasses confirmed in registered IDs
 
 | Item method | Dominant implementation owner distribution |
