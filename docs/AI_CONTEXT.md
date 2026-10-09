@@ -3446,3 +3446,30 @@ classes covering 93 registered IDs; 194 REVIEW_PENDING
 covering 967 registered IDs. No patch-body/ASM or gameplay
 acceptance, no production code change. NEXT task 2.3A-2.4:
 registry/status invariant audit, separate committed turn.
+
+
+## 2026-10-10 Phase2 Stage3A-2.4 original CI ZIP reconciliation
+
+Completed exactly one documentation-only microtask for
+`docs/phases/phase-02/02-block-owners-rest.md` step 4.
+Original artifact 11643813158 ZIP SHA-256
+7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e.
+Compared all 241 concrete class names and exact per-class
+registry ID counts (1060 IDs), plus all 47 reviewed
+class-level exact registered ID sets (93 IDs) and
+nearest NeoForge declaring class of 5 exact method
+signatures. All four FNV-1a fingerprints matched
+original raw CI source:
+roster 0xf188a064, reviewed ID sets 0x6c35dd77,
+five declaring owner fields 0xacd03109, combined
+0x9fc5dbf5. 194 concrete classes remain
+REVIEW_PENDING, 967 associated BLOCK IDs. No patched
+bytecode, Mixin application, runtime or gameplay PASS.
+Guide front matter now shows current totals and labels
+older per-package snapshots historical. Research:
+docs/research/PHASE2_STAGE3A_LEDGER_RECONCILIATION_1_21_1.md.
+Stage3A NOT DONE. Next separate card
+docs/phases/phase-02/02a-block-graph-owners.md,
+microtask 1, 10 candidate P25/P26 graph owner classes
+(71 registry IDs), source audit ONLY next turn.
+No production code, tests, or game run modified.

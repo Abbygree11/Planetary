@@ -294,6 +294,35 @@ family without proving why it is a unique algorithm owner.
   evidence formatting check, one separate response.
   No production Java code changed.
 
+### 2026-10-10 micro-checkpoint: Stage 3A-2.4 exact ledger reconciliation
+
+- Card `docs/phases/phase-02/02-block-owners-rest.md`:
+  all four **bounded** packages completed. **Stage 3A
+  incomplete**, with 194 pending actual concrete classes.
+- Reconciled original ZIP `11643813158`, SHA256
+  `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`, against
+  `PHASE2_BLOCK_OWNER_DISPOSITION_1_21_1.tsv`.
+  All 241 fully qualified classes and exact per-class registered
+  ID counts match; all 47 reviewed ID sets and five
+  full exact declaring owners match. Four independent
+  FNV-1a fingerprints: 0xf188a064, 0x6c35dd77,
+  0xacd03109, 0x9fc5dbf5. See
+  `PHASE2_STAGE3A_LEDGER_RECONCILIATION_1_21_1.md`.
+- Current: 47/241 source+reflection reviewed
+  (93/1060 BLOCK IDs); 194/241 still `REVIEW_PENDING`
+  (967/1060 IDs). All ASM/Planet integration/gameplay
+  acceptance flags remain REVIEW_PENDING. No Java code change.
+- Old per-package numbers in guide are now explicitly
+  HISTORICAL; current counts lead the guide.
+- New separate card
+  `docs/phases/phase-02/02a-block-graph-owners.md`
+  names **10 real still-pending candidate graph classes /
+  71 block IDs**, source/research NOT started or claimed.
+- **NEXT FIRST uncompleted micro-task:** card 2.3A-3
+  step 1, one source+compiled owner investigation of
+  a bounded P25/P26 connectivity subset. Do not
+  skip directly to Stage 3B or implementation.
+
 ## Resume procedure after interrupted answer
 
 1. Read AGENTS.md, this checkpoint, the latest roadmap

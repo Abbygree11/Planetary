@@ -251,6 +251,25 @@ Cumulative ledger now **47 source+reflection reviewed /
 ASM / Mixin application or gameplay gate accepted.
 Next is 2.3A-2.4 final census/disposition audit, separately.
 
+## 2026-10-10 Stage 3A-2.4 exhaustive registry ledger integrity gate
+
+The original artifact `11643813158` (SHA256 `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`)
+was compared independently with the current
+[241-class ledger](PHASE2_BLOCK_OWNER_DISPOSITION_1_21_1.tsv).
+[Exact matching results](PHASE2_STAGE3A_LEDGER_RECONCILIATION_1_21_1.md):
+241/241 full class names + per-class registered ID counts,
+47/47 reviewed exact registered ID sets + 5 full
+method-signature declaring owners. Four independent
+canonical fingerprints equal the original ZIP;
+all 194 pending classes remain pending and all
+ASM, adaptation/runtime and gameplay fields are
+REVIEW_PENDING. No silent PASS or registry metadata
+misclassification. 47 source-reviewed classes represent
+93 IDs, 194 pending represent 967 IDs.
+Next **Stage 2.3A-3** has a separate
+[10-class actual-registry connectivity candidate card](../phases/phase-02/02a-block-graph-owners.md);
+those candidates are *not* classified in this checkpoint.
+
 ## Remaining Stage 3A work
 
 1. Read actual `phase2-neo1211-registry-census` artifact's

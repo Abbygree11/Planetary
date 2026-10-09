@@ -4,7 +4,24 @@
 
 **Primary TSV:** [PHASE2_BLOCK_OWNER_DISPOSITION_1_21_1.tsv](PHASE2_BLOCK_OWNER_DISPOSITION_1_21_1.tsv).
 
-## Verified scope and what the numbers mean
+## Current VERIFIED ledger status — 2026-10-10 / 2.3A-2.4
+
+| Current measurement | Count |
+|---|---:|
+| Registered concrete classes (exact original CI ZIP roster) | **241** |
+| Source+NeoForge reflection-reviewed classes | **47** (93 registered IDs) |
+| Classes still `REVIEW_PENDING` | **194** (967 registered IDs) |
+| Registered block IDs total | **1060** |
+| NeoForge patched ASM/Mixin handler and gameplay PASS | **0 verified in this census** |
+
+**Ledger reconciliation:** [2.3A-2.4 exact census and four
+matching fingerprints](PHASE2_STAGE3A_LEDGER_RECONCILIATION_1_21_1.md).
+The historical per-package sections below preserve what was
+known **at that earlier package's commit**. Do not interpret
+their smaller review counts, pending owner uncertainty,
+or old next-task pointers as the current status.
+
+## Historical initial snapshot: first 12-class ledger (2.3A-1.3)
 
 This is an **exhaustive actual registry-derived class roster**, **NOT
 an exhaustive semantic class or gameplay audit**. Generated from the
@@ -87,7 +104,7 @@ The 19th independently dispatched Bush-descendant registry ID is
 `REVIEW_PENDING` here despite previous cluster-level research.
 That is intentional, not a lost row.
 
-## Audit invariants / next micro-task
+## Historical audit invariants / next micro-task at initial 12-class snapshot
 
 Expected class status distribution: **12 reviewed + 229 pending = 241**.
 Expected ID distribution: **18 reviewed + 1042 pending = 1060**.
