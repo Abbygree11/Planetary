@@ -1,7 +1,8 @@
 # Phase 2: natural placement and physical support families — 1.21.1
 
-Status: source audit and design for FIRST coherent Phase-2 runtime batch;
-implementation/build/client acceptance tracked in roadmap.
+Status: FIRST coherent Phase-2 runtime batch IMPLEMENTED; Java 21
+GitHub Actions compile + full JUnit PASS (run 37941416965);
+client/physical placement and support acceptance PENDING.
 
 ## Reported gameplay regression
 
