@@ -685,6 +685,32 @@ are separately owned but must be tracked as integration gates.
 The Phase-4 particle PASS observations remain accepted and
 must not be disturbed by Phase-2 work.
 
+### 2026-10-10 interrupted-response recovery and resumable full Phase-2 audit
+
+The user's requested exhaustive *mechanism-wide* 1.21.1 orientation
+audit will be executed in independently committable stages. Canonical
+continuation state:
+`docs/research/PHASE2_RESEARCH_EXECUTION_CHECKPOINT_1_21_1.md`.
+
+Previous work WAS SAVED despite a disconnected response:
+P01–P40 mechanism atlas, source censuses (293 block-package files,
+121 item-package files), source audit waves A/B/C, registry effective
+owner census (1060 block IDs/241 concrete block classes, 1333 item
+IDs/87 concrete item classes, 925 BlockItems), GitHub Actions
+run 37988064055 PASS. These counts are inventories, NOT acceptance.
+
+ACTIVE NEXT: Stage 3A, evidence-backed 241-class/effective-block-owner
+disposition. Then 3B item/alternate author owners, 3C actual NeoForge
+bytecode and lifecycle contract with fail-unknown gate, Stage 4 shared
+mechanism implementation waves A–E, Stage 5 complete Phase-2 release
+and six-face integrated acceptance.
+
+Stop after each bounded stage with committed research/tests and a
+new roadmap checkpoint. No isolated block patches without completed
+owner-family inventory. Phase-2 remains PARTIAL; accepted particle
+families must not regress. No manual game test until a coherent
+runtime package has green CI.
+
 ## Phase 2 — block semantic subsystem [R1 RESEARCH COMPLETE; IMPLEMENTATION PARTIAL, BATCH ACCEPTANCE]
 
 Detailed mechanism ownership:
