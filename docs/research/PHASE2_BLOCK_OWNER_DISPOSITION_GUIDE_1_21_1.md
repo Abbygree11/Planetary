@@ -1,0 +1,101 @@
+# Phase 2 Stage 3A — class-level owner-disposition ledger
+
+**Target:** Minecraft 1.21.1 / NeoForge 21.1.215 / Planetary `2.0`.
+
+**Primary TSV:** [PHASE2_BLOCK_OWNER_DISPOSITION_1_21_1.tsv](PHASE2_BLOCK_OWNER_DISPOSITION_1_21_1.tsv).
+
+## Verified scope and what the numbers mean
+
+This is an **exhaustive actual registry-derived class roster**, **NOT
+an exhaustive semantic class or gameplay audit**. Generated from the
+original 2026-10-09 `phase2-neo1211-registry-census` artifact
+([CI run 37988064055](https://github.com/Abbygree11/Planetary/actions/runs/37988064055),
+artifact ID `11643813158`, revision `aa395729`).
+The exact original `java_class` names and counts of associated
+registered block IDs were reconciled for the class roster; this
+checkpoint's 12 reviewed IDs were additionally checked by name.
+
+| Measurement | Verified count |
+|---|---:|
+| Registered BLOCK IDs in original census | **1060** |
+| Registered concrete Java block classes | **241** |
+| Concrete classes with source-reviewed lifecycle owner chains in this **class-level ledger** | **12** |
+| Registered block IDs represented by those 12 | **18** |
+| Concrete classes explicitly `REVIEW_PENDING` | **229** |
+| IDs belonging to those 229 pending classes | **1042** |
+| NeoForge patched-bytecode/ASM owner sites fully reviewed here | **0** |
+| Gameplay-accepted classes from this research ledger | **0** |
+
+The 22 earlier researched algorithm-owner **clusters** are
+**not** secretly counted as 22 extra class-level completed rows.
+This keeps the evidence levels and class denominator consistent.
+
+## TSV interpretation
+
+One row per actual **concrete runtime class**, NOT per BLOCK ID.
+The literal `SEE_REGISTRY_ARTIFACT` in pending rows means
+the ID values are available in the authoritative raw
+`phase2-neo1211-block-registry.tsv` CI artifact but have **not
+yet** been promoted into per-class reviewed evidence.
+`registered_block_ids_count` is derived from the source artifact,
+not estimated from names.
+
+The five owner columns contain **the declaring class of one exact
+method signature**, not hypothetical values of a block property:
+
+- `getStateForPlacement_owner` =
+  `getStateForPlacement(BlockPlaceContext)`
+- `canSurvive_owner` =
+  `canSurvive(BlockState, LevelReader, BlockPos)`
+- `updateShape_owner` =
+  `updateShape(BlockState, Direction, BlockState, LevelAccessor, BlockPos, BlockPos)`
+- `randomTick_owner` =
+  `randomTick(BlockState, ServerLevel, BlockPos, RandomSource)`
+- `setPlacedBy_owner` =
+  `setPlacedBy(Level, BlockPos, BlockState, LivingEntity, ItemStack)`
+
+Declaring owners are from **exact 21.1.215 class-hierarchy reflection**.
+Reflection cannot establish an actual caller's JVM `INVOKE`
+owner, which Mixin handlers apply, or the real patched NeoForge
+call path. The `registry_dispatch_evidence` column separates
+those assertions. `SOURCE_REVIEWED_INTEGRATION_PENDING` means
+source call flow was inspected for this owner/subclass, NOT that
+the current Planetary adapter handles all cases. All NeoForge
+bytecode, Planet acceptance and gameplay statuses remain pending
+until later separate gates.
+
+Comparative source is pinned to
+[hackersense/OptiFine-Source `b77c5c6995874f6cf2755bc5234428906b337b75`](https://github.com/hackersense/OptiFine-Source/tree/b77c5c6995874f6cf2755bc5234428906b337b75/1.21.1).
+This is not used as proof that the exact NeoForge-patched code
+has identical bodies. Full 12-class source review:
+[PHASE2_STAGE3A_BUSH_DESCENDANT_AUDIT_1_21_1.md](PHASE2_STAGE3A_BUSH_DESCENDANT_AUDIT_1_21_1.md).
+
+### Shared base dispatch is conditional, not uniform
+
+The 12 `BushBlock` descendants represent 18 registered IDs with
+their **own effective** `canSurvive` declaring class. All 18 are
+source-reviewed at the relevant owner chains. `CropBlock` and the
+lower half of `DoublePlantBlock` can still delegate into the
+base `BushBlock.canSurvive`, so the existing
+`BushBlockLocalSupportMixin` can cover **only that delegated
+portion**, not all growth, upper halves, fluids, or side attachment
+paths. `MushroomBlock` implements an independent support check;
+`MangrovePropaguleBlock` has an independent HANGING branch.
+
+The 19th independently dispatched Bush-descendant registry ID is
+`minecraft:sea_pickle`, class `SeaPickleBlock`, which is left
+`REVIEW_PENDING` here despite previous cluster-level research.
+That is intentional, not a lost row.
+
+## Audit invariants / next micro-task
+
+Expected class status distribution: **12 reviewed + 229 pending = 241**.
+Expected ID distribution: **18 reviewed + 1042 pending = 1060**.
+No unreviewed row is classified `NOT_APPLICABLE`, `PASS`
+or `IMPLEMENTED` by automatic heuristics.
+
+Next separate packet (2.3A-1 task 4): review the next bounded
+8–15 concrete-class **owner cluster** with the same evidence
+standard. Update the existing TSV rows in place and update
+the counters. Do not add arbitrary mixins; Phase 3A owner
+census is not implementation.

@@ -3330,3 +3330,20 @@ survival/3D spread. Source evidence is comparative, not exact patched
 NeoForge bytecode. All gameplay and full family acceptance remain pending.
 No production code changed; no CI/client rerun needed. NEXT: step 3/4
 first 12 evidence-backed class-level TSV dispositions, others pending.
+
+
+## 2026-10-10 Phase 2 Stage3A first 241-row owner ledger
+
+Micro-task 3/4 committed (documentation only). Created
+PHASE2_BLOCK_OWNER_DISPOSITION_1_21_1.tsv with one row per actual
+registry concrete class: 241 rows totaling 1060 BLOCK IDs from
+CI artifact 11643813158 (run 37988064055). 12 BushBlock descendant
+classes with 18 IDs now have evidence-backed comparative-source
+lifecycle + exact method-declaring-owner dispositions. Other 229
+classes (1042 IDs) are explicitly REVIEW_PENDING. No extra source
+classes were silently declared PASS, nor do reflection method owners
+prove compiled Mixin INVOKE or patched NeoForge behaviors. A new
+PHASE2_BLOCK_OWNER_DISPOSITION_GUIDE_1_21_1.md specifies field
+meaning, method signatures, and status gates. Next: card 2.3A-1
+micro-task 4/4, another bounded family. No runtime code changed,
+no game test or CI re-run requested.

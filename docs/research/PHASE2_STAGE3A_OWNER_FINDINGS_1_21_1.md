@@ -145,6 +145,28 @@ runtime, 241-class dispositions, item lifecycle and gameplay still
 open.** The next distinct micro-task records dispositions in TSV;
 do not start implementation based on an incomplete mapping.
 
+## 2026-10-10 first exhaustive pending-aware class ledger
+
+Created [PHASE2_BLOCK_OWNER_DISPOSITION_1_21_1.tsv](PHASE2_BLOCK_OWNER_DISPOSITION_1_21_1.tsv)
+and [evidence/status interpretation](PHASE2_BLOCK_OWNER_DISPOSITION_GUIDE_1_21_1.md),
+using the **original registry ZIP**, not the 293-source-file census
+or inferred subclass names. Every one of **241** distinct concrete
+registered classes has a row; the associated count totals **1060**
+real registry IDs. **12** source-reviewed Bush descendants map
+**18 IDs**, and the remaining **229** classes / **1042** IDs
+are explicitly REVIEW_PENDING.
+
+The five declared-method-owner dimensions in 12 reviewed rows are
+taken from the actual effective-method-owner scan with exact
+parameter signatures, and pinned 1.21.1 comparative-source URLs
+describe the independent class/subclass call-path risk.
+All **NeoForge patch/ASM, adapter runtime, and gameplay
+acceptance** columns remain REVIEW_PENDING: no false 241/241
+semantic or 1060/1060 gameplay pass.
+
+Next: card 2.3A-1, task 4, a different 8–15-class owner family.
+No runtime modifications and no extra client checks.
+
 ## Remaining Stage 3A work
 
 1. Read actual `phase2-neo1211-registry-census` artifact's

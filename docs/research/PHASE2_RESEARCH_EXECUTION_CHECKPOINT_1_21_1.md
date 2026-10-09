@@ -167,6 +167,22 @@ family without proving why it is a unique algorithm owner.
   `PHASE2_BLOCK_OWNER_DISPOSITION_1_21_1.tsv`,
   without claiming 241/241 semantic proof.
 
+### 2026-10-10 micro-checkpoint: Stage 3A / 2.3A-1 task 3 complete
+
+- New `PHASE2_BLOCK_OWNER_DISPOSITION_1_21_1.tsv` and
+  `PHASE2_BLOCK_OWNER_DISPOSITION_GUIDE_1_21_1.md`.
+- Exactly 241 registry-derived concrete-class roster rows and 1060
+  represented registered block IDs; **12** source-reviewed classes
+  / **18** IDs (the Bush descendant research); **229** classes /
+  **1042** IDs REVIEW_PENDING. Source-reviewed is not runtime PASS.
+- Five fixed-signature actual nearest effective owner classes
+  entered only for 12 reviewed classes; code owner INVOKE and
+  NeoForge-specific patched-bytecode review remain pending.
+- No Java changes, no new CI/gameplay acceptance.
+- Next FIRST incomplete micro-task: card 2.3A-1 task 4
+  (next 8–15 concrete owner family; source + registry trace,
+  then update TSV disposition in a separate commit).
+
 ## Resume procedure after interrupted answer
 
 1. Read AGENTS.md, this checkpoint, the latest roadmap
