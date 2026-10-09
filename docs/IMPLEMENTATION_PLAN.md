@@ -5,6 +5,8 @@
 > gates; it does not replace the process rules.
 
 This is the execution plan for Planetary. Treat it as a gate, not a wishlist.
+
+**Small resumable task cards:** [`docs/phases/README.md`](phases/README.md). Each phase has a separate Markdown checklist; Phase 2 additionally has ten bounded stage cards. They reflect this canonical roadmap, not replace it. After a lost connection resume from the first uncommitted micro-task in the corresponding card rather than re-running prior research.
 Do not start a phase by patching the first visible symptom.
 
 For every phase:
