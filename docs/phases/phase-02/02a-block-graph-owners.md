@@ -1,6 +1,6 @@
 # 2.3A-3 — tangent connectivity and multi-face graph owners
 
-**Status:** ACTIVE / 1 of 4 research packages completed; no gameplay PASS.
+**Status:** ACTIVE / 2 of 4 research packages completed; no gameplay PASS.
 [Phase-2 queue](../phase-02.md) ·
 [2.3A-2.4 registry reconciliation](../../research/PHASE2_STAGE3A_LEDGER_RECONCILIATION_1_21_1.md) ·
 [Class-level TSV](../../research/PHASE2_BLOCK_OWNER_DISPOSITION_1_21_1.tsv).
@@ -34,13 +34,13 @@ never blend incompatible algorithms merely to hit a count.
 ## Small independently committable tasks
 
 - [x] **1.** Inspect pinned Minecraft 1.21.1 source paths and real NeoForge 21.1.215 reflection owners for these up-to-10 classes (or a coherent 8–10-class subset); record placement, survival, update, connectivity queries and source-vs-target chart, including inherited/overridden paths. **DONE 2026-10-10:** [8-class P25/P26/P27 comparative source and original CI owner audit](../../research/PHASE2_STAGE3A_CONNECTIVITY_GRAPHS_1_21_1.md), 69 actual registered IDs; `FenceBlock`, `FenceGateBlock`, `WallBlock`, `IronBarsBlock`, `StainedGlassPaneBlock`, `VineBlock`, `GlowLichenBlock`, `SculkVeinBlock`. Two `TripWire` variants still pending. **55/241** source+reflection reviewed, **186** pending; NO ASM/Planet/gameplay PASS.
-- [ ] **2.** Independently join original ITEM registry and alternative state/interaction authors; distinguish `BlockState` neighboring connections from power propagation, `getShape`, waterlogging and propagation. Commit new evidence.
+- [x] **2.** Independently join original ITEM registry and alternative state/interaction authors; distinguish `BlockState` neighboring connections from power propagation, `getShape`, waterlogging and propagation. **DONE 2026-10-10:** [exact 69/69 original CI item join and alternate-author audit](../../research/PHASE2_STAGE3A_CONNECTIVITY_ITEM_AUTHORS_1_21_1.md). All 69 matching BlockItems, all seven item methods declare at `BlockItem`; direct post-placement `BLOCK_STATE` property component, gate interaction/redstone/explosion, fence lead interaction, vine random growth, lichen `MultifaceSpreader`, sculk `regrow`/discharge/charge and generic worldgen authors kept distinct. 55/241 class-level statuses unchanged; **ASM/gameplay PENDING**.
 - [ ] **3.** Reconcile no-property multi-face graphs, BlockStateBase cached state/shape and physical neighbor callbacks; isolate Phase-2 boundary versus Phase 5/7A. Do not implement or claim runtime acceptance.
 - [ ] **4.** Check per-class `REVIEW_PENDING`/source/reflection/ASM/gameplay statuses against the exact registry artifact. Commit one checkpoint and plan the next bounded family while classes remain unreviewed.
 
 ## Resume checkpoint
 
-- Last completed: **2.3A-3.1** original NeoForge reflection + pinned 1.21.1 source for 8 registered connection/attachment classes, **69** exact block IDs. [Audit](../../research/PHASE2_STAGE3A_CONNECTIVITY_GRAPHS_1_21_1.md).
-- Cumulative ledger: **55/241** source+reflection reviewed (162 IDs), **186/241** REVIEW_PENDING (898 IDs). `TripWireBlock` and `TripWireHookBlock` not source reviewed yet; remain pending.
-- Next FIRST action: **item 2** above, independently join the full ITEM creator/alternate author and interaction paths for these 8 before moving onto item 3; do not claim compiled ASM or gameplay acceptance.
+- Last completed: **2.3A-3.2**, original CI item registry join for 8 class families: **69 registered BLOCK IDs / 69 unique `BlockItem` entries**, no special aliases. [Full independent item and alternate-author audit](../../research/PHASE2_STAGE3A_CONNECTIVITY_ITEM_AUTHORS_1_21_1.md).
+- Cumulative ledger remains **55/241** source+reflection reviewed (162 IDs), **186/241** REVIEW_PENDING (898 IDs); `TripWireBlock`/`TripWireHookBlock` still pending. All acceptance fields pending.
+- Next FIRST action: **item 3** above, source-vs-target chart, six-face and shape/cache callback semantics, Phase-2 vs Phase-3/5/7A boundaries; do not start an unbounded new family.
 - No Java/runtime changes and no unaccepted gameplay claims.

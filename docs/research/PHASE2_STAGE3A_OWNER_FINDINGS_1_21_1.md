@@ -292,6 +292,10 @@ All 241 ASM/adapter/gameplay gates pending.
 Next first task Stage 3A-3.2: item creation and
 spreading/interaction alternative author join.
 
+## 2026-10-10 Stage 3A-3.2 exact ITEM creator and alternate-state writers
+
+[69-item direct join and alternative-author audit](PHASE2_STAGE3A_CONNECTIVITY_ITEM_AUTHORS_1_21_1.md): all 69 reviewed connected-graph block IDs have distinct ordinary `BlockItem` creators (no aliases). Item-method declarations all `BlockItem`, but `BLOCK_STATE` component overrides may rewrite the resulting state after placement. Additional independently read 1.21.1 authors: gate `useWithoutItem`, `neighborChanged`, `onExplosionHit`; fence leash interaction; vine `randomTick`; GlowLichen `MultifaceSpreader`; SculkVein `regrow`, charge placement, discharge; and generic `MultifaceGrowthFeature` non-player placement overload. Source and target frame and Phase 5/7A/8 semantics remain to audit; no patched NeoForge bytecode or game test accepted. No new class dispositions: **55 reviewed/186 pending**, 162/898 block IDs. Next `2.3A-3.3`, independent chart/shape/cache source analysis.
+
 ## Remaining Stage 3A work
 
 1. Read actual `phase2-neo1211-registry-census` artifact's

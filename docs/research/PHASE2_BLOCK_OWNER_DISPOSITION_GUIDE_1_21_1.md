@@ -1,3 +1,24 @@
+## 2026-10-10 Stage 3A-3.2 — ITEM + alternative authors (no new classes)
+
+**69/69** registered block IDs from the eight source-reviewed
+connected-graph classes map by `placed_block` to
+**69 distinct ordinary BlockItem** instances in original
+NeoForge 21.1.215 item registry. All seven item method
+owners resolve to BlockItem. There are **no special
+item variants for these 69**, but there are numerous
+non-item state authors: `BLOCK_STATE` component updates
+**after** initial item placement, gate interaction/redstone,
+Vine random growth, lichen MultifaceSpreader, sculk
+regrow/discharge/spread, neighbor graph updates and
+worldgen feature placement overload. Full exact evidence:
+[PHASE2_STAGE3A_CONNECTIVITY_ITEM_AUTHORS_1_21_1.md](PHASE2_STAGE3A_CONNECTIVITY_ITEM_AUTHORS_1_21_1.md).
+
+**Ledger unchanged:** **55 / 241 source+reflection-reviewed**
+classes (162 IDs), **186 / 241 REVIEW_PENDING** (898 IDs),
+**1060 total**. All bytecode, Planet integration and
+actual gameplay fields REVIEW_PENDING. Next card item 3,
+shape-cache/physical neighbor + chart boundary.
+
 ## Current verified Phase-2 owner-disposition ledger (updated 2026-10-10, Stage 3A-3.1)
 
 | Quantity | Current |

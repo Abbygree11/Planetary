@@ -356,6 +356,33 @@ family without proving why it is a unique algorithm owner.
   One standalone research commit, no runtime Java
   changes in this task.
 
+### 2026-10-10 micro-checkpoint — Stage 3A-3.2 item and alternate-state authors
+
+- Card `docs/phases/phase-02/02a-block-graph-owners.md`, task **2/4 DONE**; **3 and 4 remain unchecked**.
+- Source and original NeoForge CI item registry join:
+  [`PHASE2_STAGE3A_CONNECTIVITY_ITEM_AUTHORS_1_21_1.md`](PHASE2_STAGE3A_CONNECTIVITY_ITEM_AUTHORS_1_21_1.md).
+  **69/69** BLOCK IDs represented by eight reviewed
+  graph classes have **69 distinct BlockItem** entries with
+  exact `placed_block`=ITEM ID, 7 common item method
+  declaring owners all BlockItem.
+- Important non-item writers: `BlockItem` post-placement
+  `DataComponents.BLOCK_STATE` component, fence-gate
+  useWithoutItem/neighborChanged/onExplosionHit, fence
+  LeadItem (leash entity interaction), VineBlock randomTick,
+  GlowLichenBlock performBonemeal -> MultifaceSpreader,
+  SculkVeinBlock regrow/onDischarged/attemptUseCharge,
+  conditional MultifaceGrowthFeature nonplayer placement.
+- **No change to class source-review status**:
+  55/241 reviewed, 186 REVIEW_PENDING, 162/898 IDs;
+  TripWireBlock and TripWireHookBlock remain pending.
+- All NeoForge patched bytecode / actual Mixin weaves,
+  Planet adaptation and gameplay acceptance remain PENDING.
+  Docs-only, no new CI or game run.
+- **NEXT first unchecked task**: Stage 3A-3.3 item 3,
+  no-property multi-face + BlockStateBase cached shape/face
+  and real physical neighbor callback mapping at seams,
+  Phase 2 vs 3/5/7A scope. One separate bounded commit.
+
 ## Resume procedure after interrupted answer
 
 1. Read AGENTS.md, this checkpoint, the latest roadmap

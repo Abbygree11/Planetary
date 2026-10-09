@@ -3499,3 +3499,32 @@ not conflated with fence/face algorithm. All ASM/Planet adapter
 /gameplay acceptance REVIEW_PENDING; no runtime code change.
 NEXT card docs/phases/phase-02/02a-block-graph-owners.md
 step 2/4: full registered ITEM + alternative author / interactions.
+
+
+## 2026-10-10 Phase2 Stage3A-3.2 exact 69 BlockItem authors + alternate state writers
+
+Completed bounded docs-only task 2/4 on
+`docs/phases/phase-02/02a-block-graph-owners.md`.
+Artifact original NeoForge 21.1.215 ZIP `11643813158`:
+all 69 source-reviewed graph-block IDs from 8 concrete
+classes have unique ordinary `BlockItem` entries,
+`placed_block=registry_id`, and all 7 item creation
+method declaration owners at `BlockItem`. No special
+item aliases in these 69. Independent comparative
+source audit established `DataComponents.BLOCK_STATE`
+can override graph bits AFTER item placement; fence
+`LeadItem` is leash interaction, not block placement;
+FenceGateBlock can author OPEN/FACING/POWERED via
+useWithoutItem, neighborChanged and onExplosionHit;
+VineBlock direct randomTick spread; GlowLichenBlock
+bonemeal -> MultifaceSpreader -> non-player placement;
+SculkVeinBlock regrow/onDischarged/attemptUseCharge;
+MultifaceGrowthFeature generic source call can author
+six-face states with nonplayer overload. Detailed research:
+`docs/research/PHASE2_STAGE3A_CONNECTIVITY_ITEM_AUTHORS_1_21_1.md`.
+No class statuses promoted: 55 source+reflection reviewed
+classes (162 registered IDs), 186 REVIEW_PENDING (898 IDs),
+241/1060 total. TripWire and hook remain pending.
+No patched NeoForge ASM/Mixin, runtime or gameplay PASS.
+NEXT FIRST incomplete 2.3A-3.3: graph cached shapes,
+physical neighbor event vs local chart; Phase2/3/5/7A.

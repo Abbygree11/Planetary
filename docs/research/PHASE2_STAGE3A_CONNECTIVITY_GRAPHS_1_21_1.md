@@ -285,3 +285,8 @@ gate power/open, MultifaceSpreader / sculk spread,
 plus graph/shape/fluids cross-phase boundaries.
 Do not start new source or runtime implementation
 in this same package.
+
+
+## 2026-10-10 Stage 3A-3.2 item creators and non-item state writers
+
+Completed a **separate** [69/69 original CI item-registry join and alternative-author audit](PHASE2_STAGE3A_CONNECTIVITY_ITEM_AUTHORS_1_21_1.md), validating all eight concrete classes' exact `placed_block` mapping, seven compiled `BlockItem` effective owner signatures, and independent authors. Significant paths: `BlockItem` post-placement `DataComponents.BLOCK_STATE`, gate `useWithoutItem`/`neighborChanged`/`onExplosionHit`, fence `LeadItem` (entity leash, not a new block), vine `randomTick`, GlowLichen `MultifaceSpreader`, sculk `regrow`/`onDischarged`/`attemptUseCharge`, and conditional `MultifaceGrowthFeature` generation. No class/ID status promotion: **55 reviewed / 186 pending**, 162/898 IDs; all ASM/adaptation/gameplay PENDING. NEXT 3A-3.3 exact block-state chart/shape/physical callback semantics.
