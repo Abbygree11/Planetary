@@ -39,7 +39,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 final class Phase2RegistryOrientationCensusTest {
     private static final Path REPORT_DIR =
-            Path.of("build", "reports", "planetary");
+            Path.of(System.getProperty(
+                    "planetary.phase2.censusReportDir",
+                    "build/reports/planetary"
+            ));
 
     private static final Set<String> ORIENTATION_PROPERTY_NAMES = Set.of(
             "facing", "axis", "horizontal_facing", "orientation",
