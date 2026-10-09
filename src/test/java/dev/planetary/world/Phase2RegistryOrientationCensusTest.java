@@ -47,7 +47,8 @@ final class Phase2RegistryOrientationCensusTest {
     private static final Set<String> ORIENTATION_PROPERTY_NAMES = Set.of(
             "facing", "axis", "horizontal_facing", "orientation",
             "rotation", "attach_face", "face", "half", "hinge",
-            "part", "type", "shape", "hanging", "north", "south",
+            "part", "type", "shape", "hanging", "attached",
+            "attachment", "in_wall", "bottom", "north", "south",
             "east", "west", "up", "down", "vertical_direction",
             "tip_direction", "chest_type", "bed_part", "rail_shape"
     );
@@ -93,13 +94,15 @@ final class Phase2RegistryOrientationCensusTest {
         List<String> items = new ArrayList<>();
 
         blocks.add("registry_id\tjava_class\thas_orientation_candidate"
-                + "\tdeclared_property_names\tmethod_owners"
+                + "\tdeclared_property_names\tclass_hierarchy"
+                + "\teffective_method_owners\tall_declaring_owners"
                 + "\taudit_disposition");
         properties.add("registry_id\tproperty_name\tproperty_class"
                 + "\tlegal_values\torientation_candidate"
                 + "\taudit_disposition");
         items.add("registry_id\tjava_class\tblock_item\tplaced_block"
-                + "\tmethod_owners\taudit_disposition");
+                + "\tclass_hierarchy\teffective_method_owners"
+                + "\tall_declaring_owners\taudit_disposition");
 
         int blockCount = 0;
         int itemCount = 0;
@@ -139,6 +142,8 @@ final class Phase2RegistryOrientationCensusTest {
             Collections.sort(propertyNames);
             blocks.add(tsv(id, type, Boolean.toString(candidate),
                     String.join(",", propertyNames),
+                    hierarchy(block.getClass()),
+                    effectiveOwners(block.getClass(), BLOCK_METHOD_NAMES),
                     owners(block.getClass(), BLOCK_METHOD_NAMES),
                     candidate ? "REVIEW_PENDING"
                             : "NON_PROPERTY_PATH_REVIEW_PENDING"));
@@ -156,7 +161,8 @@ final class Phase2RegistryOrientationCensusTest {
                     : "-";
 
             items.add(tsv(id, type, Boolean.toString(blockItem),
-                    blockId,
+                    blockId, hierarchy(item.getClass()),
+                    effectiveOwners(item.getClass(), ITEM_METHOD_NAMES),
                     owners(item.getClass(), ITEM_METHOD_NAMES),
                     blockItem ? "BLOCKITEM_CREATION_REVIEW_PENDING"
                             : "ITEM_USE_INTERACTION_REVIEW_PENDING"));
@@ -202,6 +208,58 @@ final class Phase2RegistryOrientationCensusTest {
                         + orientationCandidates);
         assertTrue(distinctBlockImplementations.size() > 50,
                 "Superclass/owner census did not see diverse block types");
+    }
+
+    /**
+     * Find the actual dispatch owner of each exact parameter signature.
+     * The first method in a concrete-to-base class walk wins; class-level
+     * inheritance is NOT proof that a base Mixin applies to an override.
+     */
+    private static String effectiveOwners(
+            Class<?> actualClass, List<String> methodNames
+    ) {
+        List<String> result = new ArrayList<>();
+        for (String name : methodNames) {
+            java.util.Map<String, String> effective =
+                    new java.util.LinkedHashMap<>();
+            for (Class<?> type = actualClass;
+                    type != null && type != Object.class;
+                    type = type.getSuperclass()) {
+                for (Method method : type.getDeclaredMethods()) {
+                    if (!name.equals(method.getName())
+                            || method.isBridge()
+                            || method.isSynthetic()) {
+                        continue;
+                    }
+                    String signature = Arrays.stream(
+                            method.getParameterTypes())
+                            .map(Class::getName)
+                            .reduce((a, b) -> a + "," + b)
+                            .orElse("");
+                    effective.putIfAbsent(
+                            signature,
+                            type.getSimpleName() + "(" + signature + ")"
+                    );
+                }
+            }
+            if (!effective.isEmpty()) {
+                List<String> selected =
+                        new ArrayList<>(effective.values());
+                selected.sort(String::compareTo);
+                result.add(name + "=" + String.join(";", selected));
+            }
+        }
+        return String.join("|", result);
+    }
+
+    private static String hierarchy(Class<?> actualClass) {
+        List<String> parts = new ArrayList<>();
+        for (Class<?> type = actualClass;
+                type != null && type != Object.class;
+                type = type.getSuperclass()) {
+            parts.add(type.getSimpleName());
+        }
+        return String.join(">", parts);
     }
 
     private static String owners(Class<?> actualClass,
