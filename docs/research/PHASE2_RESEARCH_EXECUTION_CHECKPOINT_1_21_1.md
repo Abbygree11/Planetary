@@ -183,6 +183,30 @@ family without proving why it is a unique algorithm owner.
   (next 8–15 concrete owner family; source + registry trace,
   then update TSV disposition in a separate commit).
 
+### 2026-10-10 micro-checkpoint: Stage 3A / 2.3A-1 task 4 complete
+
+- Source-reviewed an **additional 12 real BushBlock
+  inherited-canSurvive concrete classes** and **34 registered
+  block IDs**, with pinned Minecraft 1.21.1 source method paths,
+  actual NeoForge 21.1.215 registry owner-signature candidates,
+  mechanism groups and cross-phase boundary cautions:
+  `PHASE2_STAGE3A_BUSH_INHERITED_AUDIT_1_21_1.md`.
+- Updated the same 241-class ledger:
+  **24 source-reviewed / 217 REVIEW_PENDING** (52/1060
+  registered IDs vs 1008 pending). Original class roster and
+  1060 registry count unchanged.
+- Distinguish correctness of `BushBlock.canSurvive`
+  from independent growth, direct bonemeal placement,
+  structure feature placement, fluid/interaction and
+  entity-motion consumers. P20/P22/P24/P30/P34 and cross-phase
+  links documented without premature runtime fixes.
+- **Only source comparative plus reflection owner evidence;
+  no exact NeoForge ASM, tests or gameplay validation.**
+  No runtime code changed; doc-only checkpoint.
+- Stage **2.3A-1 four small tasks complete.**
+  Next FIRST unfinished: `docs/phases/phase-02/02-block-owners-rest.md`,
+  Stage 2.3A-2 task 1 (one new 8–15 owner-class family).
+
 ## Resume procedure after interrupted answer
 
 1. Read AGENTS.md, this checkpoint, the latest roadmap

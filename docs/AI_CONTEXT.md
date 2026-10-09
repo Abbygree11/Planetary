@@ -3347,3 +3347,27 @@ PHASE2_BLOCK_OWNER_DISPOSITION_GUIDE_1_21_1.md specifies field
 meaning, method signatures, and status gates. Next: card 2.3A-1
 micro-task 4/4, another bounded family. No runtime code changed,
 no game test or CI re-run requested.
+
+
+## 2026-10-10 Phase2 Stage3A second inherited Bush owner batch
+
+Task 2.3A-1 / 4 of 4 source research + ledger checkpoint:
+12 more actual concrete BushBlock descendants (34 registered IDs)
+reviewed against pinned 1.21.1 source and real 21.1.215
+effective-method owner census. New research file:
+docs/research/PHASE2_STAGE3A_BUSH_INHERITED_AUDIT_1_21_1.md.
+New source findings: SaplingBlock randomTick samples pos.above then
+TreeGrower (Phase8); Azalea bonemeal pos.above fluid; Fungus bonemeal
+required below substrate and configured feature; TallGrass bonemeal
+creates DoublePlant pair directly; Seagrass fluid source placement
+and updateShape water tick + tall pair growth; SweetBerryBush
+light sampling, harvest and body-dependent entity collision; NetherWart
+AGE growth and soul sand support. All 12 canSurvive declare at
+BushBlock, but independent consumer paths are not covered by the
+BushBlockLocalSupportMixin's below() support redirect.
+241-class ledger now has 24/241 comparative-source-reviewed and
+217 pending; 52/1060 block IDs under reviewed classes and 1008
+pending. No actual gameplay or NeoForge patch-bytecode validated,
+no Java modified. Next FIRST pending Phase2 card:
+docs/phases/phase-02/02-block-owners-rest.md, task 1,
+one 8–15-class algorithm family, separate committed response.

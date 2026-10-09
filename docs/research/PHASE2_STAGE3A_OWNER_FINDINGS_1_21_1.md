@@ -167,6 +167,25 @@ semantic or 1060/1060 gameplay pass.
 Next: card 2.3A-1, task 4, a different 8–15-class owner family.
 No runtime modifications and no extra client checks.
 
+## 2026-10-10 second 12-class Bush inherited-support review
+
+Completed [PHASE2_STAGE3A_BUSH_INHERITED_AUDIT_1_21_1.md](PHASE2_STAGE3A_BUSH_INHERITED_AUDIT_1_21_1.md):
+12 real concrete `BushBlock` descendants / 34 IDs with actual
+`canSurvive` inherited from `BushBlock`. Separate source
+call-paths confirmed for sapling/light+tree growth, azalea/fluid
+above bonemeal, fungus substrate/feature creation, plant
+substrates, tall-grass -> DoublePlant transformation, seagrass
+full-water/tick/upper-growth, sweet berry interactions/entity
+motion, and nether wart age. **Do not equate working BushBlock
+support with all those other correct behaviors.**
+
+The 241-class class roster is unchanged. The evidence TSV now
+records **24 SOURCE_REVIEWED / 217 REVIEW_PENDING** classes,
+covering **52/1060 block IDs**. The reviewed 24 remain
+`INTEGRATION_PENDING`: no exact NeoForge ASM/handler, item
+creation, gameplay or all-face PASS claimed. Stage 2.3A-1
+microtask card is finished; NEXT is 2.3A-2 in a new answer.
+
 ## Remaining Stage 3A work
 
 1. Read actual `phase2-neo1211-registry-census` artifact's

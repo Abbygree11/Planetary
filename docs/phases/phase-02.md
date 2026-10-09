@@ -14,8 +14,8 @@
 
 | Пакет | Файл | Статус | Выход |
 |---|---|---|---|
-| 2.3A-1 | [01-block-owners.md](phase-02/01-block-owners.md) | **NEXT** | Verified owner/disposition **часть 1**, не все 241 разом |
-| 2.3A-2 | [02-block-owners-rest.md](phase-02/02-block-owners-rest.md) | TODO | Остальные блоки до evidence-reviewed census |
+| 2.3A-1 | [01-block-owners.md](phase-02/01-block-owners.md) | **DONE (микропакеты, только исследование)** | 24/241 class source-reviewed; 217 pending, без игрового PASS |
+| 2.3A-2 | [02-block-owners-rest.md](phase-02/02-block-owners-rest.md) | **NEXT** | Остальные 217 concrete classes; 8–15 owner classes за один ответ |
 | 2.3B | [03-item-creators.md](phase-02/03-item-creators.md) | TODO | Item/alternative-author coverage |
 | 2.3C | [04-lifecycle-neoforge.md](phase-02/04-lifecycle-neoforge.md) | TODO | Bytecode/patch/dispatch evidence and gate |
 | 2.4A | [05-implementation-a.md](phase-02/05-implementation-a.md) | TODO | Context/FACING/AXIS/rotation state families |
@@ -33,6 +33,6 @@
 
 ## Точка продолжения
 
-Следующая самостоятельная работа — **2.3A-1**. Прочитать [исследование владельцев](../research/PHASE2_STAGE3A_OWNER_FINDINGS_1_21_1.md) и census, выбрать маленький конкретный набор ещё непроверенных owner-кластеров; результат дописать с evidence, не выдавая `REVIEW_PENDING` за `PASS`.
+Следующая самостоятельная работа — **2.3A-2**, первая малая порция следующих владельцев. В [реестре](../research/PHASE2_BLOCK_OWNER_DISPOSITION_1_21_1.tsv) source-reviewed 24/241 классов (52/1060 IDs); 217 классов остаются REVIEW_PENDING. Это не проверка NeoForge байткода/игрового поведения и не завершение Phase 2.
 
 Обновление этого файла означает только, что появился маршрут и checkpoint, **не что Phase 2 исправлена**.

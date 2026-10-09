@@ -99,3 +99,28 @@ Next separate packet (2.3A-1 task 4): review the next bounded
 standard. Update the existing TSV rows in place and update
 the counters. Do not add arbitrary mixins; Phase 3A owner
 census is not implementation.
+
+## 2026-10-10 second 12-class Bush-inherited audit: incremental ledger update
+
+The class roster is unchanged (241 real concrete classes / 1060
+registered BLOCK IDs) but the **evidence statuses are updated**:
+
+| Ledger status | Concrete classes | Associated Block IDs |
+|---|---:|---:|
+| `SOURCE_REVIEWED_INTEGRATION_PENDING` | **24** | **52** |
+| `REVIEW_PENDING` | **217** | **1008** |
+| **Total** | **241** | **1060** |
+
+The new 12-class, 34-ID source audit is:
+[PHASE2_STAGE3A_BUSH_INHERITED_AUDIT_1_21_1.md](PHASE2_STAGE3A_BUSH_INHERITED_AUDIT_1_21_1.md).
+The first 12-class, 18-ID source audit remains:
+[PHASE2_STAGE3A_BUSH_DESCENDANT_AUDIT_1_21_1.md](PHASE2_STAGE3A_BUSH_DESCENDANT_AUDIT_1_21_1.md).
+
+This supersedes only the **older counts and next task** printed in
+earlier sections of this ledger guide. Interpret their numbers as
+historical snapshots, not current totals.
+`SOURCE_REVIEWED_INTEGRATION_PENDING` still means actual
+method-declaration owners + comparative vanilla source; exact
+NeoForge-patched ASM, adaptation and gameplay remain pending.
+Next task is Stage 2.3A-2, one new owner-family batch.
+
