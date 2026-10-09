@@ -551,6 +551,49 @@ family without proving why it is a unique algorithm owner.
   next limited owner family in separate card.
   ONE bounded commit, then stop.
 
+### 2026-10-10 micro-checkpoint — Stage 3A-4.4 original CI census reconciliation
+
+- Card `docs/phases/phase-02/02b-redstone-signal-owners.md`
+  **all four research checkboxes DONE**. Not full
+  Stage 3A, not Phase 2 acceptance.
+- Original NeoForge 21.1.215 CI ZIP artifact
+  11643813158 SHA256 `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`.
+  Compare all 241 original class names+counts, and
+  **63 reviewed** classes' **170 exact IDs** plus
+  five effective declaration owners by **full exact
+  signature**. All four canonical independent digests
+  matching GitHub TSV: roster `0xf188a064`,
+  IDs `0xdb8afbd5`, owners `0x6052a7cf`,
+  combined `0x66be3dcb`.
+- Full source/class ledger unchanged:
+  63 `SOURCE_REVIEWED_INTEGRATION_PENDING`
+  (170/1060 registered BLOCK IDs), 178
+  `REVIEW_PENDING` (890 IDs). All 241
+  patched ASM, Planet integration and in-game
+  acceptance `REVIEW_PENDING`.
+- Eight source-reviewed redstone/tension signal
+  owners reconciled, exact eight item placement records
+  from prior 3A-4.2: 6 BlockItem,
+  2 ItemNameBlockItem (string and redstone).
+- Next **P28 rail** candidate class group (still
+  unreviewed): RailBlock minecraft:rail;
+  DetectorRailBlock minecraft:detector_rail;
+  PoweredRailBlock minecraft:activator_rail and
+  minecraft:powered_rail. 3 concrete classes,
+  **4 actual IDs**, plus nonregistered
+  BaseRailBlock/RailState. DaylightDetectorBlock
+  pending **separately** (minecraft:daylight_detector).
+- Full evidence:
+  `docs/research/PHASE2_STAGE3A_REDSTONE_COHORT_RECONCILIATION_1_21_1.md`.
+- **NEXT FIRST unchecked task**:
+  `docs/phases/phase-02/02c-rail-owners.md`
+  checkbox 1 / Stage 3A-5.1; one source/NeoForge
+  declaration family audit, one commit.
+- No code, CI build, ASM INVOKE or game client
+  PASS. User shorthand "кк" means: execute this
+  single next bounded microtask, commit, checkpoint,
+  answer; do NOT launch an unbounded series.
+
 ## Resume procedure after interrupted answer
 
 1. Read AGENTS.md, this checkpoint, the latest roadmap

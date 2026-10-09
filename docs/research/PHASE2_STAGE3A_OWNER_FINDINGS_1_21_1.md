@@ -420,6 +420,32 @@ No class promotion, runtime code change or PASS:
 63/241 reviewed (170 IDs), 178 pending (890 IDs).
 Next 3A-4.4 status/registry reconciliation.
 
+## 2026-10-10 Stage 3A-4.4 verified NeoForge signal class ledger
+
+[Original CI ZIP-vs-ledger reconciliation for 63 reviewed
+classes](PHASE2_STAGE3A_REDSTONE_COHORT_RECONCILIATION_1_21_1.md):
+all 241 original class/count pairs match; 63
+source+runtime-reflection reviewed classes and all
+170 registered ID strings + five complete-signature
+method declaring owners match original CI corpus.
+Independent FNV-1a fingerprints: 0xf188a064,
+0xdb8afbd5, 0x6052a7cf, 0x66be3dcb.
+Original signal batch 8 classes/8 block IDs
+source-reviewed, 6 ordinary BlockItems plus
+2 ItemNameBlockItem aliases; no new source review
+or code testing in the reconciliation itself.
+Totals **63 SOURCE_REVIEWED_INTEGRATION_PENDING**
+(170 ID), **178 REVIEW_PENDING** (890 ID).
+Deferred: DetectorRailBlock/PoweredRailBlock (3 IDs)
+and DaylightDetectorBlock (1 ID), plus RailBlock
+(1 ID), all pending. New independent next
+[3A-5 rail owner card](../phases/phase-02/02c-rail-owners.md):
+3 pending rail classes/4 registered IDs,
+nonregistered BaseRailBlock and RailState.
+All 241 patched NeoForge ASM/Planet runtime/gameplay
+gates still REVIEW_PENDING.
+Stage 3A and Phase 2 incomplete.
+
 ## Remaining Stage 3A work
 
 1. Read actual `phase2-neo1211-registry-census` artifact's

@@ -3692,3 +3692,36 @@ All 241 ASM/Planet/game acceptance fields pending.
 NEXT first unchecked microtask Stage 3A-4.4,
 original ZIP exact class/ID/owner/status reconciliation
 and next small owner-family card. One commit per response.
+
+
+## 2026-10-10 Phase 2 Stage3A-4.4 exact registry owner integrity and next rail card
+
+User shorthand `кк` = continue ONE first unfinished bounded
+Planetary microtask, research/implementation only according
+to the canonical stage card, commit and give checkpoint.
+Last completed: 3A-4.4 ZIP-vs-GitHub integrity.
+Original unmodified CI artifact `11643813158`, NeoForge
+21.1.215 SHA256 `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`. All original
+241 classes/1060 registered IDs match branch 2.0.
+Original independent 63 source+reflection reviewed
+class/170 exact block IDs/five complete-signature method
+declaring owners four FNV-1a fingerprints MATCH:
+0xf188a064 roster, 0xdb8afbd5 reviewed IDs,
+0x6052a7cf reviewed 5-owner tuple,
+0x66be3dcb reviewed IDs+owners combined.
+178 classes/890 IDs remain REVIEW_PENDING.
+All 241 ASM/Planetary gameplay statuses pending;
+no Java, CI/gameplay changes in this checkpoint.
+Stage 3A-4 card research tasks 1/2/3/4 DONE but
+full Stage 3A/Phase 2 unfinished.
+Research file `docs/research/PHASE2_STAGE3A_REDSTONE_COHORT_RECONCILIATION_1_21_1.md`.
+NEXT FIRST independent packet = Stage3A-5.1 task 1
+on card `docs/phases/phase-02/02c-rail-owners.md`:
+RailBlock minecraft:rail (1), DetectorRailBlock
+minecraft:detector_rail (1), PoweredRailBlock
+minecraft:activator_rail + minecraft:powered_rail (2),
+three pending concrete classes/four IDs.
+Nonregistered RailState and BaseRailBlock crucial
+for slope and connectivity. DaylightDetectorBlock
+separately pending, not part of rail group.
+No bytecode/runtime/game acceptance has been established.

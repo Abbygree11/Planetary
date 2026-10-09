@@ -1,3 +1,28 @@
+## 2026-10-10 Stage 3A-4.4 primary CI ZIP original full-lattice reconciliation
+
+[Exact 241-class and 63-source-reviewed owner
+reconciliation](PHASE2_STAGE3A_REDSTONE_COHORT_RECONCILIATION_1_21_1.md)
+used original unmodified NeoForge 21.1.215
+CI run 37988064055 artifact 11643813158,
+ZIP SHA256 `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`.
+All 241 fully qualified classes and 1060 registered
+ID counts matched; **63 reviewed classes with
+170 registered block IDs** match original exact
+five signature method declaring owners and ID lists.
+Four original ZIP/committed TSV fingerprints match:
+`0xf188a064` roster, `0xdb8afbd5` IDs,
+`0x6052a7cf` owners, `0x66be3dcb` combined.
+All 178 other classes (890 IDs) source REVIEW_PENDING,
+all 241 ASM/Planet/gameplay verdicts REVIEW_PENDING.
+Eight signal-class source and item aliases previously
+checked; no new gameplay, code, or CI run here.
+
+**Stage 3A-4 four research card tasks DONE, NOT
+full Stage 3A/Phase 2 DONE.** Next first unfinished:
+[3A-5 rails](../phases/phase-02/02c-rail-owners.md),
+3 still-pending rail concrete classes/4 IDs, daylight
+separate; one bounded source-owner packet.
+
 ## 2026-10-10 Stage 3A-4.3 source-local vs physical redstone signal-port chart
 
 [Complete eight-reviewed-class signal port, callback,
