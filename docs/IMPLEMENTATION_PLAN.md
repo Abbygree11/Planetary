@@ -475,6 +475,60 @@ COMPLETE, not the per-owner/NeoForge bytecode SEMANTIC audit.**
 No additional runtime Java or Mixin implementation was made in
 this research-only audit, and no new gameplay acceptance is claimed.
 
+### 2026-10-09 staged audit recovery after connection interruption
+
+The user requested completing the ENTIRE Phase-2 research,
+classification and implementation scope, but in independent
+bounded deliveries saved to GitHub to survive long-response
+connection loss. DO NOT run the full P01–P40 audit as one
+indivisible long tool session.
+
+**Stage 1 — COMPLETE (research artifacts saved during interrupted
+response):** P01–P40 owner atlas, 293 comparative block-class
+pattern census, 121 item-file pattern census, and release-oriented
+six-face acceptance matrix. These do NOT establish registered-ID
+or semantic-owner completeness.
+
+**Stage 2A — SOURCE OWNERS AUDITED / DIAGNOSTICS CODE ADDED,
+ACTUAL GITHUB CI PENDING:** 
+`docs/research/PHASE2_SOURCE_OWNER_AUDIT_WAVE_A_1_21_1.md`
+confirms complete BLOCK ITEM call chain, synthetic
+DirectionalPlaceContext, component BLOCK_STATE override after
+placement, specialized item target adjustment, and exact
+NeoForge historical BlockItem sound and fire-tool hook
+provenance. Added read-only
+`Phase2RegistryOrientationCensusTest`:
+iterates actual bootstrapped BuiltInRegistries.BLOCK/ITEM, captures
+per-ID orientation property domains, class and method-owner chain.
+CI uploads generated TSV/summary as the
+`phase2-neo1211-registry-census` artifact. ALL rows start in
+`REVIEW_PENDING` until semantically classified; no runtime game
+Mixins changed.
+
+**Stage 2B — NEXT AFTER CENSUS CI:** verify actual registry
+counts/ownership against NeoForge 21.1.215, classify subclasses
+and source overrides in local-UP support, shape, neighbor
+updates, tangent graphs, pairs, rails, redstone interfaces.
+Missing family or false physical/canonical assumption requires
+explicit disposition. Do NOT equate name scan with verified owner.
+
+**Stage 3 — PENDING:** compare every actual owner and alternate
+BlockItem author to Planetary's existing stable Frame API / thin
+Mixins, produce one authoritative P01–P40 implementation/coverage
+matrix, classify each as IMPLEMENTED, GAP, CROSS_PHASE,
+NOT_APPLICABLE or REVIEW_PENDING with cited evidence.
+
+**Stage 4 — PENDING:** freeze mechanism-wise implementation
+waves A–E, build stable semantic helpers and coherent adapters,
+compile+JUnit+ASM CI green, apply in client and run representative
+actual BlockItem/useOn six-face/edge gameplay. Resume until
+all Phase-2 release blockers are resolved. Do not skip to fluids
+or claim Phase 2 completed from the research stage alone.
+
+Progress and source provenance are committed separately after
+each bounded stage; document any CI error/fix. Previously
+accepted particle families remain immutable regression baselines.
+
 ### Mandatory next bounded engineering step: executable census
 
 Before editing another arbitrary placement class:
