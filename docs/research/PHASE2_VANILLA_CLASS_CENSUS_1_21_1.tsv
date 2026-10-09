@@ -48,20 +48,20 @@ ButtonBlock	ATTACHMENT_STANDING_WALL_OR_HANGING;SIGNAL_MACHINE_INTERACTION	INDEX
 CactusBlock	LOCAL_SURVIVAL_AND_PLANT_GROWTH	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
 CakeBlock	LOCAL_SUPPORT_CENTER_CEILING	SOURCE_METHODS_SPOT_CHECKED	Family candidate; confirm subclass overrides and platform patches
 CalibratedSculkSensorBlock	SIGNAL_MACHINE_INTERACTION	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
-CampfireBlock	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
+CampfireBlock	SOURCE_SCANNED_STATE_ORIENTATION_CANDIDATE	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: getStateForPlacement,updateShape,rotate,mirror,useItemOn
 CandleBlock	LOCAL_SUPPORT_CENTER_CEILING	SOURCE_METHODS_SPOT_CHECKED	Family candidate; confirm subclass overrides and platform patches
 CandleCakeBlock	LOCAL_SUPPORT_CENTER_CEILING	SOURCE_METHODS_SPOT_CHECKED	Family candidate; confirm subclass overrides and platform patches
 CarpetBlock	HALF_ROTATION_AND_SHAPE	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
 CarrotBlock	LOCAL_SURVIVAL_AND_PLANT_GROWTH	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
-CartographyTableBlock	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
-CarvedPumpkinBlock	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
+CartographyTableBlock	SOURCE_SCANNED_ITEM_INTERACTION_CANDIDATE	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: useWithoutItem
+CarvedPumpkinBlock	SOURCE_SCANNED_STATE_ORIENTATION_CANDIDATE	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: getStateForPlacement,onPlace
 CauldronBlock	FLUID_WATERLOGGED_CONTEXT	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
-CaveVines	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
+CaveVines	SOURCE_SCANNED_OTHER_OR_INHERITED	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: no lifecycle matches
 CaveVinesBlock	LOCAL_SURVIVAL_AND_PLANT_GROWTH	SOURCE_METHODS_SPOT_CHECKED	Inspected source methods and inherited behavior; verify all NeoForge subclass paths
 CaveVinesPlantBlock	LOCAL_SURVIVAL_AND_PLANT_GROWTH	SOURCE_METHODS_SPOT_CHECKED	Inspected source methods and inherited behavior; verify all NeoForge subclass paths
 CeilingHangingSignBlock	ATTACHMENT_STANDING_WALL_OR_HANGING	SOURCE_METHODS_SPOT_CHECKED	Family candidate; confirm subclass overrides and platform patches
 ChainBlock	HALF_ROTATION_AND_SHAPE	SOURCE_METHODS_SPOT_CHECKED	Family candidate; confirm subclass overrides and platform patches
-ChangeOverTimeBlock	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
+ChangeOverTimeBlock	SOURCE_SCANNED_OTHER_OR_INHERITED	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: no lifecycle matches
 CherryLeavesBlock	LOCAL_SURVIVAL_AND_PLANT_GROWTH	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
 ChestBlock	MULTIBLOCK_PAIR_LAYOUT	SOURCE_METHODS_SPOT_CHECKED	Family candidate; confirm subclass overrides and platform patches
 ChiseledBookShelfBlock	PLACEMENT_INPUT_FULL_OR_HORIZONTAL;SIGNAL_MACHINE_INTERACTION	SOURCE_METHODS_SPOT_CHECKED	Inspected source methods and inherited behavior; verify all NeoForge subclass paths
@@ -69,28 +69,28 @@ ChorusFlowerBlock	LOCAL_SURVIVAL_AND_PLANT_GROWTH	INDEXED_ONLY	Family candidate;
 ChorusPlantBlock	LOCAL_SURVIVAL_AND_PLANT_GROWTH	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
 CocoaBlock	ATTACHMENT_STANDING_WALL_OR_HANGING;LOCAL_SURVIVAL_AND_PLANT_GROWTH	SOURCE_METHODS_SPOT_CHECKED	Inspected source methods and inherited behavior; verify all NeoForge subclass paths
 ColoredFallingBlock	FALLING_CHAIN_TRIGGER	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
-CommandBlock	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
+CommandBlock	SOURCE_SCANNED_STATE_ORIENTATION_CANDIDATE	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: getStateForPlacement,neighborChanged,setPlacedBy,rotate,mirror,useWithoutItem,tick
 ComparatorBlock	LOCAL_SUPPORT_CENTER_CEILING;SIGNAL_MACHINE_INTERACTION	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
-ComposterBlock	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
+ComposterBlock	SOURCE_SCANNED_WORLD_AXIS_CANDIDATE	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: onPlace,useItemOn,useWithoutItem,tick
 ConcretePowderBlock	FALLING_CHAIN_TRIGGER	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
 ConduitBlock	FLUID_WATERLOGGED_CONTEXT	SOURCE_METHODS_SPOT_CHECKED	Inspected source methods and inherited behavior; verify all NeoForge subclass paths
 CopperBulbBlock	SIGNAL_MACHINE_INTERACTION	SOURCE_METHODS_SPOT_CHECKED	Inspected source methods and inherited behavior; verify all NeoForge subclass paths
-CoralBlock	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
-CoralFanBlock	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
-CoralPlantBlock	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
+CoralBlock	SOURCE_SCANNED_OTHER_OR_INHERITED	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: getStateForPlacement,updateShape,tick
+CoralFanBlock	SOURCE_SCANNED_WORLD_AXIS_CANDIDATE	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: canSurvive,updateShape,onPlace,tick
+CoralPlantBlock	SOURCE_SCANNED_WORLD_AXIS_CANDIDATE	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: canSurvive,updateShape,onPlace,tick
 CoralWallFanBlock	ATTACHMENT_STANDING_WALL_OR_HANGING	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
 CrafterBlock	PLACEMENT_INPUT_FULL_OR_HORIZONTAL;SIGNAL_MACHINE_INTERACTION;STATE_ROTATION_AND_STRUCTURE	SOURCE_METHODS_SPOT_CHECKED	Family candidate; confirm subclass overrides and platform patches
-CraftingTableBlock	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
+CraftingTableBlock	SOURCE_SCANNED_ITEM_INTERACTION_CANDIDATE	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: useWithoutItem
 CropBlock	LOCAL_SURVIVAL_AND_PLANT_GROWTH	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
 CrossCollisionBlock	TANGENT_GRAPH_AND_SIX_FACE_GRAPH	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
-CryingObsidianBlock	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
+CryingObsidianBlock	SOURCE_SCANNED_WORLD_AXIS_CANDIDATE	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: no lifecycle matches
 DaylightDetectorBlock	SIGNAL_MACHINE_INTERACTION	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
-DeadBushBlock	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
+DeadBushBlock	SOURCE_SCANNED_OTHER_OR_INHERITED	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: no lifecycle matches
 DecoratedPotBlock	PLACEMENT_INPUT_FULL_OR_HORIZONTAL	SOURCE_METHODS_SPOT_CHECKED	Family candidate; confirm subclass overrides and platform patches
 DetectorRailBlock	RAIL_SLOPE_GRAPH	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
 DiodeBlock	LOCAL_SUPPORT_CENTER_CEILING;SIGNAL_MACHINE_INTERACTION	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
 DirectionalBlock	PLACEMENT_INPUT_FULL_OR_HORIZONTAL	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
-DirtPathBlock	TRIAGE_PENDING_FROM_SOURCE	INDEXED_ONLY	Not categorized from name: inspect superclass and method ownership before marking covered
+DirtPathBlock	SOURCE_SCANNED_WORLD_AXIS_CANDIDATE	SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING	Source pattern scan only, semantic review pending: getStateForPlacement,canSurvive,updateShape,tick
 DispenserBlock	PLACEMENT_INPUT_FULL_OR_HORIZONTAL	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
 DoorBlock	MULTIBLOCK_PAIR_LAYOUT;SIGNAL_MACHINE_INTERACTION	SOURCE_METHODS_SPOT_CHECKED	Family candidate; confirm subclass overrides and platform patches
 DoubleBlockCombiner	MULTIBLOCK_PAIR_LAYOUT	INDEXED_ONLY	Family candidate; confirm subclass overrides and platform patches
