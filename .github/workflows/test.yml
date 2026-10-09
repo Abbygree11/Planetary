@@ -48,6 +48,19 @@ jobs:
       - name: Run JUnit tests
         run: gradle test --no-daemon --warning-mode=none --no-problems-report
 
+      - name: Show registered orientation census
+        run: |
+          cat build/reports/planetary/phase2-neo1211-summary.txt
+          wc -l build/reports/planetary/phase2-neo1211-*.tsv
+
+      - name: Publish Phase-2 registry census
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase2-neo1211-registry-census
+          path: build/reports/planetary/
+          if-no-files-found: warn
+
       - name: Publish failure reports
         if: failure()
         uses: actions/upload-artifact@v4
