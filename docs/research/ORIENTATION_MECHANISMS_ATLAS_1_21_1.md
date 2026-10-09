@@ -19,13 +19,30 @@ The comparative 1.21.1 GitHub source tree (`main` under `1.21.1/net/minecraft`) 
 - **74** files in `world/level/block/entity`.
 - **28** files in `client/renderer/blockentity`.
 
-Every one of the 293 source filenames is indexed at `PHASE2_VANILLA_CLASS_CENSUS_1_21_1.tsv`. Classification there is **candidate family from declared class name**, not an assertion that every method has been individually examined. Initial mechanical triage assigns at least one candidate family to 174 files; **119 remain tagged `TRIAGE_PENDING_FROM_SOURCE`**, including passive blocks, inherited specialized behavior and potentially undercovered orientation pathways. **That count is an explicit audit backlog, not "all blocks researched".** Roughly 34 representative block class source methods were directly spot-checked during this audit, in addition to extensive earlier R1–R6 source work. Before final Phase-2 acceptance, replace name-based triage with a version-pinned compiled class/registry census and ensure NO relevant family is silently unclassified. See §8.
+Every one of the 293 source filenames is indexed at `PHASE2_VANILLA_CLASS_CENSUS_1_21_1.tsv`. Classification there is **candidate family from declared class name**, not an assertion that every method has been individually examined. Initial name-based triage assigned candidate families to 174 files. After directly inspecting additional hidden-owner subclasses (including ShulkerBox, copper weathering variants, chiseled bookshelf, Cocoa and sea pickles), 193 files have at least one candidate family and **100 remain tagged `TRIAGE_PENDING_FROM_SOURCE`**, including passive blocks, inherited specialized behavior and potentially undercovered orientation pathways. **That count is an explicit audit backlog, not "all blocks researched".** More than 50 representative block class source implementations were directly spot-checked during this audit, in addition to extensive earlier R1–R6 source work. Before final Phase-2 acceptance, replace name-based triage with a version-pinned compiled class/registry census and ensure NO relevant family is silently unclassified. See §8.
 
 ### Sources directly rechecked in this pass
 
 `BlockPlaceContext`, `UseOnContext`, `DirectionalPlaceContext`, `BlockItem`, `StandingAndWallBlockItem`, `ScaffoldingBlockItem`, `PlaceOnWaterBlockItem`, `HangingSignItem`, `ArmorStandItem`, `EndCrystalItem`, `FlintAndSteelItem`, `FireChargeItem`, `BoneMealItem`, `BlockStateProperties`, `BlockBehaviour`, `Rotation`, `Mirror`, `StructureTemplate`; `DirectionalBlock`, `HorizontalDirectionalBlock`, `FaceAttachedHorizontalDirectionalBlock`, `AbstractFurnaceBlock`, `BushBlock`, `CakeBlock`, `CandleBlock`, `CandleCakeBlock`, `SporeBlossomBlock`, `EndRodBlock`, `EnderChestBlock`, `StairBlock`, `TrapDoorBlock`, `SlabBlock`, `FenceGateBlock`, `LanternBlock`, `WallSignBlock`, `StandingSignBlock`, `CeilingHangingSignBlock`, `WallHangingSignBlock`, `CrafterBlock`, `JigsawBlock`, `DecoratedPotBlock`, `DoorBlock`, `DoublePlantBlock`, `BedBlock`, `ChestBlock`, `RailState`, `BaseRailBlock`, `ScaffoldingBlock`, `GrowingPlantBlock`, `MultifaceBlock`, `WallBlock`, `VineBlock`, `ChainBlock`, `AbstractChestBlock`, `AttachedStemBlock`, `CaveVinesBlock`, `CaveVinesPlantBlock`, `ChiseledBookShelfBlock`, `CocoaBlock`, `ConduitBlock`, `SeaPickleBlock`.
 
 Source mapping differences or NeoForge patches MUST be verified at Gradle's actual 21.1.215 class-file layer. Do not equate upstream GitHub's current NeoForge `main` with this historic game version; patch path coincidence alone is insufficient.
+
+
+### Additional source-owner spot-checks of formerly unclassified subclasses
+
+- `AbstractFurnaceBlock` is the actual furnace-like horizontal-facing placement owner, so a fix limited to the concrete FurnaceBlock would miss BlastFurnace/Smoker.
+- `ShulkerBoxBlock` writes its full six-direction `FACING` from the **physical clicked face**; it is a new P07 priority candidate, plus a custom block-entity renderer and collision/open animation.
+- `VaultBlock` independently writes horizontal FACING; it does not inherit AbstractFurnace placement even though the placement expression resembles it.
+- `ChiseledBookShelfBlock` has independent horizontal placement **and** maps physical hit position/face into an inventory slot. This is a Phase-2 interaction-frame problem that cannot be solved by model rotation alone.
+- `CocoaBlock` has state-directed jungle-log support and custom nearest-direction placement; it bypasses BushBlock's standard soil-survival implementation.
+- `SeaPickleBlock` overrides canSurvive and support face-shape (not just BushBlock's below rule), plus replace-to-increment and waterlogging.
+- `AttachedStemBlock` updates a FACING-directed fruit neighbor after growth and has independent rotate/mirror behavior.
+- `WeatheringCopperDoorBlock/SlabBlock/StairBlock/TrapDoorBlock` inherit algorithms from their respective base mechanism families: a correct family adapter should cover weathering variants **without class-specific Mixins**. The audit must still inspect overrides.
+- `CopperBulbBlock` is mostly neighbor redstone signal/POWERED/LIT logic (Phase 7A), not a new geometric placement orientation vocabulary.
+- `RespawnAnchorBlock` is a useItemOn/charge/respawn-interaction owner (part Phase 7B) rather than a universal facing mechanism.
+- `TrialSpawnerBlock` and `VaultBlock` have effect/event and UI state ownership distinct from placing oriented basic models.
+
+These findings revise the candidate census but **do not imply 193 individually verified gameplay paths or completion of the 100 remaining entries**. Registry/bytecode census remains mandatory.
 
 ## 2. Invariants and coordinate ownership (NON-NEGOTIABLE)
 
@@ -198,7 +215,7 @@ Before general Phase-2 acceptance, create the following CI diagnostics (not yet 
 ## 10. Required next engineering action
 
 1. Treat this atlas and the 293-class census as an **audit baseline**, not proof of full source-by-source completion.
-2. First implement the **automatic registry + item + override census**, reclassify the 119 source-name-only remainder, and map all `2.0` Mixins to their exact bytecode owners. This is the only scalable way to prevent a new vanilla mechanism from being silently omitted.
+2. First implement the **automatic registry + item + override census**, reclassify the 100 remaining source-name-only entries, and map all `2.0` Mixins to their exact bytecode owners. This is the only scalable way to prevent a new vanilla mechanism from being silently omitted.
 3. Freeze a first implementation wave only once its source owner and bypass list is complete; start with `BlockPlaceContext/BlockItem` and orientation-domain vocabulary, NOT new per-block patches.
 4. Continue through waves A–E. Re-check existing accepted behaviors but do not demand full repetitive gameplay retests after each small fix.
 5. **Do not mark Phase 2, or other orientation-dependent phases, DONE/PASS until the coverage gate is satisfied.**
