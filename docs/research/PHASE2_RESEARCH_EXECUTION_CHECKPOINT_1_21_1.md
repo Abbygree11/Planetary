@@ -52,7 +52,7 @@ family without proving why it is a unique algorithm owner.
 
 ## NEXT: bounded independently committable stages
 
-### Stage 3A — compiled block method-owner disposition [ACTIVE]
+### Stage 3A — compiled block method-owner disposition [ACTIVE; initial reviewed owner clusters committed]
 - Use the actual generated NeoForge registry/owner TSV and
   effective-owner findings. Classify EVERY one of the 241
   concrete block classes and effective lifecycle owners,
@@ -64,8 +64,14 @@ family without proving why it is a unique algorithm owner.
   until source/compiled owner semantics are justified.
 - Unlike a string-pattern census, check actual effective owner
   and all relevant method bypass/alternate authors.
-- Deliver `PHASE2_BLOCK_OWNER_DISPOSITION_1_21_1.tsv`
-  and narrative `PHASE2_STAGE3A_OWNER_FINDINGS_1_21_1.md`.
+- Initial scoped review committed in
+  `PHASE2_STAGE3A_OWNER_FINDINGS_1_21_1.md`: 22 researched
+  algorithm-owner clusters, with explicit PARTIAL_ADAPTER /
+  RESEARCHED_GAP dispositions; this is NOT 241 individual
+  registered-class reviews.
+- Remaining: deliver `PHASE2_BLOCK_OWNER_DISPOSITION_1_21_1.tsv`
+  mapping every actual registry class, then expand/close the
+  narrative `PHASE2_STAGE3A_OWNER_FINDINGS_1_21_1.md`.
 - Unknown ownership must remain visible. Do NOT fabricate a
   "241/241 reviewed" outcome from automatic names alone.
 
