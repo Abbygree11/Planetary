@@ -19,7 +19,7 @@ The comparative 1.21.1 GitHub source tree (`main` under `1.21.1/net/minecraft`) 
 - **74** files in `world/level/block/entity`.
 - **28** files in `client/renderer/blockentity`.
 
-Every one of the 293 source filenames is indexed at `PHASE2_VANILLA_CLASS_CENSUS_1_21_1.tsv`. Classification there is **candidate family from declared class name**, not an assertion that every method has been individually examined. Initial name-based triage assigned candidate families to 174 files. After directly inspecting additional hidden-owner subclasses (including ShulkerBox, copper weathering variants, chiseled bookshelf, Cocoa and sea pickles), 193 files have at least one candidate family and **100 remain tagged `TRIAGE_PENDING_FROM_SOURCE`**, including passive blocks, inherited specialized behavior and potentially undercovered orientation pathways. **That count is an explicit audit backlog, not "all blocks researched".** More than 50 representative block class source implementations were directly spot-checked during this audit, in addition to extensive earlier R1–R6 source work. Before final Phase-2 acceptance, replace name-based triage with a version-pinned compiled class/registry census and ensure NO relevant family is silently unclassified. See §8.
+Every one of the 293 source filenames is indexed at `PHASE2_VANILLA_CLASS_CENSUS_1_21_1.tsv`. Classification there is **candidate family from declared class name**, not an assertion that every method has been individually examined. The full first-pass comparative-source **pattern inspection is now recorded for 293/293 top-level block-directory Java files**. Exactly **53** have direct representative method spot-checks (`SOURCE_METHODS_SPOT_CHECKED`) and **240** have initial source-pattern inspection only (`SOURCE_PATTERN_SCANNED_SEMANTIC_REVIEW_PENDING`). No file remains merely name-indexed, but this **does not** mean 293 block implementations are behaviorally verified: pattern matches miss inheritance, virtual dispatch, alternate sources and NeoForge patches. The initial family classification is still a candidate map, not an authoritative registry-derived coverage verdict. Before final Phase-2 acceptance, produce a version-locked compiled class/registry census, and resolve all inherited/overridden orientation algorithms. See §8.
 
 ### Sources directly rechecked in this pass
 
@@ -43,6 +43,35 @@ Source mapping differences or NeoForge patches MUST be verified at Gradle's actu
 - `TrialSpawnerBlock` and `VaultBlock` have effect/event and UI state ownership distinct from placing oriented basic models.
 
 These findings revise the candidate census but **do not imply 193 individually verified gameplay paths or completion of the 100 remaining entries**. Registry/bytecode census remains mandatory.
+
+### 121-item source census: primary alternative creation paths recorded
+
+`docs/research/PHASE2_ITEM_CREATION_CENSUS_1_21_1.tsv` lists
+**all 121** top-level `world/item` Java source files. All received an
+initial method/direction **source-pattern scan**, not full inherited-method
+analysis. In particular, `BlockItem`, `StandingAndWallBlockItem`,
+`ScaffoldingBlockItem`, `PlaceOnWaterBlockItem`, `HangingSignItem`,
+`ArmorStandItem`, `EndCrystalItem`, `FlintAndSteelItem`,
+`FireChargeItem`, `BoneMealItem`, `DoubleHighBlockItem`,
+`BedItem`, `HoeItem`, `ShovelItem`, `DyeItem`, `BrushItem`,
+`ItemFrameItem`, `HangingEntityItem`, `SpawnEggItem`,
+and `MobBucketItem` require appropriate owner classification.
+Not all are **block** placement, but they can own spatially oriented
+world creation, vegetation or interaction.
+
+`BlockItem` source has late component-driven `BLOCK_STATE`
+overrides; `ScaffoldingBlockItem` can change the target physical
+cell; `PlaceOnWaterBlockItem` alters the physical hit/cell;
+`HangingSignItem` imposes subclass-specific attachment rules.
+These and `DirectionalPlaceContext` are proof that testing only the
+standard player `Block.getStateForPlacement` does not prove complete
+block orientation.
+
+**Coverage limitation:** a source file may contain multiple methods
+with distinct semantic owners; item subclasses and registered item IDs
+often outnumber top-level source filenames. Compiled
+`BuiltInRegistries.ITEM` plus method-override/bytecode census
+is required before claiming no bypass creation pathways remain.
 
 ## 2. Invariants and coordinate ownership (NON-NEGOTIABLE)
 
@@ -214,8 +243,8 @@ Before general Phase-2 acceptance, create the following CI diagnostics (not yet 
 
 ## 10. Required next engineering action
 
-1. Treat this atlas and the 293-class census as an **audit baseline**, not proof of full source-by-source completion.
-2. First implement the **automatic registry + item + override census**, reclassify the 100 remaining source-name-only entries, and map all `2.0` Mixins to their exact bytecode owners. This is the only scalable way to prevent a new vanilla mechanism from being silently omitted.
+1. Treat this atlas and the 293-class/121-item **source-pattern** censuses as an **audit baseline**, not proof of full source-by-source semantic completion.
+2. First implement the **automatic registry + item + override census** against the exact NeoForge 21.1.215 compiled classes, resolve remaining inheritance/semantics (240 block files have only initial pattern scan), and map all `2.0` Mixins to actual bytecode owners. This is the only scalable way to prevent a new vanilla mechanism from being silently omitted.
 3. Freeze a first implementation wave only once its source owner and bypass list is complete; start with `BlockPlaceContext/BlockItem` and orientation-domain vocabulary, NOT new per-block patches.
 4. Continue through waves A–E. Re-check existing accepted behaviors but do not demand full repetitive gameplay retests after each small fix.
 5. **Do not mark Phase 2, or other orientation-dependent phases, DONE/PASS until the coverage gate is satisfied.**
