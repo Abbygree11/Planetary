@@ -1,0 +1,41 @@
+mechanism_id	atlas_source_owner	planetary_evidence_class_names	pre_registry_disposition	main_gap_or_integration	owning_phases	verified_registered_owners	phase2_gameplay_acceptance
+P01	`UseOnContext`, `BlockPlaceContext`	PlanetFrameApi;PlanetBlockPlacementFrame	PARTIAL_FOUNDATION	Synthetic and subclass placement context not covered	2	PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS	NOT_VERIFIED
+P02	`DirectionalPlaceContext` + automation	-	GAP	DirectionalPlaceContext; dispenser; null-player context needs explicit physical/local provenance	2;7A;10	PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS	NOT_VERIFIED
+P03	`BlockItem`	-	GAP	Item.getPlacementState/updatePlacementContext and post-placement BLOCK_STATE state override	2	PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS	NOT_VERIFIED
+P04	Specialized BlockItems	StandingAndWallBlockItemMixin	PARTIAL_FAMILY	Specialized HangingSignItem; ScaffoldingBlockItem; PlaceOnWaterBlockItem; BedItem	2;5	PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS	NOT_VERIFIED
+P05	Non-BlockItem placement tools	-	GAP	FlintAndSteel; FireCharge tool actions; BoneMeal and entity place items	2;7;9	PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS	NOT_VERIFIED
+P06	`RotatedPillarBlock` / `RodBlock` / `ChainBlock`	RotatedPillarBlockPlacementMixin	PARTIAL_FAMILY	ChainBlock; RodBlock; subclass overrides; waterlogged transition	2;5	PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS	NOT_VERIFIED
+P07	Full 6-direction state	HopperBlockPlacementMixin;EndRodLocalPlacementMixin;PlanetDirectionalPlacement	PARTIAL_FAMILY	Six-direction placement owners observer; dispenser; dropper; shulker; cluster; piston	2;3;7A	PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS	NOT_VERIFIED
+P08	Horizontal 4-direction state	EnderChestLocalPlacementMixin;PlanetFrameApi	PARTIAL_FAMILY	AbstractFurnace; Chest; Barrel; Vault; ChiseledBookshelf and other independent overrides	2;3	PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS	NOT_VERIFIED
+P09	Dual-axis `FrontAndTop`	-	GAP	Crafter and Jigsaw FrontAndTop legal orthogonal pairs	2;7A;9	PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS	NOT_VERIFIED
+P10	16-way rotations	-	GAP	Standing sign/banner/skull and hanging sign 16-yaw anchoring	2;3	PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS	NOT_VERIFIED
+P11	Face attachment	FaceAttachedHorizontalDirectionalBlockSupportMixin;PlanetFrameApi	PARTIAL_FAMILY	Placement variants and interaction/neighbor exception owners unclassified	2;7A	PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS	NOT_VERIFIED
+P12	Standing/wall item dual variants	StandingAndWallBlockItemMixin;WallTorchBlockSupportMixin	PARTIAL_FAMILY	Sign/banner/skull/hanging variants and specialized item canPlace	2;3	PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS	NOT_VERIFIED
+P13	HANGING boolean + attachments	-	GAP	LanternBlock; ceiling/wall hanging signs HANGING and waterlogging	2;3;5	PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS	NOT_VERIFIED
+P14	Stairs	-	GAP	StairBlock FACING+HALF+shape and corner neighbor propagation	2;3	PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS	NOT_VERIFIED
+P15	Slabs/replacement	SlabBlockPlacementMixin	PARTIAL_FAMILY	Slab stacking and replacement in rotated faces and hit fraction boundary	2;3	PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS	NOT_VERIFIED
+P16	Trapdoors	-	GAP	TrapDoorBlock physical face vs canonical HALF and OPEN/POWERED	2;3;7A	PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS	NOT_VERIFIED
+P17	Hinged doors	DoorBlockGravityMixin;PlanetPlacementRuntime	PARTIAL_FAMILY	Door hinge/two-cell pairing, player interactions and powered variants	2;3;7A	PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS	NOT_VERIFIED
+P18	Fence gate	-	GAP	FenceGateBlock IN_WALL, body horizontal, neighbor updates and open state	2;7A	PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS	NOT_VERIFIED
+P19	Bed pair	BedBlockGravityMixin;PlanetPlacementRuntime	PARTIAL_FAMILY	Bed HEAD/FOOT placement, collision and multi-cell edge acceptance	2;3;7	PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS	NOT_VERIFIED
+P20	Double plants and vertical chains	-	GAP	DoublePlantBlock; pitcher/tall flower upper/lower survival and source item	2;8	PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS	NOT_VERIFIED
+P21	Chest double pairing	-	GAP	ChestBlock LEFT/RIGHT physical pairing and DoubleBlockCombiner; BE later	2;3	PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS	NOT_VERIFIED
+P22	Canonical support local DOWN	BushBlockLocalSupportMixin;CakeFamilyLocalSupportMixin;CandleBlockLocalSupportMixin;BaseTorchBlockSupportMixin;PlanetBlockSupportRuntime	PARTIAL_FAMILY	SeaPickleBlock overridden survival and many other subclass support paths	2	PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS	NOT_VERIFIED
+P23	Ceiling/side/sturdy support	SporeBlossomLocalSupportMixin;WallTorchBlockSupportMixin;LadderBlockSupportMixin	PARTIAL_FAMILY	AmethystCluster; CocoaBlock; LanternBlock; hanging and side supports	2;3	PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS	NOT_VERIFIED
+P24	Local support invalidation	PlanetBlockSupportRuntime;CandleBlockLocalSupportMixin;CakeFamilyLocalSupportMixin;SporeBlossomLocalSupportMixin	PARTIAL_FAMILY	Physical neighborPos and overridden updateShape/water-tick contract all owners	2;5	PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS	NOT_VERIFIED
+P25	Tangent four-way graph	FenceBlockGravityMixin	PARTIAL_FAMILY	FenceGate; bars; tripwire; wall/scaffold graph and corners	2;7A	PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS	NOT_VERIFIED
+P26	Six-face attachment graph	-	GAP	MultifaceBlock and VineBlock face-state attachment and propagation	2;3	PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS	NOT_VERIFIED
+P27	Walls	-	GAP	WallBlock low/tall sides and UP post semantics	2;3	PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS	NOT_VERIFIED
+P28	Rails and slopes	-	GAP	BaseRailBlock; RailState slope/connectivity; powered/detector variants	2;7;7A	PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS	NOT_VERIFIED
+P29	GrowingPlant directional graphs	-	GAP	GrowingPlantBlock HEAD/BODY local growth graph and updateShape	2;5;8	PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS	NOT_VERIFIED
+P30	Growth columns and vegetation	BushBlockLocalSupportMixin;PlanetGrowthTopology	PARTIAL_FOUNDATION	Sapling growTree; cactus; sugarcane; bamboo; vines world-Y growth	2;8	PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS	NOT_VERIFIED
+P31	Scaffolding	-	GAP	ScaffoldingBlockItem target traversal and ScaffoldingBlock DISTANCE/BOTTOM	2	PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS	NOT_VERIFIED
+P32	Falling/support-trigger chains	FallingBlockGravityMixin;PointedDripstoneBlockGravityMixin	PARTIAL_FAMILY	BrushableBlock and scheduling/support integration	2;7	PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS	NOT_VERIFIED
+P33	Flat/attached plant variants	BushBlockLocalSupportMixin	PARTIAL_FOUNDATION	SeaPickle override; snow layer/carpet variants; PlaceOnWaterBlockItem	2;5	PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS	NOT_VERIFIED
+P34	Direction-directed interaction	-	GAP	useItemOn/useWithoutItem, hit fractions, flint/tool action and shelf slot targeting	2;7B;9	PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS	NOT_VERIFIED
+P35	Rotation/mirroring/persistence	-	GAP	BlockState.rotate/mirror, FrontAndTop, post placement data components, save/reload	2;9	PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS	NOT_VERIFIED
+P36	Redstone-facing consumers	HopperBlockPlacementMixin	CROSS_PHASE	Observer/repeater/comparator/piston physical redstone graph Phase7A	2;7A	PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS	NOT_VERIFIED
+P37	Fluid/waterlogging	-	CROSS_PHASE	Waterlogging placement states/tick scheduling Phase2; fluid simulation Phase5	2;5	PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS	NOT_VERIFIED
+P38	Block entities and attached rotation metadata	PlanetBlockEntityStore	PARTIAL_FOUNDATION	Block entity orientation metadata and server state vs BER render ownership	2;3;7A	PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS	NOT_VERIFIED
+P39	Structure, clone, schematic, debug commands	-	CROSS_PHASE	StructureTemplate, /setblock,/fill, clone, fake contexts and rotation/mirror	2;9;10	PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS	NOT_VERIFIED
+P40	Virtual/foreign worlds and mod blocks	PlanetCoordinateContext;PlanetCapabilityAdapters	PARTIAL_FOUNDATION	Foreign virtual world provenance; mod Blocks/Item overrides and opt-in sides	2;10	PENDING_ACTUAL_NEOFORGE_REGISTRY_CENSUS	NOT_VERIFIED
