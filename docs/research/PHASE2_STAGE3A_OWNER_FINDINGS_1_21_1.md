@@ -186,6 +186,29 @@ covering **52/1060 block IDs**. The reviewed 24 remain
 creation, gameplay or all-face PASS claimed. Stage 2.3A-1
 microtask card is finished; NEXT is 2.3A-2 in a new answer.
 
+## 2026-10-10 Stage 2.3A-2.1 physical face attachments
+
+[New evidence-backed source audit](PHASE2_STAGE3A_FACE_ATTACHMENT_AUDIT_1_21_1.md)
+covers **11 registered concrete Java classes / 29 ID counts**
+in a bounded support/attachment batch: floor/wall torches and
+redstone torches, ladder, lantern, spore blossom, amethyst
+cluster, EndRod, lever and button. Actual NeoForge registry
+class roster/count were verified; comparison source determines
+nearest defining methods, independently of compiled NeoForge
+reflection. Special boundaries: StandingAndWallBlockItem,
+RedstoneWallTorchBlock delegating to WallTorchBlock without
+inheritance, FaceAttachedHorizontalDirectionalBlock shared
+nonconcrete ancestor, EndRod without custom survival,
+and six-direction amethyst. Redstone signaling/tick remains
+a Phase-7A consumer; fluid tick Phase 5.
+
+Ledger cumulative statuses: **35 SOURCE_REVIEWED / 206
+REVIEW_PENDING**, **81/1060 IDs by class count**, and no
+ASM/Planet/gameplay PASS. New 11 rows explicitly say
+`COMPARATIVE_SOURCE_OWNER_ONLY_NEOFORGE_REFLECTION_RECHECK_PENDING`.
+Next: 2.3A-2.2 exact patch-bytecode and alternate authors,
+separate checkpoint.
+
 ## Remaining Stage 3A work
 
 1. Read actual `phase2-neo1211-registry-census` artifact's

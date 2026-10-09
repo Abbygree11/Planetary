@@ -207,6 +207,31 @@ family without proving why it is a unique algorithm owner.
   Next FIRST unfinished: `docs/phases/phase-02/02-block-owners-rest.md`,
   Stage 2.3A-2 task 1 (one new 8–15 owner-class family).
 
+### 2026-10-10 micro-checkpoint: Stage 3A-2 / attachment source owners
+
+- Card: `docs/phases/phase-02/02-block-owners-rest.md`,
+  micro-task **1 DONE** for first 11-class attachment group.
+  Research in `PHASE2_STAGE3A_FACE_ATTACHMENT_AUDIT_1_21_1.md`.
+- Actual runtime registry: 11 concrete classes / **29 IDs by
+  class count**, combined evidence-based source-reviewed 35/241
+  classes / 81/1060 IDs; pending 206 classes / 979 IDs.
+- Source owner paths: wall/standing torch and redstone signal
+  bypasses, ladder, lantern ceiling/floor, spore ceiling,
+  six-way amethyst, EndRod FACING adjacency rule, lever/button
+  shared FACE attachment plus separate interaction/ticks.
+  Alternate item creation `StandingAndWallBlockItem` is
+  source-identified, not independently runtime accepted.
+- **Important evidence distinction:** new 11 have comparative
+  Java source nearest-declaration owners only; exact NeoForge
+  21.1.215 reflection/ASM remains explicitly unverified in TSV.
+  Original prior 24 retain verified reflection evidence.
+- NO Java changes, no new CI or gameplay validation.
+- Next FIRST incomplete micro-task **2.3A-2.2 / checkbox 2**:
+  verify the new 11 source-owner paths against exact NeoForge
+  patched runtime bytecode and item/interaction alternative
+  authors, then update TSV evidence levels in a separate commit.
+  Other 206 classes not auto-promoted.
+
 ## Resume procedure after interrupted answer
 
 1. Read AGENTS.md, this checkpoint, the latest roadmap

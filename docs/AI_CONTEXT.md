@@ -3371,3 +3371,26 @@ pending. No actual gameplay or NeoForge patch-bytecode validated,
 no Java modified. Next FIRST pending Phase2 card:
 docs/phases/phase-02/02-block-owners-rest.md, task 1,
 one 8–15-class algorithm family, separate committed response.
+
+
+## 2026-10-10 Phase2 2.3A-2.1 face-attachment source audit
+
+First microtask of docs/phases/phase-02/02-block-owners-rest.md DONE,
+one atomic docs-only commit. Research file
+PHASE2_STAGE3A_FACE_ATTACHMENT_AUDIT_1_21_1.md covers 11
+actual registry classes (29 block-ID count): TorchBlock,
+WallTorchBlock, RedstoneTorchBlock, RedstoneWallTorchBlock,
+LadderBlock, LanternBlock, SporeBlossomBlock,
+AmethystClusterBlock, EndRodBlock, LeverBlock, ButtonBlock.
+New 11 have 1.21.1 comparative Java declaring-owner evidence
+only; exact NeoForge 21.1.215 reflection and ASM are explicitly
+pending (unlike previous 24 class rows with verified reflection).
+StandingAndWallBlockItem, redstone signal paths, hanging support,
+six-direction Facing and FaceAttachedHorizontalDirectionalBlock
+ancestor bypasses are documented. Ledger remains 241 concrete
+classes / 1060 registry block IDs, now 35 source-reviewed /
+206 REVIEW_PENDING, corresponding 81 and 979 ID counts.
+No item path accepted, no NeoForge patched bytecode or gameplay
+PASS, and no production code changed. NEXT microtask 2.3A-2.2,
+verify compiled NeoForge method owners and creation/interaction
+bypass of these 11, then update 11 ledger evidence cells.

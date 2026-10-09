@@ -124,3 +124,29 @@ method-declaration owners + comparative vanilla source; exact
 NeoForge-patched ASM, adaptation and gameplay remain pending.
 Next task is Stage 2.3A-2, one new owner-family batch.
 
+
+
+## 2026-10-10 Stage 2.3A-2.1: attachments batch / current totals
+
+- 11 additional real concrete block classes / **29 IDs**
+  studied in [FACE_ATTACHMENT_AUDIT](PHASE2_STAGE3A_FACE_ATTACHMENT_AUDIT_1_21_1.md).
+- **35 SOURCE_REVIEWED_INTEGRATION_PENDING** / **206 REVIEW_PENDING**
+  out of **241** registered classes, representing **81/1060**
+  vs **979/1060** registered block IDs.
+- **Crucial provenance downgrade specific to these new 11 rows**:
+  `registry_dispatch_evidence =
+  COMPARATIVE_SOURCE_OWNER_ONLY_NEOFORGE_REFLECTION_RECHECK_PENDING`.
+  The owner columns are source-declaration/inheritance matches,
+  **not exact patched NeoForge reflection verification yet**.
+  This differs from the preceding 24 classes'
+  `REFLECTION_OWNER_VERIFIED` results and is not silently merged
+  into that evidence level.
+- The new 11 rows deliberately use
+  `SEE_REGISTRY_ARTIFACT_ID_JOIN_PENDING` instead of unverified
+  individual block-ID mappings; per-class registry **count**
+  values remain from the original artifact.
+- `neoforge_patch_bytecode_review`, `planet_adapter_acceptance`,
+  `gameplay_acceptance`: REVIEW_PENDING **for all 241**.
+  No class PASS, no actual code modifications.
+- The counts printed in earlier sections are historical
+  snapshots. This block supersedes them.
