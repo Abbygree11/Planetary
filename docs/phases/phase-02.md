@@ -17,7 +17,7 @@
 | 2.3A-1 | [01-block-owners.md](phase-02/01-block-owners.md) | **DONE (микропакеты, только исследование)** | 24/241 class source-reviewed; 217 pending, без игрового PASS |
 | 2.3A-2 | [02-block-owners-rest.md](phase-02/02-block-owners-rest.md) | **DONE (4 research packages only)** | Exact ZIP reconciliation 47/241 reviewed and 194 pending; **not** full Stage 3A |
 | 2.3A-3 | [02a-block-graph-owners.md](phase-02/02a-block-graph-owners.md) | **DONE (4 research packages only)** | Exact original ZIP source owner/item/shape graph reconciliation; 55 reviewed, 186 pending |
-| 2.3A-4 | [02b-redstone-signal-owners.md](phase-02/02b-redstone-signal-owners.md) | **NEXT** | 11 *still pending* redstone/tension/signal nodes (12 IDs), 8–11 per small source audit |
+| 2.3A-4 | [02b-redstone-signal-owners.md](phase-02/02b-redstone-signal-owners.md) | **ACTIVE, 1/4** | 8/11 signal/tension/diode candidate classes (8 IDs) source+NeoForge owners reviewed; rail+daylight 3 classes (4 IDs) deferred |
 | 2.3B | [03-item-creators.md](phase-02/03-item-creators.md) | TODO | Item/alternative-author coverage |
 | 2.3C | [04-lifecycle-neoforge.md](phase-02/04-lifecycle-neoforge.md) | TODO | Bytecode/patch/dispatch evidence and gate |
 | 2.4A | [05-implementation-a.md](phase-02/05-implementation-a.md) | TODO | Context/FACING/AXIS/rotation state families |
@@ -35,19 +35,23 @@
 
 ## Точка продолжения
 
-**Актуальное состояние после 2.3A-3.4 (2026-10-10):**
-**55/241** классов source+NeoForge reflection-reviewed
-(**162/1060** BLOCK IDs); **186/241** `REVIEW_PENDING`
-(**898/1060** IDs). Все 241 статуса ASM/Planet runtime/gameplay
-по-прежнему `REVIEW_PENDING`. Это **не** завершение
-исследования 241 классов и **не** игровая приёмка.
-Числа в строках завершённых старых пакетов выше —
-исторические точки этих подпакетов.
+**Актуальное состояние после 2.3A-4.1 (2026-10-10):**
+**63/241** классов `SOURCE_REVIEWED_INTEGRATION_PENDING`
+(**170/1060** зарегистрированных BLOCK IDs);
+**178/241** классов `REVIEW_PENDING` (**890/1060** BLOCK IDs).
+В 3A-4.1 исследованы 8 действительных владельцев
+redstone/tension/diode/observer/target/lamp; 3
+кандидата rail/daylight (**4 IDs**) сознательно
+оставлены pending. Ни одна ASM/Planet/runtime/gameplay
+приёмка не повышена. Старые числовые снимки
+в исторических строках пакетной таблицы выше —
+не текущая статистика.
 
-**Следующий отдельный пакет:** [2.3A-4, microtask 1](phase-02/02b-redstone-signal-owners.md)
-— реальные pending владельцы натяжных нитей, редстоуна,
-диодных схем, датчиков и рельсов (11 candidate classes /
-12 BLOCK IDs). За один ответ — одно доказанное подсемейство,
-отдельный GitHub commit, без преждевременного runtime PASS.
+**Следующая самостоятельная работа:** [3A-4.2
+ITEM creator & alternative writers](phase-02/02b-redstone-signal-owners.md),
+для уже исследованных 8 классов: предметы
+redstone dust, string/tripwire, hooks, comparator/repeater
+и альтернативные программные авторы сигнала.
+Один bounded research packet + commit, без premature runtime PASS.
 
 Обновление этого файла означает только, что появился маршрут и checkpoint, **не что Phase 2 исправлена**.

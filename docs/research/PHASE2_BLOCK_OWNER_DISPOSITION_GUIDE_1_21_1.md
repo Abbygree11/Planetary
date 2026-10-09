@@ -1,3 +1,28 @@
+## 2026-10-10 Stage 3A-4.1 exact signal graph source+NeoForge declaring owner review
+
+[8 registered signal-class source+reflection audit](PHASE2_STAGE3A_REDSTONE_SOURCE_OWNER_AUDIT_1_21_1.md)
+covers **8** formerly pending classes and **8** exact
+registered BLOCK IDs: TripWireBlock, TripWireHookBlock,
+RedStoneWireBlock, RepeaterBlock, ComparatorBlock,
+ObserverBlock, TargetBlock and RedstoneLampBlock.
+RedStoneWireBlock `RedstoneSide.NONE/SIDE/UP`
+vs global ABOVE/BELOW; TripWire/Hook 41-cell
+double-end chain; DiodeBlock directional front/lateral
+ports and comparator block entity; observer watched
+vs emitted output face; non-FACING target projectile
+hit and lamp signal state separately audited.
+Original ZIP exact method declaration owners and
+pinned 1.21.1 source verified. **No ASM/runtime/Phase7A
+signal gameplay PASS**.
+
+**Current: 63/241** source+reflection-reviewed classes
+(**170/1060** BLOCK IDs), **178/241 REVIEW_PENDING**
+(**890/1060** BLOCK IDs). `DetectorRailBlock`,
+`PoweredRailBlock` and `DaylightDetectorBlock`
+remain pending (three classes, four registered IDs).
+Next card microtask **3A-4.2 ITEM authors** for these eight.
+All earlier stage counts below are historical snapshots.
+
 ## 2026-10-10 Stage 3A-3.4 exact original CI reconciliation (current numbers)
 
 [Independent original ZIP vs full ledger integrity report](PHASE2_STAGE3A_GRAPH_COHORT_RECONCILIATION_1_21_1.md)

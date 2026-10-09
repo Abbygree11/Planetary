@@ -446,6 +446,37 @@ family without proving why it is a unique algorithm owner.
 - No Java code change, CI build, applied-Mixin ASM
   or in-game PASS. Research only.
 
+### 2026-10-10 micro-checkpoint — Stage 3A-4.1 signal owner audit
+
+- Card `docs/phases/phase-02/02b-redstone-signal-owners.md`,
+  checkbox 1/4 **DONE**. One documented package:
+  `docs/research/PHASE2_STAGE3A_REDSTONE_SOURCE_OWNER_AUDIT_1_21_1.md`.
+- Original NeoForge 21.1.215 CI ZIP 11643813158
+  (SHA256 `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`)
+  for class/8 ID roster and five exact method declaring
+  owner signatures, pinned comparative Minecraft
+  1.21.1 source for full spatial and signal algorithms.
+- 8 newly source+reflection reviewed classes:
+  TripWireBlock, TripWireHookBlock, RedStoneWireBlock,
+  RepeaterBlock, ComparatorBlock, ObserverBlock,
+  TargetBlock, RedstoneLampBlock. 8 BLOCK IDs.
+  Nonregistered DiodeBlock is inherited authority
+  for repeater and comparator placement/support/tick.
+- Three originally suggested candidates **NOT REVIEWED**:
+  DetectorRailBlock (1 ID), PoweredRailBlock (2 IDs),
+  DaylightDetectorBlock (1 ID). Remain pending, as
+  does every other unreviewed class.
+- Ledger after commit: **63/241 source+reflection-reviewed**
+  classes (170/1060 IDs), **178/241 REVIEW_PENDING**
+  (890/1060 IDs). All ASM/Planet/gameplay statuses
+  `REVIEW_PENDING`. No code/CI/gameplay tests.
+- NEXT FIRST unchecked task: **3A-4.2 card checkbox 2**,
+  independent true ITEM class and placed_block
+  join for eight just reviewed signal classes,
+  plus off-item writers (entity pressure/hit, comparator
+  BE, scheduled pulse, cable scanning, redstone wire
+  propagation). Keep Stage 7A acceptance separate.
+
 ## Resume procedure after interrupted answer
 
 1. Read AGENTS.md, this checkpoint, the latest roadmap

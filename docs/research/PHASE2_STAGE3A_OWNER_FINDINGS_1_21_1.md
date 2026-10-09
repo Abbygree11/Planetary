@@ -345,6 +345,31 @@ has 11 actual still-pending redstone/tension/directed
 signal classes / 12 IDs. No new class source audits
 or runtime acceptance in this reconciliation batch.
 
+## 2026-10-10 Stage 3A-4.1 actual signal owner source/reflection audit
+
+[8 signal classes / 8 original NeoForge registry BLOCK IDs](PHASE2_STAGE3A_REDSTONE_SOURCE_OWNER_AUDIT_1_21_1.md)
+have exact-signature nearest declaring owners checked
+against original 21.1.215 runtime census and source
+algorithms against pinned 1.21.1 Java:
+TripWireBlock/TripWireHookBlock, RedStoneWireBlock,
+RepeaterBlock and ComparatorBlock (shared nonregistered
+DiodeBlock), ObserverBlock, TargetBlock,
+RedstoneLampBlock. Distinct paths:
+TripWireHook.calculateState iterates and writes
+up to 41-block tension segment/hook graph;
+RedStoneWireBlock RedstoneSide 3-valued tangent states
+and power recursion; repeater locking/delay;
+comparator MODE/BE output/ItemFrame input; observer
+watched vs opposite output face; target impact
+physical face and lamp no-directional-signal state.
+Three class candidates DetectorRail/PoweredRail/
+DaylightDetector (four IDs) **unreviewed**.
+Cumulative **63/241 source+compiled declaration
+reviewed** (170 IDs); **178/241 REVIEW_PENDING**
+(890 IDs). All ASM, integration, signal functional
+and gameplay acceptance remain pending.
+Next 3A-4.2 item/non-item state-author research.
+
 ## Remaining Stage 3A work
 
 1. Read actual `phase2-neo1211-registry-census` artifact's

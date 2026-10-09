@@ -1,6 +1,6 @@
 # Phase 2 Stage 3A-4 — redstone connection, sensing and signal-facing owners
 
-**Status:** NEXT / NOT YET SOURCE-REVIEWED.
+**Status:** ACTIVE / 1 of 4 bounded research packages completed; no gameplay PASS.
 Branch `2.0`, Minecraft 1.21.1 / NeoForge 21.1.215.
 This card does **NOT** mark additional classes reviewed.
 
@@ -10,8 +10,10 @@ This card does **NOT** mark additional classes reviewed.
 
 ## Candidates drawn from the real original CI registry
 
-These **11 still `REVIEW_PENDING`** concrete BLOCK classes
-correspond to **12 registered BLOCK IDs**, independently
+These **11 original candidate** concrete BLOCK classes
+correspond to **12 registered BLOCK IDs**; by Stage 3A-4.1,
+**8/11** have source+reflection owner review (8 IDs),
+**3/11** remain `REVIEW_PENDING` (4 IDs). Independently
 checked against artifact `11643813158`.
 They are one **research cluster of interacting signal
 nodes**, NOT one interchangeable implementation or
@@ -46,19 +48,25 @@ where needed.
 
 ## Independently committed microtasks
 
-- [ ] **1.** Select a coherent subset of **8–11** of these 11 still pending concrete classes, verify exact NeoForge 21.1.215 reflection owners and pinned Minecraft 1.21.1 source placement, neighbor/update, support, scheduled tick and interaction/alternative authors. Preserve exact `P01–P40` labels only when proven; commit evidence and promote only actually reviewed TSV rows. Split if 11 are too different.
+- [x] **1.** Select a coherent subset of **8–11** of these 11 still pending concrete classes, verify exact NeoForge 21.1.215 reflection owners and pinned Minecraft 1.21.1 source placement, neighbor/update, support, scheduled tick and interaction/alternative authors. Preserve exact `P01–P40` labels only when proven; commit evidence and promote only actually reviewed TSV rows. Split if 11 are too different. **DONE 2026-10-10 / 3A-4.1:** [8-class 8-ID source and exact NeoForge declaring owner audit](../../research/PHASE2_STAGE3A_REDSTONE_SOURCE_OWNER_AUDIT_1_21_1.md). TripWire/Hook, RedStoneWire, Repeater, Comparator, Observer, Target, RedstoneLamp reviewed; **3 other candidates (4 IDs: DetectorRail, PoweredRail and DaylightDetector) still PENDING**. Total 63 reviewed/178 pending, no ASM/Signal/gameplay PASS.
 - [ ] **2.** Independently join actual item creator records and examine off-item redstone writers (neighborChanged, signal sources, projectiles/entity detection, scheduled ticks, BlockEntity) with exact creation/notification chains. Commit evidence without claiming Phase 7A acceptance.
 - [ ] **3.** Separate physical directions from local edge semantics and redstone signal port identity at every seam; investigate recursion, update order, rail/tension graphs, dynamic shape/cached support and Phase 2/7A contract. Commit explicit hypotheses and tests, not runtime PASS.
 - [ ] **4.** Independently reconcile every newly reviewed class against original ZIP and keep every other class including deferred candidates visibly `REVIEW_PENDING`; checkpoint and queue next independent family.
 
 ## Resume
 
-**Last completed:** Stage 3A-3.4 reconciled exact 241-class
-registry and **55 reviewed** classes (162 ID values).
-**186** still pending (898 IDs). This card's 11
-candidates are *part of those 186*, and all remain pending.
+**Last completed:** Stage **3A-4.1**: 8 newly source+compiled
+reflection-owner reviewed concrete classes / 8 actual BLOCK
+IDs. [Source evidence](../../research/PHASE2_STAGE3A_REDSTONE_SOURCE_OWNER_AUDIT_1_21_1.md).
+Candidate cohort remains 11 classes/12 IDs total; 3 classes
+/ 4 IDs deferred with `REVIEW_PENDING`.
+**Current full ledger:** 63/241 reviewed (170/1060 IDs),
+178/241 pending (890/1060 IDs). All bytecode/
+Planet runtime/gameplay statuses REVIEW_PENDING.
 
-**Next FIRST unchecked action:** microtask **1** above,
-one bounded source-owner batch, one commit, then stop.
-Do not implement runtime Mixins, assume bytecode correctness,
-or call this stage/Phase 2 finished without acceptance.
+**NEXT FIRST unchecked task:** checkbox **2** above,
+independent ITEM creator registry join and non-item
+signal/state writer audit for already-reviewed eight.
+Do not confuse signal semantics with Phase-2 block
+orientation, and do not start a new family or
+implementation in that same answer.

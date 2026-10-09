@@ -3591,3 +3591,34 @@ candidate classes = 12 BLOCK IDs. Select at most one
 coherent 8–11 class subfamily, source+compiled reflection,
 commit that as next independent package. Do not claim
 ASM/functional signal/gameplay PASS.
+
+
+## 2026-10-10 Phase 2 Stage3A-4.1 eight signal/tension source-owner classes
+
+Next bounded research package committed to 2.0:
+`docs/research/PHASE2_STAGE3A_REDSTONE_SOURCE_OWNER_AUDIT_1_21_1.md`.
+Eight new concrete BLOCK class owners/8 registered IDs
+from original NeoForge 21.1.215 reflection census
+artifact 11643813158 (SHA256 7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e)
+source-reviewed with pinned 1.21.1 Java:
+TripWireBlock, TripWireHookBlock, RedStoneWireBlock,
+RepeaterBlock, ComparatorBlock, ObserverBlock,
+TargetBlock, RedstoneLampBlock. Verified five exact
+method owners, inherited DiodeBlock placement/support
+and timer, 41-cell TripWire/Hook graph and entity trigger,
+RedStoneWireBlock NONE/SIDE/UP + above/below and
+synchronous strength/neighbor recursion, Repeater locking
+and delay, ComparatorBlockEntity output + MODE/ItemFrame,
+Observer six-way watched vs opposite output face,
+TargetBlock physical projectile hit-fraction score,
+non-directional Lamp state/tick. DetectorRailBlock,
+PoweredRailBlock and DaylightDetectorBlock still
+`REVIEW_PENDING` (3 classes/4 IDs). Current ledger
+**63/241 source+reflection reviewed** (170 IDs),
+**178/241 REVIEW_PENDING** (890 IDs). ASM/NeoForge
+patch bodies/Planetary integration and functional
+redstone/gameplay acceptance all REVIEW_PENDING.
+NEXT FIRST incomplete task: card
+`docs/phases/phase-02/02b-redstone-signal-owners.md`
+checkbox 2: actual item registry and alternative authors.
+No production Java/test changed.
