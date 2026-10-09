@@ -296,6 +296,35 @@ spreading/interaction alternative author join.
 
 [69-item direct join and alternative-author audit](PHASE2_STAGE3A_CONNECTIVITY_ITEM_AUTHORS_1_21_1.md): all 69 reviewed connected-graph block IDs have distinct ordinary `BlockItem` creators (no aliases). Item-method declarations all `BlockItem`, but `BLOCK_STATE` component overrides may rewrite the resulting state after placement. Additional independently read 1.21.1 authors: gate `useWithoutItem`, `neighborChanged`, `onExplosionHit`; fence leash interaction; vine `randomTick`; GlowLichen `MultifaceSpreader`; SculkVein `regrow`, charge placement, discharge; and generic `MultifaceGrowthFeature` non-player placement overload. Source and target frame and Phase 5/7A/8 semantics remain to audit; no patched NeoForge bytecode or game test accepted. No new class dispositions: **55 reviewed/186 pending**, 162/898 block IDs. Next `2.3A-3.3`, independent chart/shape/cache source analysis.
 
+## 2026-10-10 Stage 3A-3.3 source/target physical event + shape/cache chart
+
+[Dedicated graph state/shape/callback evidence](PHASE2_STAGE3A_GRAPH_SHAPE_CALLBACK_CHART_1_21_1.md)
+covers the same eight classes and all 69 prior block IDs.
+BlockStateBase `initCache` precomputes face-sturdy
+per Direction+SupportType, collision and occlusion
+for non-dynamic BlockStates; graph concrete classes
+also cache state-to-geometry mappings.
+Vanilla BlockStateBase neighbor event walkers operate on
+**physical** Direction and actual BlockPos; correct Planet
+semantics require a **source-local slot** and separately
+**target-local inward face**.
+The existing PlanetBlockNeighborQuery and
+BlockStateShapeMixin/PlanetBlockShapeRuntime
+implement relevant source-side boundaries but do not
+prove all callers have been adapted. Particular
+future tests: MultifaceBlock
+`getBlockSupportShape` (canonical) OR
+`getCollisionShape` (position-physical)
+under one `Block.isFaceFull` direction argument,
+and WallBlock above-cell collision DOWN face
+combined with canonical POST/NORTH/etc tests.
+Potential mismatches are **not** proven bugs or PASS.
+Phase2/3/5/7A/8 boundaries and all-face/corner
+test matrix recorded. No class/ID statuses promoted:
+55 source+reflection reviewed (162 IDs),
+186 REVIEW_PENDING (898 IDs), all ASM and game fields
+pending. Next Stage 3A-3.4 final cohort invariant check.
+
 ## Remaining Stage 3A work
 
 1. Read actual `phase2-neo1211-registry-census` artifact's

@@ -1,3 +1,26 @@
+## 2026-10-10 Stage 3A-3.3 graph shape/cache/physical callback source audit (no class changes)
+
+[New exact source-vs-target and shape/callback chart](PHASE2_STAGE3A_GRAPH_SHAPE_CALLBACK_CHART_1_21_1.md)
+records physical vanilla `BlockStateBase.updateNeighbourShapes`,
+target-local cached `isFaceSturdy`, static state-shape
+caches of CrossCollisionBlock, WallBlock, VineBlock and
+MultifaceBlock, and existing registered Planetary
+`BlockStateShapeMixin` + `PlanetBlockShapeRuntime`,
+`PlanetBlockNeighborQuery`, and render culling boundary.
+**Critical integration contracts, not confirmed bugs:**
+MultifaceBlock support-shape canonical vs collision-shape
+physical OR predicate, WallBlock above collision-face
+comparisons, caller physical callback vs local property
+mapping, cached support/occlusion shapes.
+No runtime or patched ASM result.
+
+**Counts unchanged:** 55/241 class-level
+`SOURCE_REVIEWED_INTEGRATION_PENDING` (162 IDs);
+186/241 `REVIEW_PENDING` (898 IDs);
+241 classes / 1060 block IDs total.
+TripWire and hook still pending.
+Next Stage 3A-3.4 class/status invariant checkpoint.
+
 ## 2026-10-10 Stage 3A-3.2 — ITEM + alternative authors (no new classes)
 
 **69/69** registered block IDs from the eight source-reviewed

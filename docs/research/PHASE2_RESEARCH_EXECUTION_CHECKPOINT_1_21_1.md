@@ -383,6 +383,38 @@ family without proving why it is a unique algorithm owner.
   and real physical neighbor callback mapping at seams,
   Phase 2 vs 3/5/7A scope. One separate bounded commit.
 
+### 2026-10-10 micro-checkpoint — Stage 3A-3.3 graph shape/cache and callback contract
+
+- Card `docs/phases/phase-02/02a-block-graph-owners.md`:
+  task **3/4 DONE**; task 4 remains unchecked.
+- Dedicated source-only audit
+  `docs/research/PHASE2_STAGE3A_GRAPH_SHAPE_CALLBACK_CHART_1_21_1.md`
+  uses pinned 1.21.1 BlockBehaviour.BlockStateBase, Block,
+  CrossCollisionBlock, WallBlock, VineBlock, MultifaceBlock,
+  and existing PlanetBlockStateFrame/NeighborQuery/SupportQuery,
+  BlockStateShapeMixin/PlanetBlockShapeRuntime/BlockRenderCulling.
+- Canonical source-local graph property direction,
+  PHYSICAL neighborShapeChanged/updateShape callback
+  direction and BlockPos, and target-local inward
+  cached SupportType face remain distinct. Cached state
+  faces and per-concrete-class shapes are not
+  planet-position-dependent. Existing wrapper rotates
+  physical shape outermost but preserves canonical
+  support/occlusion; mixed-frame MultifaceBlock
+  OR predicate and WallBlock above/down comparison
+  need explicit later integration tests.
+- All identified gaps are **potential** until ASM
+  INVOKE/Mixin apply + gameplay all faces/seams/corners;
+  runtime code NOT modified or accepted.
+- Ledger unchanged **55/241** source+reflection reviewed
+  (162 IDs), **186/241** REVIEW_PENDING (898 IDs).
+  TripWireBlock/TripWireHookBlock remain pending.
+- **NEXT first unchecked task 3A-3.4:** exact CI ZIP
+  census, reviewed ID/owner and acceptance-status
+  reconciliation; write next small owner family
+  card after that distinct microtask is done.
+  No tests or game client claimed.
+
 ## Resume procedure after interrupted answer
 
 1. Read AGENTS.md, this checkpoint, the latest roadmap

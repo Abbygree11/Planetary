@@ -3528,3 +3528,34 @@ classes (162 registered IDs), 186 REVIEW_PENDING (898 IDs),
 No patched NeoForge ASM/Mixin, runtime or gameplay PASS.
 NEXT FIRST incomplete 2.3A-3.3: graph cached shapes,
 physical neighbor event vs local chart; Phase2/3/5/7A.
+
+
+## 2026-10-10 Phase2 Stage 3A-3.3 graph source/target callbacks and shape/cache contract
+
+Docs-only microtask 3/4 of
+`docs/phases/phase-02/02a-block-graph-owners.md` done.
+Research: `docs/research/PHASE2_STAGE3A_GRAPH_SHAPE_CALLBACK_CHART_1_21_1.md`.
+Pinned 1.21.1 BlockBehaviour.BlockStateBase caches
+faceSturdy by canonical Direction and SupportType,
+collision shape and occlusion per immutable BlockState.
+BlockStateBase.updateNeighbourShapes and
+Block.updateFromNeighbourShapes enumerate PHYSICAL
+neighbors; local graph bit must be derived by real
+neighborPos and source-local frame, while support face
+uses TARGET block local frame on opposite physical side.
+CrossCollisionBlock, WallBlock (NONE/LOW/TALL/UP),
+VineBlock and MultifaceBlock also have class-specific
+state->shape caches. Current registered source adapters
+BlockStateShapeMixin and PlanetBlockShapeRuntime rotate
+outermost physical shape but deliberately leave
+support/occlusion shapes canonical. Mixed-frame candidate
+integration tests: MultifaceBlock.canAttachTo OR of
+getBlockSupportShape and getCollisionShape with same
+Direction; WallBlock above collision DOWN face vs
+canonical post/side comparison; LevelAccessor non-Level
+worldgen update. These are NOT proven game bugs/ASM pass.
+All 8 reviewed graph classes and 69 IDs remain research-only;
+55/241 reviewed classes (162 IDs) vs 186 pending (898 IDs).
+TripWire and hook still pending. NEXT microtask 3A-3.4
+exact census/ledger/status reconciliation and queue next
+small family. No Java or tests changed.
