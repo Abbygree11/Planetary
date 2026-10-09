@@ -73,6 +73,37 @@ class sweeps.
 
 ---
 
+## 2026-10-09 Phase-2 orientation completeness extension to R1
+
+R1 finished the initial block topology **mechanism discovery** but
+did not prove complete real-world orientation placement acceptance.
+User test failures after Phase-4 demonstrated undercovered
+BlockItem/useOn, hanging supports, End Rod, Ender Chest and
+BlockEntityRenderer systems. The cross-cutting Phase-2 atlas,
+rather than more per-block fixes, is now the canonical owner
+disposition and acceptance gate:
+
+- `ORIENTATION_MECHANISMS_ATLAS_1_21_1.md` — P01–P40
+  complementary placement/attachment/survival/graph/interaction/
+  structure mechanisms and exact cross-phase ownership.
+- `PHASE2_VANILLA_CLASS_CENSUS_1_21_1.tsv` — all 293
+  top-level vanilla block package Java source files initially
+  pattern-scanned; 53 directly representative-method spot-checked,
+  240 pending deeper semantic inheritance analysis.
+- `PHASE2_ITEM_CREATION_CENSUS_1_21_1.tsv` — all 121
+  top-level vanilla item source files initially pattern-scanned;
+  alternate creation pathways explicitly included.
+- `docs/acceptance/PHASE2_ORIENTATION_ACCEPTANCE_1_21_1.md`
+  — full compiled-registry/ASM, source/semantics, six-face
+  natural-placement and Phase-3 render integration gates.
+
+This extension does NOT invalidate previously correct R1 topology
+research; it distinguishes completed research classes from
+unimplemented and unaccepted in-game mechanics. A full compiled
+NeoForge registered BLOCK/ITEM override census is the mandatory
+next implementation prerequisite. No new Java or Mixins were
+added during this follow-up research stage.
+
 ## 2. The six semantic spaces
 
 Before deciding that a world-axis occurrence must rotate, classify which space
