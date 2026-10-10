@@ -3907,3 +3907,57 @@ comparative source/BE/entity signal lifecycle.
 Sculk/vibration and lightning separate future
 families. ONE research package per `кк`,
 no runtime PASS until tested.
+
+
+## 2026-10-10 Planetary Stage 3A-6.1 daylight & pressure plate compiled owner source audit
+
+"кк" = execute precisely one first-unchecked Planetary
+research card microtask, update GitHub 2.0 and
+durable checkpoint, stop.
+Completed 3A-6.1 task 1 of 4 on
+`docs/phases/phase-02/02d-environment-pressure-sensor-owners.md`.
+Detailed source document
+`docs/research/PHASE2_STAGE3A_ENVIRONMENT_PRESSURE_SENSOR_SOURCE_OWNER_AUDIT_1_21_1.md`.
+Original unmodified NeoForge 21.1.215 CI ZIP
+artifact 11643813158 sha256
+7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e.
+3 previously pending concrete classes /16 exact
+registered BLOCK IDs source+runtime-reflection
+reviewed (DaylightDetectorBlock 1,
+PressurePlateBlock 13, WeightedPressurePlateBlock 2).
+Full five-signature nearest compiled owner tuple:
+DaylightDetectorBlock:
+Block,BlockBehaviour,BlockBehaviour,BlockBehaviour,Block;
+both plate subclasses:
+Block,BasePressurePlateBlock,BasePressurePlateBlock,
+BlockBehaviour,Block.
+Pinned vanilla 1.21.1 source:
+DaylightDetectorBlock's BE ticker server-only and
+dimension.hasSkyLight only, DaylightDetectorBlockEntity
+contains no signal logic; getGameTime%20==0
+reads LightLayer.SKY minus getSkyDarken,
+getSunAngle cosine/inverted, writes POWER,
+interaction toggles INVERTED and immediately
+recalculates. BasePressurePlateBlock owns
+local DOWN support on rigid OR center face UP,
+updateShape DOWN replacement with AIR,
+physical TOUCH_AABB entity detection excluding
+spectators/ignoring triggers, checkPressed
+updates POWERED/POWER and neighbor callback at
+block and physical world-below, getDirectSignal
+only for queried UP, scheduled tick when
+pressed. PressurePlateBlock Boolean POWERED,
+EVERYTHING vs MOBS sensitivity, 20-tick recheck;
+WeightedPressurePlateBlock analog ceil(entity
+count/maxWeight*15), 10-tick recheck.
+No assumption sky shifts with local gravity,
+physical TOUCH_AABB not equivalent to rotated
+render VoxelShape. No patch ASM/gameplay PASS.
+Updated total **69/241 source+reflection reviewed
+190/1060 BLOCK IDs**, **172/241 source pending
+870/1060 IDs**, all NeoForge patched ASM/Planet
+adapter/gameplay acceptance fields PENDING.
+Next 3A-6.2 on same card checkbox2: independent
+actual 1333-item census `placed_block` join
+for all 16 block IDs and alternate authors;
+one docs-only research commit.

@@ -1,3 +1,42 @@
+## 2026-10-10 Stage 3A-6.1 sensor BLOCK owner source audit (3 new classes, 16 IDs)
+
+[Original NeoForge 21.1.215 compiled exact-five owner
+and pinned vanilla source audit](PHASE2_STAGE3A_ENVIRONMENT_PRESSURE_SENSOR_SOURCE_OWNER_AUDIT_1_21_1.md):
+DaylightDetectorBlock (minecraft:daylight_detector),
+PressurePlateBlock (**13** vanilla plate IDs),
+WeightedPressurePlateBlock (**2** weighted plates).
+Compiled exact method owners:
+DaylightDetector [Block/BlockBehaviour/
+BlockBehaviour/BlockBehaviour/Block];
+both pressure-plate subclasses
+[Block/BasePressurePlateBlock/
+BasePressurePlateBlock/BlockBehaviour/Block].
+Source daylight behavior via DaylightDetectorBlock
+ticker only on server if dimension.hasSkyLight,
+every gameTime%20==0, sky brightness/sun-angle and
+INVERTED direct player-interaction recalculation.
+DaylightDetectorBlockEntity only holds type; no
+own light processing or custom randomTick.
+BasePressurePlateBlock owns non-spectator physical
+TOUCH_AABB, tick/neighbor callback, local DOWN
+support query (rigid or center UP), direct
+getSignal queried UP and notifications at position
+and world-below; PressurePlateBlock Boolean
+POWERED 20-tick recheck and type-dependent
+entity sensitivity, WeightedPressurePlateBlock
+analog POWER using ceil(entity count/maxWeight *
+15) with 10-tick recheck. Sky light is a WORLD
+sampling policy, NOT FACING rotation; plate
+trigger entity AABB is not automatically rotated
+by visual shape mixin.
+
+**Updated cumulative 69/241 source+reflection
+reviewed (190/1060 IDs), 172 REVIEW_PENDING
+(870/1060 IDs)**. Sculk and lightning families
+still pending; all patched ASM/Planet/gameplay
+gates remain REVIEW_PENDING. Next 3A-6.2
+original ITEM placed_block join and other authors.
+
 ## 2026-10-10 Stage 3A-5.4: FULL original ZIP vs all 66 source-review class declarations
 
 [Exact 241-class/66-reviewed NeoForge 21.1.215 census recheck](PHASE2_STAGE3A_RAIL_COHORT_RECONCILIATION_1_21_1.md)

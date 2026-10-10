@@ -792,6 +792,58 @@ family without proving why it is a unique algorithm owner.
   source behavior for these 3 classes.
   One package, independent GitHub commit; stop.
 
+### 2026-10-10 micro-checkpoint — Stage 3A-6.1 sensor exact runtime owner + source
+
+- Active `docs/phases/phase-02/02d-environment-pressure-sensor-owners.md`
+  card **1/4 DONE**, next first unchecked 2.
+  Complete research:
+  `docs/research/PHASE2_STAGE3A_ENVIRONMENT_PRESSURE_SENSOR_SOURCE_OWNER_AUDIT_1_21_1.md`.
+- Original unmodified NeoForge 21.1.215 CI ZIP
+  artifact 11643813158 SHA256
+  `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`.
+  Original exact 3 registered Java class rows /
+  **16 actual BLOCK IDs**, 5 nearest
+  declaring method owners by full signature.
+  DaylightDetectorBlock owners
+  Block/BlockBehaviour/BlockBehaviour/
+  BlockBehaviour/Block; PressurePlateBlock
+  and WeightedPressurePlateBlock owners
+  Block/BasePressurePlateBlock/
+  BasePressurePlateBlock/BlockBehaviour/Block.
+- Pinned source 1.21.1:
+  DaylightDetectorBlock.getTicker only server +
+  hasSkyLight with BlockEntity type, tickEntity
+  samples SKY light / skyDarken + sunAngle on
+  gameTime%20==0, INVERTED interaction mode
+  immediate POWER author (not randomTick).
+  BasePressurePlateBlock canSurvive below rigid
+  OR support-center UP, updateShape DOWN
+  removes on missing support; entityInside/
+  TOUCH_AABB physically in world XYZ, entity
+  filter excludes spectators/ignoring triggers;
+  checkPressed writes POWERED/POWER, notifies
+  block pos and world below, scheduled tick.
+  PressurePlateBlock Boolean 0/15 20 ticks,
+  `BlockSetType` sensitivity EVERYTHING vs MOBS.
+  WeightedPressurePlateBlock analog ceil(15 *
+  min(count,maxWeight)/maxWeight), 10-tick recheck.
+  Direct plate getDirectSignal only queried UP,
+  daylight getSignal all queried sides.
+- New source status: **69/241**
+  SOURCE_REVIEWED_INTEGRATION_PENDING
+  (**190/1060 registered BLOCK IDs**),
+  **172/241 REVIEW_PENDING (870/1060 IDs)**.
+  Excluded Sculk/Lightning classes remain
+  source pending. All 241 patched ASM,
+  Planet adapter, gameplay acceptance
+  `REVIEW_PENDING`; no Java, CI, game tests.
+- **NEXT FIRST unchecked microtask 3A-6.2**,
+  card checkbox 2: independent exact original
+  1333 ITEM `placed_block` join for 16
+  actual sensor BLOCK IDs and alternate
+  world/BE/entity authors. One bounded commit,
+  stop; no runtime PASS.
+
 ## Resume procedure after interrupted answer
 
 1. Read AGENTS.md, this checkpoint, the latest roadmap

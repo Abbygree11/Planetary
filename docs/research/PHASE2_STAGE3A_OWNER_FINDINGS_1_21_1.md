@@ -560,6 +560,37 @@ DaylightDetectorBlock 1, PressurePlateBlock 13,
 WeightedPressurePlateBlock 2, all currently
 pending and distinct source-author algorithms.
 
+## 2026-10-10 Stage 3A-6.1 daylight and pressure sensor actual owner/source audit
+
+[Verified 3 concrete sensor class/16 exact registered IDs
+in original runtime NeoForge ZIP plus pinned 1.21.1
+complete source algorithms](PHASE2_STAGE3A_ENVIRONMENT_PRESSURE_SENSOR_SOURCE_OWNER_AUDIT_1_21_1.md):
+DaylightDetectorBlock one ID, PressurePlateBlock
+13 IDs, WeightedPressurePlateBlock two IDs.
+Method nearest declaring owners
+DaylightDetector Block / BlockBehaviour
+(survive,updateShape,randomTick) / Block(setPlacedBy);
+plate subclasses Block / BasePressurePlateBlock
+(canSurvive,updateShape) / BlockBehaviour
+(randomTick) / Block (setPlacedBy).
+Crucial algorithm split: DaylightDetectorBlock
+sky LightLayer.SKY/skyDarken/sunAngle sampling
+and server-only BE ticker in hasSkyLight
+dimensions every 20 game ticks, interaction
+cycles INVERTED & recalculates POWER;
+BasePressurePlateBlock collision `TOUCH_AABB`
+physical entity query, scheduled tick
+checkPressed, sturdy below/center face support,
+direct signal queried UP and world below
+notifications; PressurePlateBlock Boolean
+20-tick entity sensitivity and WeightedPressurePlateBlock
+integer 0..15 10-tick scaled entity-count.
+Local support and physically rotated entity hitbox
+are NOT yet proven; BE ticker is not randomTick.
+3 source class rows/16 IDs promoted, no ASM/game
+acceptance: **69 reviewed (190 IDs), 172 pending
+(870 IDs)**. Next 3A-6.2 actual ITEM registry.
+
 ## Remaining Stage 3A work
 
 1. Read actual `phase2-neo1211-registry-census` artifact's

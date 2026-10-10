@@ -19,7 +19,7 @@
 | 2.3A-3 | [02a-block-graph-owners.md](phase-02/02a-block-graph-owners.md) | **DONE (4 research packages only)** | Exact original ZIP source owner/item/shape graph reconciliation; 55 reviewed, 186 pending |
 | 2.3A-4 | [02b-redstone-signal-owners.md](phase-02/02b-redstone-signal-owners.md) | **DONE (4 research packages only)** | Exact original ZIP reconciliation for 63 source+reflection reviewed classes/170 IDs; 178 pending, all gameplay gates pending |
 | 2.3A-5 | [02c-rail-owners.md](phase-02/02c-rail-owners.md) | **DONE (4 research packets only)** | All 66 class exact 5-signature owner+174 ID records match original ZIP; 175 other classes pending, no gameplay PASS |
-| 2.3A-6 | [02d-environment-pressure-sensor-owners.md](phase-02/02d-environment-pressure-sensor-owners.md) | **NEXT** | 3 pending environment/contact redstone classes / 16 IDs (daylight, ordinary plates, weighted plates); block entity and entity/sky signal paths |
+| 2.3A-6 | [02d-environment-pressure-sensor-owners.md](phase-02/02d-environment-pressure-sensor-owners.md) | **ACTIVE 1/4** | Original NeoForge exact 3 sensor class/16 ID compiled method owners + pinned skylight BlockEntity ticker, 20/10 tick pressure plate entity-trigger signal writers audited |
 | 2.3B | [03-item-creators.md](phase-02/03-item-creators.md) | TODO | Item/alternative-author coverage |
 | 2.3C | [04-lifecycle-neoforge.md](phase-02/04-lifecycle-neoforge.md) | TODO | Bytecode/patch/dispatch evidence and gate |
 | 2.4A | [05-implementation-a.md](phase-02/05-implementation-a.md) | TODO | Context/FACING/AXIS/rotation state families |
@@ -37,18 +37,18 @@
 
 ## Точка продолжения
 
-**После исследования 2.3A-5.4 (2026-10-10):**
+**После исследования 2.3A-6.1 (2026-10-10):**
 оригинальный NeoForge 21.1.215 CI ZIP SHA-256
 `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e` повторно прочитан и независимо
 сравнен с актуальной веткой. Все **241 класса /
-1060 BLOCK IDs**, **66 source+reflection-reviewed
-классов / 174 точных ID**, пять владельцев методов
+1060 BLOCK IDs**, **69 source+reflection-reviewed
+классов / 190 точных ID**, пять владельцев методов
 по каждой точной сигнатуре — **4 совпадающих
 контрольных хеша**:
 `0xf188a064`, `0x6c5c67d7`, `0x57a01200`,
 `0xb3945a6e`.
-**175/241** классов ещё `REVIEW_PENDING`
-(**886 IDs**), включая все три класса нового
+**172/241** классов ещё `REVIEW_PENDING`
+(**870 IDs**), включая все три класса нового
 сенсорного семейства; все байткод/
 Planetary/gameplay приёмки `REVIEW_PENDING`.
 Исследовательская карточка 3A-5 завершена;
@@ -58,15 +58,21 @@ Planetary/gameplay приёмки `REVIEW_PENDING`.
 
 [Полная сверка rail-когорты](../research/PHASE2_STAGE3A_RAIL_COHORT_RECONCILIATION_1_21_1.md).
 
-**Следующий маленький независимый пакет —
-[3A-6.1](phase-02/02d-environment-pressure-sensor-owners.md):**
-`DaylightDetectorBlock` (1 ID),
-`PressurePlateBlock` (13 IDs),
-`WeightedPressurePlateBlock` (2 IDs).
-Три разных pending класса, 16 реальных
-BLOCK IDs, исходная NeoForge reflection +
-pinned Java source исследование, без
-автоматических утверждений о рабочей
-гравитации/сигналах. Один коммит за ответ.
+**Выполнен подпакет [3A-6.1](../research/PHASE2_STAGE3A_ENVIRONMENT_PRESSURE_SENSOR_SOURCE_OWNER_AUDIT_1_21_1.md):**
+3 класса / 16 точных BLOCK IDs source+NeoForge
+reflection reviewed: DaylightDetectorBlock (BE ticker,
+sky light / solar angle / INVERTED), PressurePlateBlock
+(13 разновидностей, 20-tick bool signal),
+WeightedPressurePlateBlock (2 разновидности,
+10-tick analog signal). Нажимные плиты используют
+BasePressurePlateBlock с отдельной физической AABB;
+поддержка и прямой signal-query требуют локальной
+адаптации. Это исследование, не игровая приёмка.
+
+**Следующая самостоятельная работа: [3A-6.2](phase-02/02d-environment-pressure-sensor-owners.md)** —
+проверить 16 точных создателей из оригинального ITEM
+реестра и альтернативные blockstate/BE/sky/entity авторы,
+один небольшой коммит. Состояние проекта:
+**69/241 reviewed (190 IDs), 172 pending (870 IDs)**.
 
 Обновление этого файла означает только, что появился маршрут и checkpoint, **не что Phase 2 исправлена**.

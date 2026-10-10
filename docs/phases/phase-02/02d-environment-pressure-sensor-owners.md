@@ -1,6 +1,6 @@
 # Phase 2 Stage 3A-6 — environment and entity-contact signal sensors
 
-**Status: NEXT — 0/4 independently bounded research tasks done.**
+**Status: ACTIVE — 1/4 independently bounded research tasks done; no ASM/Planet/gameplay PASS.**
 Branch `2.0`, Minecraft **1.21.1** / NeoForge **21.1.215**.
 
 [Main Phase 2 roadmap](../phase-02.md) ·
@@ -59,7 +59,7 @@ separate owner-family cards.
 
 ## Microtasks — commit exactly one checkbox per answer
 
-- [ ] **1.** Fully verify original **compiled NeoForge
+- [x] **1.** Fully verify original **compiled NeoForge
   21.1.215** exact class identities / all 16 registry
   IDs, five method-signature nearest declaring
   owners, plus pinned 1.21.1 comparative source
@@ -75,6 +75,7 @@ separate owner-family cards.
   Promote **only actually source-reviewed**
   class rows, none of the excluded sensor group.
   Commit independent evidence and checkpoint.
+  **DONE 2026-10-10 / 3A-6.1:** [original NeoForge five-signature owners and pinned source for 3 sensor classes/16 exact BLOCK IDs](../../research/PHASE2_STAGE3A_ENVIRONMENT_PRESSURE_SENSOR_SOURCE_OWNER_AUDIT_1_21_1.md), daylight `BlockEntityTicker` 20-game-tick sky-input and inversion, plate `BasePressurePlateBlock` support, entity query AABB, 20-/10-tick power state, direct signal UP and physical below notification. Ledger **69/241 reviewed (190 IDs)**; **172/241 pending (870 IDs)**; all ASM/Planet/game acceptance REVIEW_PENDING.
 - [ ] **2.** Independently join original 1333 ITEM
   registry via `placed_block` for all 16 BLOCK IDs;
   distinguish any direct structure/commands,
@@ -96,15 +97,31 @@ separate owner-family cards.
 
 ## Resume checkpoint
 
-Last completed **Stage 3A-5.4**:
-all original ZIP class names/counts and all **66**
-source+reflection-reviewed classes' **174 exact IDs
-and five method owners** independently reconciled
-(four digests all matching). Full ledger:
-**66/241 source-reviewed** (174/1060 IDs),
-**175/241 REVIEW_PENDING** (886/1060 IDs),
-all ASM/Planet/gameplay acceptance PENDING.
+**Last completed Stage 3A-6.1:** source+original
+NeoForge 21.1.215 compiled declaring-owner
+review for **three** previously pending sensor
+classes and all **16 exact BLOCK IDs**.
+[Detailed original runtime census+source evidence](../../research/PHASE2_STAGE3A_ENVIRONMENT_PRESSURE_SENSOR_SOURCE_OWNER_AUDIT_1_21_1.md).
+`DaylightDetectorBlock` power reads sky brightness
+and sun angle; server-only BE ticker when hasSkyLight
+updates every 20 game ticks; player INVERTED toggle
+also writes POWER immediately. `PressurePlateBlock`
+and `WeightedPressurePlateBlock` share
+`BasePressurePlateBlock` support/shape,
+entityInside/TOUCH_AABB and scheduled tick:
+boolean 20-tick vs analog 10-tick power,
+physical below notifications and UP-query-only
+direct signal. These are distinct from ordinary
+randomTick callbacks.
 
-**NEXT first unchecked: checkbox 1**, Stage **3A-6.1**;
-three still-pending concrete classes / 16 BLOCK
-IDs, no Java implementation, one evidence commit.
+Full ledger **69/241 source+reflection reviewed
+(190/1060 BLOCK IDs)**; **172/241
+REVIEW_PENDING (870 IDs)**. Sculk and LightningRod
+remain pending; all ASM/Planet/gameplay
+acceptance PENDING. No Java changes/tests.
+
+**NEXT FIRST incomplete: 3A-6.2**, checkbox
+2, independent original ITEM registry
+`placed_block` join for all 16 exact IDs,
+non-item structure/BE/sky/entity authors and
+item component placement; one research commit.
