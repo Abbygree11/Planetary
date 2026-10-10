@@ -166,6 +166,19 @@ six-face/natural-placement/seam gameplay are **separate** statuses;
 none implies another. A forced fixture-set BlockState is not a
 successful player-placement test.
 
+## 3A.2 Deepest safe shared mechanism first — permanent mod compatibility requirement
+
+The user's permanent requirement applies to **ALL future mechanism/family stages**: research and eventually adapt the **deepest shared SAFE engine/semantic owner**, not individual named blocks, to maximize support of arbitrary third-party mod blocks and worldgen.
+
+Mandatory decision before proposing any runtime patch:
+1. Trace actual entrypoint/call dispatch and every concrete declaring-owner override and alternate writer through engine `BlockStateBase`, `BlockItem`, `NeighborUpdater`, Level/WorldGenLevel, source family superclass and relevant mod classes; census only proves vanilla 241 registered classes, not modded ones.
+2. Classify EACH call as PHYSICAL 3D adjacency/topology, CANONICAL source/target semantic state, seam TRAVERSAL, WORLDGEN sampler/feature coordinates, FOREIGN/fake Level, or CLIENT RENDER. A class may need multiple classifications; never globally replace physical `BlockPos.relative`, `Direction`, `FluidState`, `Level.setBlock` or callback direction.
+3. Select **lowest common semantic boundary with a safe contract**: shared stable Planet-owned typed helper and a narrow version adapter; default unrecognized third-party callers to PHYSICAL behavior; expose explicit opt-in for local semantic direction/attachment/growth intentions. Generic physical dispatch may carry provenance without rewriting meaning. A subclass/independent mod override defeats a vanilla-only Mixin. Only add a mod-specific adapter after observing a real uncovered owner and when a shared boundary is insufficient.
+4. Record a `SHARED_SAFE / OPT_IN_ALGORITHM / MOD_INDEPENDENT / PHYSICAL_DO_NOT_TOUCH` matrix for this family and actual alternate creation paths, at least one pinned source 1.21.1 mod comparator when available. Explicitly justify why one level deeper would break third-party physical semantics, and why one level shallower would under-cover sister/mod classes.
+5. State independent vanilla no-Planet, six faces, 12 edges, eight corners and **actual loaded mod** acceptance requirements. SOURCE/compiled declaring owner reviewed never means patched NeoForge ASM, Planet adapter, client/server or mod compatibility PASS.
+
+Detailed architecture decision table and cross-mod examples: `docs/research/PHASE2_DEEPEST_SAFE_MECHANISM_COMPATIBILITY_CONTRACT_1_21_1.md`. This is a permanent process hard gate, not permission to rewrite runtime Java in research-only packets.
+
 ## 3B. Cross-version portability is a hard architecture gate
 
 Canonical strategy: `docs/research/PORTABILITY_STRATEGY.md`.
