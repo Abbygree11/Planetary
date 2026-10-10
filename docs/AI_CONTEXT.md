@@ -4124,3 +4124,68 @@ and five owners, pinned comparative source,
 promote ONLY proven 2 classes, one separate
 commit and checkpoint, stop. Stage 3A/Phase2
 not finished.
+
+
+## 2026-10-10 Phase2 Stage 3A-7.1 sculk sensor compiled class owners and VibrationSystem source
+
+User `кк` = commit exactly ONE first unchecked
+bounded GitHub 2.0 stage card checkbox
+and durable checkpoint, then stop.
+Completed `docs/phases/phase-02/02e-sculk-vibration-sensor-owners.md`
+**Stage 3A-7.1 checkbox 1 DONE**.
+New research
+`docs/research/PHASE2_STAGE3A_SCULK_VIBRATION_SOURCE_OWNER_AUDIT_1_21_1.md`.
+Original untouched NeoForge 21.1.215 CI ZIP
+artifact 11643813158 SHA256
+7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e
+reopened and exact dispatch owner signatures
+checked: 2 concrete Java BLOCK classes/2 IDs:
+SculkSensorBlock minecraft:sculk_sensor,
+CalibratedSculkSensorBlock
+minecraft:calibrated_sculk_sensor.
+Original exact 5 method owners
+getStateForPlacement/canSurvive/updateShape/
+randomTick/setPlacedBy:
+plain SculkSensorBlock/BlockBehaviour/
+SculkSensorBlock/BlockBehaviour/Block;
+calibrated CalibratedSculkSensorBlock/
+BlockBehaviour/SculkSensorBlock/
+BlockBehaviour/Block. Plain no orientation
+candidate, calibrated FACING north/south/east/west.
+Pinned comparative Minecraft 1.21.1 Java
+SculkSensorBlock and calibrated, BE classes
+SculkSensorBlockEntity and CalibratedSculkSensorBlockEntity,
+BaseEntityBlock and complete VibrationSystem
+User/Listener/Data/Ticker source audited.
+BE Vibration listener radius 8 plain, 16
+calibrated; physical world Vec3 Euclidean
+distance, occlusion ray six world axis
+offsets, chunk ticking world XZ 3x3 gate.
+Plain ACTIVE 30 scheduled block ticks,
+calibrated ACTIVE 10, then COOLDOWN 10
+both; BE ticker selects/advances vibration
+per server tick (different event source).
+BE stores last vibration frequency, comparator
+analog reads it only ACTIVE. Calibrated
+own HORIZONTAL FACING placement/rotation/mirror,
+`getSignal` suppresses queried FACING output,
+Calibrated BE reads physical opposite FACING
+neighbor via `pos.relative(dir)` and
+`getSignal(pos,dir)` to match filtered
+event frequency. Separate `stepOn`
+forceScheduleVibration, six physical neighbor
+resonator event, world-below on POWER and
+WATERLOGGED fluid tick. Not proven as local
+Planet adapters; no Java/CI/test execution.
+Updated total **71/241
+SOURCE_REVIEWED_INTEGRATION_PENDING
+(192/1060 registered BLOCK IDs)**,
+**170/241 REVIEW_PENDING (868 IDs)**,
+all 241 patched ASM/Planet adapter/gameplay
+acceptance REVIEW_PENDING. SculkShriekerBlock/
+SculkCatalystBlock/LightningRodBlock
+still source pending. Next first Stage 3A-7.2
+checkbox 2 original two ITEM `placed_block`
+creators, BE alternative authors and structure
+writes; one independent docs-only commit
+and stop.

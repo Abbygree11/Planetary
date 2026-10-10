@@ -682,6 +682,49 @@ source owner family](../phases/phase-02/02e-sculk-vibration-sensor-owners.md)
 other sculk shrieker/catalyst pending
 independently.
 
+## 2026-10-10 Stage 3A-7.1 sculk vibration sensor true owner family source audit
+
+[Primary original NeoForge compiled 5 method
+owners / 2 concrete registered sensor IDs,
+plus pinned comparative 1.21.1 source VibrationSystem
+and two BlockEntity user subclasses](PHASE2_STAGE3A_SCULK_VIBRATION_SOURCE_OWNER_AUDIT_1_21_1.md).
+SculkSensorBlock owners:
+SculkSensorBlock, BlockBehaviour,
+SculkSensorBlock, BlockBehaviour, Block;
+CalibratedSculkSensorBlock owners:
+CalibratedSculkSensorBlock, BlockBehaviour,
+SculkSensorBlock, BlockBehaviour, Block.
+Plain sensor needs no FACING property but
+owns vibration listeners and scheduled phase
+transitions, physical world-below callbacks,
+six physical resonator neighbors and
+world XYZ particle animation.
+VibrationSystem.Listener checks events,
+ray-occlusion and Euclidean distance;
+Ticker selects/delivers over travel time and
+physical 3×3 XZ chunk tick gate, not an
+instant block `neighborChanged`.
+SculkSensorBlockEntity receiver radius 8,
+calibrated 16, LAST vibration frequency BE,
+source getAnalogOutputSignal when ACTIVE;
+plain ACTIVE 30 ticks, calibrated ACTIVE
+10 ticks, both cooldown 10. Calibrated
+BlockState HORIZONTAL FACING/rotate/mirror
+and own `getSignal` output suppression
+on query==FACING; Calibrated BE VibrationUser
+`getBackSignal` uses world
+`pos.relative(FACING.getOpposite())`
+and `Level.getSignal(pos,direction)` to
+filter event frequency. Waterlogged state
+schedules water tick; alternate `stepOn`
+listener and BE event authors considered.
+No actual NeoForge patched ASM/Planetary
+adapter/gameplay acceptance: all 241 pending.
+Ledger **71/241 reviewed/192 IDs**,
+**170/241 pending/868 IDs**.
+Next 3A-7.2 original ITEM creators and
+alternate events.
+
 ## Remaining Stage 3A work
 
 1. Read actual `phase2-neo1211-registry-census` artifact's

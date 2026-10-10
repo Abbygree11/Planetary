@@ -1018,6 +1018,66 @@ family without proving why it is a unique algorithm owner.
   One bounded research-only GitHub commit,
   checkpoint then stop.
 
+### 2026-10-10 micro-checkpoint — Stage 3A-7.1 sculk vibration sensor source+compiled owners
+
+- Active card `docs/phases/phase-02/02e-sculk-vibration-sensor-owners.md`
+  checkbox **1 DONE**, checkboxes 2–4 open.
+  New report:
+  `docs/research/PHASE2_STAGE3A_SCULK_VIBRATION_SOURCE_OWNER_AUDIT_1_21_1.md`.
+- Original NeoForge 21.1.215 unmodified CI ZIP
+  artifact 11643813158 SHA256
+  `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`.
+  Exact BLOCK registry IDs:
+  `minecraft:sculk_sensor` and
+  `minecraft:calibrated_sculk_sensor`.
+  SculkSensorBlock 5 nearest declaration
+  owners SculkSensorBlock, BlockBehaviour,
+  SculkSensorBlock, BlockBehaviour, Block;
+  calibrated CalibratedSculkSensorBlock,
+  BlockBehaviour, SculkSensorBlock,
+  BlockBehaviour, Block. Plain sensor
+  has no FACING, calibrated 4 horizontal FACING.
+- Pinned Minecraft 1.21.1 comparative
+  SculkSensorBlock/CalibratedSculkSensorBlock,
+  SculkSensorBlockEntity/
+  CalibratedSculkSensorBlockEntity,
+  VibrationSystem (Listener/Data/User/Ticker)
+  and BaseEntityBlock sources reviewed.
+  BE event listener physical radius plain 8,
+  calibrated 16; plain ACTIVE 30 ticks,
+  calibrated ACTIVE 10, cooldown both 10.
+  Separate event vibration BE ticker
+  and scheduled phase-advancing BLOCK tick;
+  comparator analog returns BE last
+  vibration frequency only when ACTIVE.
+  Calibrated block `getSignal` queried
+  Direction==FACING output suppression,
+  BE `getBackSignal` physical opposite
+  neighbor plus Level.getSignal argument
+  frequency filter. Physical raw Euclidean
+  event travel/occlusion, 3×3 world XZ
+  adjacent-chunk gate, six physical
+  resonator checks and world-below
+  neighbor notifications identified.
+  `stepOn` forced vibration and
+  WATERLOGGED water tick paths found.
+- Two classes newly promoted source+reflection
+  only: **71/241 SOURCE_REVIEWED_INTEGRATION_PENDING
+  (192/1060 registered BLOCK IDs)**,
+  **170/241 REVIEW_PENDING (868 IDs)**.
+  SculkShriekerBlock, SculkCatalystBlock
+  and LightningRodBlock still pending.
+  All 241 patched ASM/Planetary integration
+  and gameplay acceptance fields REVIEW_PENDING.
+  No production Java/CI/client/gameplay
+  run in this research package.
+- **NEXT FIRST unchecked microtask 3A-7.2**:
+  independently check actual original ITEM
+  `placed_block` rows for both sensor ID,
+  optional item state components, BE/game
+  event and direct block writer bypasses.
+  One separate bounded GitHub commit then stop.
+
 ## Resume procedure after interrupted answer
 
 1. Read AGENTS.md, this checkpoint, the latest roadmap

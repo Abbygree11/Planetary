@@ -1,3 +1,53 @@
+## 2026-10-10 Stage 3A-7.1 exact Sculk and Calibrated sensor source/NeoForge five-owner audit
+
+[Full original NeoForge 21.1.215 two-class/
+two-registered BLOCK ID owner evidence with
+pinned 1.21.1 vibration BE/event source graph](PHASE2_STAGE3A_SCULK_VIBRATION_SOURCE_OWNER_AUDIT_1_21_1.md).
+SculkSensorBlock original compiled 5 nearest
+declarations: SculkSensorBlock / BlockBehaviour /
+SculkSensorBlock / BlockBehaviour / Block;
+CalibratedSculkSensorBlock:
+CalibratedSculkSensorBlock / BlockBehaviour /
+SculkSensorBlock / BlockBehaviour / Block.
+Original exact IDs minecraft:sculk_sensor
+and minecraft:calibrated_sculk_sensor,
+Phase/POWER/WATERLOGGED and calibrated
+four horizontal FACING state properties.
+BaseEntityBlock BE ticker helpers inherited,
+SculkSensorBlock server VibrationSystem.Ticker
+for normal block entity, calibrated own BE type.
+BE VibrationSystem.Listener physical event
+radius 8 plain, 16 calibrated; listener
+filters tag/occlusion, chooses physical
+Euclidean Vec3-distance candidate and
+traversal times, checks 3×3 physical XZ
+neighbor chunks ticking, schedules per-BE
+events and activates source.
+SculkSensorBlock ACTIVE 30 block ticks,
+Calibrated ACTIVE 10, both 10 COOLDOWN;
+direct signal only queried UP, analog
+frequency from BE only while ACTIVE.
+Calibrated getSignal suppresses output
+on queried FACING, and its BE separately
+reads redstone from phys FACING-opposite
+neighbor/query side to filter event
+frequency. World below notifications
+and six physical resonator targets need
+local frame contracts; raw world Euclidean
+distance and ray occlusion should not
+be rotated globally. StepOn can force
+vibration; WATERLOGGED schedules water
+ticks and suppresses sounds, not power.
+
+**Promoted only two fully reviewed class rows/
+two exact IDs**. Full ledger now **71/241
+source+compiled reflection reviewed (192/1060
+BLOCK IDs), 170/241 REVIEW_PENDING
+(868/1060 IDs)**; all patched ASM/Planet
+adapter/gameplay remain pending for 241.
+Next 3A-7.2 exact original ITEM registry
+join and additional alternative authors.
+
 ## 2026-10-10 Stage 3A-6.4: original ZIP exactly reconciles all 69 sensor-source-reviewed class owners
 
 [Full original 21.1.215 ZIP vs current 69 exact

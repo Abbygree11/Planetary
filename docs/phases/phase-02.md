@@ -20,7 +20,7 @@
 | 2.3A-4 | [02b-redstone-signal-owners.md](phase-02/02b-redstone-signal-owners.md) | **DONE (4 research packages only)** | Exact original ZIP reconciliation for 63 source+reflection reviewed classes/170 IDs; 178 pending, all gameplay gates pending |
 | 2.3A-5 | [02c-rail-owners.md](phase-02/02c-rail-owners.md) | **DONE (4 research packets only)** | All 66 class exact 5-signature owner+174 ID records match original ZIP; 175 other classes pending, no gameplay PASS |
 | 2.3A-6 | [02d-environment-pressure-sensor-owners.md](phase-02/02d-environment-pressure-sensor-owners.md) | **DONE (4 research packets only)** | Original 21.1.215 ZIP all 69 exact owner tuples/190 reviewed IDs reconcile, 172 pending, no ASM or gameplay PASS |
-| 2.3A-7 | [02e-sculk-vibration-sensor-owners.md](phase-02/02e-sculk-vibration-sensor-owners.md) | **NEXT** | SculkSensorBlock and CalibratedSculkSensorBlock, 2 pending class/2 exact IDs, VibrationSystem/BE and calibrated FACING-signal filters |
+| 2.3A-7 | [02e-sculk-vibration-sensor-owners.md](phase-02/02e-sculk-vibration-sensor-owners.md) | **ACTIVE 1/4** | 2 concrete sculk sensor class/2 exact IDs original NeoForge compiled 5-owner and full BE/VibrationSystem source audit; 71 reviewed/170 pending, no runtime PASS |
 | 2.3B | [03-item-creators.md](phase-02/03-item-creators.md) | TODO | Item/alternative-author coverage |
 | 2.3C | [04-lifecycle-neoforge.md](phase-02/04-lifecycle-neoforge.md) | TODO | Bytecode/patch/dispatch evidence and gate |
 | 2.4A | [05-implementation-a.md](phase-02/05-implementation-a.md) | TODO | Context/FACING/AXIS/rotation state families |
@@ -38,47 +38,48 @@
 
 ## Точка продолжения
 
-**После исследования 3A-6.4 (2026-10-10):**
-оригинальный неизменённый NeoForge 21.1.215
-CI ZIP из run 37988064055, artifact 11643813158
-SHA256 `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e` прочитан непосредственно:
-**1060 BLOCK IDs / 241 Java класса,
-1333 ITEM IDs, 1712 property records**.
-Все **69** source+reflection-reviewed
-классов, их **190 точных BLOCK ID** и
-**пять exact-signature declaring owners** на
-каждый сверены независимо с реестром ветки:
-4 хеша совпадают:
-`0xf188a064` (полный roster),
-`0x6ae8047b` (IDs),
-`0xba6ef72f` (владельцы),
-`0x328b390e` (совместно).
-[Отчёт аудита](../research/PHASE2_STAGE3A_SENSOR_COHORT_RECONCILIATION_1_21_1.md).
-Карточка сенсоров 3A-6 завершена
-**4/4 исследовательских подпакета**, однако
-**никакого ASM, Planetary runtime или
-gameplay PASS не добавлено**.
+**После исследования 3A-7.1 (2026-10-10)**:
+точно проверены два новых блока —
+`SculkSensorBlock` (`minecraft:sculk_sensor`)
+и `CalibratedSculkSensorBlock`
+(`minecraft:calibrated_sculk_sensor`):
+оригинальные конкретные классы и
+пять владельцев методов из NeoForge 21.1.215
+CI ZIP, плюс сравнительный полный исходный
+Minecraft 1.21.1 обработчиков
+`SculkSensorBlockEntity`,
+`CalibratedSculkSensorBlockEntity` и
+`VibrationSystem`.
+[Источник и граф колбэков](../research/PHASE2_STAGE3A_SCULK_VIBRATION_SOURCE_OWNER_AUDIT_1_21_1.md).
+Радиусы 8/16, тики ACTIVE 30/10,
+COOLDOWN 10, специальная частотная
+фильтрация с backside REDSTONE,
+два различающихся направления запроса,
+физические `BlockPos` соседей,
+BE `VibrationSystem.Ticker` и game-event
+listener проанализированы **как исходники**,
+не подтверждены на планете.
+`SculkShriekerBlock`, `SculkCatalystBlock`
+и `LightningRodBlock` пока
+`REVIEW_PENDING`.
 
-В основном реестре без новых повышений
-**69/241 SOURCE_REVIEWED_INTEGRATION_PENDING**
-(190/1060 BLOCK IDs),
-**172/241 REVIEW_PENDING** (870 IDs).
-Каждая из трёх ячеек приёмки у всех
-241 классов — `REVIEW_PENDING`. Stage 3A
-и Phase 2 НЕ завершены.
+В полном реестре теперь **71/241**
+`SOURCE_REVIEWED_INTEGRATION_PENDING`
+(**192/1060 BLOCK IDs**) и **170/241**
+`REVIEW_PENDING` (**868/1060 IDs**).
+У всех 241 классов ASM NeoForge, адаптер
+Planetary и игровая приёмка —
+`REVIEW_PENDING`. Никаких новых Java
+патчей, сборок или игровых проверок
+не запускалось. Результат 3A-6.4
+(69/241 / 190 ID) — исторический снапшот.
 
 **Следующая первая незавершённая задача —
-[3A-7.1](phase-02/02e-sculk-vibration-sensor-owners.md):**
-новое маленькое семейство SculkSensorBlock
-и CalibratedSculkSensorBlock, **2 ещё не
-исследованных класса/2 точных BLOCK IDs**.
-Их `BlockEntity`, `VibrationSystem`, входные
-грани, фазы активации, сигнал и вода
-требуют отдельного точного исходного
-NeoForge owner audit.
-SculkShriekerBlock и SculkCatalystBlock
-остаются pending для других пакетов.
-Один `кк` = один небольшой исследовательский
-коммит и checkpoint.
+[3A-7.2](phase-02/02e-sculk-vibration-sensor-owners.md):**
+проверить оригинальные конкретные
+`ITEM.placed_block` для двух сенсоров
+и независимые пути создания/сигнала,
+отдельным коммитом без gameplay PASS.
+Stage 3A и Phase 2 ещё открыты.
 
 Обновление этого файла означает только, что появился маршрут и checkpoint, **не что Phase 2 исправлена**.
