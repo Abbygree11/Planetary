@@ -591,6 +591,34 @@ are NOT yet proven; BE ticker is not randomTick.
 acceptance: **69 reviewed (190 IDs), 172 pending
 (870 IDs)**. Next 3A-6.2 actual ITEM registry.
 
+## 2026-10-10 Stage 3A-6.2 actual ITEM registry sensor join and other source authors
+
+[Full independently verified original NeoForge
+16-ITEM/16-BLOCK 1:1 census](PHASE2_STAGE3A_ENVIRONMENT_PRESSURE_SENSOR_ITEM_ALTERNATE_AUTHORS_1_21_1.md)
+matched `placed_block` from original 1333
+ITEM rows to selected 16 BLOCK IDs:
+all same-name ordinary BlockItem (1/daylight,
+13 ordinary plates, 2 weighted plates),
+7/7 item placement method owners each
+BlockItem; `Item.use` belongs to Item.
+Validated reproducible canonical 16-row
+SHA256 `49c88b217ca7b0dd560634c2c8cb01560b265b29a85030ebda92b66f7596ebe9`.
+Post-place component update may override legal
+`POWERED/POWER/INVERTED` state before
+`setPlacedBy`, distinct from source
+owner `BasePressurePlateBlock` entityInside/
+20- or 10-tick press rechecks (physical
+TOUCH_AABB), daylight BE 20-tick SKY read
+and player-use INVERTED change. Generic
+StructureTemplate direct state writer bypasses
+items; specific sensor-generating vanilla
+templates/worldgen not found or claimed here.
+Full ledger remains **69/241 source-reviewed
+(190 BLOCK IDs)**, **172/241 pending
+(870 IDs)**, all ASM/Planet/gameplay acceptance
+still pending. Next 3A-6.3 physical/sky/seam
+and testing contract.
+
 ## Remaining Stage 3A work
 
 1. Read actual `phase2-neo1211-registry-census` artifact's

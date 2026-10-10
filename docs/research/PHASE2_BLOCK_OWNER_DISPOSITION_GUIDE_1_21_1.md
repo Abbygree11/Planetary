@@ -1,3 +1,38 @@
+## 2026-10-10 Stage 3A-6.2 exact 16 original sensor ITEM creators and non-item authors
+
+[Original 1333 ITEM registry exact 16-block
+placed_block join + nonitem sky/entity/structure
+author report](PHASE2_STAGE3A_ENVIRONMENT_PRESSURE_SENSOR_ITEM_ALTERNATE_AUTHORS_1_21_1.md)
+checks unchanged NeoForge ZIP artifact 11643813158:
+for each of 1 daylight, 13 ordinary and 2 weighted
+plate BLOCK ID, exactly ONE same-name ITEM ID
+`block_item=true`, concrete class `BlockItem`;
+all SEVEN exact item lifecycle method owners
+are `BlockItem` (except separate `use` from
+`Item`). Reproducible SHA256 of canonical
+16 source ITEM join rows:
+`49c88b217ca7b0dd560634c2c8cb01560b265b29a85030ebda92b66f7596ebe9`.
+Normal BlockItem `placeBlock` precedes
+optional DataComponents.BLOCK_STATE
+`updateBlockStateFromTag` and `setPlacedBy`.
+Off-item writes:
+DaylightDetectorBlock sky/time server
+BlockEntityTicker and `useWithoutItem` INVERTED;
+BasePressurePlateBlock entityInside/checkPressed,
+scheduled 20/10-tick POWERED/POWER update, physical
+TOUCH_AABB and below callback; generic StructureTemplate
+setBlock and neighbor update bypass item, but no
+specific sensor-containing worldgen structure
+verified. Phase3 physical hit AABB, Phase7A
+signal direction, sky environment policy and
+Phase8 generic structures remain future gates.
+
+**Counts stable: 69/241 reviewed 190/1060 IDs,
+172/241 pending 870/1060 IDs**. All 241
+ASM/Planet/gameplay statuses pending. Next
+3A-6.3 local physical frame/sky/pressure plate
+port and tests, one research commit.
+
 ## 2026-10-10 Stage 3A-6.1 sensor BLOCK owner source audit (3 new classes, 16 IDs)
 
 [Original NeoForge 21.1.215 compiled exact-five owner

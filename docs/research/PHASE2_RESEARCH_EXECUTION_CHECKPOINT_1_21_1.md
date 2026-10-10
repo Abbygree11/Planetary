@@ -844,6 +844,53 @@ family without proving why it is a unique algorithm owner.
   world/BE/entity authors. One bounded commit,
   stop; no runtime PASS.
 
+### 2026-10-10 micro-checkpoint — Stage 3A-6.2 sensor ITEM owners and non-item source writes
+
+- Active card `docs/phases/phase-02/02d-environment-pressure-sensor-owners.md`:
+  checkboxes **1 and 2 DONE**, 3 and 4 remain open.
+  New research doc:
+  `docs/research/PHASE2_STAGE3A_ENVIRONMENT_PRESSURE_SENSOR_ITEM_ALTERNATE_AUTHORS_1_21_1.md`.
+- Original unmodified NeoForge 21.1.215
+  1333-ITEM/1060-BLOCK registry census ZIP
+  artifact 11643813158 SHA-256
+  `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`.
+  Actual `ITEM.placed_block == BLOCK.registry_id`
+  16/16 exact unique mapping (daylight 1,
+  ordinary plates 13, weighted plates 2);
+  all concrete regular BlockItem class,
+  exactly seven item creation/placement
+  effective method declaration owners BlockItem
+  for every item; `use(Level,Player,InteractionHand)`
+  inherited Item. No ItemNameBlockItem alias.
+  Canonical 16 original joined registry row
+  SHA256 `49c88b217ca7b0dd560634c2c8cb01560b265b29a85030ebda92b66f7596ebe9`.
+- `BlockItem.place` initial context/BlockState
+  then optional `DataComponents.BLOCK_STATE`
+  rewrite before `setPlacedBy`.
+  DaylightDetectorBlock server BE ticker
+  gameTime%20 skylight/sun/inverted and
+  `useWithoutItem` immediate POWER updates;
+  BasePressurePlateBlock entityInside/getEntityCount
+  physical world-XYZ TOUCH_AABB and scheduled
+  20/10 tick analog/bool POWER writes, support
+  loss and onRemove physical below notifications;
+  StructureTemplate generic setBlock + neighbor
+  shape recalculation bypasses BlockItem.
+  **No verified specific sensor worldgen structure**.
+- No new class promoted:
+  **69/241 SOURCE_REVIEWED_INTEGRATION_PENDING
+  (190/1060 BLOCK IDs)**, **172/241
+  REVIEW_PENDING (870 IDs)**. Sculk/Lightning
+  remain separate source pending. All ASM,
+  Planet runtime and gameplay gate fields
+  REVIEW_PENDING, no production Java or CI/client test.
+- **NEXT FIRST unchecked Stage 3A-6.3**:
+  local/world BlockState support and dynamic
+  press hitbox, signal queried UP, direct
+  sky sampling and BE vs block scheduled tick
+  at all faces/seams. Define future runnable
+  tests, no PASS; ONE independent commit then stop.
+
 ## Resume procedure after interrupted answer
 
 1. Read AGENTS.md, this checkpoint, the latest roadmap

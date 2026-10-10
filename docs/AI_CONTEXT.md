@@ -3961,3 +3961,53 @@ Next 3A-6.2 on same card checkbox2: independent
 actual 1333-item census `placed_block` join
 for all 16 block IDs and alternate authors;
 one docs-only research commit.
+
+
+## 2026-10-10 Phase2 Stage 3A-6.2 exact sensor 16-item creator join and alternate source authors
+
+User shorthand `кк` means exactly ONE first open
+microtask on branch `2.0`, commit & checkpoint,
+stop. Stage 3A-6.2 on
+`docs/phases/phase-02/02d-environment-pressure-sensor-owners.md`
+checkbox 2/4 DONE; research doc
+`docs/research/PHASE2_STAGE3A_ENVIRONMENT_PRESSURE_SENSOR_ITEM_ALTERNATE_AUTHORS_1_21_1.md`.
+Reopened untouched NeoForge 21.1.215 CI ZIP
+`phase2-neo1211-registry-census.zip` SHA256
+7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e:
+exact `ITEM.placed_block` join for selected
+DaylightDetectorBlock one ID,
+PressurePlateBlock 13 IDs,
+WeightedPressurePlateBlock 2 IDs, total
+16 exact BLOCK IDs -> 16 distinct same-named
+ordinary `BlockItem` item IDs; compiled
+seven item-lifecycle nearest declaring owners
+`BlockItem` for each; separate `Item.use`
+owner Item. Diagnostic cryptographic SHA256
+of all 16 canonical joined source registry
+ITEM rows `49c88b217ca7b0dd560634c2c8cb01560b265b29a85030ebda92b66f7596ebe9`.
+Pinned Minecraft 1.21.1 BlockItem.place:
+initial placement, optional post-place
+`DataComponents.BLOCK_STATE` rewrite
+POWER/POWERED/INVERTED and then `setPlacedBy`.
+Off-item writers: DaylightDetectorBlock server
+BE ticker gameTime%20 sky brightness/sun
+and `useWithoutItem` INVERTED toggle POWER
+recomputation; BasePressurePlateBlock
+entityInside/TOUCH_AABB, checkPressed state
+writer, scheduled 20/10 tick and support/removal
+updates; generic StructureTemplate.placeInWorld
+direct `setBlock` with possible shape recalculation
+bypasses BlockItem, no specific generated sensor
+structure verified.
+Full ledger unchanged **69/241 source+reflection
+reviewed classes (190/1060 BLOCK IDs),
+172/241 REVIEW_PENDING (870/1060 IDs)**.
+All 241 ASM patched NeoForge/Planet
+integration/gameplay gates REVIEW_PENDING;
+no Java code, build or actual game tests.
+NEXT first unfinished Stage3A-6.3: source
+canonical local vs physical support, hitbox
+and detection AABB, queried signal direction
+and sky/BE vs scheduled ticks, 6-face/edge/corner
+future test matrix, one docs-only research
+commit then stop.

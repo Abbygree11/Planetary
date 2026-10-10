@@ -1,6 +1,6 @@
 # Phase 2 Stage 3A-6 — environment and entity-contact signal sensors
 
-**Status: ACTIVE — 1/4 independently bounded research tasks done; no ASM/Planet/gameplay PASS.**
+**Status: ACTIVE — 2/4 independently bounded research tasks done; no ASM/Planet/gameplay PASS.**
 Branch `2.0`, Minecraft **1.21.1** / NeoForge **21.1.215**.
 
 [Main Phase 2 roadmap](../phase-02.md) ·
@@ -76,12 +76,12 @@ separate owner-family cards.
   class rows, none of the excluded sensor group.
   Commit independent evidence and checkpoint.
   **DONE 2026-10-10 / 3A-6.1:** [original NeoForge five-signature owners and pinned source for 3 sensor classes/16 exact BLOCK IDs](../../research/PHASE2_STAGE3A_ENVIRONMENT_PRESSURE_SENSOR_SOURCE_OWNER_AUDIT_1_21_1.md), daylight `BlockEntityTicker` 20-game-tick sky-input and inversion, plate `BasePressurePlateBlock` support, entity query AABB, 20-/10-tick power state, direct signal UP and physical below notification. Ledger **69/241 reviewed (190 IDs)**; **172/241 pending (870 IDs)**; all ASM/Planet/game acceptance REVIEW_PENDING.
-- [ ] **2.** Independently join original 1333 ITEM
+- [x] **2.** Independently join original 1333 ITEM
   registry via `placed_block` for all 16 BLOCK IDs;
   distinguish any direct structure/commands,
   comparator/BE writers, `DataComponents.BLOCK_STATE`
   and entity/sky updates which bypass item placement.
-  Exact per-item evidence and no runtime PASS.
+  Exact per-item evidence and no runtime PASS. **DONE 2026-10-10 / 3A-6.2:** [16 original compiled ITEM→BLOCK joins, optional post-place state components, BE/sky/entity writers and generic StructureTemplate bypass](../../research/PHASE2_STAGE3A_ENVIRONMENT_PRESSURE_SENSOR_ITEM_ALTERNATE_AUTHORS_1_21_1.md). Each exact BLOCK has one same-named ordinary `BlockItem` ITEM record; 7/7 lifecycle owners = `BlockItem`, `Item.use` remains `Item`. No confirmed specific worldgen sensor structure. No new class promotions or game PASS.
 - [ ] **3.** Verify position-only local BlockState
   frame vs source-local support and physical neighbor
   notifications, sky light/time sampling vs local
@@ -97,31 +97,34 @@ separate owner-family cards.
 
 ## Resume checkpoint
 
-**Last completed Stage 3A-6.1:** source+original
-NeoForge 21.1.215 compiled declaring-owner
-review for **three** previously pending sensor
-classes and all **16 exact BLOCK IDs**.
-[Detailed original runtime census+source evidence](../../research/PHASE2_STAGE3A_ENVIRONMENT_PRESSURE_SENSOR_SOURCE_OWNER_AUDIT_1_21_1.md).
-`DaylightDetectorBlock` power reads sky brightness
-and sun angle; server-only BE ticker when hasSkyLight
-updates every 20 game ticks; player INVERTED toggle
-also writes POWER immediately. `PressurePlateBlock`
-and `WeightedPressurePlateBlock` share
-`BasePressurePlateBlock` support/shape,
-entityInside/TOUCH_AABB and scheduled tick:
-boolean 20-tick vs analog 10-tick power,
-physical below notifications and UP-query-only
-direct signal. These are distinct from ordinary
-randomTick callbacks.
+**Last completed: Stage 3A-6.2**.
+[Original 16 ITEM `placed_block` join and off-item
+sensor state authors](../../research/PHASE2_STAGE3A_ENVIRONMENT_PRESSURE_SENSOR_ITEM_ALTERNATE_AUTHORS_1_21_1.md)
+checks original unmodified NeoForge ZIP SHA-256
+`7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`,
+all **16** original 1:1 BLOCK↔ITEM mappings,
+all 16 concrete class `BlockItem`, all seven item
+placement lifecycle declaring owners `BlockItem`;
+`Item.use` inherited from `Item`. Cryptographic
+source ITEM-row join SHA-256
+`49c88b217ca7b0dd560634c2c8cb01560b265b29a85030ebda92b66f7596ebe9`.
+Separate non-ITEM sources: daylight server BE ticker
+plus player `INVERTED` override, plate entity contact
+and scheduled tick/release, `BasePressurePlateBlock`
+support/remove callbacks, optional item
+`DataComponents.BLOCK_STATE` component,
+generic direct `StructureTemplate` write;
+**no confirmed specific sensor-containing template**.
 
 Full ledger **69/241 source+reflection reviewed
-(190/1060 BLOCK IDs)**; **172/241
-REVIEW_PENDING (870 IDs)**. Sculk and LightningRod
-remain pending; all ASM/Planet/gameplay
-acceptance PENDING. No Java changes/tests.
+(190/1060 BLOCK IDs)**, **172/241 REVIEW_PENDING
+(870/1060 BLOCK IDs)**; Sculk/Lightning excluded.
+All ASM/Planet/gameplay statuses remain pending.
+No Java/test changes.
 
-**NEXT FIRST incomplete: 3A-6.2**, checkbox
-2, independent original ITEM registry
-`placed_block` join for all 16 exact IDs,
-non-item structure/BE/sky/entity authors and
-item component placement; one research commit.
+**NEXT FIRST unchecked microtask: Stage 3A-6.3**,
+checkbox 3: local/physical frame versus pressure
+plate support+entity AABB, signal-port direction,
+daylight sky/ticker, runtime phase contracts and
+six-face/seam test design. ONE research commit then
+stop. Do not mark gameplay PASS.

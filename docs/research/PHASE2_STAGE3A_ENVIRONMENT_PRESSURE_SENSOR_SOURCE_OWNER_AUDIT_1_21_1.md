@@ -346,3 +346,31 @@ trace direct non-item world placement,
 `DataComponents.BLOCK_STATE`, BE/sky/entity
 readers/writers. One separately committed
 bounded research task, no gameplay PASS.
+
+
+## 2026-10-10 Stage 3A-6.2 exact ITEM source plus alternate authors
+
+[Original 16 placed_block actual ITEM
+records and source writer audit](PHASE2_STAGE3A_ENVIRONMENT_PRESSURE_SENSOR_ITEM_ALTERNATE_AUTHORS_1_21_1.md):
+original ZIP from NeoForge 21.1.215, 1333
+ITEM rows and all 16 selected BLOCK IDs,
+one exact 1:1 `placed_block` link per ID;
+16 concrete `BlockItem`, seven placement
+method owners each all BlockItem, unrelated
+`Item.use` inherited from Item.
+Optional `DataComponents.BLOCK_STATE` may apply
+legal Power/Powered/Inverted after initial
+`placeBlock` before `setPlacedBy`. Other authors:
+DaylightDetectorBlock BE 20-game-time ticker
+using SKY brightness and INVERTED player use,
+BasePressurePlateBlock entityInside/TOUCH_AABB
+and scheduled tick 20/10 for Boolean POWERED or
+analog POWER, support loss and onRemove, generic
+StructureTemplate directly sets block states
+without item placement. No specific structures
+containing sensors verified and no game acceptance.
+Same **69 reviewed classes (190 IDs),
+172 pending (870 IDs)**, all NeoForge patched
+ASM/Planet/gameplay gates pending.
+NEXT 3A-6.3 physical/local frame and
+multi-face acceptance matrix.
