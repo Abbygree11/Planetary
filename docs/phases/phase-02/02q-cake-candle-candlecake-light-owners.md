@@ -1,0 +1,12 @@
+# Stage 3A-19 — cake / candle / candle-cake integrated placement, flame and consumption owners
+
+**Status: ACTIVE 0/4 SOURCE RESEARCH; original patched ASM / Planet/gameplay PENDING.** Branch 2.0, Minecraft1.21.1, NeoForge21.1.215. One future user «кк» → ALL four 19.1–19.4 together (not one class at a time). Do not change Java/Mixins without separate explicit runtime task. Preserve deepest-safe unknown-mod PHYSICAL default and no global BlockPos/Direction rewrite.
+
+Original immutable registry confirmed **three source-pending concrete classes / 35 BLOCK ID rows**: `CakeBlock` 1 ID, `CandleBlock` 17 IDs, `CandleCakeBlock` 17 IDs. Exact IDs, state domains (candles, LIT/FACING, candle cake placement), BlockItem and interaction owners must be independently rehashed from the same original physical 241/1060/1333/1712 ZIP, not guessed from file names. Current status original owner SOURCE pending (no tested flame/candle-cake source promotion); [Stage18 source outcome](02p-cauldron-drip-precipitation-owners.md).
+
+- [ ] 19.1 all original exact 35 registered BLOCK IDs, state/property legality, hierarchy and FULL five original method owner signatures, declared override map for cake + both candle families. Commit checkpoint.
+- [ ] 19.2 inspect source/base/ItemStack, ignition and extinguish, candle count, cake bites, item right-click, BlockState direct writers, fire/water/sound/particle and entity callbacks; 1.21.1 modded copied + inherited implementations pinned SHA, without inventing owner inheritance. Commit checkpoint.
+- [ ] 19.3 at least 30 future NOT RUN tests across six face interiors, 12 edges, 8 corners, inside/underwater, candle-on-cake, entity, player inventory and modded callback layering. Deepest-safe semantic typed hook matrix; preserve mod opt-in policy, actual world physical hit geometry.
+- [ ] 19.4 independently rehash original physical ZIP and compare 241 rows, now 103 reviewed classes and expected 285 IDs ONLY IF verified. Reconcile full five signatures against LIVE 16-column ledger, all 723 ASM/adapter/gameplay pending; update plan/context and next cohesive actual pending family. No runtime acceptance from source.
+
+**Important historical acceptance:** candle and candle cake placement on side/bottom Planet faces was previously reported broken or partial; source research must not mark it resolved. Distinguish orientation legality, actual input item behavior and render geometry, not just Block.getStateForPlacement.
