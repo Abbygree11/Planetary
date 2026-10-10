@@ -1,0 +1,16 @@
+# Stage 3A-20 — CampfireBlock / FireBlock / SoulFireBlock fire topology, light, cooking and mod adapters
+
+**Status: ACTIVE 0/4 SOURCE ONLY, ASM/Planet/client/server gameplay REVIEW_PENDING.** Minecraft1.21.1, NeoForge21.1.215, Java21, branch 2.0. One next user «кк» → **all four** 20.1–20.4 together with durable GitHub commits and one concise answer. No Java/Mixin runtime change unless expressly separately requested.
+
+Immutable physical original 241/1060 archive already confirmed **THREE source-pending registered concrete classes / FOUR exact BLOCK IDs**:
+- `CampfireBlock` → `minecraft:campfire`, `minecraft:soul_campfire` (2) original `facing,lit,signal_fire,waterlogged`; superclass `BaseEntityBlock`; cooking BE and item handlers independent.
+- `FireBlock` → `minecraft:fire` (1) original `age,east,north,south,up,west`; superclass `BaseFireBlock`; propagation/shape/flammability and six-neighbor intents.
+- `SoulFireBlock` → `minecraft:soul_fire` (1) no original state properties; superclass `BaseFireBlock`.
+- `BaseFireBlock` is **abstract** and not an extra original concrete registered class. Any inherited/shared flame/placement/particle algorithm must be audited separately. Distinguish physical heat/fluid and local placement/support semantics for Planet six faces.
+
+- [ ] **20.1** exactly four original physical BLOCK IDs, hierarchy, all state/property legal domains, full five declaring-owner signatures per ID; original bytecode methods other than five and NeoForge patch opportunities as separate gates. Commit checkpoint.
+- [ ] **20.2** owner DAG for survival/tick/fire spread/world-UP source, physical neighboring flammability/NeoForge `IBlockExtension`, burn/collision, campfire cooking BE, entity collisions/damage, animation/fluid/light, flint-and-steel/fire charge/projectile and all BlockItem/dispenser/direct structure/worldgen authors. At least one pinned actual 1.21.1 mod extension vs independent implementation; preserve fire tag and provider dispatch. Commit checkpoint.
+- [ ] **20.3** >=35 future NOT RUN acceptance cases 6 Planet face interiors/12 seams/8 corners and normal no-Planet, rain/waterlogging, true physical propagation, player/animal/entity, chunk/restart, relevant modded real load, state/shape/model and performance. Explicit deep SHARED_SAFE/OPT_IN_ALGORITHM/MOD_INDEPENDENT/PHYSICAL_DO_NOT_TOUCH matrix. Commit checkpoint.
+- [ ] **20.4** independent original physical ZIP class/ID/full-five-owner Python vs LIVE GitHub16-column ledger JS fingerprint audit; expected **106/241 original source-reviewed classes /289/1060 IDs** only IF verified and reconciled. ALL 241×3=723 ASM/Planet/gameplay still REVIEW_PENDING; update roadmap/context and following cohesive pending owner card. Docs only, no PASS from source.
+
+Inherited Stage19: [frozen actual previous source and mod research](../../research/PHASE2_STAGE3A_CAKE_CANDLE_ORIGINAL_OWNER_ITEM_FIRE_MOD_1_21_1.md), [45 UNRUN fixtures](../../research/PHASE2_STAGE3A_CAKE_CANDLE_SIX_FACE_FIRE_MOD_ACCEPTANCE_1_21_1.md), [241/103 independent reconciliation](../../research/PHASE2_STAGE3A_CAKE_CANDLE_ORIGINAL_103_CLASS_RECONCILIATION_1_21_1.md). Root [deepest-safe mandatory process](../../research/PHASE2_DEEPEST_SAFE_MECHANISM_COMPATIBILITY_CONTRACT_1_21_1.md). Prior candles/cakes on rotated faces not accepted; source audit is not runtime closure.
