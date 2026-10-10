@@ -1415,6 +1415,12 @@ family without proving why it is a unique algorithm owner.
 - **Next card** `docs/phases/phase-02/02h-lightning-rod-weather-owners.md` **ACTIVE 0/4**; exact original `net.minecraft.world.level.block.LightningRodBlock` single registered `minecraft:lightning_rod`, status REVIEW_PENDING. Original hierarchy `LightningRodBlock>RodBlock>DirectionalBlock>Block>BlockBehaviour`, properties `facing,powered,waterlogged`, five original owner tuple `LightningRodBlock/BlockBehaviour/LightningRodBlock/BlockBehaviour/Block`. Stage10.1 exhaustive source+original declaring-owner review first; 10.2 exact ITEM and lightning/copper writer graph, 10.3 six-face acceptance spec, 10.4 next 241 reconciliation/handoff. Weather redstone/electric spark Phase7A/3, physical strike/feature Phase8/9 and Phase2/5 State/fluid remain independent.
 - **NEXT FIRST UNCHECKED: Stage 3A-10.1** in new 02h card; do ONE bounded research docs commit then STOP. Branch **2.0 ONLY**, `main` untouched, Phase 2/Stage 3A OPEN.
 
+## 2026-10-10 user-approved one-whole-family “кк” execution rule
+
+The user requested less chat back-and-forth and context use. **A single “кк” now triggers ALL internal substeps of the next source-owner family (e.g. Stage 3A-10.1–10.4)**, NOT one substep per follow-up. Run small evidence and commit checkpoints successively in **one assistant turn**, continue automatically; avoid dumping detailed reports into chat. Finish with one consolidated answer. Earlier substage “ONE commit, STOP” text in cards is superseded by this rule: STOP only at the **end of the entire family**. If interrupted, resume the first unchecked substep of the **same family** next turn; never guess a DONE or redo validated research. No delayed/asynchronous work, no false NeoForge ASM/Planet/gameplay PASS. Use this for every future 3A family card.
+
+**Next “кк” → entire Stage 3A-10 LightningRodBlock 0/4 → 4/4 if evidence/tooling permit.**
+
 ## Resume procedure after interrupted answer
 
 1. Read AGENTS.md, this checkpoint, the latest roadmap
