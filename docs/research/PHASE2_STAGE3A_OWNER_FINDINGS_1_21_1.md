@@ -798,6 +798,38 @@ Planetary runtime and gameplay pending.
 Next 3A-7.4 original ZIP whole cohort
 reconciliation and separate new family.
 
+## 2026-10-10 Stage 3A-7.4 — all 71 exact reviewed NeoForge class/owner tuples reconciled
+
+[Direct original unchanged NeoForge 21.1.215
+CI ZIP vs actual 16-column
+GitHub ledger](PHASE2_STAGE3A_SCULK_COHORT_RECONCILIATION_1_21_1.md):
+241 unique registered class names/
+1060 exact BLOCK ID rows/1333 ITEM rows/
+1712 state property rows. All 71
+SOURCE_REVIEWED_INTEGRATION_PENDING
+classes, **192** exact registered IDs
+and their nearest five declaring
+method owners via **full qualified
+signatures**, all match original
+runtime reflection ZIP:
+roster `0xf188a064`,
+reviewed IDs `0x8a6840ba`,
+owners `0xa81e5835`,
+combined `0x59d9c0aa`.
+All 170 remaining classes still source
+REVIEW_PENDING; all 241×3 patched NeoForge
+ASM/Planet/runtime/gameplay acceptance
+columns REVIEW_PENDING. No class promotion,
+no patched bytecode, game test or Java code
+change. Sculk sensor 3A-7 research 4/4
+complete only. Next
+[3A-8 shrieker/catalyst original pending
+family](../phases/phase-02/02f-sculk-shrieker-catalyst-owners.md)
+two exact IDs and distinct VibrationSystem/
+warden vs EntityDie/charge cursor
+spreader writers. LightningRod separately
+pending. Phase 2 not complete.
+
 ## Remaining Stage 3A work
 
 1. Read actual `phase2-neo1211-registry-census` artifact's

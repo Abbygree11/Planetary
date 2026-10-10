@@ -1211,6 +1211,77 @@ family without proving why it is a unique algorithm owner.
   ASM/gameplay gates, queue next owner
   family, ONE research-only GitHub commit.
 
+### 2026-10-10 micro-checkpoint — Stage 3A-7.4 original immutable NeoForge 71-class/192 ID/five-owner reconciliation
+
+- `docs/phases/phase-02/02e-sculk-vibration-sensor-owners.md`
+  **all 4 of 4** sculk vibration/calibrated
+  sensor research subtasks DONE, **not**
+  Stage 3A/Phase 2 or game acceptance.
+  Reconciliation report:
+  `docs/research/PHASE2_STAGE3A_SCULK_COHORT_RECONCILIATION_1_21_1.md`.
+- Reopened original immutable 21.1.215
+  CI artifact 11643813158 SHA256
+  `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`,
+  original BLOCK 1060 rows/241 distinct
+  concrete Java class names, ITEM 1333
+  rows and state property 1712 rows.
+  Extracted exact registry BLOCK ID
+  strings and five effective nearest
+  declaring owners for every one of
+  71 source+reflection reviewed
+  classes, using full qualified
+  method parameter signatures.
+  Verified 192 IDs and all 71×5
+  declarations against live GitHub
+  16-column class ledger. Original vs
+  ledger diagnostic FNV values all MATCH:
+  roster `0xf188a064`,
+  reviewed IDs `0x8a6840ba`,
+  declaring owners `0xa81e5835`,
+  combined `0x59d9c0aa`.
+- **Full status unchanged: 71/241
+  SOURCE_REVIEWED_INTEGRATION_PENDING**
+  (**192/1060 exact BLOCK IDs**),
+  **170/241 source REVIEW_PENDING
+  (868/1060 IDs)**.
+  All 241 class rows retain 3 patched
+  NeoForge ASM, Planet adapter and
+  gameplay `REVIEW_PENDING` verdicts.
+  No Java code/CI/Minecraft gameplay
+  or NeoForge patched method body audit.
+- Created `docs/phases/phase-02/02f-sculk-shrieker-catalyst-owners.md`
+  **NEXT 0/4**, exact original
+  `SculkShriekerBlock` /
+  `minecraft:sculk_shrieker`
+  (can_summon,shrieking,waterlogged)
+  and `SculkCatalystBlock` /
+  `minecraft:sculk_catalyst`
+  (bloom), two still source-unreviewed
+  concrete block classes/2 IDs.
+  Pinned source owner routing
+  reveals two different branches:
+  shrieker BE `VibrationSystem.Listener`,
+  player shriek, 90-tick reset,
+  WardenSpawnTracker/SpawnUtil and
+  physical entity bounds; catalyst BE
+  `CatalystListener` on ENTITY_DIE,
+  `SculkSpreader.ChargeCursor`,
+  BLOOM and 8-tick reset.
+  This is preliminary source routing,
+  **NOT** 3A-8.1 full compiled owner
+  audit/source promotion.
+  `LightningRodBlock` remains pending
+  a separate weather/lightning family.
+- **NEXT FIRST unchecked Stage 3A-8.1**,
+  new 02f card checkbox 1:
+  source+original compiled NeoForge
+  class identity / exact 2 BLOCK IDs,
+  five original declaring method
+  owners and full pinned BE/vibration/
+  catalyst spread alternative writer
+  graph. One independent research
+  GitHub commit and checkpoint then STOP.
+
 ## Resume procedure after interrupted answer
 
 1. Read AGENTS.md, this checkpoint, the latest roadmap

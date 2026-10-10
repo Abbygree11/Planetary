@@ -4334,3 +4334,67 @@ class/192 actual ID/five owner tuples
 and 170 pending statuses; queue next
 bounded owner-family card and checkpoint,
 one GitHub commit stop.
+
+
+## 2026-10-10 Planetary Stage 3A-7.4 all 71 source-reviewed class original NeoForge reconciliation and next sculk/shrieker+ catalyst card
+
+`кк` means ONE FIRST unfinished microtask
+from canonical phase cards, GitHub `2.0`
+atomic commit + checkpoint, then STOP.
+Stage3A-7.4 4/4 sculk vibration family
+research completed, **NOT implementation
+or gameplay acceptance**.
+Evidence
+`docs/research/PHASE2_STAGE3A_SCULK_COHORT_RECONCILIATION_1_21_1.md`.
+Direct reopened original unaltered
+NeoForge 21.1.215 CI ZIP artifact
+11643813158 SHA256 `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`,
+1060 BLOCK entries/241 registered
+concrete Java classes, 1333 ITEM
+entries and 1712 state property records.
+Extracted five owner declarations
+by exact full qualified method
+signature for all 71 current
+SOURCE_REVIEWED_INTEGRATION_PENDING
+class rows/192 distinct registered
+BLOCK IDs. Independent original
+ZIP vs actual live GitHub ledger
+all four FNV-1a diagnostics MATCH:
+all roster `0xf188a064`,
+71 reviewed IDs `0x8a6840ba`,
+71*5 owners `0xa81e5835`,
+combined `0x59d9c0aa`.
+No class newly promoted this step:
+**71/241 source+compiled reviewed
+(192/1060 BLOCK IDs), 170/241
+source REVIEW_PENDING (868/1060 IDs)**;
+all 241 patched ASM/Planet adapter/
+gameplay acceptance fields still
+REVIEW_PENDING, no Java/CI/game tests.
+New next owner card
+`docs/phases/phase-02/02f-sculk-shrieker-catalyst-owners.md`
+Status NEXT 0/4, exact two pending
+concrete NeoForge classes/registered IDs:
+`SculkShriekerBlock`/minecraft:sculk_shrieker
+properties `can_summon,shrieking,waterlogged`,
+`SculkCatalystBlock`/minecraft:sculk_catalyst
+property `bloom`. Original NeoForge
+class hierarchies both BaseEntityBlock.
+Distinct algorithms: shrieker BE
+VibrationSystem/player warning/wardens,
+90 scheduled ticks/water; catalyst
+BE CatalystListener direct `ENTITY_DIE`
+and 8-tick BLOOM/SculkSpreader charge
+cursors that can alter world blocks.
+SculkSpreader and related game events
+are not registered BLOCK class identities.
+`LightningRodBlock` still pending
+a later separate lightning/weather
+family. NEXT FIRST `3A-8.1` checkbox1
+new 02f card: real original NeoForge
+5 signature declaring method owners
+and pinned comparative complete Java
+source including BE and SculkSpreader
+writers, promote ONLY full source
+reviewed two rows. One bounded
+research commit and STOP.

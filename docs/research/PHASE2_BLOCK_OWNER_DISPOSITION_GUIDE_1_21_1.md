@@ -1,3 +1,39 @@
+## 2026-10-10 Stage 3A-7.4 — 71 reviewed classes and 192 exact IDs independently match original immutable NeoForge ZIP
+
+[Full re-parsed original 21.1.215 ZIP
+and 71-class/five-full-signature owner
+checks](PHASE2_STAGE3A_SCULK_COHORT_RECONCILIATION_1_21_1.md).
+Artifact 11643813158 SHA256 `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`;
+original 1060 BLOCK rows/241 unique
+concrete Java classes, 1333 ITEM,
+1712 property records. Compared all
+71 SOURCE_REVIEWED_INTEGRATION_PENDING
+class IDs (192 exact registered strings)
+and five nearest declaring owners
+per class from original full
+qualified method argument signatures.
+Four independent original vs GitHub
+FNV-1a diagnostics MATCH:
+241 roster `0xf188a064`;
+71 reviewed IDs `0x8a6840ba`;
+71×5 declaring owners `0xa81e5835`;
+all combined `0x59d9c0aa`.
+All 16 TSV fields valid, 170 remaining
+classes source REVIEW_PENDING with
+REGISTRY_CLASS_AND_COUNT_VERIFIED_ONLY,
+all 241×3 patched ASM/Planet adapter/
+gameplay REVIEW_PENDING. No source
+promotion; no Java/test/game validation.
+Stage3A-7 sculk vibration research
+card 4/4 DONE, Phase 2 and Stage3A
+still open. Next independent family
+[Stage 3A-8 shrieker+catalyst](../phases/phase-02/02f-sculk-shrieker-catalyst-owners.md):
+2 pending classes/2 exact BLOCK IDs;
+different BE shriek/warning/warden
+and death/charge/BLOOM/spread algorithms.
+LightningRodBlock remains another
+unreviewed family.
+
 ## 2026-10-10 Stage 3A-7.3: six-face sculk physical listener/signal and water contract
 
 [Direct source/project frame audit and

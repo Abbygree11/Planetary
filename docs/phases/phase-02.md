@@ -20,7 +20,8 @@
 | 2.3A-4 | [02b-redstone-signal-owners.md](phase-02/02b-redstone-signal-owners.md) | **DONE (4 research packages only)** | Exact original ZIP reconciliation for 63 source+reflection reviewed classes/170 IDs; 178 pending, all gameplay gates pending |
 | 2.3A-5 | [02c-rail-owners.md](phase-02/02c-rail-owners.md) | **DONE (4 research packets only)** | All 66 class exact 5-signature owner+174 ID records match original ZIP; 175 other classes pending, no gameplay PASS |
 | 2.3A-6 | [02d-environment-pressure-sensor-owners.md](phase-02/02d-environment-pressure-sensor-owners.md) | **DONE (4 research packets only)** | Original 21.1.215 ZIP all 69 exact owner tuples/190 reviewed IDs reconcile, 172 pending, no ASM or gameplay PASS |
-| 2.3A-7 | [02e-sculk-vibration-sensor-owners.md](phase-02/02e-sculk-vibration-sensor-owners.md) | **ACTIVE 3/4** | Actual six-face canonical calibrated FACING, world-physical VibrationSystem Vec3/ray/chunk behavior, receiver signal queried side, water/BE/phase ticks, 19 proposed fixtures, no gameplay PASS |
+| 2.3A-7 | [02e-sculk-vibration-sensor-owners.md](phase-02/02e-sculk-vibration-sensor-owners.md) | **DONE (4 research packets only)** | Original 21.1.215 ZIP all 71 source-reviewed exact class/192 ID/five-owner tuples reconciled; all 241 runtime/ASM/gameplay gates pending |
+| 2.3A-8 | [02f-sculk-shrieker-catalyst-owners.md](phase-02/02f-sculk-shrieker-catalyst-owners.md) | **NEXT** | Exactly 2 still source-pending concrete classes/2 IDs: shrieker VibrationSystem/warden and catalyst entity-death/BLOOM/spreader; separate owners |
 | 2.3B | [03-item-creators.md](phase-02/03-item-creators.md) | TODO | Item/alternative-author coverage |
 | 2.3C | [04-lifecycle-neoforge.md](phase-02/04-lifecycle-neoforge.md) | TODO | Bytecode/patch/dispatch evidence and gate |
 | 2.4A | [05-implementation-a.md](phase-02/05-implementation-a.md) | TODO | Context/FACING/AXIS/rotation state families |
@@ -38,56 +39,60 @@
 
 ## Точка продолжения
 
-**После Stage 3A-7.3 (2026-10-10):**
-проверена разница между локальной
-`FACING` в `CalibratedSculkSensorBlock`,
-физическим адресом входного блока и
-аргументом направления `Level.getSignal`.
-На настоящих шести `PlanetFace`
-калиброванное `FACING` остаётся
-`NORTH/EAST/SOUTH/WEST` локального
-BlockState; часть этих направлений
-физически совпадает с мировыми ±Y.
-Сигналы выходной грани и входного BE
-нельзя адаптировать одинаковым правилом.
+**После Stage 3A-7.4 (2026-10-10):**
+завершена **4/4** исследовательская карточка
+двух скалк-сенсоров, НЕ их игровая
+реализация/приёмка. Оригинальный
+неизменённый NeoForge **21.1.215**
+ZIP artifact 11643813158 SHA256
+`7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`
+прочитан заново: **1060 BLOCK IDs /
+241 Java-класс, 1333 ITEM IDs, 1712
+BlockState properties**. Для всех
+**71 исследованного класса / 192 точных
+BLOCK IDs** проверены пять
+`effective_method_owners` по полным
+сигнатурам методов, все значения
+совпали с текущим 16-колоночным
+реестром GitHub. Все четыре независимо
+вычисленных контрольные суммы совпали:
+roster `0xf188a064`, exact IDs
+`0x8a6840ba`, five owners
+`0xa81e5835`, combined
+`0x59d9c0aa`.
+[Подробный независимый отчёт](../research/PHASE2_STAGE3A_SCULK_COHORT_RECONCILIATION_1_21_1.md).
 
-Сама ванильная `VibrationSystem` слушает
-физические XYZ `Vec3`, расстояние,
-world-ray occlusion и настоящие 3×3
-XZ чанки; не следует менять направление
-луча на кубическом ребре. Дополнительно
-рассмотрены `stepOn`, шесть физических
-соседей резонаторов, BE серверный тикер
-передачи вибрации, отдельный scheduled
-BLOCK tick фаз `ACTIVE/COOLDOWN`,
-WATERLOGGED fluid tick, физический
-half-block VoxelShape и частицы.
+Состояние реестра **без повышения новых
+классов**: **71/241**
+`SOURCE_REVIEWED_INTEGRATION_PENDING`
+(192/1060 BLOCK IDs), **170/241**
+`REVIEW_PENDING` (868 BLOCK IDs).
+Все 241 NeoForge ASM patched-bytecode /
+Planet adapter / gameplay acceptance
+поля всё ещё `REVIEW_PENDING`.
+Не было изменений Java, сборки или
+игровых проверок. Stage 3A и Phase 2
+**не завершены**.
 
-[Исследование и **19 будущих игровых
-сценариев**](../research/PHASE2_STAGE3A_SCULK_SIX_FACE_VIBRATION_SIGNAL_CONTRACT_1_21_1.md)
-охватывают все шесть граней, рёбра,
-трёхгранный угол, радиусы 8/16,
-калибровку входов, сильный/слабый
-редстоун и компаратор, загрузку чанков,
-воду, звук и обычный мир.
-**Ни один сценарий не запускался.**
-Нет нового Java-кода и gameplay PASS.
+Создана следующая маленькая карточка:
+[Stage 3A-8](phase-02/02f-sculk-shrieker-catalyst-owners.md)
+для **SculkShriekerBlock**
+(`minecraft:sculk_shrieker`) и
+**SculkCatalystBlock**
+(`minecraft:sculk_catalyst`),
+**двух ещё не исследованных зарегистрированных
+классов / двух ID**. Это две
+отдельные логики: шрикер/предупреждение
+о хранителе/скалк-сигналы, катализатор/
+`ENTITY_DIE`/BLOOM/`SculkSpreader`.
+`LightningRodBlock` остаётся pending
+отдельного погодного семейства.
 
-Исследовательские статусы прежние:
-**71/241** классов source+compiled reviewed
-(**192/1060 BLOCK IDs**),
-**170/241 REVIEW_PENDING** (**868 IDs**).
-Все 241 ASM bytecode/Planet/gameplay
-ячейки всё ещё `REVIEW_PENDING`.
-Stage 3A и Phase 2 ещё не завершены.
-
-**NEXT первая незавершённая подзадача —
-[3A-7.4](phase-02/02e-sculk-vibration-sensor-owners.md):**
-точная независимая сверка исходного
-NeoForge 21.1.215 CI ZIP со всеми
-71 reviewed классами, 192 BLOCK IDs,
-пятью declaring owners, 170 pending
-и приёмочными статусами; затем новая
-маленькая карточка и один коммит.
+**NEXT первая незавершённая задача —
+[3A-8.1](phase-02/02f-sculk-shrieker-catalyst-owners.md):**
+сверить точные NeoForge owners и изучить
+полный исходный граф разных обработчиков
+BE/вибраций/скалк-распространения,
+один отдельный коммит и checkpoint.
 
 Обновление этого файла означает только, что появился маршрут и checkpoint, **не что Phase 2 исправлена**.

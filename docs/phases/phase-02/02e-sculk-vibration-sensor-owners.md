@@ -1,6 +1,6 @@
 # Phase 2 Stage 3A-7 — sculk vibration and calibrated sensor owners
 
-**Status: ACTIVE / 3 of 4 bounded research tasks completed; no ASM/Planet/gameplay PASS.**
+**Status: DONE — 4/4 bounded sculk sensor RESEARCH tasks; ASM/Planet/gameplay still pending.**
 Branch `2.0`; Minecraft **1.21.1** / NeoForge
 **21.1.215**, Java 21.
 
@@ -107,63 +107,61 @@ minecraft entity motion physics.
   vanilla non-Planet regression. Don't claim
   actually executed game tests.
   **DONE 2026-10-10 / Stage 3A-7.3:** [actual six-face PlanetFace directions and canonical BlockState FACING, physical backside receiver and API signal query separation, world XYZ vibration/ray/chunk semantics, two tick loops, local half-voxel shape/water/audio and 19 **not run** future vanilla/six-face/seam/corner game fixtures](../../research/PHASE2_STAGE3A_SCULK_SIX_FACE_VIBRATION_SIGNAL_CONTRACT_1_21_1.md). No new class disposition or runtime PASS.
-- [ ] **4. Stage 3A-7.4.** Independent original
+- [x] **4. Stage 3A-7.4.** Independent original
   NeoForge 21.1.215 CI ZIP verification of
   updated class roster, exact reviewed IDs,
   all five declaring owners, pending class
   statuses and all ASM/Planet/gameplay
   statuses; queue next small owner family.
   One commit, full Stage 3A still open.
+  **DONE 2026-10-10 / 3A-7.4:** [independently reopened immutable 21.1.215 ZIP, verified 241 class roster/1060 block IDs, all 71 reviewed class/192 exact IDs and five complete method signature declaring owners, four matching original-vs-GitHub FNV hashes, 170 pending rows and 241×3 acceptance gates](../../research/PHASE2_STAGE3A_SCULK_COHORT_RECONCILIATION_1_21_1.md). No new source promotion and no ASM/gameplay PASS. NEXT [3A-8 source owner card](02f-sculk-shrieker-catalyst-owners.md) (two original pending classes/2 IDs).
 
 ## Durable resume checkpoint
 
-**Last completed Stage 3A-7.3:** [six-face
-canonical/calibrated FACING, vibration event,
-physical signal-port and runtime acceptance
-contract](../../research/PHASE2_STAGE3A_SCULK_SIX_FACE_VIBRATION_SIGNAL_CONTRACT_1_21_1.md),
-checked against actual Planetary `PlanetFace`,
-`PlanetBlockStateFrame`,
-`PlanetBlockFrameContext`,
-`PlanetBlockNeighborQuery`,
-`PlanetBlockRuntime`,
-`PlanetBlockShapeRuntime` and pinned 1.21.1
-`SculkSensorBlock`, `CalibratedSculkSensorBlock`,
-both BE sources and `VibrationSystem`.
-Local FACING four tangent directions (not
-expanded to ±Y) -> physical input backside
-`BlockPos` -> **separate** queried Level
-signal `Direction`, target canonical side
-and output FACING suppression/direct-UP.
-`VibrationSystem` uses physical world Vec3
-distance, ray occlusion and 3x3 physical XZ
-chunk tick gate; don't rotate its vectors
-with gravity. Two independent tick mechanisms:
-server BE vibration travel, scheduled
-BLOCK active 30 plain/10 calibrated and
-10 cooldown, plus WATER fluid tick.
-Physical world-below neighbor notification,
-six-world-neighbor resonance, local 8/16
-half-height VoxelShape and world-Y
-`animateTick` separated into Phase 2/3/5/7A.
-19 explicit future acceptance fixtures
-from non-Planet control through six faces,
-seams, three-face corner, analog signals,
-water, chunk loaded, force stepOn,
-resonators, timers and save/load —
-**none were executed**.
+**Last completed: Stage 3A-7.4**, source
+reconciliation **4/4 sculk vibration
+family research tasks DONE**. This does
+not complete Stage 3A/Phase 2 and does
+not claim Planet/gameplay compatibility.
 
-Current statuses unchanged: **71/241**
-source+original reflection reviewed classes
-(**192/1060 BLOCK IDs**),
-**170/241 source pending** (**868 IDs**);
-all 241 patched ASM, Planet adapter and
-gameplay acceptance fields `REVIEW_PENDING`.
-No Java/CI/game run.
+[Original unmodified NeoForge compiled
+71-class/192 ID full owner evidence](../../research/PHASE2_STAGE3A_SCULK_COHORT_RECONCILIATION_1_21_1.md).
+Original CI artifact 11643813158
+SHA256 `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`;
+1060 BLOCK rows/241 unique classes,
+1333 ITEM rows, 1712 properties.
+All 71 source-reviewed class names,
+192 registered exact ID strings and
+five declaring owner tuple signatures
+matched original ZIP.
+Original vs GitHub digests:
+roster `0xf188a064`,
+IDs `0x8a6840ba`, owners
+`0xa81e5835`, combined
+`0x59d9c0aa`.
+Full ledger unchanged **71/241**
+source+compiled-reviewed classes/
+**192/1060** BLOCK IDs,
+**170/241 source REVIEW_PENDING** /
+868 IDs. 241×3 patched bytecode/
+Planet/gameplay gates remain pending;
+no Java patch, CI/client test or
+gameplay run.
 
-**NEXT FIRST incomplete: Stage 3A-7.4**,
-checkbox 4: original NeoForge 21.1.215
-unchanged ZIP exact 71-reviewed-class/192-ID/
-5-signature-owners reconciliation, verify
-170 class pending and all gate fields,
-queue next owner-family card.
-One research GitHub commit and stop.
+Created NEXT
+[Stage 3A-8 SculkShriekerBlock and
+SculkCatalystBlock owner family](02f-sculk-shrieker-catalyst-owners.md)
+card 0/4, exactly two still-unreviewed
+concrete BLOCK classes / two exact IDs.
+Different algorithms: shriek/BE
+VibrationSystem/warden-spawn vs catalyst
+entity-death GameEvent/BE tick,
+BLOOM and SculkSpreader cursors.
+LightningRodBlock stays pending separately.
+
+**NEXT FIRST unchecked: Stage 3A-8.1**,
+task 1 of new 02f card, full original
+compiled class+five signature declaration
+owners, pinned Java source of both
+different BE writer graphs; one bounded
+commit/updated checkpoint and STOP.
