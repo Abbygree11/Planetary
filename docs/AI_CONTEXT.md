@@ -4070,3 +4070,57 @@ class/ID/method owners cross-reconciliation
 for all current 69/241 reviewed classes and
 190 IDs, ensure all 172 pending, prepare next
 owner family card, one independent commit.
+
+
+## 2026-10-10 Stage 3A-6.4 original 69-class NeoForge reconciliation and next 2 sculk sensors
+
+User shorthand `кк` means one FIRST unchecked
+microtask from canonical 2.0 GitHub phase cards,
+one atomic commit/checkpoint, stop.
+Completed all **4/4 Stage 3A-6 research tasks**
+with this reconciliation. Report
+`docs/research/PHASE2_STAGE3A_SENSOR_COHORT_RECONCILIATION_1_21_1.md`.
+Original untouched NeoForge 21.1.215 CI ZIP
+artifact 11643813158 SHA256
+`7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e` was independently reopened:
+1060 BLOCK registry rows, 241 concrete
+class names, 1333 ITEM rows, 1712 state
+property rows. Selected all 69 current
+SOURCE_REVIEWED_INTEGRATION_PENDING classes
+(190 distinct BLOCK IDs) and extracted their
+five nearest method-declaring owner classes
+using FULL qualified method arguments from
+original `effective_method_owners`, checking
+every ID row within concrete class.
+Original vs GitHub 2.0 ledger independent
+FNV fingerprints match roster `0xf188a064`,
+reviewed exact IDs `0x6ae8047b`,
+reviewed five owners `0xba6ef72f`,
+combined `0x328b390e`.
+No new source review class promotion:
+**69/241 source+reflection reviewed
+(190/1060 BLOCK IDs), 172/241 source
+REVIEW_PENDING (870/1060 IDs)**, all 241
+NeoForge patched bytecode/Planet runtime/
+gameplay acceptance still REVIEW_PENDING.
+No code, test, game or CI changes.
+Created card
+`docs/phases/phase-02/02e-sculk-vibration-sensor-owners.md`
+for NEXT two pending Java owner classes
+`SculkSensorBlock` (minecraft:sculk_sensor)
+and `CalibratedSculkSensorBlock`
+(minecraft:calibrated_sculk_sensor), 2 IDs.
+Nonregistered `SculkSensorBlockEntity`,
+`CalibratedSculkSensorBlockEntity`,
+`VibrationSystem.Ticker`, game-event listeners,
+and calibrated FACING/back side filters all
+need source/compiled owner review; neither
+class source-promoted yet. SculkShriekerBlock
+and SculkCatalystBlock remain separately
+REVIEW_PENDING, as does LightningRodBlock.
+NEXT FIRST unchecked `3A-7.1` card task
+1/4, fully audit exact NeoForge registry
+and five owners, pinned comparative source,
+promote ONLY proven 2 classes, one separate
+commit and checkpoint, stop. Stage 3A/Phase2
+not finished.

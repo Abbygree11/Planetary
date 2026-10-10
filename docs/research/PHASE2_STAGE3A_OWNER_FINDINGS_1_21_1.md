@@ -657,6 +657,31 @@ all ASM/Planetary/gameplay PENDING.
 NEXT 3A-6.4 original ZIP reconciliation,
 new small owner-family card.
 
+## 2026-10-10 Stage 3A-6.4 full 69-class NeoForge ZIP five-owner reconciliation
+
+[Directly parsed original runtime artifact
+vs current source+reflection reviewed
+exact IDs and method declaring owners](PHASE2_STAGE3A_SENSOR_COHORT_RECONCILIATION_1_21_1.md):
+241 exact class/1060 ID source roster,
+69 reviewed classes/190 individually exact
+registered IDs, all five full-signature
+declaration owners for each checked; original
+vs GitHub independent FNV fingerprints MATCH
+roster `0xf188a064`, IDs `0x6ae8047b`,
+five owners `0xba6ef72f`, combined
+`0x328b390e`.
+No class promotion; **69/241 source-reviewed
+(190 IDs), 172/241 pending (870 IDs)**;
+all 241 patched ASM/Planetary integration/
+gameplay gate statuses REVIEW_PENDING.
+3A-6 daylight/plate research 4/4 done
+but Phase 2 not done.
+Next [3A-7 sculk sensor/calibrated vibration
+source owner family](../phases/phase-02/02e-sculk-vibration-sensor-owners.md)
+2 pending classes/2 exact original IDs;
+other sculk shrieker/catalyst pending
+independently.
+
 ## Remaining Stage 3A work
 
 1. Read actual `phase2-neo1211-registry-census` artifact's

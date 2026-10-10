@@ -1,3 +1,36 @@
+## 2026-10-10 Stage 3A-6.4: original ZIP exactly reconciles all 69 sensor-source-reviewed class owners
+
+[Full original 21.1.215 ZIP vs current 69 exact
+classes/190 registered IDs/five method declarations](PHASE2_STAGE3A_SENSOR_COHORT_RECONCILIATION_1_21_1.md).
+Original immutable artifact 11643813158
+SHA256 `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`:
+1060 BLOCK / 241 concrete Java classes,
+1333 ITEM, 1712 state property rows.
+Independently re-parsed full qualified exact
+signature nearest five method declarations;
+all 69 source-reviewed class names,
+190 actual registered ID strings match
+GitHub 2.0 ledger. Four FNV-1a diagnostic hashes
+MATCH: `0xf188a064` roster,
+`0x6ae8047b` reviewed IDs,
+`0xba6ef72f` reviewed five method owners,
+`0x328b390e` all combined.
+Full 16-column/241 rows/no duplicate class check;
+172 class source reviews still pending and
+every one of 241 patched NeoForge ASM,
+Planetary adaptation and gameplay acceptance
+columns REVIEW_PENDING.
+No new class promoted; no Java/CI/game tests.
+Stage3A-6 card 4/4 RESEARCH only DONE,
+Stage3A and Phase2 not done.
+Next [Stage3A-7 sculk vibration sensor owner
+card](../phases/phase-02/02e-sculk-vibration-sensor-owners.md)
+covers **two** still source-unreviewed concrete
+classes/two original BLOCK IDs:
+SculkSensorBlock and CalibratedSculkSensorBlock.
+SculkShrieker/Catalyst and LightningRod pending
+different source families.
+
 ## 2026-10-10 Stage 3A-6.3 — six-face sensor support/AABB and sky/signal contracts
 
 [Position-only canonical BlockState, support target

@@ -19,7 +19,8 @@
 | 2.3A-3 | [02a-block-graph-owners.md](phase-02/02a-block-graph-owners.md) | **DONE (4 research packages only)** | Exact original ZIP source owner/item/shape graph reconciliation; 55 reviewed, 186 pending |
 | 2.3A-4 | [02b-redstone-signal-owners.md](phase-02/02b-redstone-signal-owners.md) | **DONE (4 research packages only)** | Exact original ZIP reconciliation for 63 source+reflection reviewed classes/170 IDs; 178 pending, all gameplay gates pending |
 | 2.3A-5 | [02c-rail-owners.md](phase-02/02c-rail-owners.md) | **DONE (4 research packets only)** | All 66 class exact 5-signature owner+174 ID records match original ZIP; 175 other classes pending, no gameplay PASS |
-| 2.3A-6 | [02d-environment-pressure-sensor-owners.md](phase-02/02d-environment-pressure-sensor-owners.md) | **ACTIVE 3/4** | Six-face canonical support and physical plate TOUCH_AABB, signal queried-side vs physical callbacks, global sky vs local gravity, BE vs scheduled ticks + 15 proposed tests, no runtime PASS |
+| 2.3A-6 | [02d-environment-pressure-sensor-owners.md](phase-02/02d-environment-pressure-sensor-owners.md) | **DONE (4 research packets only)** | Original 21.1.215 ZIP all 69 exact owner tuples/190 reviewed IDs reconcile, 172 pending, no ASM or gameplay PASS |
+| 2.3A-7 | [02e-sculk-vibration-sensor-owners.md](phase-02/02e-sculk-vibration-sensor-owners.md) | **NEXT** | SculkSensorBlock and CalibratedSculkSensorBlock, 2 pending class/2 exact IDs, VibrationSystem/BE and calibrated FACING-signal filters |
 | 2.3B | [03-item-creators.md](phase-02/03-item-creators.md) | TODO | Item/alternative-author coverage |
 | 2.3C | [04-lifecycle-neoforge.md](phase-02/04-lifecycle-neoforge.md) | TODO | Bytecode/patch/dispatch evidence and gate |
 | 2.4A | [05-implementation-a.md](phase-02/05-implementation-a.md) | TODO | Context/FACING/AXIS/rotation state families |
@@ -37,48 +38,47 @@
 
 ## Точка продолжения
 
-**После подпакета 3A-6.3 (2026-10-10):**
-исследование источников и владельцев поведения
-охватило **69/241** зарегистрированных BLOCK
-классов (**190/1060 BLOCK IDs**);
-**172/241** остаются `REVIEW_PENDING`
-(**870/1060 IDs**). Три класса сенсоров /
-16 IDs завершили исследования 3A-6.1,
-точные предметы 3A-6.2 и локально-физический
-контракт 3A-6.3. Важные семантики:
+**После исследования 3A-6.4 (2026-10-10):**
+оригинальный неизменённый NeoForge 21.1.215
+CI ZIP из run 37988064055, artifact 11643813158
+SHA256 `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e` прочитан непосредственно:
+**1060 BLOCK IDs / 241 Java класса,
+1333 ITEM IDs, 1712 property records**.
+Все **69** source+reflection-reviewed
+классов, их **190 точных BLOCK ID** и
+**пять exact-signature declaring owners** на
+каждый сверены независимо с реестром ветки:
+4 хеша совпадают:
+`0xf188a064` (полный roster),
+`0x6ae8047b` (IDs),
+`0xba6ef72f` (владельцы),
+`0x328b390e` (совместно).
+[Отчёт аудита](../research/PHASE2_STAGE3A_SENSOR_COHORT_RECONCILIATION_1_21_1.md).
+Карточка сенсоров 3A-6 завершена
+**4/4 исследовательских подпакета**, однако
+**никакого ASM, Planetary runtime или
+gameplay PASS не добавлено**.
 
-- `BasePressurePlateBlock` использует исходный
-  локальный DOWN, физическую соседнюю опору и
-  её собственную canonical-facing грань,
-  не мировой `pos.below()` как общий патч;
-- `TOUCH_AABB` для контакта сущностей — сырой
-  XYZ AABB, **не** автоматически вращаемый
-  `BlockState.getShape`; может требоваться
-  отдельная адаптация вызова `entityInside`;
-- запрашиваемая сторона `getDirectSignal(..., UP)`
-  отличается от направления физического
-  уведомления соседей;
-- `LightLayer.SKY` — глобальная политика света,
-  серверный daylight BE тикер на `gameTime%20`
-  отличается от scheduled ticks плит (20/10);
-- [составлены 15 сценариев приёмки](../research/PHASE2_STAGE3A_SENSOR_FACE_FRAME_AND_SIGNAL_CONTRACT_1_21_1.md)
-  для шести граней, переходов через рёбра,
-  углов, сигналов, сущностей, skylight и
-  обычного мира; **НИ ОДИН не запускался**.
+В основном реестре без новых повышений
+**69/241 SOURCE_REVIEWED_INTEGRATION_PENDING**
+(190/1060 BLOCK IDs),
+**172/241 REVIEW_PENDING** (870 IDs).
+Каждая из трёх ячеек приёмки у всех
+241 классов — `REVIEW_PENDING`. Stage 3A
+и Phase 2 НЕ завершены.
 
-ASM, Planetary adapter и gameplay приёмка
-остаются `REVIEW_PENDING` для всех 241
-классов. Новых производственных Java
-изменений нет. Стадия 3A и фаза 2
-ещё не завершены.
-
-**NEXT первая незавершённая подзадача —
-[3A-6.4](phase-02/02d-environment-pressure-sensor-owners.md):**
-сверить исходный неизменённый NeoForge
-21.1.215 ZIP со всеми **69** reviewed классами,
-**190** их точными BLOCK ID и пятью
-владельцами методов, сохранить 172
-pending, подготовить следующую отдельную
-группу и один коммит.
+**Следующая первая незавершённая задача —
+[3A-7.1](phase-02/02e-sculk-vibration-sensor-owners.md):**
+новое маленькое семейство SculkSensorBlock
+и CalibratedSculkSensorBlock, **2 ещё не
+исследованных класса/2 точных BLOCK IDs**.
+Их `BlockEntity`, `VibrationSystem`, входные
+грани, фазы активации, сигнал и вода
+требуют отдельного точного исходного
+NeoForge owner audit.
+SculkShriekerBlock и SculkCatalystBlock
+остаются pending для других пакетов.
+Один `кк` = один небольшой исследовательский
+коммит и checkpoint.
 
 Обновление этого файла означает только, что появился маршрут и checkpoint, **не что Phase 2 исправлена**.

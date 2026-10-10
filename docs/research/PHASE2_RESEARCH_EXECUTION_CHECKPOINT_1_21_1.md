@@ -960,6 +960,64 @@ family without proving why it is a unique algorithm owner.
   and all 172 source-unreviewed rows; queue
   next independent owner family, commit once.
 
+### 2026-10-10 micro-checkpoint — Stage 3A-6.4 all 69 exact class/ID/owner declarations reconciled
+
+- Card `docs/phases/phase-02/02d-environment-pressure-sensor-owners.md`
+  **4 of 4 bounded research subtasks DONE**;
+  Phase 2 and Stage 3A still incomplete.
+- Original **unmodified** NeoForge 21.1.215
+  CI artifact 11643813158 ZIP SHA256
+  `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`.
+  Current original runtime census 1060 BLOCK
+  ID rows /241 distinct registered classes,
+  1333 ITEM, 1712 property records.
+  Original `effective_method_owners` parsed
+  by exact five full qualified argument
+  signatures for all 69 current source-reviewed
+  classes, checked all 190 registered exact IDs
+  from `registry_id` against GitHub class ledger.
+  Four original vs GitHub canonical FNV digests
+  all MATCH: roster `0xf188a064`,
+  IDs `0x6ae8047b`,
+  owners `0xba6ef72f`,
+  combined `0x328b390e`.
+  Full evidence file:
+  `docs/research/PHASE2_STAGE3A_SENSOR_COHORT_RECONCILIATION_1_21_1.md`.
+- Source+reflection completed for actual
+  DaylightDetectorBlock (1 ID),
+  PressurePlateBlock (13), WeightedPressurePlateBlock
+  (2) in previous 3A-6.1/6.2/6.3 tasks;
+  this 3A-6.4 did NOT change source dispositions,
+  Bytecode/Mixin/application/gameplay statuses.
+- Complete ledger **69/241 source+reflection
+  reviewed (190/1060 exact BLOCK IDs)**,
+  **172/241 source REVIEW_PENDING (870 IDs)**.
+  All patched NeoForge bytecode, Planet runtime/
+  adapter and gameplay acceptance gates for all
+  241 entries remain REVIEW_PENDING.
+  No Java patch/build/game client tests this turn.
+- Created new independent
+  `docs/phases/phase-02/02e-sculk-vibration-sensor-owners.md`.
+  Exactly **SculkSensorBlock** (1 ID,
+  `minecraft:sculk_sensor`) and
+  **CalibratedSculkSensorBlock** (1 ID,
+  `minecraft:calibrated_sculk_sensor`)
+  are next two still-pending classes/2 IDs.
+  `VibrationSystem`, SculkSensorBlockEntity,
+  CalibratedSculkSensorBlockEntity essential
+  nonregistered source owners.
+  SculkShriekerBlock and SculkCatalystBlock,
+  LightningRodBlock all still pending separate
+  owner families.
+- **NEXT FIRST unfinished microtask Stage 3A-7.1**,
+  new 02e card checkbox 1, original compiled
+  NeoForge 21.1.215 five method declaration
+  owners / exact IDs and full pinned 1.21.1
+  game-event vibration/BlockEntity signal
+  pathways for 2 new concrete classes.
+  One bounded research-only GitHub commit,
+  checkpoint then stop.
+
 ## Resume procedure after interrupted answer
 
 1. Read AGENTS.md, this checkpoint, the latest roadmap

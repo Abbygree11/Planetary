@@ -1,6 +1,6 @@
 # Phase 2 Stage 3A-6 — environment and entity-contact signal sensors
 
-**Status: ACTIVE — 3/4 independently bounded research tasks done; no ASM/Planet/gameplay PASS.**
+**Status: DONE — all four bounded sensor research tasks complete; ASM/Planet/gameplay still pending.**
 Branch `2.0`, Minecraft **1.21.1** / NeoForge **21.1.215**.
 
 [Main Phase 2 roadmap](../phase-02.md) ·
@@ -89,49 +89,43 @@ separate owner-family cards.
   direction query, tick scheduler/BE and cross-phase
   contracts. Document concrete runnable six-face
   plus seam/corner tests, not PASS. **DONE 2026-10-10 / 3A-6.3:** [canonical support/target mapping, all 6 actual PlanetFace axes, rotated raw TOUCH_AABB and entityInside dispatch caveat, queried direct-signal UP vs physical below notifications, SKY world policy, BE 20-global-tick vs plate 20/10-relative-tick and 15 future acceptance fixtures](../../research/PHASE2_STAGE3A_SENSOR_FACE_FRAME_AND_SIGNAL_CONTRACT_1_21_1.md). No code, tests or new class promotions.
-- [ ] **4.** Reconcile original 21.1.215 CI ZIP
+- [x] **4.** Reconcile original 21.1.215 CI ZIP
   class roster, reviewed IDs, full five-signature
   owner tuples and all acceptance gate fields,
   prepare next independent owner card, commit
-  checkpoint. Do not claim Phase 2 complete.
+  checkpoint. Do not claim Phase 2 complete. **DONE 2026-10-10 / Stage 3A-6.4:** [independently decoded unmodified original ZIP vs all 69 source+reflection-reviewed classes/190 registered IDs, exact five nearest declaring owners per class, four matching digests and all 241 acceptance gate statuses](../../research/PHASE2_STAGE3A_SENSOR_COHORT_RECONCILIATION_1_21_1.md). No source status promotion or game/ASM PASS. Next [Stage 3A-7 sculk vibration+calibrated sensor family](02e-sculk-vibration-sensor-owners.md), precisely 2 pending classes/2 IDs.
 
 ## Resume checkpoint
 
-**Last completed: Stage 3A-6.3:** canonical
-local BlockState frame vs source-local support
-DOWN, real world support BlockPos and support
-block's local inward face; physical neighbor
-notifications and API queried signal direction
-remain separate domains. Reviewed actual
-Planetary `PlanetFace`, `PlanetBlockStateFrame`,
-`PlanetBlockFrameContext`,
-`PlanetBlockNeighborQuery`,
-`PlanetBlockSupportQuery`,
-`PlanetBlockShapeRuntime` and
-`PlanetVoxelShapeRotation`. The
-`BasePressurePlateBlock.TOUCH_AABB` entity
-box needs its own physical rotation and
-`entityInside` dispatch verification; the
-visual VoxelShape rotation is not enough.
-Sky LightLayer.SKY and sun angle are
-global environment readings, not automatically
-local-radial; daylight BE updates on world
-gameTime%20, whereas plate scheduled ticks
-are relative 20/10. Signal `getDirectSignal`
-argument UP is query-side, not a notification
-direction. [Complete chart and 15 not-run
-acceptance fixtures](../../research/PHASE2_STAGE3A_SENSOR_FACE_FRAME_AND_SIGNAL_CONTRACT_1_21_1.md).
+**Last completed: Stage 3A-6.4.**
+[Original unmodified NeoForge ZIP, full 69-class
+190-ID and 5-owner exact reconciliation](../../research/PHASE2_STAGE3A_SENSOR_COHORT_RECONCILIATION_1_21_1.md).
+Parsed original artifact 11643813158 SHA256
+`7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`;
+1060 BLOCK rows / 241 concrete classes,
+1333 ITEM, 1712 state properties; 4 full
+diagnostic hashes matched with current branch
+ledger: `0xf188a064` roster,
+`0x6ae8047b` IDs, `0xba6ef72f` five owners,
+`0x328b390e` combined. Source-reviewed
+sensor classes explicitly in reconciled set:
+DaylightDetectorBlock (1 ID), PressurePlateBlock
+(13 IDs), WeightedPressurePlateBlock (2 IDs).
 
-Full status unchanged **69/241 source-reviewed
-(190/1060 IDs)**, **172/241 source pending
-(870/1060 IDs)**. All 241 patched ASM,
-Planetary runtime and gameplay statuses PENDING.
-No code changes or tests.
+Full ledger **UNCHANGED: 69/241**
+source+compiled declaration reviewed
+(190/1060 registered BLOCK IDs),
+**172/241 REVIEW_PENDING** (870 IDs).
+All 241 ASM patch bytecode, Planet adapter,
+and gameplay acceptance statuses remain pending.
+No Java patches, build or game tests. This
+research family 4/4 DONE, **not Phase 2 DONE**.
 
-**NEXT FIRST unchecked Stage 3A-6.4**
-checkbox 4: independently reconcile original
-NeoForge 21.1.215 CI ZIP against all current
-69 exact reviewed classes / 190 IDs and
-five method-declaring owner signatures;
-queue next independent source-owner family.
-One commit and stop; full Phase 2 incomplete.
+**NEXT FIRST independent source owner card:**
+[Stage 3A-7.1 Sculk and calibrated vibration
+sensors](02e-sculk-vibration-sensor-owners.md)
+task 1, precisely two still-pending Java
+classes / two registered BLOCK IDs:
+SculkSensorBlock and CalibratedSculkSensorBlock,
+with BlockEntity/VibrationSystem source pathways.
+One evidence commit, then stop.
