@@ -1078,6 +1078,66 @@ family without proving why it is a unique algorithm owner.
   event and direct block writer bypasses.
   One separate bounded GitHub commit then stop.
 
+### 2026-10-10 micro-checkpoint — Stage 3A-7.2 two exact ITEM BlockItem creators and BE/phase event writers
+
+- Active card `docs/phases/phase-02/02e-sculk-vibration-sensor-owners.md`
+  **2/4 bounded tasks DONE**, 3–4 still open.
+  Source report:
+  `docs/research/PHASE2_STAGE3A_SCULK_ITEM_ALTERNATE_AUTHORS_1_21_1.md`.
+- Reopened untouched original NeoForge
+  21.1.215 CI ZIP artifact 11643813158
+  SHA256 `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`: 1060 BLOCK registry
+  rows, 1333 ITEM rows, 1712 properties.
+  Exact ITEM.placed_block join for
+  minecraft:sculk_sensor and
+  minecraft:calibrated_sculk_sensor finds
+  precisely **one same-named ITEM per BLOCK**,
+  `BlockItem>Item` concrete BlockItem class
+  both cases, seven placing lifecycle
+  compiled owners `BlockItem` both;
+  separate `Item.use` owner Item.
+  Original two-row canonical SHA256
+  `6225d8898725346b8f37d34d97d64a4a7a86a17a5cf39e02d339f2bc0972fee5`.
+- Pinned Minecraft 1.21.1 source:
+  `BlockItem.place` initial context
+  `getStateForPlacement` (`WATERLOGGED`
+  both, plus calibrated `FACING`) then
+  `placeBlock`, optional post-place
+  `DataComponents.BLOCK_STATE` legal
+  property updates, `BLOCK_ENTITY_DATA`
+  conditional and BE item components.
+  Non-item sources:
+  `VibrationSystem.Listener` event route
+  and `Ticker` vibration arrival,
+  `SculkSensorBlockEntity.VibrationUser`
+  last-frequency author, sensor.activate
+  ACTIVE/POWER writer, scheduled block
+  tick/deactivate PHASE writer, onPlace
+  POWER reset, stepOn forced vibration,
+  six physical resonator GameEvents,
+  BE vibration save/load, calibrated
+  BE backside signal read and comparator
+  output read, generic StructureTemplate
+  direct state/BE write. No confirmed
+  sensor-containing shipped worldgen template.
+- **No new class source promotion:**
+  71/241 SOURCE_REVIEWED_INTEGRATION_PENDING
+  (192/1060 BLOCK IDs);
+  170/241 REVIEW_PENDING (868 IDs).
+  SculkShrieker/SculkCatalyst/LightningRod
+  still pending. All patched ASM,
+  Planet adapter/runtime and gameplay
+  gates for 241 entries REVIEW_PENDING,
+  no Java, CI, server/client, game tests.
+- **NEXT FIRST unchecked microtask 3A-7.3**:
+  source canonical calibrated FACING,
+  physical backside target + API signal
+  query-side, vibration Vec3 listener
+  world-coordinate transport, loaded chunks,
+  six-face seam/corner, water and shape
+  fixture set; ONE docs checkpoint commit,
+  then stop.
+
 ## Resume procedure after interrupted answer
 
 1. Read AGENTS.md, this checkpoint, the latest roadmap

@@ -1,6 +1,6 @@
 # Phase 2 Stage 3A-7 — sculk vibration and calibrated sensor owners
 
-**Status: ACTIVE / 1 of 4 bounded source research tasks completed; no ASM/Planet/gameplay PASS.**
+**Status: ACTIVE / 2 of 4 bounded source research tasks completed; no ASM/Planet/gameplay PASS.**
 Branch `2.0`; Minecraft **1.21.1** / NeoForge
 **21.1.215**, Java 21.
 
@@ -84,7 +84,7 @@ minecraft entity motion physics.
   audited two rows**, do not touch shrieker
   and catalyst. Evidence + ledger + checkpoint.
   **DONE 2026-10-10 / 3A-7.1:** [original compiled 5 method owners/2 exact BLOCK IDs and pinned six-class BE/VibrationSystem source review](../../research/PHASE2_STAGE3A_SCULK_VIBRATION_SOURCE_OWNER_AUDIT_1_21_1.md); 8/16 radius, 30/10 ACTIVE and 10 COOLDOWN ticks, calibrated FACING and back-signal frequency filtering, raw physical-world event occlusion and neighbor callback paths. Two rows promoted to source-only reviewed, **71/241 classes and 192/1060 BLOCK IDs**; all runtime/gameplay gates pending.
-- [ ] **2. Stage 3A-7.2.** Independently join
+- [x] **2. Stage 3A-7.2.** Independently join
   exact original 1333-item registry by
   `ITEM.placed_block` for both BLOCK IDs,
   distinguish ordinary BlockItem vs aliases,
@@ -93,6 +93,7 @@ minecraft entity motion physics.
   structure/world state writers, frequency
   selection and calibrated-signal alternative
   authors. Evidence + checkpoint; no runtime PASS.
+  **DONE 2026-10-10 / 3A-7.2:** [original two exact one-to-one BlockItem registry joins, seven compiled placement method owners and ITEM `Item.use` distinction, optional block/BE item component state rewrite, vibration BlockEntity writer paths, state phase scheduling, calibrated input/output readers and generic StructureTemplate bypass](../../research/PHASE2_STAGE3A_SCULK_ITEM_ALTERNATE_AUTHORS_1_21_1.md). Reproducible joined ITEM SHA-256 `6225d8898725346b8f37d34d97d64a4a7a86a17a5cf39e02d339f2bc0972fee5`. No specific worldgen sensor placement or runtime/gameplay PASS.
 - [ ] **3. Stage 3A-7.3.** Canonical local
   BlockState FACING, real-world neighbor
   and receiver-query direction,
@@ -115,40 +116,50 @@ minecraft entity motion physics.
 
 ## Durable resume checkpoint
 
-**Last completed: Stage 3A-7.1** source+compiled
-declaration research:
-[exact NeoForge sculk/class owners and full
-VibrationSystem/BE source algorithm graph](../../research/PHASE2_STAGE3A_SCULK_VIBRATION_SOURCE_OWNER_AUDIT_1_21_1.md).
-Both exact original BLOCK IDs sourced from unmodified
-NeoForge 21.1.215 CI ZIP:
-`minecraft:sculk_sensor` and
-`minecraft:calibrated_sculk_sensor`.
-Nearest five compiled owners:
-plain `SculkSensorBlock/BlockBehaviour/
-SculkSensorBlock/BlockBehaviour/Block`;
-calibrated `CalibratedSculkSensorBlock/
-BlockBehaviour/SculkSensorBlock/
-BlockBehaviour/Block`. Pinned Minecraft
-1.21.1 full listener/BE/phase/side-filter code.
-BE radius **8 vs 16**, plain ACTIVE 30 ticks,
-calibrated ACTIVE 10 ticks, both cooldown 10.
-Input backside redstone frequency filter and
-`getSignal` FACING output suppression,
-physical neighbor and VibrationSystem world
-XYZ distance/occlusion/chunk gates distinct.
+**Last completed Stage 3A-7.2:** independently
+reopened original unmodified NeoForge 21.1.215
+runtime census ZIP (artifact 11643813158,
+SHA256 `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`)
+and checked **exactly one** ITEM `placed_block`
+match per both original registered BLOCK IDs:
+`minecraft:sculk_sensor` →
+`minecraft:sculk_sensor` BlockItem;
+`minecraft:calibrated_sculk_sensor` →
+`minecraft:calibrated_sculk_sensor` BlockItem.
+Both are original `BlockItem>Item`,
+seven effective compiled item placement
+lifecycle declaring owners `BlockItem`,
+separate `use(Level,Player,InteractionHand)`
+nearest owner `Item`. Joined ITEM-row
+SHA256 `6225d8898725346b8f37d34d97d64a4a7a86a17a5cf39e02d339f2bc0972fee5`.
+[Full exact report](../../research/PHASE2_STAGE3A_SCULK_ITEM_ALTERNATE_AUTHORS_1_21_1.md).
 
-Ledger **71/241 source+compiled owner reviewed**
-(192/1060 registered BLOCK IDs),
-**170/241 REVIEW_PENDING** (868/1060 IDs).
-SculkShrieker/Catalyst and LightningRod
-still pending separately. All 241 NeoForge
-patched ASM / Planet adapter / gameplay
-verdicts still REVIEW_PENDING.
-No Java change/build/client run.
+Source bypasses: optional
+`DataComponents.BLOCK_STATE` and
+`BLOCK_ENTITY_DATA`, `VibrationSystem.Listener`
++ BE `onReceiveVibration` (frequency writer)
++ `SculkSensorBlock.activate`,
+scheduled `tick`/deactivate state transitions,
+`onPlace` power reset, `stepOn`
+forced vibration, six-world-direction
+resonator events, calibrated physical
+opposite-FACING signal **reader** and
+BE analog last-frequency output,
+generic `StructureTemplate.setBlock`
+without proving a shipped sensor-containing
+template.
 
-**NEXT FIRST unchecked Stage 3A-7.2**
-checkbox 2: independent original ITEM
-`placed_block` join for both exact IDs,
-Item component post-placement and
-BlockEntity/event/structure alternate author paths.
-One bounded docs commit then stop.
+No new source class promotion:
+**71/241** reviewed (192/1060 BLOCK IDs),
+**170/241** source pending (868/1060 IDs).
+All 241 patched NeoForge ASM, Planet adapter,
+gameplay verdicts `REVIEW_PENDING`.
+No Java build, server or client execution.
+
+**NEXT FIRST unfinished Stage 3A-7.3**,
+card checkbox 3: six-face and edge/corner
+local-to-world FACING, receiver query vs
+physical neighbor, world-Vec3 game-event
+propagation, fluid shape and actual test
+matrix; one independent research commit,
+stop. No gameplay PASS.

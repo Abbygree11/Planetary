@@ -725,6 +725,43 @@ Ledger **71/241 reviewed/192 IDs**,
 Next 3A-7.2 original ITEM creators and
 alternate events.
 
+## 2026-10-10 Stage 3A-7.2 2 real sculk ITEM creators and alternative event/state authors
+
+[Source-verified original NeoForge 21.1.215
+ITEM.placed_block census and actual
+VibrationSystem/BE/BlockItem alternate
+author trace](PHASE2_STAGE3A_SCULK_ITEM_ALTERNATE_AUTHORS_1_21_1.md):
+2/2 exact ITEM IDs one-to-one with
+minecraft:sculk_sensor and
+minecraft:calibrated_sculk_sensor BLOCK
+IDs, both ordinary BlockItem, all
+seven item placement lifecycle owners
+BlockItem; separate Item.use declared
+in Item. Full original joined row SHA256
+`6225d8898725346b8f37d34d97d64a4a7a86a17a5cf39e02d339f2bc0972fee5`. BlockItem.place initial
+BlockState from SculkSensorBlock water
+and calibrated FACING, optional post-place
+DataComponents.BLOCK_STATE and BE data
+writers. Non-item causal writers:
+VibrationSystem.Listener/Ticker and BE
+onReceiveVibration writes last frequency,
+SculkSensorBlock.activate writes POWER/
+ACTIVE, scheduled tick → COOLDOWN → INACTIVE,
+onPlace reset, `stepOn` additional
+forced event, six physical resonator
+GameEvent producers, calibrated backside
+getSignal filter (reader) and BE last
+frequency analog comparator output (reader).
+Generic StructureTemplate direct block
+writer exists, specific sensor worldgen
+feature NOT established. SculkShrieker/
+Catalyst/lightning remain unreviewed.
+Totals unchanged **71 reviewed class/
+192 exact IDs; 170 source pending/868 IDs**,
+all patched ASM/Planet/gameplay gates pending.
+NEXT 3A-7.3 canonical local FACING/physical
+events and future acceptance fixtures.
+
 ## Remaining Stage 3A work
 
 1. Read actual `phase2-neo1211-registry-census` artifact's

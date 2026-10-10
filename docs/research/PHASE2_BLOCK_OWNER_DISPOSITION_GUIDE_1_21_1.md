@@ -1,3 +1,51 @@
+## 2026-10-10 Stage 3A-7.2 — original 2 exact sculk ITEM BlockItem owners and alternate writers
+
+[Two exact original 1333-item registry
+`ITEM.placed_block` sensor creator joins,
+plus pinned vanilla BE/VibrationSystem author
+graph](PHASE2_STAGE3A_SCULK_ITEM_ALTERNATE_AUTHORS_1_21_1.md).
+Original immutable ZIP artifact 11643813158
+SHA256 `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`.
+Both minecraft:sculk_sensor and
+minecraft:calibrated_sculk_sensor have
+exactly **one same-name ITEM each**,
+original concrete `net.minecraft.world.item.BlockItem`
+with `BlockItem>Item` hierarchy.
+7 exact compiled placement lifecycle
+method nearest owners `BlockItem` for
+both; separate `use(Level,Player,InteractionHand)`
+nearest owner `Item`. Canonical two-ITEM join
+SHA256 `6225d8898725346b8f37d34d97d64a4a7a86a17a5cf39e02d339f2bc0972fee5`.
+Pinned BlockItem place source:
+initial placement state→Level.setBlock,
+optional item `DataComponents.BLOCK_STATE`
+legal property mutation, conditional
+`BLOCK_ENTITY_DATA` / apply components
+before `setPlacedBy`.
+Off-item authors: server event dispatcher,
+VibrationSystem.Listener/Ticker selection
+and travel, SculkSensorBlockEntity
+onReceiveVibration writes BE last frequency
+and calls sensor.activate (PHASE/POWER
+setBlock + relative active block tick),
+scheduled SculkSensorBlock.tick/deactivate
+ACTIVE→COOLDOWN→INACTIVE, `onPlace` POWER
+correction, `stepOn` force-schedule event,
+six physical neighbor resonator GameEvents,
+BE save/load listener data. Calibrated
+BE backside redstone frequency input and
+getSignal FACING suppression + BE comparator
+analog read are **readers**, not item or
+state writes. StructureTemplate.placeInWorld
+is generic direct BlockState+BE NBT writer
+bypassing BlockItem, not evidence of
+a shipped sensor-containing worldgen template.
+**No actual ASM/Planet/gameplay PASS.**
+Full ledger still **71/241 source-reviewed
+192/1060 IDs, 170/241 pending 868 IDs**.
+Next 3A-7.3 six-face local/physical
+port and event propagation test contract.
+
 ## 2026-10-10 Stage 3A-7.1 exact Sculk and Calibrated sensor source/NeoForge five-owner audit
 
 [Full original NeoForge 21.1.215 two-class/

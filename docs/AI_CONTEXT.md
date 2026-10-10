@@ -4189,3 +4189,68 @@ checkbox 2 original two ITEM `placed_block`
 creators, BE alternative authors and structure
 writes; one independent docs-only commit
 and stop.
+
+
+## 2026-10-10 Stage 3A-7.2 two original sculk sensor BlockItem joins and alternate authors
+
+User `кк`=complete ONE first unchecked small
+GitHub `2.0` card task, commit and durable
+checkpoint, then stop. Completed Stage
+3A-7.2 checkbox 2 of 4 in
+`docs/phases/phase-02/02e-sculk-vibration-sensor-owners.md`.
+Report
+`docs/research/PHASE2_STAGE3A_SCULK_ITEM_ALTERNATE_AUTHORS_1_21_1.md`.
+Direct original untouched NeoForge 21.1.215
+runtime census ZIP artifact 11643813158 SHA256
+`7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`, original 1333 ITEM+1060 BLOCK
+registry rows and 1712 property rows.
+Joined exact `ITEM.placed_block=BLOCK.registry_id`
+for `minecraft:sculk_sensor`,
+`minecraft:calibrated_sculk_sensor`:
+each has ONE corresponding identical ITEM
+registry ID, concrete class ordinary
+`net.minecraft.world.item.BlockItem`,
+class hierarchy BlockItem>Item; 7 original
+effective placing method declaring owners
+all `BlockItem`; separate Item.use
+nearest owner `Item`. Canonical original
+two-item joined source SHA256
+`6225d8898725346b8f37d34d97d64a4a7a86a17a5cf39e02d339f2bc0972fee5`.
+Comparative pinned Minecraft 1.21.1
+BlockItem.place: initial placement
+via concrete sensor getStateForPlacement,
+then optional `DataComponents.BLOCK_STATE`
+rewrite of legal Phase/POWER/WATERLOGGED
+and calibrated FACING, BE data/components
+conditional. Crucial alternate state
+author paths bypass item: emitted
+physical-world GameEvent→VibrationSystem.Listener/
+Ticker→SculkSensorBlockEntity.VibrationUser
+writes BE.lastVibrationFrequency,
+calls SculkSensorBlock.activate writing
+PHASE=ACTIVE+POWER, scheduled block tick
+deactivate writes COOLDOWN and power=0
+then INACTIVE; onPlace initial POWER reset,
+stepOn listener forced event,
+6 world-direction resonator GameEvent.
+CalibratedSculkSensorBlockEntity.getBackSignal
+reads physical FACING-opposite block and
+getSignal(pos,direction) (reader not writer);
+CalibratedSculkSensorBlock.getSignal suppresses
+output queried FACING; BE analog comparator
+last frequency read only while ACTIVE.
+Generic StructureTemplate.placeInWorld
+is direct BlockState/BE writer bypassing
+BlockItem, but no verified shipped
+sensor-containing structure/worldgen path.
+No Java/build/gameplay PASS or patched ASM.
+Same 71/241 source-reviewed classes
+192/1060 BLOCK IDs, 170/241 pending
+868/1060 IDs; all patched NeoForge
+ASM/Planet runtime/gameplay acceptance
+still REVIEW_PENDING.
+NEXT first Stage3A-7.3 checkbox3:
+canonical local FACING/receiver physical
+coords, world vibration/occlusion/chunks,
+seam/corner tests, fluid and render
+contracts, one independent GitHub commit.
