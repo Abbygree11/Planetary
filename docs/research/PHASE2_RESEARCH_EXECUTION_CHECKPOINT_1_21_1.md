@@ -637,6 +637,54 @@ family without proving why it is a unique algorithm owner.
   power/detector network causal write paths.
   One bounded commit; no Java game patch.
 
+### 2026-10-10 micro-checkpoint — Stage 3A-5.2 exact rail ITEM + alternate authors
+
+- Card `docs/phases/phase-02/02c-rail-owners.md`
+  checkbox **2/4 DONE**. Research:
+  `docs/research/PHASE2_STAGE3A_RAIL_ITEM_ALTERNATE_AUTHORS_1_21_1.md`.
+- Original unmodified NeoForge 21.1.215
+  CI ZIP 11643813158 SHA256
+  `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`:
+  all 4 BLOCK IDs independently joined to
+  **4 original ITEM rows** via `placed_block`;
+  all 4 `BlockItem`, no renamed aliases;
+  all seven item placement exact-signature nearest
+  declaring owners `BlockItem` each.
+- Distinct nonitem graph/signal/structure paths:
+  BaseRailBlock onPlace/neighborChanged ->
+  RailState.place/connectTo multi-block rail
+  state writes; RailBlock 3-way redstone junction;
+  DetectorRailBlock entityInside/checkPressed,
+  20-tick powered recheck, analog
+  MinecartCommandBlock/Container minecart;
+  PoweredRailBlock findPoweredRailSignal at
+  up to 8 graph steps, separate activator and
+  powered rail block-instance pathways.
+  AbstractMinecart.tick explicitly handles
+  activator activateMinecart vs powered-rail
+  moveAlongTrack boost/brake (full movement
+  intentionally deferred).
+  **MineshaftPieces** direct Blocks.RAIL default
+  state + RailShape worldgen placement proven,
+  generic StructureTemplate direct BlockState
+  write path identified (not claims of specific
+  rail template contents).
+  `BlockItem` may optionally apply
+  `DataComponents.BLOCK_STATE` between initial
+  placeBlock and setPlacedBy.
+- **No class promotion this task**: full ledger
+  66/241 source+reflection reviewed (174/1060
+  IDs), 175 REVIEW_PENDING (886 IDs).
+  DaylightDetectorBlock remains separate pending.
+  All ASM/Planetary runtime/gameplay verdicts
+  for 241 classes REVIEW_PENDING, Java unchanged.
+- **NEXT FIRST unchecked task**: 3A-5.3
+  checkbox **3**: exact local rail direction/shape
+  versus world BlockPos/slope coordinates at
+  edges and corners, dynamic power and minecart
+  movement cross-phase boundary; define tests
+  but claim none executed. ONE research commit.
+
 ## Resume procedure after interrupted answer
 
 1. Read AGENTS.md, this checkpoint, the latest roadmap

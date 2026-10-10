@@ -476,6 +476,35 @@ concern. DaylightDetectorBlock still unreviewed.
 All ASM/Planet/gameplay gates remain pending.
 Next 3A-5.2 exact item and alternate authors.
 
+## 2026-10-10 Stage 3A-5.2 exact 4 ITEM creators and non-ITEM rail writers
+
+[Full original item and alternate source author
+evidence](PHASE2_STAGE3A_RAIL_ITEM_ALTERNATE_AUTHORS_1_21_1.md):
+four actual NeoForge 21.1.215 BLOCK IDs of
+RailBlock/DetectorRailBlock/PoweredRailBlock
+uniquely map to four ordinary BlockItem ITEM
+records, `minecraft:rail`, detector, powered,
+activator. All seven effective item method
+declarations are BlockItem for each.
+State writes bypassing item include
+RailState.place/connectTo graph recalculation,
+DetectorRail minecart search/20-tick check
+and analog command/inventory minecart output,
+PoweredRailBlock 8-segment power propagation
+and distinct powered/activator block instances.
+AbstractMinecart treats powered rail acceleration
+and activator-rail activateMinecart differently.
+MineshaftPieces has proven direct Blocks.RAIL
+worldgen writes; StructureTemplate generic
+transformed state+shape update is another
+possible caller, no particular rail structure
+template claimed.
+No new class status: 66/241 source+reflection
+reviewed/174 ID, 175/241 pending/886 IDs.
+DaylightDetector pending; all ASM/Planet/gameplay
+acceptance fields remain pending. Next 3A-5.3
+seam/rail topology source test matrix.
+
 ## Remaining Stage 3A work
 
 1. Read actual `phase2-neo1211-registry-census` artifact's

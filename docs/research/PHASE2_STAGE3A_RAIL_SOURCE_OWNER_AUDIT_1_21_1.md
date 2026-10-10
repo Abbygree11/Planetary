@@ -286,3 +286,34 @@ minecart/detector/power network/structure
 alternative authors with distinct
 `PoweredRailBlock` instances. Single
 separately committed research packet.
+
+
+## 2026-10-10 Stage 3A-5.2 ITEM and additional rail authors
+
+[Original 1333-ITEM registry 1:1 rail placed_block join and
+non-item state author evidence](PHASE2_STAGE3A_RAIL_ITEM_ALTERNATE_AUTHORS_1_21_1.md):
+all four rail registered block IDs correspond to
+four separate, ordinary `BlockItem` registered
+item records with same-named registry IDs;
+all seven item placement signatures declare on
+`BlockItem` (distinct from `Item.use`).
+`RailState` writes several rail cells after
+item placement and on neighbor updates;
+DetectorRailBlock searches minecart AABB,
+writes POWERED and notifies graph and below
+with 20-tick check and separate analog comparator
+query; PoweredRailBlock has 8-segment recursive
+powered network and protects per-block-instance
+rail subtype. AbstractMinecart reads
+POWERED_RAIL for movement and ACTIVATOR_RAIL
+for virtual activateMinecart hook; cart subclass
+responses NOT yet accepted.
+MineshaftPieces provably creates `Blocks.RAIL`
+and writes via worldgen block placement, bypassing
+BlockItem; StructureTemplate has a generic
+BlockState write and neighbor-shape update path.
+No new class disposition: 66/241 reviewed
+(174 IDs), 175 pending (886 IDs); all patched
+ASM/Planet/gameplay acceptance pending.
+NEXT 3A-5.3 seam topology, movement cross-phase
+and full test matrix.

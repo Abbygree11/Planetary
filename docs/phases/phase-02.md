@@ -18,7 +18,7 @@
 | 2.3A-2 | [02-block-owners-rest.md](phase-02/02-block-owners-rest.md) | **DONE (4 research packages only)** | Exact ZIP reconciliation 47/241 reviewed and 194 pending; **not** full Stage 3A |
 | 2.3A-3 | [02a-block-graph-owners.md](phase-02/02a-block-graph-owners.md) | **DONE (4 research packages only)** | Exact original ZIP source owner/item/shape graph reconciliation; 55 reviewed, 186 pending |
 | 2.3A-4 | [02b-redstone-signal-owners.md](phase-02/02b-redstone-signal-owners.md) | **DONE (4 research packages only)** | Exact original ZIP reconciliation for 63 source+reflection reviewed classes/170 IDs; 178 pending, all gameplay gates pending |
-| 2.3A-5 | [02c-rail-owners.md](phase-02/02c-rail-owners.md) | **ACTIVE 1/4** | 3 rail classes / 4 exact BLOCK IDs source+NeoForge owner reviewed; RailState multi-cell topology and slopes audited; daylight separate pending |
+| 2.3A-5 | [02c-rail-owners.md](phase-02/02c-rail-owners.md) | **ACTIVE 2/4** | 3 rail classes/4 IDs reviewed; 4/4 original ITEM `placed_block` creators + minecart/rail signal, MineshaftPieces worldgen and structure alternate authors audited |
 | 2.3B | [03-item-creators.md](phase-02/03-item-creators.md) | TODO | Item/alternative-author coverage |
 | 2.3C | [04-lifecycle-neoforge.md](phase-02/04-lifecycle-neoforge.md) | TODO | Bytecode/patch/dispatch evidence and gate |
 | 2.4A | [05-implementation-a.md](phase-02/05-implementation-a.md) | TODO | Context/FACING/AXIS/rotation state families |
@@ -56,10 +56,18 @@
 `DaylightDetectorBlock` не классифицирован. Гейты
 ASM/Planetary runtime/gameplay у всех 241 классов pending.
 
-**Следующая самостоятельная работа:** [3A-5.2,
-исходный ITEM registry / alternate rail authors](phase-02/02c-rail-owners.md),
-проверка конкретных создателей четырёх рельсов и
-отдельных minecart/rail-signal/structure update путей.
-Один микро-пакет и один отдельный коммит.
+**Последний выполненный микропакет 3A-5.2:**
+[оригинальная NeoForge ITEM сверка и альтернативные rail авторы](../research/PHASE2_STAGE3A_RAIL_ITEM_ALTERNATE_AUTHORS_1_21_1.md).
+4 точных зарегистрированных rail ITEM из 1333 — все
+обычные `BlockItem`, без `ItemNameBlockItem`;
+отдельно исследованы `RailState`, Minecart,
+минимум один доказанный worldgen-путь `MineshaftPieces`
+и универсальный путь `StructureTemplate`.
+Количество классов не изменилось.
+
+**Следующая самостоятельная работа:** [3A-5.3](phase-02/02c-rail-owners.md),
+локальные RailShape/уклоны, физические соседние клетки,
+рёбра и углы куба, сигнал/механика вагонетки и границы фаз.
+Один маленький пакет с коммитом и контрольной точкой.
 
 Обновление этого файла означает только, что появился маршрут и checkpoint, **не что Phase 2 исправлена**.

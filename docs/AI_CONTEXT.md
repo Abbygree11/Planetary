@@ -3773,3 +3773,46 @@ and gameplay verdicts PENDING; no Java or tests.
 NEXT Stage 3A-5.2 task 2 on rail card:
 original ITEM placed_block join, alternate
 entity/rail/power writers. ONE separate commit.
+
+
+## 2026-10-10 Phase2 Stage 3A-5.2 exact rail ITEM and off-item state authors
+
+Stage 3A-5.2 on card `docs/phases/phase-02/02c-rail-owners.md`
+task **2/4 COMPLETE** as a separately committed docs-only
+research packet at
+`docs/research/PHASE2_STAGE3A_RAIL_ITEM_ALTERNATE_AUTHORS_1_21_1.md`.
+Original NeoForge 21.1.215 artifact 11643813158
+ZIP SHA256 7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e
+has exact 4 BLOCK IDs rail, detector_rail,
+powered_rail, activator_rail; exactly 4 ITEM records
+whose `placed_block` matches each BLOCK ID; all 4
+items ordinary `BlockItem` with 7 compiled nearest
+item lifecycle method owners BlockItem. No renamed
+ItemNameBlockItem in rail group.
+Source authors: `BlockItem.place` initial
+BaseRailBlock.getStateForPlacement, optional
+DataComponents.BLOCK_STATE post-place override,
+then `BaseRailBlock.onPlace`/RailState.place/connectTo
+multi-cell writes; RailBlock redstone 3-way switch,
+DetectorRailBlock.minecart search/checkPressed/
+20-tick POWERED writes, connected rail notifications
+and analog output reading CommandBlockMinecart success
+or Container Minecart inventory.
+PoweredRailBlock eight-rail recursive signal,
+`blockstate.is(this)` disambiguates activator vs
+powered block instances. AbstractMinecart.tick
+distinguishes `Blocks.ACTIVATOR_RAIL`
+activateMinecart callback from `Blocks.POWERED_RAIL`
+moveAlongTrack accel/brake, full entity movement NOT
+audited. Direct MineshaftPieces default Blocks.RAIL
+and RailShape worldgen placement bypasses BlockItem;
+StructureTemplate generic direct setBlock &
+shape-update path also potentially places rails.
+Full ledger **66/241 source+reflection reviewed**
+(174/1060 IDs), **175/241 REVIEW_PENDING**
+(886/1060 IDs), DaylightDetectorBlock still pending,
+all NeoForge ASM/Planet runtime/gameplay PASS pending.
+No Java or tests run. **NEXT microtask 3A-5.3**:
+local/world rail RailShape, slope, seam,
+physical callbacks and minecart crossphase test
+matrix; one separate bounded commit, stop.

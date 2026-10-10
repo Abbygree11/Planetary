@@ -1,6 +1,6 @@
 # Phase 2 Stage 3A-5 — rail topology/ascending slopes and signal graph owners
 
-**Status: ACTIVE / task 1 of 4 completed; no ASM/Planet/gameplay PASS.**
+**Status: ACTIVE / tasks 1–2 of 4 completed; no ASM/Planet/gameplay PASS.**
 Branch `2.0`; Minecraft 1.21.1 / NeoForge 21.1.215.
 
 [Phase 2](../phase-02.md) ·
@@ -60,14 +60,14 @@ are distinct and partially overlapping.
   Check alternate state authors. Promote **only**
   these 3 rows after actually auditing them, never
   DaylightDetector. **DONE 2026-10-10 / Stage 3A-5.1:** [exact NeoForge owner and complete comparative rail-graph source audit](../../research/PHASE2_STAGE3A_RAIL_SOURCE_OWNER_AUDIT_1_21_1.md). 3 formerly pending classes / 4 IDs promoted to `SOURCE_REVIEWED_INTEGRATION_PENDING`; critical `RailState` multi-cell geometry, XZ-only connection match, hardcoded Y slopes, rail junction and detector/powered signal paths isolated. Counts **66/241 reviewed (174 IDs)**, 175 pending (886 IDs). All three acceptance gates pending.
-- [ ] **2.** Independently join original ITEM
+- [x] **2.** Independently join original ITEM
   `placed_block` registry for 4 rail IDs and
   examine alternate graph/signal writers:
   minecart crossing/detection, `PoweredRailBlock`
   up-to-8 segment power propagation, activator
   rail variants, BlockState components and
   worldgen/structure placements; do not assert
-  complete minecart movement.
+  complete minecart movement. **DONE 2026-10-10 / Stage 3A-5.2:** [original ZIP ITEM and actual non-item rail authors](../../research/PHASE2_STAGE3A_RAIL_ITEM_ALTERNATE_AUTHORS_1_21_1.md): 4 exact ordinary BlockItems joined 1:1 with 4 registered rail blocks; all seven item lifecycle declarations own `BlockItem`; `RailState` multi-cell, DetectorRail cart+analog signal, PoweredRail and activator distinct block-instance/vehicle effects, verified mineshaft direct rail creation and generic templates audited. No new class promotion or gameplay PASS.
 - [ ] **3.** Source/target local chart,
   `RailShape` facing/slope under local gravity,
   `RailState` target coordinates across seams,
@@ -83,24 +83,31 @@ are distinct and partially overlapping.
 
 ## Resume checkpoint
 
-**Last completed:** **Stage 3A-5.1** — three exact
-NeoForge registered concrete rail classes / four
-BLOCK IDs `SOURCE_REVIEWED_INTEGRATION_PENDING`.
-Original compiled 21.1.215 nearest declaring owners for
-five signatures verified, pinned 1.21.1 rail
-`BaseRailBlock` / `RailState` /
-`RailBlock` / `DetectorRailBlock` /
-`PoweredRailBlock` algorithms researched:
-[full evidence](../../research/PHASE2_STAGE3A_RAIL_SOURCE_OWNER_AUDIT_1_21_1.md).
+**Last completed:** **Stage 3A-5.2** exact NeoForge
+registered rail ITEM join and non-item creation,
+graph, entity/signal author research.
+[Complete evidence](../../research/PHASE2_STAGE3A_RAIL_ITEM_ALTERNATE_AUTHORS_1_21_1.md).
+4/4 exact `placed_block` → same-named ordinary
+`BlockItem`; 7/7 item declaration owners all
+`BlockItem` per item. Other authors:
+`RailState.place/connectTo`, detector minecart
+entry and 20-tick/analog output,
+PoweredRail eight-rail signal recursion with separate
+activator/powered block instances,
+AbstractMinecart type-specific track consumers,
+verified direct MineshaftPieces `Blocks.RAIL`
+placement and generic StructureTemplate write.
+No new registered class reviewed this turn.
 
-**Current full ledger:** **66/241 reviewed**
-(174/1060 registered BLOCK IDs); **175/241
-REVIEW_PENDING** (886 IDs).
-`DaylightDetectorBlock` remains source review pending.
-All actual NeoForge ASM/Planet integration and gameplay
-gates `REVIEW_PENDING`. No Java source changes.
+Full ledger unchanged: **66/241 source+reflection
+reviewed (174/1060 BLOCK IDs)**, **175/241
+REVIEW_PENDING (886 IDs)**.
+`DaylightDetectorBlock` separate pending.
+All 241 ASM/Planet adapter/gameplay gate fields
+REVIEW_PENDING.
 
-**NEXT FIRST unchecked task**: microtask **2** above,
-independent original ITEM `placed_block` join,
-alternate minecart/signal/source lifecycle writers.
-Single independently committed evidence package, then stop.
+**NEXT FIRST unchecked task**: microtask **3**,
+source-local/physical frame chart, `RailShape`
+slopes, seam/corner `RailState` contract,
+neighbor callback and minecart cross-phase
+tests. One bounded docs commit and stop.

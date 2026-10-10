@@ -1,3 +1,39 @@
+## 2026-10-10 Stage 3A-5.2 exact rail ITEM registry and verified non-item writers
+
+[Actual NeoForge 21.1.215 four-item/four-BLOCK join and
+alternate rail-world state authors](PHASE2_STAGE3A_RAIL_ITEM_ALTERNATE_AUTHORS_1_21_1.md):
+original ZIP SHA-256 `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`
+independently parsed and used to join
+`minecraft:rail`, `detector_rail`,
+`powered_rail`, `activator_rail` to
+four distinct, same-named regular `BlockItem`
+item records; all seven exact item lifecycle
+nearest declaring owners `BlockItem` for
+each entry. This is unlike redstone/string
+`ItemNameBlockItem` aliases.
+Source-authored additional state/consumer paths:
+`RailState.place/connectTo` multi-rail
+shape writes triggered by support and callbacks;
+`DetectorRailBlock.entityInside/checkPressed`
+entity search, 20-tick `POWERED` update and
+analog minecart command/container output;
+`PoweredRailBlock` eight-rail power scan
+with distinct block instances,
+`AbstractMinecart.tick` separate
+`Blocks.POWERED_RAIL` motion and
+`Blocks.ACTIVATOR_RAIL` activateMinecart hook;
+real MineshaftPieces `Blocks.RAIL` direct
+worldgen `placeBlock` (no ITEM) and generic
+StructureTemplate block state writes.
+Item component `BLOCK_STATE` can rewrite shape
+after placeBlock before setPlacedBy when supplied.
+**No new class review:** 66/241 reviewed
+(174 BLOCK IDs), 175 pending (886 IDs);
+DaylightDetector still pending. All ASM,
+Planet runtime and gameplay gates PENDING.
+Next 3A-5.3 source-local and physical rail
+shape/rail/carts cross-phase research.
+
 ## 2026-10-10 Stage 3A-5.1 — rail exact owner + RailState graph (3 new classes)
 
 [Original NeoForge 21.1.215 compiled declaration owner
