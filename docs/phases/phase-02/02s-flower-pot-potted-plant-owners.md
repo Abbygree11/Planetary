@@ -1,0 +1,12 @@
+# Stage3A-21 — FlowerPotBlock, potted plants and alternate interaction/creation writers
+
+**ACTIVE SOURCE 0/4**, branch2.0 MC1.21.1 NeoForge21.1.215. User single «кк» covers all four 21.1..21.4 internal SOURCE phases, not per-block messages. No Java/Mixin/runtime changes by source packet. AGENTS.md §3A.2 deepest safe cross-mod rule and unknown mod physical default.
+
+Exact original physical 241/1060 registry shows **ONE original concrete source-pending FlowerPotBlock class /35 original exact BLOCK IDs**, including empty pot and potted variants; do not treat separate `DecoratedPotBlock` as same algorithm. Materialized potted states are not equivalent to an ordinary BlockItem direct placement; must verify each exact ITEM registry join, callbacks and source of plant item→pot content state transformation.
+
+- [ ] **21.1** physical ZIP SHA256, exact all 35 IDs/properties, full five-parameter original declaring-owner signatures and subtype/sibling inventory; commit durable.
+- [ ] **21.2** base `FlowerPotBlock` item plant mapping, direct state writer, empty pot/filled pot interactions, support and drop predicates, source/target original BlockPlaceContext and hit, structures/commands/feature placement, actual 1.21.1 third-party pot implementations inherited vs independent, mod data tags and alternative item logic; commit durable.
+- [ ] **21.3** >=35 future NOT RUN test cases: no-Planet, 6 canonical faces, 12 edges, 8 corners, real water, plant types, restore/drop, click/inventory, NeoForge events, mod/fake Level and client render; explicit SHARED_SAFE/OPT_IN_ALGORITHM/MOD_INDEPENDENT/PHYSICAL_DO_NOT_TOUCH matrix; commit.
+- [ ] **21.4** independently rehash ORIGINAL physical ZIP original prior106+1 FlowerPotBlock full class ID and five owner records vs actual LIVE GitHub 241-row/16-header ledger Python/JS FNV32+64; if verified expected107 source-reviewed classes /324 exact BLOCK IDs, all 723 ASM/adapter/gameplay gates REVIEW_PENDING; roadmap/AI_CONTEXT update and open next real pending mechanism family, docs-only and stop.
+
+See [Stage20 research](../../research/PHASE2_STAGE3A_FIRE_CAMPFIRE_DEEP_ORIGINAL_ITEM_SPREAD_COOKING_MOD_1_21_1.md), [50 unrun tests](../../research/PHASE2_STAGE3A_FIRE_CAMPFIRE_SIX_FACE_SPREAD_COOKING_MOD_ACCEPTANCE_1_21_1.md), [original 106-class reconciliation](../../research/PHASE2_STAGE3A_FIRE_CAMPFIRE_ORIGINAL_106_CLASS_RECONCILIATION_1_21_1.md), [mandatory deepest SAFE rule](../../research/PHASE2_DEEPEST_SAFE_MECHANISM_COMPATIBILITY_CONTRACT_1_21_1.md).
