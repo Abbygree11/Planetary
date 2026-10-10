@@ -1,6 +1,6 @@
 # Phase 2 Stage 3A-8 — sculk shrieker and catalyst block/BE owners
 
-**Status: ACTIVE — 1/4 independently bounded source research tasks completed; ASM/Planet/gameplay pending.**
+**Status: ACTIVE — 2/4 independently bounded source research tasks completed; ASM/Planet/gameplay pending.**
 Branch `2.0`; Minecraft **1.21.1** /
 NeoForge **21.1.215**, Java 21.
 
@@ -107,7 +107,7 @@ source-only claims of gameplay PASS.
   rows. Evidence + ledger + checkpoint,
   ONE commit.
   **DONE 2026-10-10 / 3A-8.1:** [original 2 registered BLOCK IDs + 5 exact compiled declaration owners each; comparative 1.21.1 BE VibrationSystem/90-tick shriek/WardenSpawnTracker and independent GameEvent.ENTITY_DIE/8-tick BLOOM/SculkSpreader cursor+SculkBehaviour/Vein/Block writer graph](../../research/PHASE2_STAGE3A_SCULK_SHRIEKER_CATALYST_SOURCE_OWNER_AUDIT_1_21_1.md). Two source-only rows promoted; **73/241 classes (194/1060 IDs)** reviewed, 168/241 pending; all 241 ASM/Planet/gameplay fields still pending.
-- [ ] **2. Stage 3A-8.2.** Independently
+- [x] **2. Stage 3A-8.2.** Independently
   join original ITEM `placed_block`
   records for exact two BLOCK IDs from
   1333-ITEM census, distinguish item
@@ -119,6 +119,7 @@ source-only claims of gameplay PASS.
   and read-only callers without claiming
   unproven vanilla structures.
   ONE research evidence commit.
+  **DONE 2026-10-10 / 3A-8.2:** [exact original 1333-ITEM placed_block/BlockItem owners and explicit SculkPatchFeature sculk worldgen writers](../../research/PHASE2_STAGE3A_SCULK_SHRIEKER_CATALYST_ITEM_WORLDGEN_ALTERNATE_AUTHORS_1_21_1.md). Two item matches, 7/7 placing declarations per item; optional BLOCK_STATE/BE data, sculk growth and direct catalyst/shrieker features verified. **No new BLOCK class promoted:** 73/241 reviewed (194/1060 IDs); all 241 ASM/Planet/gameplay gates pending, no code or game test.
 - [ ] **3. Stage 3A-8.3.** Write source
   canonical vs physical world position
   contract for shriek and warden spawn
@@ -144,53 +145,10 @@ source-only claims of gameplay PASS.
 
 ## Durable restart checkpoint
 
-**Last completed Stage 3A-8.1**, original
-NeoForge 21.1.215 exact two block IDs and
-full five nearest declaring method owners,
-pinned comparative Java source graph of
-distinct shriek/warden and catalyst
-death/BLOOM/spread algorithms:
-[full source/compiled audit](../../research/PHASE2_STAGE3A_SCULK_SHRIEKER_CATALYST_SOURCE_OWNER_AUDIT_1_21_1.md).
+**Last completed Stage 3A-8.2**: [original ITEM and explicit vanilla worldgen author audit](../../research/PHASE2_STAGE3A_SCULK_SHRIEKER_CATALYST_ITEM_WORLDGEN_ALTERNATE_AUTHORS_1_21_1.md). Original ZIP artifact 11643813158 verified SHA-256 `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`. Exactly 2 ordinary BlockItem placed_block matches: `minecraft:sculk_shrieker` and `minecraft:sculk_catalyst`, 7/7 BlockItem placement lifecycle owners per entry; `Item.use` separately inherited. Exact original joined digest SHA-256 `ac59674578124bb46a566e7a22f7432d3814acc6dfba22859c43578f89adaf0b`. `DataComponents.BLOCK_STATE` can override legal properties (including CAN_SUMMON) after initial placement; separate BE data/components.
 
-Original unmodified CI artifact
-11643813158 ZIP SHA256 `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`.
-SculkShriekerBlock exact method owners:
-`SculkShriekerBlock,BlockBehaviour,
-SculkShriekerBlock,BlockBehaviour,Block`;
-SculkCatalystBlock:
-`Block,BlockBehaviour,BlockBehaviour,
-BlockBehaviour,Block`.
-Both originally have no FACING
-orientation property. Shrieker owns
-WATERLOGGED, CAN_SUMMON and SHRIEKING
-via BlockState/BE; stepOn plus 8-radius
-VibrationSystem listener, BE warning/
-WardenSpawnTracker/90-tick shriek and
-physical world spawn ranges. Catalyst
-has only BLOOM: direct CatalystListener
-GameEvent.ENTITY_DIE, XP once,
-world-UP cursor start, BE per-tick
-SculkSpreader update, 8-tick
-BLOOM reset, world-Y SCULK_SOUL
-particle; SculkSpreader/SculkBehaviour/
-SculkVeinBlock/SculkBlock physical
-writer graph examined (those additional
-registered classes NOT promoted).
+Pinned 1.21.1 `SculkPatchFeature` proves concrete direct catalyst placement (origin below support), direct CAN_SUMMON=true rare shrieker growth (world XZ offset and world-up support), and `SculkSpreader.createWorldGenSpreader` -> `SculkBlock` `pos.above()` sensor/shrieker growth with CAN_SUMMON by worldgen mode. `CaveFeatures` configured deep-dark extraRareGrowths=0, ancient-city 1..3, both catalystChance=0.5 with support gating. Generic `StructureTemplate` is separate direct saved-state/BE writer; no specific vanilla .nbt template asserted.
 
-Full ledger now **73/241**
-SOURCE_REVIEWED_INTEGRATION_PENDING
-(**194/1060 BLOCK IDs**), **168/241**
-REVIEW_PENDING (**866/1060 IDs**).
-`LightningRodBlock` still source pending.
-All 241 ASM patch bytecode, Planet
-adapter and gameplay gate values
-`REVIEW_PENDING`. No Java patch/CI/
-gameplay test.
+**No new 241-class ledger promotion**: 73/241 source reviewed (194/1060 original BLOCK IDs), 168/241 pending (866 IDs); all 241 patched-ASM, Planet adapters and gameplay statuses remain PENDING. No Java/CI/client/server/gameplay changes.
 
-**NEXT FIRST unfinished Stage 3A-8.2**,
-checkbox 2: independently join original
-1333 ITEM `placed_block` creators
-for these 2 exact ID, characterize
-direct sculk growth/setBlock/structure/
-worldgen and component/NBT alternative
-writers. One research commit and STOP.
+**NEXT FIRST unchecked 3A-8.3**, checkbox 3: six-face canonical-vs-physical source contract and test fixtures, one bounded research commit then STOP.

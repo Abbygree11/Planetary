@@ -1350,6 +1350,15 @@ family without proving why it is a unique algorithm owner.
   creation, separate one-commit report.
   STOP after exactly one checkbox.
 
+### 2026-10-10 checkpoint Stage 3A-8.2 — sculk exact ITEM and alternate worldgen state writers
+
+- Card `docs/phases/phase-02/02f-sculk-shrieker-catalyst-owners.md`: **2/4 DONE**, checkbox 3 next. Full evidence in `PHASE2_STAGE3A_SCULK_SHRIEKER_CATALYST_ITEM_WORLDGEN_ALTERNATE_AUTHORS_1_21_1.md`.
+- Independently re-downloaded original CI artifact 11643813158: ZIP SHA-256 `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`, original 1060 BLOCK/241 concrete classes; 1333 ITEM; 1712 state-property rows. Exact `ITEM.placed_block` join yields **two** ordinary `BlockItem` registry items, `minecraft:sculk_shrieker`, `minecraft:sculk_catalyst`, no subclass/alias; 7/7 placement declaring owners BlockItem, separate `Item.use`. Original joined row SHA-256 `ac59674578124bb46a566e7a22f7432d3814acc6dfba22859c43578f89adaf0b`.
+- Pinned comparative 1.21.1 BlockItem `DataComponents.BLOCK_STATE` may override legal `CAN_SUMMON` or `BLOOM` after default item placement; distinct `BLOCK_ENTITY_DATA` and BE components apply before `setPlacedBy`.
+- Confirmed **actual** vanilla `SculkPatchFeature.place` independent of BlockItem: worldgen SculkSpreader to SculkBlock pos.above() growth/conditional CAN_SUMMON=true, direct catalyst at origin with world-below support/chance, and direct CAN_SUMMON=true rare shrieker at ±2 world XZ / below UP sturdy support. Configured `sculk_patch_deep_dark` extraRareGrowths=0; `sculk_patch_ancient_city` 1..3 attempts; both catalystChance=0.5 with support gate. `CavePlacements` links placed-feature registrations. Generic StructureTemplate saved state/BE path exists, but no specific shipped NBT structure asserted.
+- **No class promotion:** 73/241 source+reflection declaration reviewed (194/1060 IDs), 168/241 remaining (866/1060 IDs); all 241 patched NeoForge ASM, Planet adapter and gameplay fields still REVIEW_PENDING. No Java code change, build, CI or gameplay PASS.
+- **NEXT FIRST Stage 3A-8.3**, checkbox 3: explicit six-face canonical-vs-physical contract and future tests for item vs worldgen, growth/support/BE, seams, corners and vanilla control. One bounded docs commit then STOP.
+
 ## Resume procedure after interrupted answer
 
 1. Read AGENTS.md, this checkpoint, the latest roadmap

@@ -4471,3 +4471,11 @@ NEXT Stage3A-8.2 checkbox2, exact
 original ITEM `placed_block` and
 full alternate worldgen/growth authors,
 one bounded docs-only commit then STOP.
+
+## 2026-10-10 Stage 3A-8.2 exact sculk ITEM and explicit worldgen authors
+
+Branch `2.0`. Re-downloaded and verified original NeoForge 21.1.215 CI artifact 11643813158, ZIP SHA-256 `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`. Exact 1333-ITEM `placed_block` join returns two ordinary BlockItem classes for `minecraft:sculk_shrieker` and `minecraft:sculk_catalyst`, no special subclasses; 7/7 placement declarations BlockItem, separate use owned by Item. Original joined source-row SHA-256 `ac59674578124bb46a566e7a22f7432d3814acc6dfba22859c43578f89adaf0b`. Optional `DataComponents.BLOCK_STATE` can rewrite legal `CAN_SUMMON`/BLOOM values and BE data/components are separate post-placement authors.
+
+**Explicit new worldgen proof:** `SculkPatchFeature.place` writes catalyst directly at feature origin after world-below full-collider and chance; writes CAN_SUMMON=true shrieker directly at world-XZ candidate with world-UP support; and calls worldgen SculkSpreader to grow sensor/shrieker by SculkBlock pos.above() with CAN_SUMMON derived from isWorldGeneration. CaveFeatures config deep-dark extraRareGrowths=0, ancient-city 1..3 attempts; catalystChance=0.5 in each conditional feature. CavePlacements registers both. StructureTemplate can generically place saved state/BE data without BlockItem, but a particular vanilla ancient-city NBT block palette is NOT verified. Source-only audit; not NeoForge patch ASM/runtime proof.
+
+Evidence: [Stage3A-8.2 exact item/worldgen research](research/PHASE2_STAGE3A_SCULK_SHRIEKER_CATALYST_ITEM_WORLDGEN_ALTERNATE_AUTHORS_1_21_1.md). No additional concrete BLOCK class promotion: **73/241 reviewed, 194/1060 IDs**; 168/241 and 866 IDs source pending, all 241 ASM/Planet/gameplay PENDING. No Java edits/builds/CI or gameplay PASS. Card 02f **2/4**; **NEXT first 3A-8.3** physical-vs-local six-face/seam contract and future acceptance tests, one bounded docs commit.
