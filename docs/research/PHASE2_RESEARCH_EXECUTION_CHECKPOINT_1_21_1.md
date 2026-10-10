@@ -1421,6 +1421,18 @@ The user requested less chat back-and-forth and context use. **A single “кк�
 
 **Next “кк” → entire Stage 3A-10 LightningRodBlock 0/4 → 4/4 if evidence/tooling permit.**
 
+### 2026-10-10 Stage 3A-10.4 full LightningRodBlock family — one “кк”, four internal checkboxes DONE
+
+- Whole-family source-research DONE **4/4** in single user turn under 2026-10-10 workflow. [Stage 10.1+10.2 LightningRod source/original owner/ITEM/alternate writer audit](PHASE2_STAGE3A_LIGHTNING_ROD_OWNER_ITEM_ALTERNATE_AUTHORS_1_21_1.md); internal checkpoint commit [f1de7cca8b6fa96f07d2d7f73aeebe8092d44b4d](https://github.com/Abbygree11/Planetary/commit/f1de7cca8b6fa96f07d2d7f73aeebe8092d44b4d); [10.3 six-face source-vs-physical redstone/strike/particles, 28 UNRUN future fixtures](PHASE2_STAGE3A_LIGHTNING_ROD_SIX_FACE_STRIKE_SIGNAL_ACCEPTANCE_CONTRACT_1_21_1.md); [10.4 original 241/75-class full reconciliation and next handoff](PHASE2_STAGE3A_LIGHTNING_ROD_ORIGINAL_75_CLASS_RECONCILIATION_1_21_1.md).
+- Original ZIP artifact **11643813158** Actions 37988064055 commit aa395729, SHA-256 `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e` rehashed, 1060 exact BLOCK IDs/241 concrete Java classes, 1333 ITEM, 1712 properties. Original one `minecraft:lightning_rod` `LightningRodBlock>RodBlock>DirectionalBlock>Block>BlockBehaviour`, `facing,powered,waterlogged`, five nearest compiled declaration owners `LightningRodBlock/BlockBehaviour/LightningRodBlock/BlockBehaviour/Block`. One original `minecraft:lightning_rod` ordinary BlockItem; 7/7 placement signature owners BlockItem. Only one new class promoted. LightningBolt uses physical getStrikePosition and onLightningStrike; 8-tick power/reset, neighbor physically opposite FACING, strong signal direction check, 3002 event, world-Y WORLD_SURFACE spark. Separate copper/weather sibling classes NOT promoted.
+- Original Python (full-qualified signature parsing and exact reviewed class roster) vs live independent JS 16-column ledger canonical FNV32/FNV64 **4/4 MATCH**:
+  * all 241 classes/count `0xf188a064/0x9ba3c115841e18e4`
+  * reviewed 75 class and exact 196 registered IDs `0x10744d73/0x358f18d9a4630613`
+  * 75×5 full method nearest declaration owners `0xc4d4c46e/0xbd4cb01112604f6e`
+  * combined `0x2fb5ae99/0x4b8aea415b2bd239`
+- Ledger now **75/241 classes SOURCE_REVIEWED_INTEGRATION_PENDING, 196/1060 BLOCK IDs**, **166/241** classes and **864/1060** BLOCK IDs source pending; all 241 patched NeoForge bytecode ASM, Planet adapter and gameplay statuses `REVIEW_PENDING` (723 fields); no Java changes, no Mixin/ASM validation, build/CI or Minecraft test; **28 LR10-01..LR10-28 tests NOT RUN**.
+- NEXT [whole Stage 3A-11 egg/substrate/hatching family](../phases/phase-02/02i-egg-hatching-substrate-owners.md) ACTIVE 0/4; original genuine pending TurtleEggBlock/turtle_egg, SnifferEggBlock/sniffer_egg, FrogspawnBlock/frogspawn, third with `PlaceOnWaterBlockItem`. **Next one “кк” executes 11.1 → 11.2 → 11.3 → 11.4 consecutively in one turn** with interim GitHub commits, then one concise final reply. Do not return to LightningRodBlock or assume ASM/gameplay PASS. Phase2/Stage3A still OPEN.
+
 ## Resume procedure after interrupted answer
 
 1. Read AGENTS.md, this checkpoint, the latest roadmap
