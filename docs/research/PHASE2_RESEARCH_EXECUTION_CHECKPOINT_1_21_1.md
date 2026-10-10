@@ -740,6 +740,58 @@ family without proving why it is a unique algorithm owner.
   set next bounded pending family.
   ONE independent commit and stop.
 
+### 2026-10-10 micro-checkpoint — Stage 3A-5.4 FULL original CI / reviewed rail owner census
+
+- Card `docs/phases/phase-02/02c-rail-owners.md`
+  **all 4 of 4 bounded research checkboxes COMPLETE**;
+  full Phase2 and Stage3A still incomplete.
+- Original NeoForge 21.1.215 unmodified CI
+  artifact 11643813158 SHA256
+  `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`.
+  Reopened ZIP directly: **1060 original BLOCK
+  ID rows**, **1333 ITEM rows**,
+  **1712 state property rows**, **241 unique
+  registered Java concrete classes**.
+- 66 source+reflection reviewed classes' **all
+  174 exact IDs** and **five declaring nearest
+  owners** reconstructed using full parameter
+  signatures from `effective_method_owners`,
+  including overload disambiguation; exact
+  full original-vs-github canonical FNV-1a:
+  `0xf188a064` 241-class roster,
+  `0x6c5c67d7` reviewed ID strings,
+  `0x57a01200` reviewed 5-owners,
+  `0xb3945a6e` all combined — **MATCH all 4**.
+  Report `docs/research/PHASE2_STAGE3A_RAIL_COHORT_RECONCILIATION_1_21_1.md`.
+- Three rail owners/class IDs specifically
+  included: RailBlock minecraft:rail (1),
+  DetectorRailBlock minecraft:detector_rail
+  (1), PoweredRailBlock minecraft:activator_rail
+  and minecraft:powered_rail (2); five owners
+  BaseRailBlock/BaseRailBlock/BaseRailBlock/
+  BlockBehaviour/Block per class.
+- Current class-status counts unchanged:
+  **66/241 SOURCE_REVIEWED_INTEGRATION_PENDING
+  (174/1060 IDs)**; **175/241 REVIEW_PENDING
+  (886/1060 IDs)**. All 241 patched bytecode,
+  Planet adapter, game acceptance `REVIEW_PENDING`.
+  No Java/build/client/gameplay tests.
+- New card `docs/phases/phase-02/02d-environment-pressure-sensor-owners.md`
+  created for three still pending source owner
+  classes / 16 registered IDs:
+  DaylightDetectorBlock 1; PressurePlateBlock
+  13; WeightedPressurePlateBlock 2.
+  Sky/BE ticker and BasePressurePlateBlock
+  entity collision/tick are separate concerns.
+  Sculk/Lightning are deferred independent
+  source family groups, not auto-reviewed.
+- **NEXT FIRST unchecked task:** **Stage 3A-6.1**,
+  new 02d card checkbox **1**, original
+  NeoForge 21.1.215 registry & five-owner
+  compiled declarations and pinned comparative
+  source behavior for these 3 classes.
+  One package, independent GitHub commit; stop.
+
 ## Resume procedure after interrupted answer
 
 1. Read AGENTS.md, this checkpoint, the latest roadmap

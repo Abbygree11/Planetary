@@ -1,3 +1,34 @@
+## 2026-10-10 Stage 3A-5.4: FULL original ZIP vs all 66 source-review class declarations
+
+[Exact 241-class/66-reviewed NeoForge 21.1.215 census recheck](PHASE2_STAGE3A_RAIL_COHORT_RECONCILIATION_1_21_1.md)
+loaded original ZIP CI artifact 11643813158
+SHA-256 `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`.
+66 reviewed class names + **all 174 registered
+BLOCK ID strings** + exact five-owner tuple
+by fully-qualified method ARGUMENT signatures
+independently reconstructed from runtime ZIP;
+all 241 class/count pairs reconciled.
+Four computed original-vs-branch fingerprints
+matched: roster `0xf188a064`,
+reviewed IDs `0x6c5c67d7`,
+reviewed five owners `0x57a01200`,
+combined `0xb3945a6e`.
+Full ledger intact: **66/241 source+compiled
+declarations reviewed (174/1060 IDs)**,
+**175/241 REVIEW_PENDING (886 IDs)**.
+All 241 ASM/Planet/gameplay acceptance gates
+REVIEW_PENDING, no Java/CI/client actions.
+`RailBlock`, `DetectorRailBlock` and
+`PoweredRailBlock` specifically reconciled
+(3 classes/4 IDs). Stage 3A-5 research card
+4/4 done; NOT Stage 3A/Phase 2 complete.
+
+Next [Stage 3A-6 environment/contact sensor card](../phases/phase-02/02d-environment-pressure-sensor-owners.md):
+DaylightDetectorBlock (1), PressurePlateBlock
+(13), WeightedPressurePlateBlock (2) = 3
+still-pending classes / 16 IDs, with sky/BE
+and entity collision signal authors distinct.
+
 ## 2026-10-10 Stage 3A-5.3 local rail endpoint, slope and seam graph
 
 [Full source-based rail RailShape direction / physical

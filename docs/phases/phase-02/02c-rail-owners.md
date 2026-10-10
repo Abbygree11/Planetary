@@ -1,6 +1,6 @@
 # Phase 2 Stage 3A-5 — rail topology/ascending slopes and signal graph owners
 
-**Status: ACTIVE / tasks 1–3 of 4 completed; no ASM/Planet/gameplay PASS.**
+**Status: DONE / all 4 bounded rail research packages completed; runtime/gameplay still PENDING.**
 Branch `2.0`; Minecraft 1.21.1 / NeoForge 21.1.215.
 
 [Phase 2](../phase-02.md) ·
@@ -75,35 +75,35 @@ are distinct and partially overlapping.
   collision/render and movement cross-phase
   contracts. List runnable game/CI tests, no PASS
   without actual running. **DONE 2026-10-10 / 3A-5.3:** [ten `RailShape` variants, physical rail endpoint/slope and reciprocal port chart, RailState XYZ/XZ assumptions, multi-cell, detector/powered rail, minecart and phase 3/5/7A/8 boundaries](../../research/PHASE2_STAGE3A_RAIL_SEAM_FRAME_CONTRACT_1_21_1.md); 11 sets of proposed game/CI fixtures across all faces/edges/corners. No runtime acceptance or new class promoted.
-- [ ] **4.** Reconcile exactly reviewed rail
+- [x] **4.** Reconcile exactly reviewed rail
   class/ID/method owners and pending class statuses
   against original CI ZIP; create another
   independent owner-family card. Keep
-  DaylightDetector source pending until then.
+  DaylightDetector source pending until then. **DONE 2026-10-10 / 3A-5.4:** [fresh independent original ZIP/compiled exact-signature recheck of all 66 reviewed classes, 174 exact registered IDs and all five method owners](../../research/PHASE2_STAGE3A_RAIL_COHORT_RECONCILIATION_1_21_1.md); four independent FNV checksums match, rail three classes/four block IDs match, all ASM/Planet/gameplay acceptance PENDING. Created [3A-6 environment + pressure sensor cohort](02d-environment-pressure-sensor-owners.md) with 3 `REVIEW_PENDING` concrete classes / 16 exact BLOCK IDs, including `DaylightDetectorBlock`.
 
 ## Resume checkpoint
 
-**Last completed: Stage 3A-5.3.** Source-only
-[physical rail endpoint, local slope and seam
-chart](../../research/PHASE2_STAGE3A_RAIL_SEAM_FRAME_CONTRACT_1_21_1.md).
-Ten RailShape values, four local radial
-ascending variants, RailState fixed-world XYZ
-and XZ-only matching, per-cell canonical ports,
-gravity edge/corner traversal, support and
-multi-cell writes, PoweredRail 8-step and
-DetectorRail entity/ticks, AbstractMinecart
-global-XZ/world-Y motion dependency,
-Phase 3/5/7A/8 contracts; runnable future
-test matrix documented but **not executed**.
+**Last completed: Stage 3A-5.4** original unmodified
+NeoForge 21.1.215 ZIP reconciliation:
+all **241** class/count rows, all **66** previously
+source+reflection reviewed classes (**174 exact BLOCK
+IDs**) and **five exact-signature declaring owners**
+per reviewed class checked against independently
+decoded original ZIP. Fingerprints match:
+`0xf188a064` roster, `0x6c5c67d7` IDs,
+`0x57a01200` owners, `0xb3945a6e` combined.
+[Full exact checkpoint](../../research/PHASE2_STAGE3A_RAIL_COHORT_RECONCILIATION_1_21_1.md).
 
-Cumulative ledger **66/241 source+reflection
-reviewed** (174 registered IDs), **175/241
-REVIEW_PENDING** (886 IDs). `DaylightDetectorBlock`
-separately pending. All ASM/Planet/runtime/gameplay
-acceptance `REVIEW_PENDING`. No Java changes.
+**Ledger unchanged:** 66/241 source+reflection
+reviewed (174/1060 registered BLOCK IDs),
+175/241 REVIEW_PENDING (886 IDs). All three
+ASM/Planet runtime/gameplay statuses REVIEW_PENDING,
+and Phase 2/7A + minecart acceptance unfinished.
 
-**NEXT FIRST unchecked task: microtask 4**,
-original NeoForge 21.1.215 CI ZIP vs exact
-reviewed rail ID/owner/status reconciliation,
-queue next small pending owner-family card,
-commit once and stop. Not full Stage 3A completion.
+**NEXT FIRST independent card:** [Stage
+3A-6.1 environment and pressure sensors](02d-environment-pressure-sensor-owners.md)
+checkbox 1, `DaylightDetectorBlock` (1 ID),
+`PressurePlateBlock` (13 IDs),
+`WeightedPressurePlateBlock` (2 IDs):
+**3 still-pending concrete classes/16 IDs**.
+No code changes or runtime PASS.

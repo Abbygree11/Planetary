@@ -3861,3 +3861,49 @@ task 4: reconcile exact original NeoForge registry
 241 classes/1060 IDs and 66 reviewed class exact IDs+
 five signature declaring owners; queue next bounded
 pending class family. ONE commit, stop.
+
+
+## 2026-10-10 Phase2 Stage3A-5.4 finished rail family original 66-owner checksum, next sensor card
+
+User shorthand `кк` = complete first open microtask
+in GitHub roadmap, one independently useful
+commit to `2.0`, checkpoint, stop.
+Completed rail Stage3A-5 research card
+`docs/phases/phase-02/02c-rail-owners.md`
+all 4/4 subpackages, NOT whole Phase2/Stage3A.
+Original unmodified NeoForge 21.1.215 compiled CI
+census ZIP SHA256 `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`,
+artifact 11643813158; reopened and parsed all
+1060 BLOCK ID, 1333 ITEM, 1712 state property
+rows / 241 unique concrete class names.
+All 66 source+reflection reviewed classes with
+174 exact registered BLOCK IDs and five exact
+compiled nearest owner declaration signatures
+reconciled against original ZIP, disambiguating
+getStateForPlacement and similar overloads
+by full qualified parameter types.
+Four independent original ZIP + current
+GitHub ledger FNV 32 fingerprints ALL MATCH:
+roster 0xf188a064; reviewed IDs 0x6c5c67d7;
+reviewed 5 owners 0x57a01200;
+combined 0xb3945a6e. RailBlock (minecraft:rail),
+DetectorRailBlock (minecraft:detector_rail),
+PoweredRailBlock (minecraft:activator_rail +
+minecraft:powered_rail) 3 classes/4 IDs checked.
+Ledger unchanged 66/241 source-reviewed
+(174/1060 IDs), 175/241 pending (886/1060 IDs).
+All 241 ASM NeoForge patched code/Planet
+integration/gameplay acceptance pending.
+Research `docs/research/PHASE2_STAGE3A_RAIL_COHORT_RECONCILIATION_1_21_1.md`.
+NEXT first unchecked microtask 3A-6.1
+`docs/phases/phase-02/02d-environment-pressure-sensor-owners.md`
+task1; new small still pending cohort
+DaylightDetectorBlock (1 block ID),
+PressurePlateBlock (13 IDs),
+WeightedPressurePlateBlock (2 IDs),
+three classes/16 IDs. Need true full reflection
+signature owners and pinned Minecraft 1.21.1
+comparative source/BE/entity signal lifecycle.
+Sculk/vibration and lightning separate future
+families. ONE research package per `кк`,
+no runtime PASS until tested.

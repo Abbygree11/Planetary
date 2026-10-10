@@ -535,6 +535,31 @@ Totals unchanged **66/241 reviewed 174 IDs,
 175 pending 886 IDs**. Next 3A-5.4
 original compiled owner/ID/status checkpoint.
 
+## 2026-10-10 Stage 3A-5.4 original NeoForge rail cohort and full reviewed ledger reconciliation
+
+[Freshly verified exact 241-class/1060-ID registry and
+66 reviewed-class five-owner signature census](PHASE2_STAGE3A_RAIL_COHORT_RECONCILIATION_1_21_1.md):
+original unmodified NeoForge 21.1.215 artifact
+11643813158 (ZIP SHA256 `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`)
+independently parsed, preserving five method
+overload signatures and actual ID lists.
+All four original ZIP/ledger diagnostic checksums
+match `0xf188a064` (roster),
+`0x6c5c67d7` (66 reviewed exact ID),
+`0x57a01200` (five owners),
+`0xb3945a6e` (combined).
+Three rail classes/four BLOCK IDs from Stage3A-5
+included and reconciled. No source-pending class
+promoted this packet: **66/241 reviewed (174 IDs),
+175/241 REVIEW_PENDING (886 IDs)**.
+All bytecode/Planetary/gameplay acceptance pending.
+Four rail research subtasks done; *not* full Stage 3A.
+Next owner card:
+[environment and physical pressure sensors 3A-6](../phases/phase-02/02d-environment-pressure-sensor-owners.md)
+DaylightDetectorBlock 1, PressurePlateBlock 13,
+WeightedPressurePlateBlock 2, all currently
+pending and distinct source-author algorithms.
+
 ## Remaining Stage 3A work
 
 1. Read actual `phase2-neo1211-registry-census` artifact's
