@@ -1,0 +1,31 @@
+# Phase 2 Stage 3A-9 — SculkBlock charge-growth registered owner and spread/feature writers
+
+**Status: ACTIVE — 0/4 small source-research tasks completed; all ASM/Planet/gameplay gates PENDING.**
+Branch `2.0`; Minecraft **1.21.1** / NeoForge **21.1.215** / Java 21.
+
+[Phase-2 roadmap](../phase-02.md) · [241-class source disposition](../../research/PHASE2_BLOCK_OWNER_DISPOSITION_1_21_1.tsv) · [Stage 3A-8.4 independent 241/73-class reconciliation](../../research/PHASE2_STAGE3A_SCULK_SHRIEKER_CATALYST_ORIGINAL_73_CLASS_RECONCILIATION_1_21_1.md).
+
+## One new pending registered class, not a blanket re-review of all sculk
+
+**Target only:** exact original `BLOCK.java_class=net.minecraft.world.level.block.SculkBlock`, registered `minecraft:sculk` (**1 ID, original status REVIEW_PENDING**). No declared BlockState property; the source algorithm nevertheless has physical world `pos.above()` growth, density/charge, actual neighbor/tag checks, and creates `SCULK_SENSOR`/`SCULK_SHRIEKER` states via direct `setBlock`. Original NeoForge 21.1.215 **five full signature nearest declaring owners** from immutable ZIP: `Block / BlockBehaviour / BlockBehaviour / BlockBehaviour / Block` (getStateForPlacement / canSurvive / updateShape / randomTick / setPlacedBy), **not** evidence these cover custom `attemptUseCharge` or worldgen. Original CI artifact 11643813158, ZIP SHA-256 `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`.
+
+**Do NOT re-promote `SculkVeinBlock`.** Its exact original ID `minecraft:sculk_vein` and `MultifaceBlock/MultifaceBlock/SculkVeinBlock/BlockBehaviour/Block` tuple were source+compiled declaration reviewed in an earlier graph family. Ledger `SculkVeinBlock` is ALREADY `SOURCE_REVIEWED_INTEGRATION_PENDING`; its independent NeoForge patched ASM, Planet adapter and gameplay gates remain pending. `SculkShriekerBlock`, `SculkCatalystBlock` and sensors are already source-reviewed in 3A-7/8. Reuse their source graph evidence, don't double-count.
+
+**Dependencies:** `SculkBehaviour`, `SculkSpreader`, `SculkVeinBlock`/`MultifaceSpreader`, `SculkPatchFeature`, `BlockItem`, geometry/fluids and BE catalyst charge pipeline; root registered identity still belongs only to `SculkBlock` in this card. Phase 2 block-local support/growth target; Phase 3 visual; Phase 5 water effects; Phase 7A catalyst BE/event/charge and tick; Phase 8/9 worldgen/feature, seam-aware graph. `LightningRodBlock` is a separate pending weather/lightning owner for a later card, not part of this family.
+
+## Four independently committable research microtasks — only FIRST unchecked per “кк”
+
+- [ ] **1. Stage 3A-9.1 — exact SculkBlock owner declarations and full inheritance/source dispatch.**
+  Independently re-open original ZIP and exact one BLOCK ID/class; verify five original full-qualified-signature owners. Read pinned comparable 1.21.1 `SculkBlock`, `DropExperienceBlock`, `SculkBehaviour`, `SculkSpreader` and cross-owner `SculkVeinBlock`/`MultifaceSpreader`, not just source string matches; map charge cost/radius/decay, `attemptUseCharge`, `canPlaceGrowth`, source writers, fluid/face behavior and bypass ownership. Distinguish physical `BlockPos`, target canonical direction and source/worldgen owner. Promote **only `SculkBlock`**, and only if this exhaustive source+original declaring-owner audit actually succeeds; keep NeoForge patched ASM/Planet/gameplay pending. One source report + ledger/checkpoint update, ONE commit, STOP.
+- [ ] **2. Stage 3A-9.2 — exact ITEM creator and alternate SculkBlock state writers.**
+  Join original 1333 ITEM `placed_block` against exact `minecraft:sculk`; inspect real class/method placement owners, state/BE component behavior where applicable, sculk/vein replacement and growth, `SculkPatchFeature`, other worldgen writes, direct state templates and source vs reader graph. Don't invent vanilla structures or special items. ONE bounded source report commit, STOP.
+- [ ] **3. Stage 3A-9.3 — six-face charge/vein growth and seam/corner contract.**
+  Separate the physical **18-offset** `SculkSpreader.ChargeCursor` neighborhood (six axial and twelve two-axis offsets), intermediate obstruction, world `pos.above()` target, substrate/support, local-up growth/density volume and worldgen mode. Preserve physical cell identity and charge at seam/corner, no alias block, no blanket Direction rewrite. Specify reproducible vanilla, six face, all reachable edge/corner, chunk, fluid and save/reload tests; all **NOT RUN** until explicitly executed. ONE source contract commit, STOP.
+- [ ] **4. Stage 3A-9.4 — original 241-class reconciliation and next family handoff.**
+  Independently reparse original NeoForge ZIP, compare current live GitHub reviewed IDs and all five exact method owners with original, pending roster and 241×3 runtime/ASM/gameplay gates; no inferred acceptance. Update roadmap and checkpoint, prepare next priority card (consider **LightningRodBlock** under weather/electrical and other unreviewed families based on evidence). ONE bounded research commit, STOP.
+
+## Durable checkpoint (2026-10-10, Stage 3A-8.4)
+
+The entire preceding 3A-8 shrieker/catalyst packet is **4/4 completed as source research only**. [Full independently recomputed 241/73-class 21.1.215 reconciliation](../../research/PHASE2_STAGE3A_SCULK_SHRIEKER_CATALYST_ORIGINAL_73_CLASS_RECONCILIATION_1_21_1.md): all 241 exact concrete class/count identities, 73 reviewed exact 194 BLOCK IDs and five original declaring owners agree with live ledger (four separate FNV-1a 32/64 fingerprints). Existing `SculkVeinBlock` status was **already reviewed** and must not be recounted. Source-remaining **168/241**, **866/1060** IDs; all 241 modified ASM / Planet adapter / gameplay fields REVIEW_PENDING.
+
+**Next “кк” means Stage 3A-9.1, checkbox 1 of THIS card**, not redoing Stage 3A-8.4. Never touch `main`. No changes to Minecraft source, Java code, NeoForge patches or user-accepted gameplay have been made during previous docs-only packet.

@@ -1,6 +1,6 @@
 # Phase 2 Stage 3A-8 — sculk shrieker and catalyst block/BE owners
 
-**Status: ACTIVE — 3/4 independently bounded source research tasks completed; ASM/Planet/gameplay pending.**
+**Status: COMPLETE — 4/4 independently bounded source research tasks completed; ASM/Planet/gameplay STILL pending.**
 Branch `2.0`; Minecraft **1.21.1** /
 NeoForge **21.1.215**, Java 21.
 
@@ -133,7 +133,7 @@ source-only claims of gameplay PASS.
   no gameplay PASS without actual run.
   ONE research commit.
   **DONE 2026-10-10 / 3A-8.3:** [source/physical/local gravity contract, six-face basis, exact SpawnUtil world-Y support, 18-neighbor cursor movement, item/BE/worldgen alternate writers, and 26 proposed unrun acceptance fixtures](../../research/PHASE2_STAGE3A_SCULK_SHRIEKER_CATALYST_SIX_FACE_SEAM_ACCEPTANCE_CONTRACT_1_21_1.md). **No class promoted** (73/241, 194/1060 IDs); 241 ASM/Planet/gameplay gates remain REVIEW_PENDING. No Java or gameplay change.
-- [ ] **4. Stage 3A-8.4.** Independently
+- [x] **4. Stage 3A-8.4.** Independently
   reparse original NeoForge 21.1.215
   ZIP, verify entire roster, all
   current source reviewed classes/
@@ -144,14 +144,12 @@ source-only claims of gameplay PASS.
   owner family card; ONE GitHub commit,
   Stage 3A/Phase 2 remains open.
 
+  **DONE 2026-10-10 / 3A-8.4:** [original NeoForge ZIP reparse and entire 241/73-class source/compiled declaring-owner reconciliation](../../research/PHASE2_STAGE3A_SCULK_SHRIEKER_CATALYST_ORIGINAL_73_CLASS_RECONCILIATION_1_21_1.md). Four independent FNV32 + FNV64 fingerprints MATCH for complete class roster, exact 73-reviewed/194 BLOCK IDs, all five owners per reviewed class and combined data. **Important correction:** `SculkVeinBlock` already belonged to 73 reviewed classes, while `SculkBlock` remains source pending. New [3A-9 growth-owner card](02g-sculk-spread-growth-owners.md) created; 73/241 reviewed, 168 pending; all 241 ASM/Planet/gameplay pending. Docs only; no Java/build/game tests.
+
 ## Durable restart checkpoint
 
-**Last completed Stage 3A-8.3 (2026-10-10):** [six-face shrieker/catalyst contract and 26 future fixtures](../../research/PHASE2_STAGE3A_SCULK_SHRIEKER_CATALYST_SIX_FACE_SEAM_ACCEPTANCE_CONTRACT_1_21_1.md). This is **SOURCE-ONLY**, all fixtures NOT RUN. Source uses two fundamentally different algorithms: shrieker server `stepOn` plus BE `VibrationSystem.Listener` (radius 8, real physical event Vec3/occlusion and adjacent ticking chunks), 90-tick scheduled block reset and separate `onRemove` response; catalyst direct `GameEvent.ENTITY_DIE` listener (radius 8, BY_DISTANCE), one XP consumption, world-UP+0.5 cursor seed, per-server-BE-tick `SculkSpreader` and 8-tick scheduled BLOOM reset, SCULK_SOUL particles at world Y+1.15.
+**LAST COMPLETE research microtask: Stage 3A-8.4 (2026-10-10)**. [Full source/compiled 241-class reconciliation](../../research/PHASE2_STAGE3A_SCULK_SHRIEKER_CATALYST_ORIGINAL_73_CLASS_RECONCILIATION_1_21_1.md). Original exact NeoForge 21.1.215 ZIP artifact 11643813158 SHA-256 `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`. Re-read source 1060 BLOCK IDs, 241 class names, 1333 ITEM IDs, 1712 properties; all reviewed original ID lists and five fully qualified dispatch declaration owners checked and matched current live 16-column ledger with both FNV32 and FNV64 diagnostic fingerprints. 73/241 classes, 194/1060 IDs source+original owner reviewed; 168/241, 866/1060 pending; 241 NeoForge patched ASM/Planet adapter/gameplay rows still REVIEW_PENDING.
 
-**Critical new explicit source checks:** `SpawnUtil.trySpawnMob` (Warden request: 20 attempts, physical X/Z range 5 and Y 6) scans `Direction.DOWN` and `ON_TOP_OF_COLLIDER` requires `Direction.UP` support; local-surface spawning on ±X/±Z/NEG_Y needs Phase-7 spawn policy, **not blanket world rotation**. `SculkSpreader.ChargeCursor` selects exactly **18 physical neighbor offsets** (6 axis, 12 two-axis; excludes 8 3-axis diagonal corners), uses intermediate physical solidity, max 32 cursors keyed by exact physical `BlockPos`. PlanetFace six canonical bases and existing `PlanetBlockStateFrame`, `PlanetBlockNeighborQuery` and traversal were read: one canonical BlockState/BE per physical seam/corner cell; world event Vec3 and physical chunk X/Z preserved, feature/local-support adapters must be contextual. Shrieker 8/16 local collision, WATERLOGGED fluid tick, CAN_SUMMON and warning gates kept distinct; catalyst no WATERLOGGED.
+**Erratum:** `SculkVeinBlock` (`minecraft:sculk_vein`) was already SOURCE_REVIEWED_INTEGRATION_PENDING in the earlier graph cohort and is INCLUDED in the existing 73 classes. The related `SculkBlock` (`minecraft:sculk`) alone remains REVIEW_PENDING. Neither was promoted by Stage 3A-8. Its next full source-owner research is a separate card.
 
-Proposed **SC8-01 through SC8-26** fixtures span normal vanilla control, six local face interiors, 12 cube edges, 8 triple-face corners, world X/Z chunk ticking/reload, entity spawn, item vs state components, catalyst XP, sculk charge/18 offsets, features and template, local particles/fluid. **No fixture executed**, no NeoForge patched ASM, no client/server build, no runtime source edits.
-
-Current source+compiled declaring owner ledger unchanged: **73/241** concrete classes (**194/1060** BLOCK IDs), **168/241** pending (**866/1060 IDs**); all 241 ASM/Planet adapter/gameplay status fields REVIEW_PENDING. Original ZIP 21.1.215 artifact 11643813158 SHA-256 `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e` recorded by previous stages.
-
-**NEXT FIRST unchecked task Stage 3A-8.4**, checkbox 4: independently reparse original ZIP to reconcile entire 241-class roster, 73 source reviewed/194 exact IDs/five full owner signatures, all ASM/Planet/gameplay gates, then prepare new family task card. ONE bounded research commit then STOP.
+The next ACTIVE bounded packet is [Stage 3A-9 SculkBlock charge-growth](02g-sculk-spread-growth-owners.md), **0/4 research tasks completed**. **NEXT “кк” -> 3A-9.1 checkbox 1**, not another 3A-8 task. Stage 3A and all of Phase 2 still OPEN; no Java changes, CI, patched NeoForge bytecode tests or in-game PASS.
