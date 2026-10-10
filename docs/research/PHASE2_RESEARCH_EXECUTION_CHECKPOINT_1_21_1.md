@@ -1359,6 +1359,16 @@ family without proving why it is a unique algorithm owner.
 - **No class promotion:** 73/241 source+reflection declaration reviewed (194/1060 IDs), 168/241 remaining (866/1060 IDs); all 241 patched NeoForge ASM, Planet adapter and gameplay fields still REVIEW_PENDING. No Java code change, build, CI or gameplay PASS.
 - **NEXT FIRST Stage 3A-8.3**, checkbox 3: explicit six-face canonical-vs-physical contract and future tests for item vs worldgen, growth/support/BE, seams, corners and vanilla control. One bounded docs commit then STOP.
 
+### 2026-10-10 checkpoint Stage 3A-8.3 — six-face sculk contract, 26 future tests
+
+- Card `docs/phases/phase-02/02f-sculk-shrieker-catalyst-owners.md` **3/4 DONE**, checkbox 4 first next. Evidence: `docs/research/PHASE2_STAGE3A_SCULK_SHRIEKER_CATALYST_SIX_FACE_SEAM_ACCEPTANCE_CONTRACT_1_21_1.md`. All **SC8-01…SC8-26** fixtures **NOT RUN**.
+- Pinned comparative 1.21.1 full method source inspected: shrieker VibrationSystem.Listener radius 8, player gate, `requiresAdjacentChunksToBeTicking=true`, 90 scheduled block ticks and onRemove response; catalyst direct GameEvent.ENTITY_DIE listener BY_DISTANCE radius8, skip duplicate XP, world-UP+0.5 charge seed, server BE tick SculkSpreader update, independent 8 block ticks BLOOM and world-Y+1.15 SCULK_SOUL.
+- **SpawnUtil Warden** source: 20 attempts, physical X/Z offsets 5, physical Y range 6; iterates world DOWN and requires `ON_TOP_OF_COLLIDER` support with world UP face full. On side/underside faces this may be incompatible with local-surface spawn; must address in Phase 7 entity/spawn mechanism, not globally rewrite world coordinates or generic SpawnUtil. WARN level >=4 + conditions only authorizes attempt, not guaranteed spawn.
+- **SculkSpreader** source: 18 physical §NON_CORNER_NEIGHBOURS§ (6 axial, 12 two-axis; exclude eight 3-axis cube-diagonal offsets), max 32 cursors, physical `BlockPos` keys and intermediate sturdiness; this is **not** the Planet physical three-face corner. `SculkBlock` world-above/density and `SculkPatchFeature` world-below/XZ are explicit cross-phase worldgen/local surface assumptions.
+- Inspected real Planet `PlanetFace`, `PlanetBlockStateFrame`, `PlanetBlockFrameContext`, `PlanetBlockNeighborQuery`, `PlanetBlockRuntime`, `PlanetBlockShapeRuntime`. Contract keeps one physical position/state/BE at seam/corner; canonical local frame vs path-transport chart; real Vec3 events and physical X/Z chunks; 8/16 shrieker shape, WATERLOGGED only shrieker; worldgen/geometry/particle and spawn adapters distinct.
+- Ledger **UNCHANGED**: 73/241 source+compiled declaration reviewed (194/1060 registered BLOCK IDs), 168/241 pending (866 IDs), all 241 NeoForge patched ASM, Planet adapter, gameplay gate columns REVIEW_PENDING. No Java code, CI/build, client/server/gameplay test.
+- **NEXT first unchecked Stage 3A-8.4**: independently reparse original ZIP artifact 11643813158 (SHA-256 `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`) and reconcile all 241, all currently 73 audited exact ID/owners, pending gates; prepare next card; ONE docs-only commit and STOP.
+
 ## Resume procedure after interrupted answer
 
 1. Read AGENTS.md, this checkpoint, the latest roadmap

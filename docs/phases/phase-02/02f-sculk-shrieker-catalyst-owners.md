@@ -1,6 +1,6 @@
 # Phase 2 Stage 3A-8 — sculk shrieker and catalyst block/BE owners
 
-**Status: ACTIVE — 2/4 independently bounded source research tasks completed; ASM/Planet/gameplay pending.**
+**Status: ACTIVE — 3/4 independently bounded source research tasks completed; ASM/Planet/gameplay pending.**
 Branch `2.0`; Minecraft **1.21.1** /
 NeoForge **21.1.215**, Java 21.
 
@@ -120,7 +120,7 @@ source-only claims of gameplay PASS.
   unproven vanilla structures.
   ONE research evidence commit.
   **DONE 2026-10-10 / 3A-8.2:** [exact original 1333-ITEM placed_block/BlockItem owners and explicit SculkPatchFeature sculk worldgen writers](../../research/PHASE2_STAGE3A_SCULK_SHRIEKER_CATALYST_ITEM_WORLDGEN_ALTERNATE_AUTHORS_1_21_1.md). Two item matches, 7/7 placing declarations per item; optional BLOCK_STATE/BE data, sculk growth and direct catalyst/shrieker features verified. **No new BLOCK class promoted:** 73/241 reviewed (194/1060 IDs); all 241 ASM/Planet/gameplay gates pending, no code or game test.
-- [ ] **3. Stage 3A-8.3.** Write source
+- [x] **3. Stage 3A-8.3.** Write source
   canonical vs physical world position
   contract for shriek and warden spawn
   bounds, block and BE ticks, catalyst
@@ -132,6 +132,7 @@ source-only claims of gameplay PASS.
   independent branch/phase gates:
   no gameplay PASS without actual run.
   ONE research commit.
+  **DONE 2026-10-10 / 3A-8.3:** [source/physical/local gravity contract, six-face basis, exact SpawnUtil world-Y support, 18-neighbor cursor movement, item/BE/worldgen alternate writers, and 26 proposed unrun acceptance fixtures](../../research/PHASE2_STAGE3A_SCULK_SHRIEKER_CATALYST_SIX_FACE_SEAM_ACCEPTANCE_CONTRACT_1_21_1.md). **No class promoted** (73/241, 194/1060 IDs); 241 ASM/Planet/gameplay gates remain REVIEW_PENDING. No Java or gameplay change.
 - [ ] **4. Stage 3A-8.4.** Independently
   reparse original NeoForge 21.1.215
   ZIP, verify entire roster, all
@@ -145,10 +146,12 @@ source-only claims of gameplay PASS.
 
 ## Durable restart checkpoint
 
-**Last completed Stage 3A-8.2**: [original ITEM and explicit vanilla worldgen author audit](../../research/PHASE2_STAGE3A_SCULK_SHRIEKER_CATALYST_ITEM_WORLDGEN_ALTERNATE_AUTHORS_1_21_1.md). Original ZIP artifact 11643813158 verified SHA-256 `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`. Exactly 2 ordinary BlockItem placed_block matches: `minecraft:sculk_shrieker` and `minecraft:sculk_catalyst`, 7/7 BlockItem placement lifecycle owners per entry; `Item.use` separately inherited. Exact original joined digest SHA-256 `ac59674578124bb46a566e7a22f7432d3814acc6dfba22859c43578f89adaf0b`. `DataComponents.BLOCK_STATE` can override legal properties (including CAN_SUMMON) after initial placement; separate BE data/components.
+**Last completed Stage 3A-8.3 (2026-10-10):** [six-face shrieker/catalyst contract and 26 future fixtures](../../research/PHASE2_STAGE3A_SCULK_SHRIEKER_CATALYST_SIX_FACE_SEAM_ACCEPTANCE_CONTRACT_1_21_1.md). This is **SOURCE-ONLY**, all fixtures NOT RUN. Source uses two fundamentally different algorithms: shrieker server `stepOn` plus BE `VibrationSystem.Listener` (radius 8, real physical event Vec3/occlusion and adjacent ticking chunks), 90-tick scheduled block reset and separate `onRemove` response; catalyst direct `GameEvent.ENTITY_DIE` listener (radius 8, BY_DISTANCE), one XP consumption, world-UP+0.5 cursor seed, per-server-BE-tick `SculkSpreader` and 8-tick scheduled BLOOM reset, SCULK_SOUL particles at world Y+1.15.
 
-Pinned 1.21.1 `SculkPatchFeature` proves concrete direct catalyst placement (origin below support), direct CAN_SUMMON=true rare shrieker growth (world XZ offset and world-up support), and `SculkSpreader.createWorldGenSpreader` -> `SculkBlock` `pos.above()` sensor/shrieker growth with CAN_SUMMON by worldgen mode. `CaveFeatures` configured deep-dark extraRareGrowths=0, ancient-city 1..3, both catalystChance=0.5 with support gating. Generic `StructureTemplate` is separate direct saved-state/BE writer; no specific vanilla .nbt template asserted.
+**Critical new explicit source checks:** `SpawnUtil.trySpawnMob` (Warden request: 20 attempts, physical X/Z range 5 and Y 6) scans `Direction.DOWN` and `ON_TOP_OF_COLLIDER` requires `Direction.UP` support; local-surface spawning on ±X/±Z/NEG_Y needs Phase-7 spawn policy, **not blanket world rotation**. `SculkSpreader.ChargeCursor` selects exactly **18 physical neighbor offsets** (6 axis, 12 two-axis; excludes 8 3-axis diagonal corners), uses intermediate physical solidity, max 32 cursors keyed by exact physical `BlockPos`. PlanetFace six canonical bases and existing `PlanetBlockStateFrame`, `PlanetBlockNeighborQuery` and traversal were read: one canonical BlockState/BE per physical seam/corner cell; world event Vec3 and physical chunk X/Z preserved, feature/local-support adapters must be contextual. Shrieker 8/16 local collision, WATERLOGGED fluid tick, CAN_SUMMON and warning gates kept distinct; catalyst no WATERLOGGED.
 
-**No new 241-class ledger promotion**: 73/241 source reviewed (194/1060 original BLOCK IDs), 168/241 pending (866 IDs); all 241 patched-ASM, Planet adapters and gameplay statuses remain PENDING. No Java/CI/client/server/gameplay changes.
+Proposed **SC8-01 through SC8-26** fixtures span normal vanilla control, six local face interiors, 12 cube edges, 8 triple-face corners, world X/Z chunk ticking/reload, entity spawn, item vs state components, catalyst XP, sculk charge/18 offsets, features and template, local particles/fluid. **No fixture executed**, no NeoForge patched ASM, no client/server build, no runtime source edits.
 
-**NEXT FIRST unchecked 3A-8.3**, checkbox 3: six-face canonical-vs-physical source contract and test fixtures, one bounded research commit then STOP.
+Current source+compiled declaring owner ledger unchanged: **73/241** concrete classes (**194/1060** BLOCK IDs), **168/241** pending (**866/1060 IDs**); all 241 ASM/Planet adapter/gameplay status fields REVIEW_PENDING. Original ZIP 21.1.215 artifact 11643813158 SHA-256 `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e` recorded by previous stages.
+
+**NEXT FIRST unchecked task Stage 3A-8.4**, checkbox 4: independently reparse original ZIP to reconcile entire 241-class roster, 73 source reviewed/194 exact IDs/five full owner signatures, all ASM/Planet/gameplay gates, then prepare new family task card. ONE bounded research commit then STOP.
