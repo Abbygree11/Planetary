@@ -4398,3 +4398,76 @@ source including BE and SculkSpreader
 writers, promote ONLY full source
 reviewed two rows. One bounded
 research commit and STOP.
+
+
+## 2026-10-10 Planetary Stage 3A-8.1 shrieker/catalyst exact original BLOCK and writer graph
+
+Workflow: `кк` = complete only FIRST
+unchecked small phase card task, GitHub
+branch `2.0`, commit and durable
+checkpoint, STOP. New active card
+`docs/phases/phase-02/02f-sculk-shrieker-catalyst-owners.md`
+Stage3A-8.1 checkbox1/4 DONE, task2 NEXT.
+Full report
+`docs/research/PHASE2_STAGE3A_SCULK_SHRIEKER_CATALYST_SOURCE_OWNER_AUDIT_1_21_1.md`.
+Direct immutable original NeoForge 21.1.215
+CI ZIP artifact 11643813158 sha256
+`7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`, source registry 1060 BLOCK IDs/
+241 classes, 1333 ITEM and 1712
+property rows. Original compiled exact
+5 effective nearest method declaring
+owners (getStateForPlacement/canSurvive/
+updateShape/randomTick/setPlacedBy):
+SculkShriekerBlock minecraft:sculk_shrieker
+SculkShriekerBlock/BlockBehaviour/
+SculkShriekerBlock/BlockBehaviour/Block;
+SculkCatalystBlock minecraft:sculk_catalyst
+Block/BlockBehaviour/BlockBehaviour/
+BlockBehaviour/Block. Other original
+effective tick both respective subclasses,
+randomTick BlockBehaviour, both
+no orientation property flag.
+Pinned comparable 1.21.1 Java reviewed
+SculkShriekerBlock/SculkShriekerBlockEntity,
+SculkCatalystBlock/SculkCatalystBlockEntity,
+SculkSpreader/SculkBehaviour, SculkBlock,
+SculkVeinBlock/MultifaceSpreader,
+VibrationSystem. SHRIEKER: WATERLOGGED
+schedules fluid tick, 8/16 collision,
+server stepOn player/owner check and
+BE VibrationSystem listener (8 radius,
+event tags/player), BE `shriek` writes
+SHRIEKING=true and schedules 90-tick
+reset, warning/WardenSpawnTracker,
+CAN_SUMMON + peaceful + gamerule
+response gate, SpawnUtil WARDEN world
+XZ range5 Y range6 ON_TOP_OF_COLLIDER
+not local gravity. CATALYST: no
+WATERLOGGED and only BLOOM; separate
+CatalystListener GameEvent.ENTITY_DIE
+radius8, consume living death XP once,
+world-UP+0.5 cursor seed, BE
+SculkSpreader serverTick world
+charge cursors and SculkBehaviour
+mutation, bloom writes BLOOM=true
+and schedules 8-tick reset plus
+world-Y+1.15 SCULK_SOUL particles.
+SculkBlock can use WORLD pos.above()
+to direct setBlock sculk sensor/shrieker,
+CAN_SUMMON from isWorldGeneration mode,
+outside ITEM placement. Further
+exact original ITEM and structure/worldgen
+creator join is Stage3A-8.2 NEXT.
+Promoted only two SculkShriekerBlock
+and SculkCatalystBlock class rows:
+**73/241 source+original reflection reviewed
+(194/1060 registered BLOCK IDs);
+168/241 source pending (866/1060 IDs)**.
+All 241 ASM patched NeoForge,
+Planetary adapter and gameplay
+acceptance columns REVIEW_PENDING.
+No Java/CI/client/server/gameplay test.
+NEXT Stage3A-8.2 checkbox2, exact
+original ITEM `placed_block` and
+full alternate worldgen/growth authors,
+one bounded docs-only commit then STOP.

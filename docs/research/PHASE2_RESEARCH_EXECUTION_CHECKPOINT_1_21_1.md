@@ -1282,6 +1282,74 @@ family without proving why it is a unique algorithm owner.
   graph. One independent research
   GitHub commit and checkpoint then STOP.
 
+### 2026-10-10 checkpoint Stage 3A-8.1 two actual registered sculk shrieker/catalyst owners
+
+- Active card `docs/phases/phase-02/02f-sculk-shrieker-catalyst-owners.md`
+  checkbox **1/4 DONE**, 2–4 open.
+  Full research doc
+  `docs/research/PHASE2_STAGE3A_SCULK_SHRIEKER_CATALYST_SOURCE_OWNER_AUDIT_1_21_1.md`.
+- Original immutable NeoForge 21.1.215
+  CI artifact 11643813158 ZIP SHA256
+  `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`. Original 1060 BLOCK
+  rows/241 registered concrete classes,
+  1333 ITEM rows and 1712 properties.
+  SculkShriekerBlock registry ID
+  `minecraft:sculk_shrieker`, full
+  5 nearest declaring owners
+  SculkShriekerBlock/BlockBehaviour/
+  SculkShriekerBlock/BlockBehaviour/Block.
+  SculkCatalystBlock ID
+  `minecraft:sculk_catalyst`, owners
+  Block/BlockBehaviour/BlockBehaviour/
+  BlockBehaviour/Block. Tick overridden
+  by each concrete class, randomTick
+  inherited BlockBehaviour. Both
+  have NO orientation property.
+- Pinned comparative 1.21.1 Java
+  SculkShriekerBlock + BE (VibrationSystem
+  listener radius8, warning level
+  and WardenSpawnTracker, player-only
+  input including `stepOn`, CAN_SUMMON
+  and peaceful/gamerule conditions,
+  SHRIEKING BE state writer, 90-tick
+  block reset, world-physical SpawnUtil
+  5-XZ/6-Y ON_TOP_OF_COLLIDER);
+  SculkCatalystBlock + BE (direct
+  CatalystListener GameEvent.ENTITY_DIE
+  radius8 not VibrationSystem, single
+  XP consumption, BLOOM BE writer
+  plus 8-tick block reset, per-server
+  BE-tick SculkSpreader cursor updates,
+  death event world UP+0.5 charge pos,
+  SCULK_SOUL world Y+1.15 particle).
+  Also reviewed SculkSpreader.ChargeCursor,
+  SculkBehaviour, SculkVeinBlock,
+  MultifaceSpreader, SculkBlock and
+  VibrationSystem as extra graph owners.
+  SculkBlock growth may direct-setBlock
+  sensor/shrieker at global pos.above
+  and set CAN_SUMMON based on worldgen
+  mode. Original exact ITEM.placed_block
+  and complete direct worldgen creator
+  join still NEXT task.
+- Promoted ONLY two verified concrete
+  classes/2 IDs. Ledger **73/241
+  SOURCE_REVIEWED_INTEGRATION_PENDING
+  (194/1060 registered BLOCK IDs)**,
+  **168/241 REVIEW_PENDING (866 IDs)**;
+  all 241 patched NeoForge bytecode,
+  Planet adapter and gameplay gates
+  `REVIEW_PENDING`. LightningRod
+  source still pending. Java/runtime/
+  client/server tests NOT run.
+- **NEXT FIRST unfinished Stage 3A-8.2**:
+  original 1333-ITEM `placed_block`
+  join for two exact classes/IDs,
+  distinguish item, `DataComponents.BLOCK_STATE`,
+  BE/structure/writer, growth/worldgen
+  creation, separate one-commit report.
+  STOP after exactly one checkbox.
+
 ## Resume procedure after interrupted answer
 
 1. Read AGENTS.md, this checkpoint, the latest roadmap

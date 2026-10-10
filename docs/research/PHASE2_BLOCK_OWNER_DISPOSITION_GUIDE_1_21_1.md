@@ -1,3 +1,54 @@
+## 2026-10-10 Stage 3A-8.1 original two sculk shrieker/catalyst owners + distinct BE event/spreader graphs
+
+[Direct original NeoForge 21.1.215 BLOCK
+class IDs and five exact compiled method
+owners and full pinned Java source research](PHASE2_STAGE3A_SCULK_SHRIEKER_CATALYST_SOURCE_OWNER_AUDIT_1_21_1.md).
+SculkShriekerBlock original five nearest:
+SculkShriekerBlock / BlockBehaviour /
+SculkShriekerBlock / BlockBehaviour / Block;
+SculkCatalystBlock:
+Block / BlockBehaviour / BlockBehaviour /
+BlockBehaviour / Block.
+Original exact `minecraft:sculk_shrieker`
+(c an_summon/shrieking/waterlogged —
+property correctly `can_summon`) and
+`minecraft:sculk_catalyst` (bloom).
+Neither has orientation-property
+flag but both have face/time/world
+algorithms. Shrieker BE implements
+VibrationSystem.Listener radius8,
+player owner stepOn, warning and
+WardenSpawnTracker; shriek writes
+SHRIEKING, schedules 90 ticks,
+CAN_SUMMON/gamerule/peaceful gating,
+SpawnUtil ON_TOP_OF_COLLIDER with
+real world 5-XZ/6-Y range; shrieker
+8/16 height collision and water tick.
+Catalyst uses separate BE CatalystListener
+GameEvent.ENTITY_DIE, livingEntity XP
+consumption once, sculk cursor spawn
+at event World UP 0.5, BE serverTick
+SculkSpreader cursor update and
+8-tick scheduled BLOOM reset;
+particle world Y+1.15.
+SculkSpreader.ChargeCursor uses world
+noncorner neighbor offsets, can write
+SculkVeinBlock/MultifaceSpreader/
+SculkBlock states. SculkBlock growth
+can spawn SCULK_SHRIEKER or SCULK_SENSOR
+via physical blockpos.above; CAN_SUMMON
+depends worldgen mode. Source inspecting
+SculkBlock/Vein does not change
+their own independent registered
+source class statuses.
+**73/241 source-reviewed (194/1060 IDs),
+168/241 source-pending (866 IDs)**,
+all 241 ASM/Planet/gameplay PENDING.
+No Java patch or gameplay test. Next
+Stage 3A-8.2 exact original ITEM
+registry join and alternate state
+creator evidence, one commit.
+
 ## 2026-10-10 Stage 3A-7.4 — 71 reviewed classes and 192 exact IDs independently match original immutable NeoForge ZIP
 
 [Full re-parsed original 21.1.215 ZIP

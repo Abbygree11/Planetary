@@ -21,7 +21,7 @@
 | 2.3A-5 | [02c-rail-owners.md](phase-02/02c-rail-owners.md) | **DONE (4 research packets only)** | All 66 class exact 5-signature owner+174 ID records match original ZIP; 175 other classes pending, no gameplay PASS |
 | 2.3A-6 | [02d-environment-pressure-sensor-owners.md](phase-02/02d-environment-pressure-sensor-owners.md) | **DONE (4 research packets only)** | Original 21.1.215 ZIP all 69 exact owner tuples/190 reviewed IDs reconcile, 172 pending, no ASM or gameplay PASS |
 | 2.3A-7 | [02e-sculk-vibration-sensor-owners.md](phase-02/02e-sculk-vibration-sensor-owners.md) | **DONE (4 research packets only)** | Original 21.1.215 ZIP all 71 source-reviewed exact class/192 ID/five-owner tuples reconciled; all 241 runtime/ASM/gameplay gates pending |
-| 2.3A-8 | [02f-sculk-shrieker-catalyst-owners.md](phase-02/02f-sculk-shrieker-catalyst-owners.md) | **NEXT** | Exactly 2 still source-pending concrete classes/2 IDs: shrieker VibrationSystem/warden and catalyst entity-death/BLOOM/spreader; separate owners |
+| 2.3A-8 | [02f-sculk-shrieker-catalyst-owners.md](phase-02/02f-sculk-shrieker-catalyst-owners.md) | **ACTIVE 1/4** | Original 2 exact sculk shrieker/catalyst NeoForge classes/5 method owners, BE vibration/warden versus entity death/BLOOM/SculkSpreader writer graph source-reviewed; 73/241 reviewed, no ASM/gameplay PASS |
 | 2.3B | [03-item-creators.md](phase-02/03-item-creators.md) | TODO | Item/alternative-author coverage |
 | 2.3C | [04-lifecycle-neoforge.md](phase-02/04-lifecycle-neoforge.md) | TODO | Bytecode/patch/dispatch evidence and gate |
 | 2.4A | [05-implementation-a.md](phase-02/05-implementation-a.md) | TODO | Context/FACING/AXIS/rotation state families |
@@ -39,60 +39,52 @@
 
 ## Точка продолжения
 
-**После Stage 3A-7.4 (2026-10-10):**
-завершена **4/4** исследовательская карточка
-двух скалк-сенсоров, НЕ их игровая
-реализация/приёмка. Оригинальный
-неизменённый NeoForge **21.1.215**
-ZIP artifact 11643813158 SHA256
-`7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`
-прочитан заново: **1060 BLOCK IDs /
-241 Java-класс, 1333 ITEM IDs, 1712
-BlockState properties**. Для всех
-**71 исследованного класса / 192 точных
-BLOCK IDs** проверены пять
-`effective_method_owners` по полным
-сигнатурам методов, все значения
-совпали с текущим 16-колоночным
-реестром GitHub. Все четыре независимо
-вычисленных контрольные суммы совпали:
-roster `0xf188a064`, exact IDs
-`0x8a6840ba`, five owners
-`0xa81e5835`, combined
-`0x59d9c0aa`.
-[Подробный независимый отчёт](../research/PHASE2_STAGE3A_SCULK_COHORT_RECONCILIATION_1_21_1.md).
-
-Состояние реестра **без повышения новых
-классов**: **71/241**
-`SOURCE_REVIEWED_INTEGRATION_PENDING`
-(192/1060 BLOCK IDs), **170/241**
-`REVIEW_PENDING` (868 BLOCK IDs).
-Все 241 NeoForge ASM patched-bytecode /
-Planet adapter / gameplay acceptance
-поля всё ещё `REVIEW_PENDING`.
-Не было изменений Java, сборки или
-игровых проверок. Stage 3A и Phase 2
-**не завершены**.
-
-Создана следующая маленькая карточка:
-[Stage 3A-8](phase-02/02f-sculk-shrieker-catalyst-owners.md)
-для **SculkShriekerBlock**
+**После Stage 3A-8.1 (2026-10-10):**
+сверены две новые зарегистрированные
+реализации NeoForge 21.1.215:
+`SculkShriekerBlock`
 (`minecraft:sculk_shrieker`) и
-**SculkCatalystBlock**
-(`minecraft:sculk_catalyst`),
-**двух ещё не исследованных зарегистрированных
-классов / двух ID**. Это две
-отдельные логики: шрикер/предупреждение
-о хранителе/скалк-сигналы, катализатор/
-`ENTITY_DIE`/BLOOM/`SculkSpreader`.
-`LightningRodBlock` остаётся pending
-отдельного погодного семейства.
+`SculkCatalystBlock`
+(`minecraft:sculk_catalyst`).
+Оригинальный CI ZIP artifact 11643813158
+SHA256 `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`
+дал точные `effective_method_owners`
+для пяти полных сигнатур. Исходники
+Minecraft 1.21.1
+[полностью исследованы по двум разным
+BE/world-event графам](../research/PHASE2_STAGE3A_SCULK_SHRIEKER_CATALYST_SOURCE_OWNER_AUDIT_1_21_1.md).
 
-**NEXT первая незавершённая задача —
-[3A-8.1](phase-02/02f-sculk-shrieker-catalyst-owners.md):**
-сверить точные NeoForge owners и изучить
-полный исходный граф разных обработчиков
-BE/вибраций/скалк-распространения,
-один отдельный коммит и checkpoint.
+У шрикера `SHRIEKING/CAN_SUMMON/WATERLOGGED`,
+`stepOn`, BE `VibrationSystem` listener
+радиус 8, предупреждение хранителя,
+90-тиковый сброс и физическая мировая
+область Warden spawn. У катализатора
+только `BLOOM`, direct
+`CatalystListener` по `ENTITY_DIE`,
+выдача опыта ровно один раз, 8-тиковый
+сброс, BE `SculkSpreader` c
+cursor/charge, другие авторы состояний
+в `SculkVeinBlock`/`SculkBlock`.
+Рост `SculkBlock` создаёт
+сенсоры/шрикеры непосредственно `setBlock`,
+а `CAN_SUMMON` зависит от
+worldgen режима; точные ITEM и
+другие create-path проверки — 3A-8.2.
+
+Новый статус **73/241** source+compiled
+reviewed (**194/1060 BLOCK IDs**),
+**168/241** source pending (**866 IDs**).
+Все 241 patched NeoForge ASM,
+Planet adapter/gameplay поля —
+`REVIEW_PENDING`. Никаких Java
+исправлений или игровых PASS;
+3A и Phase 2 ещё не закончены.
+
+**NEXT первая незавершённая —
+[3A-8.2](phase-02/02f-sculk-shrieker-catalyst-owners.md):**
+поиск настоящих двух `ITEM.placed_block`
+из 1333 записей и независимых путей
+создания через spread/worldgen/структуры,
+один небольшой коммит.
 
 Обновление этого файла означает только, что появился маршрут и checkpoint, **не что Phase 2 исправлена**.

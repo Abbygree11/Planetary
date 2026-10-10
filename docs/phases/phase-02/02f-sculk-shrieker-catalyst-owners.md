@@ -1,6 +1,6 @@
 # Phase 2 Stage 3A-8 — sculk shrieker and catalyst block/BE owners
 
-**Status: NEXT — 0/4 independently bounded research tasks completed.**
+**Status: ACTIVE — 1/4 independently bounded source research tasks completed; ASM/Planet/gameplay pending.**
 Branch `2.0`; Minecraft **1.21.1** /
 NeoForge **21.1.215**, Java 21.
 
@@ -8,7 +8,7 @@ NeoForge **21.1.215**, Java 21.
 [241-class exact BLOCK registry disposition](../../research/PHASE2_BLOCK_OWNER_DISPOSITION_1_21_1.tsv) ·
 [Stage 3A-7.4 original 71-class/192-ID reconciliation](../../research/PHASE2_STAGE3A_SCULK_COHORT_RECONCILIATION_1_21_1.md)
 
-## Exactly TWO original registered concrete classes / TWO exact BLOCK IDs — both source REVIEW_PENDING
+## Exactly TWO original registered concrete classes / TWO exact BLOCK IDs — source+compiled declarations reviewed, runtime pending
 
 | Exact Java class | Exact original registered BLOCK ID | Original state property names | Original compiled class hierarchy |
 |---|---|---|---|
@@ -19,11 +19,13 @@ Source **original immutable** NeoForge 21.1.215
 runtime registry ZIP GitHub Actions artifact
 **11643813158**, run **37988064055**,
 SHA-256 `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`.
-Both source-review statuses still
-`REVIEW_PENDING`; no original five
-compiled declaring owners have been promoted
-in this card. All patch-ASM, Planet adapter,
-gameplay acceptance fields are pending.
+Both class+original five-signature effective
+method declaring owners have now been reviewed
+in **Stage 3A-8.1** and promoted to
+`SOURCE_REVIEWED_INTEGRATION_PENDING` with
+`REFLECTION_OWNER_VERIFIED` only.
+All patched ASM, Planet adapter and gameplay
+acceptance fields remain `REVIEW_PENDING`.
 
 **Separate algorithms sharing one sculk
 world-event context, not one generic
@@ -85,7 +87,7 @@ source-only claims of gameplay PASS.
 
 ## Four independent source research substeps — FIRST unchecked only per `кк`
 
-- [ ] **1. Stage 3A-8.1.** Read exact original
+- [x] **1. Stage 3A-8.1.** Read exact original
   NeoForge 21.1.215 compiled identities/2
   registered BLOCK IDs and **five exact
   full-signature method declaration owners**
@@ -104,6 +106,7 @@ source-only claims of gameplay PASS.
   Promote ONLY genuinely audited two
   rows. Evidence + ledger + checkpoint,
   ONE commit.
+  **DONE 2026-10-10 / 3A-8.1:** [original 2 registered BLOCK IDs + 5 exact compiled declaration owners each; comparative 1.21.1 BE VibrationSystem/90-tick shriek/WardenSpawnTracker and independent GameEvent.ENTITY_DIE/8-tick BLOOM/SculkSpreader cursor+SculkBehaviour/Vein/Block writer graph](../../research/PHASE2_STAGE3A_SCULK_SHRIEKER_CATALYST_SOURCE_OWNER_AUDIT_1_21_1.md). Two source-only rows promoted; **73/241 classes (194/1060 IDs)** reviewed, 168/241 pending; all 241 ASM/Planet/gameplay fields still pending.
 - [ ] **2. Stage 3A-8.2.** Independently
   join original ITEM `placed_block`
   records for exact two BLOCK IDs from
@@ -141,24 +144,53 @@ source-only claims of gameplay PASS.
 
 ## Durable restart checkpoint
 
-Last completed:
-[Stage 3A-7.4 source registry
-reconciliation](../../research/PHASE2_STAGE3A_SCULK_COHORT_RECONCILIATION_1_21_1.md):
-ZIP sha256 `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`,
-original vs GitHub:
-roster `0xf188a064`,
-71 class/192 ID digest `0x8a6840ba`,
-five declaring owners `0xa81e5835`,
-combined `0x59d9c0aa`.
-All **71/241** source+compiled reviewed
-(**192/1060 BLOCK IDs**), **170/241**
-source pending (**868/1060 BLOCK IDs**).
-All patched ASM/Planet/gameplay fields
-REVIEW_PENDING.
+**Last completed Stage 3A-8.1**, original
+NeoForge 21.1.215 exact two block IDs and
+full five nearest declaring method owners,
+pinned comparative Java source graph of
+distinct shriek/warden and catalyst
+death/BLOOM/spread algorithms:
+[full source/compiled audit](../../research/PHASE2_STAGE3A_SCULK_SHRIEKER_CATALYST_SOURCE_OWNER_AUDIT_1_21_1.md).
 
-**NEXT FIRST microtask: Stage 3A-8.1**,
-checkbox 1, exact two still-unreviewed
-classes and their two original registered
-BLOCK IDs, full source/callsite/compiled
-declaration research. One committed
-research package and stop.
+Original unmodified CI artifact
+11643813158 ZIP SHA256 `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`.
+SculkShriekerBlock exact method owners:
+`SculkShriekerBlock,BlockBehaviour,
+SculkShriekerBlock,BlockBehaviour,Block`;
+SculkCatalystBlock:
+`Block,BlockBehaviour,BlockBehaviour,
+BlockBehaviour,Block`.
+Both originally have no FACING
+orientation property. Shrieker owns
+WATERLOGGED, CAN_SUMMON and SHRIEKING
+via BlockState/BE; stepOn plus 8-radius
+VibrationSystem listener, BE warning/
+WardenSpawnTracker/90-tick shriek and
+physical world spawn ranges. Catalyst
+has only BLOOM: direct CatalystListener
+GameEvent.ENTITY_DIE, XP once,
+world-UP cursor start, BE per-tick
+SculkSpreader update, 8-tick
+BLOOM reset, world-Y SCULK_SOUL
+particle; SculkSpreader/SculkBehaviour/
+SculkVeinBlock/SculkBlock physical
+writer graph examined (those additional
+registered classes NOT promoted).
+
+Full ledger now **73/241**
+SOURCE_REVIEWED_INTEGRATION_PENDING
+(**194/1060 BLOCK IDs**), **168/241**
+REVIEW_PENDING (**866/1060 IDs**).
+`LightningRodBlock` still source pending.
+All 241 ASM patch bytecode, Planet
+adapter and gameplay gate values
+`REVIEW_PENDING`. No Java patch/CI/
+gameplay test.
+
+**NEXT FIRST unfinished Stage 3A-8.2**,
+checkbox 2: independently join original
+1333 ITEM `placed_block` creators
+for these 2 exact ID, characterize
+direct sculk growth/setBlock/structure/
+worldgen and component/NBT alternative
+writers. One research commit and STOP.

@@ -830,6 +830,50 @@ warden vs EntityDie/charge cursor
 spreader writers. LightningRod separately
 pending. Phase 2 not complete.
 
+## 2026-10-10 Stage 3A-8.1 two sculk shrieker/catalyst registered source owner classes
+
+[Original NeoForge 21.1.215 exact
+2-class/2 registered BLOCK IDs and
+five method-declaring owner signatures,
+comparative 1.21.1 BE and direct
+state-writer graph](PHASE2_STAGE3A_SCULK_SHRIEKER_CATALYST_SOURCE_OWNER_AUDIT_1_21_1.md).
+SculkShriekerBlock: placement and
+updateShape own, canSurvive/randomTick
+BlockBehaviour, setPlacedBy Block;
+nested SculkShriekerBlockEntity with
+VibrationSystem.Listener radius8,
+player-attributed vibration and
+`stepOn`, warning and WardenSpawnTracker,
+SHRIEKING true then 90-tick scheduled
+SHRIEKING reset, CAN_SUMMON/peaceful/
+gamerule gate, physical SpawnUtil
+world XZ/Y ranges, collision 8/16
+and WATERLOGGED water ticks.
+SculkCatalystBlock: placement Block,
+survive/updateShape/randomTick
+BlockBehaviour, setPlacedBy Block;
+BE CatalystListener directly
+on GameEvent.ENTITY_DIE (NOT
+VibrationSystem), living XP consumed
+once, world-UP 0.5 cursor add,
+BLOOM true then scheduled reset 8,
+BE SculkSpreader cursor progress.
+Spread graph calls SculkBehaviour,
+SculkVeinBlock/MultifaceSpreader,
+SculkBlock growth world `pos.above()`
+creating sensor/shrieker states with
+CAN_SUMMON determined by worldgen.
+Distinct registered SculkBlock/Vein
+statuses unchanged by this packet.
+Two source rows promoted:
+**73/241 source-reviewed classes
+(194/1060 BLOCK IDs); 168/241
+source pending (866 IDs)**.
+All NeoForge ASM/Planet/gameplay
+gates remain PENDING. NEXT Stage
+3A-8.2 exact ITEM creators and
+additional structure/worldgen authors.
+
 ## Remaining Stage 3A work
 
 1. Read actual `phase2-neo1211-registry-census` artifact's
