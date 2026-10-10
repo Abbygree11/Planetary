@@ -1138,6 +1138,79 @@ family without proving why it is a unique algorithm owner.
   fixture set; ONE docs checkpoint commit,
   then stop.
 
+### 2026-10-10 micro-checkpoint — Stage 3A-7.3 sculk six-face calibrated direction, physical VibrationSystem and 19 tests
+
+- Active card `docs/phases/phase-02/02e-sculk-vibration-sensor-owners.md`
+  **3/4 bounded research tasks DONE**,
+  task 4 still unchecked.
+  Report:
+  `docs/research/PHASE2_STAGE3A_SCULK_SIX_FACE_VIBRATION_SIGNAL_CONTRACT_1_21_1.md`.
+- Read actual Planetary branch `2.0`
+  `PlanetFace` six true local tangent
+  basis vectors, stable per-physical-cell
+  `PlanetBlockStateFrame`,
+  `PlanetBlockFrameContext` crossing
+  traversal charts, `PlanetBlockNeighborQuery`
+  target physical cell and target local
+  inbound face, `PlanetBlockRuntime`,
+  `PlanetBlockShapeRuntime` outermost
+  VoxelShape. Pinned comparative 1.21.1
+  sculk/calibrated class and BE sources
+  and complete `VibrationSystem` receiver.
+  No true ASM/Mixin/dispatch audit.
+- Four-value calibrated `FACING` remains
+  source-local tangential NORTH/EAST/SOUTH/
+  WEST; on POS_X local EAST means physical
+  world -Y and backside WEST physical +Y.
+  Separate physical backside BlockPos from
+  `Level.getSignal(neighborPos, direction)`
+  queried-side and target canonical port.
+  `getSignal` suppresses queried FACING,
+  inherited direct signal requires queried UP,
+  analog comparator reads BE last frequency
+  only while ACTIVE. Phase 7A must confirm
+  actual NeoForge caller API convention.
+- `VibrationSystem.Listener` and ticker
+  preserve physical world Vec3 distance,
+  world-ray occlusion and actual world-XZ
+  3×3 chunk loaded/ticking gate; don't
+  bend vibration ray/topology at seams.
+  Base radius8, calibrated16; `stepOn`
+  forced event path may require physical
+  collision dispatch audit. Physical six
+  resonator positions preserved, separate
+  potential world-below neighbor callback
+  local semantic discrepancy.
+- Canonical local sensor VoxelShape 8/16-high;
+  model, stepOn and animateTick world-Y
+  particles Phase3 pending. WATERLOGGED
+  schedules fluid tick (Phase5) and silences
+  audio; vibrations/POWER still processed.
+  BE server Ticker vibration travel distinct
+  from scheduled block ACTIVE plain30/
+  calibrated10 then COOLDOWN10 tick
+  and from fluid tick. All crossphase
+  tests (19 vanilla controls, all faces,
+  seams and corners, chunk tick gates,
+  vibrations, queried redstone, water,
+  analog and BE save/load) specified,
+  **NONE EXECUTED**.
+- **NO change to original 16-col disposition:
+  71/241 source+reflection reviewed classes
+  (192/1060 registered BLOCK IDs),
+  170/241 source pending (868/1060 IDs)**.
+  All 241 patched NeoForge ASM, Planet
+  adapter and gameplay acceptance fields
+  REVIEW_PENDING. No Java/build/game tests.
+- **NEXT FIRST unchecked task 3A-7.4**,
+  card task 4: independent original
+  NeoForge 21.1.215 CI ZIP roster+71
+  reviewed classes/192 actual IDs + five
+  nearest full-signature declaring owners,
+  all 170 class pending statuses and
+  ASM/gameplay gates, queue next owner
+  family, ONE research-only GitHub commit.
+
 ## Resume procedure after interrupted answer
 
 1. Read AGENTS.md, this checkpoint, the latest roadmap

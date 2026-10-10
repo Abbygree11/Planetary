@@ -1,3 +1,63 @@
+## 2026-10-10 Stage 3A-7.3: six-face sculk physical listener/signal and water contract
+
+[Direct source/project frame audit and
+19 not-executed six-face/seam/corner acceptance
+fixtures](PHASE2_STAGE3A_SCULK_SIX_FACE_VIBRATION_SIGNAL_CONTRACT_1_21_1.md).
+Read real Planetary PlanetFace axes,
+BlockStateFrame stable canonical source,
+BlockFrameContext traversal seams,
+BlockNeighborQuery source-local to world
+physical target and target-local inbound,
+BlockRuntime physicalSideToLocal and
+BlockShapeRuntime outermost VoxelShape
+rotation, plus pinned comparative
+Minecraft 1.21.1 SculkSensorBlock,
+CalibratedSculkSensorBlock, both BEs
+and complete VibrationSystem.
+Calibrated FACING always source-local
+HORIZONTAL N/E/S/W even when world
+tangent vertical on side faces; BE
+back input physical target from local
+FACING-opposite. Level.getSignal caller
+query side and receiver's canonical
+port must be independently verified
+in Phase7A, not guessed from physical
+targetLocalSideTowardSource.
+Calibrated getSignal suppresses own
+queried FACING weak output, inherited
+getDirectSignal only queried local UP
+with polymorphic weak getSignal.
+World VibrationSystem uses global Vec3
+Euclidean source/target distance,
+six-world-direction ray occlusion,
+and real physical XZ 3x3 chunk-tick
+gate; don't gravity-rotate rays or
+chunk keys at seams. Base listener
+radius8, calibrated radius16.
+`SculkSensorBlock.updateNeighbours`
+pos+global below requires separate
+real physical/local policy, while
+six-direction resonator scan is already
+full world-adjacency. VoxelShape 8/16
+height in canonical local UP;
+world-Y animateTick sparks and stepOn
+collision callback require separate
+Phase3 audit. WATERLOGGED schedules
+fluid tick, suppresses some sounds
+but sensor still accepts events and
+outputs POWER; Phase5 owns hydrodynamics.
+BE vibration travel ticker and scheduled
+BLOCK ACTIVE 30/10 → COOLDOWN 10
+are different callbacks. Defined 19
+future test fixtures, **none run**.
+No new class promotions: **71/241 reviewed
+(192/1060 BLOCK IDs), 170/241 pending
+(868/1060 IDs)**; all patched ASM,
+Planet integration/gameplay pending.
+Next 3A-7.4 original NeoForge 71 reviewed
+class/192 ID five-owner recheck and
+next owner-family card.
+
 ## 2026-10-10 Stage 3A-7.2 — original 2 exact sculk ITEM BlockItem owners and alternate writers
 
 [Two exact original 1333-item registry

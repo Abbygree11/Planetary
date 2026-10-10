@@ -1,6 +1,6 @@
 # Phase 2 Stage 3A-7 — sculk vibration and calibrated sensor owners
 
-**Status: ACTIVE / 2 of 4 bounded source research tasks completed; no ASM/Planet/gameplay PASS.**
+**Status: ACTIVE / 3 of 4 bounded research tasks completed; no ASM/Planet/gameplay PASS.**
 Branch `2.0`; Minecraft **1.21.1** / NeoForge
 **21.1.215**, Java 21.
 
@@ -94,7 +94,7 @@ minecraft entity motion physics.
   selection and calibrated-signal alternative
   authors. Evidence + checkpoint; no runtime PASS.
   **DONE 2026-10-10 / 3A-7.2:** [original two exact one-to-one BlockItem registry joins, seven compiled placement method owners and ITEM `Item.use` distinction, optional block/BE item component state rewrite, vibration BlockEntity writer paths, state phase scheduling, calibrated input/output readers and generic StructureTemplate bypass](../../research/PHASE2_STAGE3A_SCULK_ITEM_ALTERNATE_AUTHORS_1_21_1.md). Reproducible joined ITEM SHA-256 `6225d8898725346b8f37d34d97d64a4a7a86a17a5cf39e02d339f2bc0972fee5`. No specific worldgen sensor placement or runtime/gameplay PASS.
-- [ ] **3. Stage 3A-7.3.** Canonical local
+- [x] **3. Stage 3A-7.3.** Canonical local
   BlockState FACING, real-world neighbor
   and receiver-query direction,
   vibration propagation / game-event
@@ -106,6 +106,7 @@ minecraft entity motion physics.
   game events, signal filtering, water, and
   vanilla non-Planet regression. Don't claim
   actually executed game tests.
+  **DONE 2026-10-10 / Stage 3A-7.3:** [actual six-face PlanetFace directions and canonical BlockState FACING, physical backside receiver and API signal query separation, world XYZ vibration/ray/chunk semantics, two tick loops, local half-voxel shape/water/audio and 19 **not run** future vanilla/six-face/seam/corner game fixtures](../../research/PHASE2_STAGE3A_SCULK_SIX_FACE_VIBRATION_SIGNAL_CONTRACT_1_21_1.md). No new class disposition or runtime PASS.
 - [ ] **4. Stage 3A-7.4.** Independent original
   NeoForge 21.1.215 CI ZIP verification of
   updated class roster, exact reviewed IDs,
@@ -116,50 +117,53 @@ minecraft entity motion physics.
 
 ## Durable resume checkpoint
 
-**Last completed Stage 3A-7.2:** independently
-reopened original unmodified NeoForge 21.1.215
-runtime census ZIP (artifact 11643813158,
-SHA256 `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`)
-and checked **exactly one** ITEM `placed_block`
-match per both original registered BLOCK IDs:
-`minecraft:sculk_sensor` →
-`minecraft:sculk_sensor` BlockItem;
-`minecraft:calibrated_sculk_sensor` →
-`minecraft:calibrated_sculk_sensor` BlockItem.
-Both are original `BlockItem>Item`,
-seven effective compiled item placement
-lifecycle declaring owners `BlockItem`,
-separate `use(Level,Player,InteractionHand)`
-nearest owner `Item`. Joined ITEM-row
-SHA256 `6225d8898725346b8f37d34d97d64a4a7a86a17a5cf39e02d339f2bc0972fee5`.
-[Full exact report](../../research/PHASE2_STAGE3A_SCULK_ITEM_ALTERNATE_AUTHORS_1_21_1.md).
+**Last completed Stage 3A-7.3:** [six-face
+canonical/calibrated FACING, vibration event,
+physical signal-port and runtime acceptance
+contract](../../research/PHASE2_STAGE3A_SCULK_SIX_FACE_VIBRATION_SIGNAL_CONTRACT_1_21_1.md),
+checked against actual Planetary `PlanetFace`,
+`PlanetBlockStateFrame`,
+`PlanetBlockFrameContext`,
+`PlanetBlockNeighborQuery`,
+`PlanetBlockRuntime`,
+`PlanetBlockShapeRuntime` and pinned 1.21.1
+`SculkSensorBlock`, `CalibratedSculkSensorBlock`,
+both BE sources and `VibrationSystem`.
+Local FACING four tangent directions (not
+expanded to ±Y) -> physical input backside
+`BlockPos` -> **separate** queried Level
+signal `Direction`, target canonical side
+and output FACING suppression/direct-UP.
+`VibrationSystem` uses physical world Vec3
+distance, ray occlusion and 3x3 physical XZ
+chunk tick gate; don't rotate its vectors
+with gravity. Two independent tick mechanisms:
+server BE vibration travel, scheduled
+BLOCK active 30 plain/10 calibrated and
+10 cooldown, plus WATER fluid tick.
+Physical world-below neighbor notification,
+six-world-neighbor resonance, local 8/16
+half-height VoxelShape and world-Y
+`animateTick` separated into Phase 2/3/5/7A.
+19 explicit future acceptance fixtures
+from non-Planet control through six faces,
+seams, three-face corner, analog signals,
+water, chunk loaded, force stepOn,
+resonators, timers and save/load —
+**none were executed**.
 
-Source bypasses: optional
-`DataComponents.BLOCK_STATE` and
-`BLOCK_ENTITY_DATA`, `VibrationSystem.Listener`
-+ BE `onReceiveVibration` (frequency writer)
-+ `SculkSensorBlock.activate`,
-scheduled `tick`/deactivate state transitions,
-`onPlace` power reset, `stepOn`
-forced vibration, six-world-direction
-resonator events, calibrated physical
-opposite-FACING signal **reader** and
-BE analog last-frequency output,
-generic `StructureTemplate.setBlock`
-without proving a shipped sensor-containing
-template.
+Current statuses unchanged: **71/241**
+source+original reflection reviewed classes
+(**192/1060 BLOCK IDs**),
+**170/241 source pending** (**868 IDs**);
+all 241 patched ASM, Planet adapter and
+gameplay acceptance fields `REVIEW_PENDING`.
+No Java/CI/game run.
 
-No new source class promotion:
-**71/241** reviewed (192/1060 BLOCK IDs),
-**170/241** source pending (868/1060 IDs).
-All 241 patched NeoForge ASM, Planet adapter,
-gameplay verdicts `REVIEW_PENDING`.
-No Java build, server or client execution.
-
-**NEXT FIRST unfinished Stage 3A-7.3**,
-card checkbox 3: six-face and edge/corner
-local-to-world FACING, receiver query vs
-physical neighbor, world-Vec3 game-event
-propagation, fluid shape and actual test
-matrix; one independent research commit,
-stop. No gameplay PASS.
+**NEXT FIRST incomplete: Stage 3A-7.4**,
+checkbox 4: original NeoForge 21.1.215
+unchanged ZIP exact 71-reviewed-class/192-ID/
+5-signature-owners reconciliation, verify
+170 class pending and all gate fields,
+queue next owner-family card.
+One research GitHub commit and stop.

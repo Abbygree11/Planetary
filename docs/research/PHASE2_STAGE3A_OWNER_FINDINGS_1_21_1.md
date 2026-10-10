@@ -762,6 +762,42 @@ all patched ASM/Planet/gameplay gates pending.
 NEXT 3A-7.3 canonical local FACING/physical
 events and future acceptance fixtures.
 
+## 2026-10-10 Stage 3A-7.3 canonical FACING vs real-world vibration/acoustic and signal owners
+
+[Complete real Planetary face table and
+pinned Minecraft 1.21.1 world XYZ
+vibration, port and shape contracts](PHASE2_STAGE3A_SCULK_SIX_FACE_VIBRATION_SIGNAL_CONTRACT_1_21_1.md)
+cover two registered sculk sensor Java
+classes. Real canonical local HORIZONTAL
+FACING can map to physical vertical
+world direction on ±X/±Z cube faces.
+Calibrated BE getBackSignal combines
+physical FACING-opposite neighbor and
+Level.getSignal queried-side, which
+must be separately verified in Phase7A;
+own getSignal query==FACING weak output
+suppressed and inherited direct signal
+only UP. VibrationSystem.Listener/Ticker
+uses physical Vec3 distance/rays and
+actual world XZ 3x3 chunk ticks;
+not gravity-rotated topological route.
+Six physical resonator neighbors
+remain distinct from world-below
+redstone callback. Waterlogged fluid
+tick, sounds and half-height local
+VoxelShape with separate animateTick
+world-Y particle path + stepOn physical
+dispatch recorded. Server BE listener
+travel vs scheduled ACTIVE 30/10 and
+COOLDOWN10 block ticks separated.
+19 future runnable tests written, NONE
+executed. Source-only ledger unchanged
+**71/241 source-reviewed (192 IDs),
+170/241 pending (868 IDs)**, all ASM/
+Planetary runtime and gameplay pending.
+Next 3A-7.4 original ZIP whole cohort
+reconciliation and separate new family.
+
 ## Remaining Stage 3A work
 
 1. Read actual `phase2-neo1211-registry-census` artifact's

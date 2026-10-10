@@ -4254,3 +4254,83 @@ canonical local FACING/receiver physical
 coords, world vibration/occlusion/chunks,
 seam/corner tests, fluid and render
 contracts, one independent GitHub commit.
+
+
+## 2026-10-10 Stage 3A-7.3 sculk sensor canonical FACING, physical vibration and game fixture matrix
+
+`кк` = ONE FIRST unchecked bounded
+research/implementation card task on
+Planetary GitHub `2.0`, one atomic commit,
+durable checkpoint, STOP.
+Completed Stage 3A-7.3 checkbox 3 of 4
+in `docs/phases/phase-02/02e-sculk-vibration-sensor-owners.md`;
+new report
+`docs/research/PHASE2_STAGE3A_SCULK_SIX_FACE_VIBRATION_SIGNAL_CONTRACT_1_21_1.md`.
+Reviewed actual Planetary source
+`PlanetFace` six local basis directions,
+`PlanetBlockStateFrame` stable per block,
+`PlanetBlockFrameContext` seam traversal,
+`PlanetBlockNeighborQuery` physical
+target and target canonical inward side,
+`PlanetBlockRuntime`, ShapeRuntime and
+VoxelShapeRotation; pinned Minecraft
+1.21.1 SculkSensorBlock,
+CalibratedSculkSensorBlock, BE sources,
+VibrationSystem.Listener/Ticker/User.
+Calibrated FACING is only N/E/S/W
+canonical tangent; POS_X FACING=EAST
+phys world -Y and backside input
+local WEST is world +Y, whereas
+stored FACING remains EAST. BE
+getBackSignal: physical neighbor
+`pos.relative(FACING.opposite())` must
+map to actual physical block, separate
+Level.getSignal QUERY Direction target
+frame mapping which Phase7A must
+audit rather than assume.
+Own getSignal suppresses queried FACING,
+inherited getDirectSignal only queried
+UP, analog comparator BE last frequency
+only while ACTIVE.
+VibrationSystem real world Vec3
+Euclidean distance, world ray occlusion,
+three-by-three physical XZ chunk tick
+gate DO NOT rotate across seams;
+events across seam keep physical
+coordinates, no invented face-wrapping
+acoustics. Base listening radius8,
+calibrated16. SculkSensorBlock's
+world pos.below physical neighbor
+notifications separate from full six
+physical neighboring resonator scan.
+Local sensor half-height 8/16 VoxelShape
+can rotate by outermost physical Level
+wrapper but neither stepOn dispatch
+nor world-Y animateTick particle path
+proven. WATERLOGGED schedules fluid
+tick, silences some sound only, not
+vibration POWER. BE Ticker handles
+vibration travel, scheduled BLOCK
+ticks handle plain ACTIVE30/
+calibrated ACTIVE10 and common
+COOLDOWN10; fluid tick third pipeline.
+19 explicit future runnable vanilla,
+all-six-faces, edge/corner, resonance,
+loaded-chunk, weak/direct/analog
+signal, save/load, fluid, event
+filter and stepOn tests recorded,
+**NONE EXECUTED**.
+No new source rows promoted:
+71/241 source+compiled reflection reviewed
+(192/1060 BLOCK IDs), 170/241
+source REVIEW_PENDING (868/1060 IDs),
+all 241 NeoForge patched ASM/Planet
+adapter/gameplay gates REVIEW_PENDING.
+No Java, CI, client/server/gameplay tests.
+NEXT FIRST 3A-7.4 card task4:
+reopen original NeoForge 21.1.215
+CI ZIP exact roster + all 71 reviewed
+class/192 actual ID/five owner tuples
+and 170 pending statuses; queue next
+bounded owner-family card and checkpoint,
+one GitHub commit stop.
