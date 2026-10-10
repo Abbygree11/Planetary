@@ -69,6 +69,16 @@ discovery pass. Batch 0 must inventory this contract before code changes;
 implementation proceeds in coherent owning batches with one acceptance
 matrix each.
 
+### Stage 3A-15 cross-mod crystal owner dispatch gate [SOURCE VERIFIED, RUNTIME ACCEPTANCE PENDING]
+
+[Full AE2 1.21.1 and BuddingCrystals 1.21.1 pinned source comparison](research/PHASE2_STAGE3A_MODDED_CRYSTAL_AE2_BUDDINGCRYSTALS_1_21_1.md); [vanilla AmethystBlock/BuddingAmethystBlock exact NeoForge original owner and geode audit](research/PHASE2_STAGE3A_AMETHYST_BUDDING_ORIGINAL_BLOCK_ITEM_GEODE_AUDIT_1_21_1.md); [32 future vanilla/6face/edge/corner/geode/modded tests, NOT RUN](research/PHASE2_STAGE3A_AMETHYST_SIX_FACE_GROWTH_MODDED_ACCEPTANCE_CONTRACT_1_21_1.md); [full 241/94 original class five-method signature owner reconciliation](research/PHASE2_STAGE3A_AMETHYST_ORIGINAL_94_CLASS_RECONCILIATION_1_21_1.md). Source family 4/4 DONE, **no Java/Mixin/ASM or gameplay acceptance passed**.
+
+**New Phase2/Phase3/Phase5/Phase8/Phase10 integration hard-gate:** same 1.21.1 six-neighbor crystal growth/6-way attachment semantics need NOT share a Java method declaring owner:
+- AE2 `BuddingCertusQuartzBlock` and `CertusQuartzClusterBlock` extend `AEBaseBlock` (not vanilla amethyst classes) but implement similar physical 6-axial budding and `FACING/WATERLOGGED` placement/support/shape; AE2 growth further degrades non-flawless source. Vanilla-class-specific Mixins alone cannot cover AE2 independent methods.
+- BuddingCrystals `BuddingCrystalBlock extends BuddingAmethystBlock` but overrides its growth `randomTick`; `CrystalSet.Builder` creates actual vanilla `AmethystClusterBlock` instances for its four bud stages. Vanilla cluster owner adaptation can apply to these if transformed, but vanilla budding tick injection alone may not apply to the overridden subclass method. Configurable growthChance may differ from vanilla 1/5.
+- **Never globally rewrite `BlockPos.relative` / six physical `Direction.values()`**: growth samples six TRUE physical adjacent cells; support/placement `FACING` semantic mapping and target voxel orientation have different source+target canonical frame responsibilities. Choose a stable mechanism-level provenance-aware context first; add optional per-mod bridges only after source+runtime failure is proven. All modded BLOCK ID counts are separate from 241-class/1060-ID vanilla archive.
+- Runtime acceptance must launch AE2 and BuddingCrystals on exact Planetary 1.21.1 / NeoForge 21.1.215 client/server, confirm loaded runtime classes and applied mixin bytecode, test 6 face interiors/12 edges/8 corners, waterlogging, source deterioration/accelerator and no-Planet fallback. All future tests currently UNRUN. Owner Phase 2 generic placement/support, Phase 3 geometry, Phase 5 fluid, Phase 8/9 GeodeFeature, Phase 10 mod dispatch; cross-mod acceptance pending.
+
 ### Capability provider-direction implementation checkpoint [IMPLEMENTED / ACCEPTANCE PENDING]
 
 Detailed exact NeoForge source and tests:
