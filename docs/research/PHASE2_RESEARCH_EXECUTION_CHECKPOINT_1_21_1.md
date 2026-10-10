@@ -685,6 +685,61 @@ family without proving why it is a unique algorithm owner.
   movement cross-phase boundary; define tests
   but claim none executed. ONE research commit.
 
+### 2026-10-10 micro-checkpoint — Stage 3A-5.3 RailShape seam source chart
+
+- Card `docs/phases/phase-02/02c-rail-owners.md`
+  **3/4 bounded research tasks DONE**. Research file
+  `docs/research/PHASE2_STAGE3A_RAIL_SEAM_FRAME_CONTRACT_1_21_1.md`.
+- Pinned comparative Minecraft 1.21.1 `RailShape`,
+  `RailState`, `BaseRailBlock`, `PoweredRailBlock`,
+  `DetectorRailBlock` and `AbstractMinecart`.
+  Planetary StateFrame, NeighborQuery,
+  SupportQuery, FrameContext.walk and
+  ShapeRuntime reviewed as infrastructure only.
+  No actual NeoForge patched INVOKEs verified.
+- Ten RailShape values: 2 straight, 4 ASCENDING,
+  4 quarter-turn (only ordinary RailBlock).
+  Source canonical local ports vs actual world
+  physical adjacent cell vs target-local inward
+  side; local radial grade UP/DOWN and
+  seam transported continuation distinct.
+- Critical `RailState` assumptions:
+  world N/S/E/W, `getRail` candidate then world
+  above/below, `hasConnection` X/Z equality
+  ignoring Y; `place/connectTo` multi-cell
+  writes and power-based turn priorities.
+  Cannot globally remap Directions or merely
+  rotate RailShape on source BlockState.
+- BaseRailBlock ascending requires extra
+  support neighbor and waterlogged fluid tick;
+  PoweredRail up-to-8 same-block-instance chain
+  separate from DetectorRail minecart AABB,
+  20-tick recheck, direct-signal query side
+  and Comparator analog signal.
+  AbstractMinecart seeks track at world Y-1,
+  calculates motion on global XZ and slope
+  with world Y; movement not solved by
+  BlockState-only rail topology.
+  Phase3 render/physical collision, Phase5 water,
+  Phase7A signal causality, Phase8 direct
+  Mineshaft worldgen need explicit evidence.
+- 11 future test fixtures covering six faces,
+  4 slopes, 4 curves, seam/corner, mixed
+  grade, power, cart movement/detection,
+  waterlogging, direct structure creators.
+  **NO fixtures run.**
+- Status unchanged: **66/241** source+reflection
+  reviewed (174/1060 IDs), **175/241**
+  REVIEW_PENDING (886 IDs), DaylightDetector
+  still pending, all three ASM/Planet/gameplay
+  gates pending on all 241 classes.
+- **NEXT FIRST unfinished task** Stage 3A-5.4,
+  card checkbox 4: compare all original
+  NeoForge 21.1.215 CI ZIP exact registry,
+  class status+method owner signatures and
+  set next bounded pending family.
+  ONE independent commit and stop.
+
 ## Resume procedure after interrupted answer
 
 1. Read AGENTS.md, this checkpoint, the latest roadmap

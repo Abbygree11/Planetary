@@ -505,6 +505,36 @@ DaylightDetector pending; all ASM/Planet/gameplay
 acceptance fields remain pending. Next 3A-5.3
 seam/rail topology source test matrix.
 
+## 2026-10-10 Stage 3A-5.3 source and target rail seam geometry
+
+[RailShape ten-valued local port/grade,
+RailState physical seam/corner and minecart
+cross-phase test chart](PHASE2_STAGE3A_RAIL_SEAM_FRAME_CONTRACT_1_21_1.md)
+revisited original pinned Minecraft 1.21.1 Java
+and real PlanetBlockStateFrame/NeighborQuery/
+BlockFrameContext.walk/SupportQuery/ShapeRuntime
+sources. RailShape cardinal and corner ports
+must be authored in source's canonical chart;
+`ASCENDING_*` adds LOCAL UP height, even when
+source local tangent maps to world Y at a cube seam.
+At physical target, inward side must derive from
+target's own canonical chart, never simply
+`sourcePort.getOpposite()`. RailState
+`hasConnection` XZ-only projected equivalence,
+worldY `getRail` +/- offset, multi-cell
+`connectTo/place`, BaseRailBlock ascending
+support, detector/powered physical neighbor
+signals and AbstractMinecart world-XZ/world-Y
+velocity and detection are distinct unchecked
+integration duties. Separate Phase3 visual,
+Phase5 fluid, Phase7A power/timing,
+Phase8 direct mineshaft worldgen and cart
+physics acceptance. 11 runnable future game/
+CI fixtures specified, none executed.
+Totals unchanged **66/241 reviewed 174 IDs,
+175 pending 886 IDs**. Next 3A-5.4
+original compiled owner/ID/status checkpoint.
+
 ## Remaining Stage 3A work
 
 1. Read actual `phase2-neo1211-registry-census` artifact's

@@ -3816,3 +3816,48 @@ No Java or tests run. **NEXT microtask 3A-5.3**:
 local/world rail RailShape, slope, seam,
 physical callbacks and minecart crossphase test
 matrix; one separate bounded commit, stop.
+
+
+## 2026-10-10 Planetary Stage 3A-5.3 rail local shape/seam/minecart chart
+
+User shorthand `кк` = execute exactly ONE first
+unfinished bounded subtask from repo card, checkpoint
+and commit to branch 2.0, then stop.
+Completed 3A-5.3 on
+`docs/phases/phase-02/02c-rail-owners.md`
+task 3/4. Research file:
+`docs/research/PHASE2_STAGE3A_RAIL_SEAM_FRAME_CONTRACT_1_21_1.md`.
+Pinned comparative Minecraft 1.21.1 source and
+real Planetary BlockStateFrame/NeighborQuery/
+SupportQuery/BlockFrameContext.walk/ShapeRuntime
+inspected. RailShape 10 states: 2 straight, four
+ASCENDING local-UP grade, 4 corner states only
+ordinary RailBlock. RailState uses world-horizontal
+N/S/E/W and world-Y above/below and ignores world
+Y in its hasConnection comparison of XZ;
+place/connectTo authors states at multiple physical
+positions, cannot adapt by rotating only the
+placement state. Source canonical property,
+physical displacement, target-local inward face,
+local-UP grade and step transported seam direction
+must stay distinct. Extra ascending support,
+waterlogged `BaseRailBlock.updateShape` (Phase5),
+PoweredRail 8-step instance-specific power network,
+DetectorRail minecart AABB/20-tick and analog
+query direction (Phase7A), AbstractMinecart
+global-XZ/Y-physics and initial worldY-1
+track lookup not solved by local BlockState rail shape
+(own entity movement gate), Phase3 rail model/shape,
+Phase8 Mineshaft direct generated rail state
+separately identified. 11 proposed face/edge/corner
+test fixtures documented; **none executed**.
+Full 241-class ledger unchanged: **66 source+reflection
+reviewed classes (174 BLOCK IDs)**, **175 REVIEW_PENDING
+(886 BLOCK IDs)**; all NeoForge patched ASM/
+Planetary adapter/gameplay gates pending; no Java
+files or tests changed.
+**NEXT FIRST microtask 3A-5.4** rail stage card
+task 4: reconcile exact original NeoForge registry
+241 classes/1060 IDs and 66 reviewed class exact IDs+
+five signature declaring owners; queue next bounded
+pending class family. ONE commit, stop.

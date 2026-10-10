@@ -1,6 +1,6 @@
 # Phase 2 Stage 3A-5 — rail topology/ascending slopes and signal graph owners
 
-**Status: ACTIVE / tasks 1–2 of 4 completed; no ASM/Planet/gameplay PASS.**
+**Status: ACTIVE / tasks 1–3 of 4 completed; no ASM/Planet/gameplay PASS.**
 Branch `2.0`; Minecraft 1.21.1 / NeoForge 21.1.215.
 
 [Phase 2](../phase-02.md) ·
@@ -68,13 +68,13 @@ are distinct and partially overlapping.
   rail variants, BlockState components and
   worldgen/structure placements; do not assert
   complete minecart movement. **DONE 2026-10-10 / Stage 3A-5.2:** [original ZIP ITEM and actual non-item rail authors](../../research/PHASE2_STAGE3A_RAIL_ITEM_ALTERNATE_AUTHORS_1_21_1.md): 4 exact ordinary BlockItems joined 1:1 with 4 registered rail blocks; all seven item lifecycle declarations own `BlockItem`; `RailState` multi-cell, DetectorRail cart+analog signal, PoweredRail and activator distinct block-instance/vehicle effects, verified mineshaft direct rail creation and generic templates audited. No new class promotion or gameplay PASS.
-- [ ] **3.** Source/target local chart,
+- [x] **3.** Source/target local chart,
   `RailShape` facing/slope under local gravity,
   `RailState` target coordinates across seams,
   physical callbacks, dynamic signal semantics,
   collision/render and movement cross-phase
   contracts. List runnable game/CI tests, no PASS
-  without actual running.
+  without actual running. **DONE 2026-10-10 / 3A-5.3:** [ten `RailShape` variants, physical rail endpoint/slope and reciprocal port chart, RailState XYZ/XZ assumptions, multi-cell, detector/powered rail, minecart and phase 3/5/7A/8 boundaries](../../research/PHASE2_STAGE3A_RAIL_SEAM_FRAME_CONTRACT_1_21_1.md); 11 sets of proposed game/CI fixtures across all faces/edges/corners. No runtime acceptance or new class promoted.
 - [ ] **4.** Reconcile exactly reviewed rail
   class/ID/method owners and pending class statuses
   against original CI ZIP; create another
@@ -83,31 +83,27 @@ are distinct and partially overlapping.
 
 ## Resume checkpoint
 
-**Last completed:** **Stage 3A-5.2** exact NeoForge
-registered rail ITEM join and non-item creation,
-graph, entity/signal author research.
-[Complete evidence](../../research/PHASE2_STAGE3A_RAIL_ITEM_ALTERNATE_AUTHORS_1_21_1.md).
-4/4 exact `placed_block` → same-named ordinary
-`BlockItem`; 7/7 item declaration owners all
-`BlockItem` per item. Other authors:
-`RailState.place/connectTo`, detector minecart
-entry and 20-tick/analog output,
-PoweredRail eight-rail signal recursion with separate
-activator/powered block instances,
-AbstractMinecart type-specific track consumers,
-verified direct MineshaftPieces `Blocks.RAIL`
-placement and generic StructureTemplate write.
-No new registered class reviewed this turn.
+**Last completed: Stage 3A-5.3.** Source-only
+[physical rail endpoint, local slope and seam
+chart](../../research/PHASE2_STAGE3A_RAIL_SEAM_FRAME_CONTRACT_1_21_1.md).
+Ten RailShape values, four local radial
+ascending variants, RailState fixed-world XYZ
+and XZ-only matching, per-cell canonical ports,
+gravity edge/corner traversal, support and
+multi-cell writes, PoweredRail 8-step and
+DetectorRail entity/ticks, AbstractMinecart
+global-XZ/world-Y motion dependency,
+Phase 3/5/7A/8 contracts; runnable future
+test matrix documented but **not executed**.
 
-Full ledger unchanged: **66/241 source+reflection
-reviewed (174/1060 BLOCK IDs)**, **175/241
-REVIEW_PENDING (886 IDs)**.
-`DaylightDetectorBlock` separate pending.
-All 241 ASM/Planet adapter/gameplay gate fields
-REVIEW_PENDING.
+Cumulative ledger **66/241 source+reflection
+reviewed** (174 registered IDs), **175/241
+REVIEW_PENDING** (886 IDs). `DaylightDetectorBlock`
+separately pending. All ASM/Planet/runtime/gameplay
+acceptance `REVIEW_PENDING`. No Java changes.
 
-**NEXT FIRST unchecked task**: microtask **3**,
-source-local/physical frame chart, `RailShape`
-slopes, seam/corner `RailState` contract,
-neighbor callback and minecart cross-phase
-tests. One bounded docs commit and stop.
+**NEXT FIRST unchecked task: microtask 4**,
+original NeoForge 21.1.215 CI ZIP vs exact
+reviewed rail ID/owner/status reconciliation,
+queue next small pending owner-family card,
+commit once and stop. Not full Stage 3A completion.

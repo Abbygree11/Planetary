@@ -1,3 +1,37 @@
+## 2026-10-10 Stage 3A-5.3 local rail endpoint, slope and seam graph
+
+[Full source-based rail RailShape direction / physical
+endpoint and minecart cross-phase contract](PHASE2_STAGE3A_RAIL_SEAM_FRAME_CONTRACT_1_21_1.md)
+defines ten RailShape logical port layouts (four
+ASCENDING local-UP height offsets, four quarter
+turns available only on RailBlock). Distinguishes
+source canonical BlockState frame, actual physical
+neighbor BlockPos and target local inbound side,
+source local UP grade, transported seam continuation.
+RailState.updateConnections uses global N/S/E/W plus
+world-Y `above`, `getRail` samples world above/
+below and `hasConnection` matches X,Z while
+ignoring world Y. BaseRailBlock extra ascending
+support, shape/waterlogging and neighbor callbacks
+must be handled separately; existing
+PlanetBlockStateFrame, NeighborQuery,
+BlockFrameContext, SupportQuery and shape mixin
+are primitives but not rail algorithm acceptance.
+PoweredRail power depth≤8, detector entity AABB/
+20-tick and analog side, AbstractMinecart global
+XZ/Y detection and curve physics, Mineshaft
+worldgen are **separate phase-owned gates**.
+11 future fixtures defined for six faces,
+edges/corners, slopes/turns, power, carts,
+water and worldgen. No tests actually run.
+
+**No new class status:** 66/241 source+reflection
+reviewed (174/1060 IDs), 175 REVIEW_PENDING
+(886/1060 IDs), DaylightDetector still pending;
+all ASM/Planet/gameplay verdicts pending.
+**Next 3A-5.4 exact CI ZIP ledger and owner
+signature reconciliation + next family card.**
+
 ## 2026-10-10 Stage 3A-5.2 exact rail ITEM registry and verified non-item writers
 
 [Actual NeoForge 21.1.215 four-item/four-BLOCK join and

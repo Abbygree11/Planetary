@@ -18,7 +18,7 @@
 | 2.3A-2 | [02-block-owners-rest.md](phase-02/02-block-owners-rest.md) | **DONE (4 research packages only)** | Exact ZIP reconciliation 47/241 reviewed and 194 pending; **not** full Stage 3A |
 | 2.3A-3 | [02a-block-graph-owners.md](phase-02/02a-block-graph-owners.md) | **DONE (4 research packages only)** | Exact original ZIP source owner/item/shape graph reconciliation; 55 reviewed, 186 pending |
 | 2.3A-4 | [02b-redstone-signal-owners.md](phase-02/02b-redstone-signal-owners.md) | **DONE (4 research packages only)** | Exact original ZIP reconciliation for 63 source+reflection reviewed classes/170 IDs; 178 pending, all gameplay gates pending |
-| 2.3A-5 | [02c-rail-owners.md](phase-02/02c-rail-owners.md) | **ACTIVE 2/4** | 3 rail classes/4 IDs reviewed; 4/4 original ITEM `placed_block` creators + minecart/rail signal, MineshaftPieces worldgen and structure alternate authors audited |
+| 2.3A-5 | [02c-rail-owners.md](phase-02/02c-rail-owners.md) | **ACTIVE 3/4** | RailShape local endpoints/slopes and RailState seam chart + 11 future face/edge/corner tests; 66 source-reviewed, 175 pending, no gameplay PASS |
 | 2.3B | [03-item-creators.md](phase-02/03-item-creators.md) | TODO | Item/alternative-author coverage |
 | 2.3C | [04-lifecycle-neoforge.md](phase-02/04-lifecycle-neoforge.md) | TODO | Bytecode/patch/dispatch evidence and gate |
 | 2.4A | [05-implementation-a.md](phase-02/05-implementation-a.md) | TODO | Context/FACING/AXIS/rotation state families |
@@ -36,18 +36,17 @@
 
 ## Точка продолжения
 
-**Актуальный статус после 2.3A-5.1 (2026-10-10):**
+**Актуальный статус после 2.3A-5.3 (2026-10-10):**
 в оригинальном NeoForge 21.1.215 CI артефакте
 **241 класс / 1060 зарегистрированных BLOCK IDs**;
 **66/241** `SOURCE_REVIEWED_INTEGRATION_PENDING`
 (174 IDs) и **175/241** `REVIEW_PENDING` (886 IDs).
-Пять владельцев методов для 63 классов и точные ID
-повторно сравнены с оригинальным ZIP: четыре хеша
-**совпали**. Завершены только четыре
-исследовательских подпакета 3A-4; фаза 2 ещё
-не реализована/не принята. Все ASM/Planet/gameplay
-статусы `REVIEW_PENDING`. Старые числа в таблице
-выше — исторические snapshots.
+Пять владельцев методов для 63 классов предыдущего
+пакета 3A-4 и точные ID проверялись с ZIP (4 хеша
+совпали); **три новых класса рельсов требуют итоговой
+сверки в 3A-5.4**. Фаза 2 ещё не реализована/не
+принята. Все ASM/Planet/gameplay статусы
+`REVIEW_PENDING`. Старые числа выше — snapshots.
 
 **Последний завершённый микропакет: 3A-5.1** — 
 [оригинальные NeoForge владельцы 3 классов рельсов и source-анализ RailState](../research/PHASE2_STAGE3A_RAIL_SOURCE_OWNER_AUDIT_1_21_1.md).
@@ -65,9 +64,17 @@ ASM/Planetary runtime/gameplay у всех 241 классов pending.
 и универсальный путь `StructureTemplate`.
 Количество классов не изменилось.
 
-**Следующая самостоятельная работа:** [3A-5.3](phase-02/02c-rail-owners.md),
-локальные RailShape/уклоны, физические соседние клетки,
-рёбра и углы куба, сигнал/механика вагонетки и границы фаз.
-Один маленький пакет с коммитом и контрольной точкой.
+**Завершён исследовательский подпакет 3A-5.3:**
+[локальные RailShape, физическая топология и рёбра куба](../research/PHASE2_STAGE3A_RAIL_SEAM_FRAME_CONTRACT_1_21_1.md).
+Найденные world-Y, world-XZ допущения RailState
+разделены от локальной геометрии рельсов, ватерлоггинга,
+сигналов и физики вагонеток. Подготовлены сценарии
+проверки шести граней, рёбер и углов; **игра не проверена**.
+
+**Следующая самостоятельная работа: [3A-5.4](phase-02/02c-rail-owners.md)** —
+сверить исходный NeoForge ZIP со всеми актуальными
+reviewed/pending class и точными ID/owner сигнатурами,
+запланировать следующее небольшое исследуемое семейство.
+Один коммит, без новых автоматических gameplay PASS.
 
 Обновление этого файла означает только, что появился маршрут и checkpoint, **не что Phase 2 исправлена**.
