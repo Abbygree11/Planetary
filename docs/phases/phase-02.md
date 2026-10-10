@@ -19,7 +19,7 @@
 | 2.3A-3 | [02a-block-graph-owners.md](phase-02/02a-block-graph-owners.md) | **DONE (4 research packages only)** | Exact original ZIP source owner/item/shape graph reconciliation; 55 reviewed, 186 pending |
 | 2.3A-4 | [02b-redstone-signal-owners.md](phase-02/02b-redstone-signal-owners.md) | **DONE (4 research packages only)** | Exact original ZIP reconciliation for 63 source+reflection reviewed classes/170 IDs; 178 pending, all gameplay gates pending |
 | 2.3A-5 | [02c-rail-owners.md](phase-02/02c-rail-owners.md) | **DONE (4 research packets only)** | All 66 class exact 5-signature owner+174 ID records match original ZIP; 175 other classes pending, no gameplay PASS |
-| 2.3A-6 | [02d-environment-pressure-sensor-owners.md](phase-02/02d-environment-pressure-sensor-owners.md) | **ACTIVE 2/4** | Sensor 16/16 exact ITEM creators joined: regular BlockItem each; post-placement components, BE sky and entity/scheduled tick, generic structure bypass researched |
+| 2.3A-6 | [02d-environment-pressure-sensor-owners.md](phase-02/02d-environment-pressure-sensor-owners.md) | **ACTIVE 3/4** | Six-face canonical support and physical plate TOUCH_AABB, signal queried-side vs physical callbacks, global sky vs local gravity, BE vs scheduled ticks + 15 proposed tests, no runtime PASS |
 | 2.3B | [03-item-creators.md](phase-02/03-item-creators.md) | TODO | Item/alternative-author coverage |
 | 2.3C | [04-lifecycle-neoforge.md](phase-02/04-lifecycle-neoforge.md) | TODO | Bytecode/patch/dispatch evidence and gate |
 | 2.4A | [05-implementation-a.md](phase-02/05-implementation-a.md) | TODO | Context/FACING/AXIS/rotation state families |
@@ -37,41 +37,48 @@
 
 ## Точка продолжения
 
-**После микропакета 3A-6.2 (2026-10-10):**
-исследовано **69/241** конкретных BLOCK классов
-(190/1060 зарегистрированных BLOCK IDs),
-**172/241** ещё `REVIEW_PENDING` (870 IDs).
-В 3A-6.1 проведён NeoForge reflection /
-comparative Java source audit датчика дневного света
-и двух классов нажимных плит (3 класса / 16 IDs).
-В 3A-6.2 оригинальный неизменённый CI ZIP
-SHA256 `7937deee9221c2032a634d8355b8118b47efd9d905b2bb64152148c0174d090e`
-проверен по **16 точным `placed_block` ITEM**:
-все 16 — обычные `BlockItem`, семи методам
-установки владелец `BlockItem`. Отдельные
-перезаписывающие/обновляющие цепочки:
-дополнительный `DataComponents.BLOCK_STATE`,
-daylight `BlockEntityTicker`, игрок
-переключает `INVERTED`, контакт сущностей
-и повторные тики плит, универсальная
-`StructureTemplate` запись. Конкретной генерации
-сенсорных блоков в структурах пока не доказано.
-[Точный отчёт](../research/PHASE2_STAGE3A_ENVIRONMENT_PRESSURE_SENSOR_ITEM_ALTERNATE_AUTHORS_1_21_1.md).
+**После подпакета 3A-6.3 (2026-10-10):**
+исследование источников и владельцев поведения
+охватило **69/241** зарегистрированных BLOCK
+классов (**190/1060 BLOCK IDs**);
+**172/241** остаются `REVIEW_PENDING`
+(**870/1060 IDs**). Три класса сенсоров /
+16 IDs завершили исследования 3A-6.1,
+точные предметы 3A-6.2 и локально-физический
+контракт 3A-6.3. Важные семантики:
 
-**Ни одно runtime/ASM/Planetary/gameplay
-приёмочное поле не переведено в PASS.**
-Последняя полная исходная ZIP проверка 66
-reviewed классов выполнена в 3A-5.4; новый
-аудит 69 reviewed классов понадобится в
-3A-6.4. Stage 3A и Phase 2 НЕ закончены.
+- `BasePressurePlateBlock` использует исходный
+  локальный DOWN, физическую соседнюю опору и
+  её собственную canonical-facing грань,
+  не мировой `pos.below()` как общий патч;
+- `TOUCH_AABB` для контакта сущностей — сырой
+  XYZ AABB, **не** автоматически вращаемый
+  `BlockState.getShape`; может требоваться
+  отдельная адаптация вызова `entityInside`;
+- запрашиваемая сторона `getDirectSignal(..., UP)`
+  отличается от направления физического
+  уведомления соседей;
+- `LightLayer.SKY` — глобальная политика света,
+  серверный daylight BE тикер на `gameTime%20`
+  отличается от scheduled ticks плит (20/10);
+- [составлены 15 сценариев приёмки](../research/PHASE2_STAGE3A_SENSOR_FACE_FRAME_AND_SIGNAL_CONTRACT_1_21_1.md)
+  для шести граней, переходов через рёбра,
+  углов, сигналов, сущностей, skylight и
+  обычного мира; **НИ ОДИН не запускался**.
+
+ASM, Planetary adapter и gameplay приёмка
+остаются `REVIEW_PENDING` для всех 241
+классов. Новых производственных Java
+изменений нет. Стадия 3A и фаза 2
+ещё не завершены.
 
 **NEXT первая незавершённая подзадача —
-[3A-6.3](phase-02/02d-environment-pressure-sensor-owners.md):**
-разделить локальные блоковые системы координат,
-физический AABB столкновения и опору, небесную
-освещённость, направления `getDirectSignal`,
-BE/scheduled ticks; задать игровые тесты по
-шести граням, рёбрам и углам. Один пакет/
-GitHub коммит за `кк`.
+[3A-6.4](phase-02/02d-environment-pressure-sensor-owners.md):**
+сверить исходный неизменённый NeoForge
+21.1.215 ZIP со всеми **69** reviewed классами,
+**190** их точными BLOCK ID и пятью
+владельцами методов, сохранить 172
+pending, подготовить следующую отдельную
+группу и один коммит.
 
 Обновление этого файла означает только, что появился маршрут и checkpoint, **не что Phase 2 исправлена**.

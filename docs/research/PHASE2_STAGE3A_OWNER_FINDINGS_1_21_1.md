@@ -619,6 +619,44 @@ Full ledger remains **69/241 source-reviewed
 still pending. Next 3A-6.3 physical/sky/seam
 and testing contract.
 
+## 2026-10-10 Stage 3A-6.3 sensor six-face and physical world contract
+
+[Complete source-only canonical frame, plate
+TOUCH_AABB, sky and redstone direction
+test specification](PHASE2_STAGE3A_SENSOR_FACE_FRAME_AND_SIGNAL_CONTRACT_1_21_1.md)
+reads real Planetary PlanetFace/StateFrame/
+FrameContext/NeighborQuery/SupportQuery/
+ShapeRuntime classes plus pinned vanilla sensor
+source. Six exact local-UP/DOWN axes from
+PlanetFace used to document pressure plate
+support (source local DOWN, target physical cell,
+target local face), invalidation and neighbor
+notifications. `BasePressurePlateBlock`
+`TOUCH_AABB` is a raw entity query AABB,
+not VoxelShape and not automatically rotated
+by `BlockStateShapeMixin`; even rotating
+the box may not suffice if source
+`entityInside` isn't invoked.
+`BasePressurePlateBlock.getDirectSignal`
+Direction.UP is a signal **queried port**
+and separate from world `pos.below()`
+physical callback. DaylightDetector
+world LightLayer.SKY/getSkyDarken/getSunAngle
+has no FACING property; local six-face
+skylight semantics require separate design.
+Daylight BE ticker server every gameTime%20
+versus pressure plate scheduled 20/10
+relative ticks. Phase2 support state,
+Phase3 entity AABB/model, Phase7A power/tick,
+Phase8 structure authors distinct.
+15 future vanilla-control, six-face, seam/
+corner fixtures specified; none executed.
+**Ledger unchanged: 69/241 source-reviewed
+(190 IDs), 172 pending (870 IDs)**,
+all ASM/Planetary/gameplay PENDING.
+NEXT 3A-6.4 original ZIP reconciliation,
+new small owner-family card.
+
 ## Remaining Stage 3A work
 
 1. Read actual `phase2-neo1211-registry-census` artifact's

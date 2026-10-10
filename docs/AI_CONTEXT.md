@@ -4011,3 +4011,62 @@ and detection AABB, queried signal direction
 and sky/BE vs scheduled ticks, 6-face/edge/corner
 future test matrix, one docs-only research
 commit then stop.
+
+
+## 2026-10-10 Phase 2 Stage 3A-6.3 sensor six-face physical/state/signal/sky contract
+
+User `кк` means ONE first-incomplete bounded
+microtask according to 2.0 roadmap, GitHub commit,
+checkpoint, stop. Completed Stage 3A-6.3
+(task3/4) of
+`docs/phases/phase-02/02d-environment-pressure-sensor-owners.md`,
+report:
+`docs/research/PHASE2_STAGE3A_SENSOR_FACE_FRAME_AND_SIGNAL_CONTRACT_1_21_1.md`.
+Actual Planetary source examined:
+`PlanetFace` six real local basis normal,
+`PlanetBlockStateFrame` canonical stable
+per-physical-cell semantics,
+`PlanetBlockFrameContext.step/walk`
+path-dependent seam traversal,
+`PlanetBlockNeighborQuery` physical target and
+canonical inward target face,
+`PlanetBlockSupportQuery` real local DOWN
+support target, `PlanetBlockShapeRuntime`
+outermost Level VoxelShape rotation only,
+`PlanetVoxelShapeRotation` center transforms.
+Vanilla BasePressurePlateBlock canSurvive
+source-local DOWN support rigid OR center
+UP support face; updateShape depends on
+incoming DOWN direction and notifications
+at pos and physically pos.below.
+BasePressurePlateBlock.TOUCH_AABB has
+raw X/Z 1/16..15/16, Y 0..4/16 ENTITY
+query AABB, not VoxelShape; needs canonical
+face transform independent of rendered shape,
+AND dispatch check for entityInside callback
+for side/upside-down plates.
+getDirectSignal(...,Direction.UP) is signal
+API queried direction, not physically below
+neighbor-notification target. DaylightDetector
+reads world `LightLayer.SKY`, skyDarken,
+getSunAngle, not magically local-radial sky;
+sky policy unresolved. Daylight BE ticker
+server hasSkyLight and gameTime%20==0,
+INVERTED interaction immediate; plate
+scheduled block tick 20/10 relative intervals
+when pressed, different from randomTick.
+15 six-face, seam/corner, entity AABB,
+signal, sky, scheduling, structure and normal
+non-Planet control fixtures specified, none
+executed; no patch, build, Mixin or game PASS.
+Full ledger unchanged **69/241 source+compiled
+reflection reviewed classes (190/1060 BLOCK IDs)**
+and **172/241 REVIEW_PENDING (870/1060 IDs)**;
+all 241 NeoForge patched ASM, Planet adapter
+and gameplay acceptance fields still pending.
+NEXT FIRST 3A-6.4 card checkbox4:
+original NeoForge 21.1.215 CI ZIP exact
+class/ID/method owners cross-reconciliation
+for all current 69/241 reviewed classes and
+190 IDs, ensure all 172 pending, prepare next
+owner family card, one independent commit.

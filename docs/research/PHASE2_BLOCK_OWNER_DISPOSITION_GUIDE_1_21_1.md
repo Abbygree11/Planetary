@@ -1,3 +1,54 @@
+## 2026-10-10 Stage 3A-6.3 — six-face sensor support/AABB and sky/signal contracts
+
+[Position-only canonical BlockState, support target
+and physical AABB, daylight sky and tick, queried
+signal-side chart](PHASE2_STAGE3A_SENSOR_FACE_FRAME_AND_SIGNAL_CONTRACT_1_21_1.md).
+Read actual Planetary `PlanetFace`,
+`PlanetBlockStateFrame`, `PlanetBlockFrameContext`,
+`PlanetBlockNeighborQuery`,
+`PlanetBlockSupportQuery`,
+`PlanetBlockShapeRuntime`,
+`PlanetVoxelShapeRotation`, plus pinned
+vanilla 1.21.1 sensor sources.
+Six canonical gravity normals and local
+UP/DOWN exact physical axes tabulated.
+Pressure plate `canSurvive` needs physical
+local-DOWN support target canonical side
+and rigid or center face; `updateShape`
+support-direction callback may differ from
+source-local DOWN at seam. Direct neighbor
+updates at support's physical BlockPos must
+not confuse `getDirectSignal(Direction.UP)`
+*query argument* with real source-to-target
+physical displacement.
+Raw `TOUCH_AABB` (X/Z 1/16..15/16,
+local Y 0..4/16) used by `getEntityCount`
+is not VoxelShape used by `getShape`;
+it needs independent canonical-frame
+rotation and `entityInside` dispatch
+verification. Existing ShapeRuntime rotates
+outermost VoxelShape for Level queries,
+not arbitrary raw AABB.
+World `LightLayer.SKY` and sun angle
+are not local radial sunlight; source-only
+design contract deliberately does NOT
+create invented per-face skies.
+Daylight server `BlockEntityTicker` checks
+`gameTime%20` vs plate scheduled
+20/10 after pressed; not randomTick.
+15 proposed six-face, seam/corner and
+vanilla-control fixtures defined, **NONE run**.
+
+Current full registry ledger unchanged:
+**69/241 SOURCE_REVIEWED_INTEGRATION_PENDING
+(190/1060 BLOCK IDs), 172/241 REVIEW_PENDING
+(870/1060 IDs)**. All 241 patched ASM,
+Planetary runtime/gameplay gates pending.
+Next first checkbox 3A-6.4 original CI ZIP
+69 reviewed class/190 IDs/five nearest
+declaration owner reconciliation and
+next independent family card.
+
 ## 2026-10-10 Stage 3A-6.2 exact 16 original sensor ITEM creators and non-item authors
 
 [Original 1333 ITEM registry exact 16-block

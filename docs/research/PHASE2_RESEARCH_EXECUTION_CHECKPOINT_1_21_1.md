@@ -891,6 +891,75 @@ family without proving why it is a unique algorithm owner.
   at all faces/seams. Define future runnable
   tests, no PASS; ONE independent commit then stop.
 
+### 2026-10-10 micro-checkpoint — Stage 3A-6.3 six-face sensor local-physical chart
+
+- Sensor family card `docs/phases/phase-02/02d-environment-pressure-sensor-owners.md`:
+  **3 of 4 bounded research tasks DONE**,
+  task 4 still open.
+  New report:
+  `docs/research/PHASE2_STAGE3A_SENSOR_FACE_FRAME_AND_SIGNAL_CONTRACT_1_21_1.md`.
+- Source: actual Planetary POS/NEG X/Y/Z
+  `PlanetFace` basis, stable `PlanetBlockStateFrame`,
+  `PlanetBlockFrameContext.step/walk`,
+  `PlanetBlockNeighborQuery`,
+  `PlanetBlockSupportQuery`,
+  `PlanetVoxelShapeRotation`,
+  `PlanetBlockShapeRuntime` (outermost
+  physical `VoxelShape` when BlockGetter Level).
+  Pinned Minecraft 1.21.1 PressurePlateBlock,
+  WeightedPressurePlateBlock,
+  BasePressurePlateBlock, DaylightDetectorBlock.
+  **No new ASM/Mixin runtime tracing.**
+- Local-source DOWN support must map to
+  actual physical block, then support target's
+  canonical local inward face, maintain rigid
+  OR center support. Underlying vanilla
+  `updateShape(Direction.DOWN)` and
+  `pos.below()` are global-Y assumptions
+  and don't automatically work on side faces.
+  Six exact PlanetFace basis direction rows in
+  report; seam and 3-face corner canonical
+  BlockState vs path-dependent traversal distinct.
+- Plate `TOUCH_AABB` X/Z [1/16,15/16],
+  Y [0,4/16] in canonical local coords
+  is raw `Level.getEntitiesOfClass` input,
+  not the 0.5/16 or 1/16 visual VoxelShape.
+  Rotate around block center using canonical
+  gravity frame and translate once; **also
+  verify actual entityInside dispatch**, which
+  is not guaranteed by shape rotation.
+  Entity filters exclude spectators and
+  isIgnoringBlockTriggers and ordinary
+  `BlockSetType` sensitivity vs analog counts.
+- `getDirectSignal(Direction.UP)` is an API
+  queried direction, not physical callback,
+  and should remain separate from
+  `updateNeighboursAt(pos.below())`.
+  Daylight world LightLayer.SKY/skyDarken/
+  sunAngle not a gravity-local sky;
+  server daylight BlockEntityTicker when
+  hasSkyLight and gameTime%20, INVERTED
+  interaction immediate; plates instead
+  use scheduled 20/10-tick relative rechecks
+  after entity contact. No randomTick.
+- 15 future physical six-face, 2-face seam,
+  3-face corner, sky/day-night, scheduler,
+  power and vanilla control tests specified,
+  **NONE RUN**.
+- Ledger unchanged **69/241 source+reflection
+  reviewed (190/1060 BLOCK IDs)**;
+  **172/241 REVIEW_PENDING (870/1060 IDs)**.
+  Sculk/lightning pending; all 241 ASM,
+  Planet adapter and gameplay statuses
+  REVIEW_PENDING, Java unchanged.
+- **NEXT FIRST unchecked microtask 3A-6.4**
+  card checkbox 4: independently reconcile
+  original NeoForge 21.1.215 compiled
+  ZIP with 69 reviewed exact class/190 IDs
+  and five method-owner signature tuples
+  and all 172 source-unreviewed rows; queue
+  next independent owner family, commit once.
+
 ## Resume procedure after interrupted answer
 
 1. Read AGENTS.md, this checkpoint, the latest roadmap
