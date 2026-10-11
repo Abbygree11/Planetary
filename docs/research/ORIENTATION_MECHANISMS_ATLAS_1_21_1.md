@@ -250,3 +250,8 @@ Before general Phase-2 acceptance, create the following CI diagnostics (not yet 
 5. **Do not mark Phase 2, or other orientation-dependent phases, DONE/PASS until the coverage gate is satisfied.**
 
 **Research integrity:** This atlas identifies all major orientation-bearing engine categories and their owning class families known from the 1.21.1 audit. It does NOT claim every registered block and every NeoForge subclass override has been individually inspected yet; the 293-class census and its pending classification make that limitation measurable.
+
+
+## Stage3A-34 extension: original clock driver and state/BE mutation are distinct semantic owners (2026-10-12)
+
+[Typed all-temporal-change mechanisms with mod examples and original 24 copper group](PHASE2_STAGE3A_TEMPORAL_MUTATION_MECHANISM_MOD_SOURCE_ATLAS_1_21_1.md), [144 NOT RUN future variants](PHASE2_STAGE3A_ALL_TEMPORAL_MUTATION_SIX_FACE_MOD_ACCEPTANCE_1_21_1.md). Includes random, scheduled, BE tick, fluid tick, weather, biome, redstone/neighbour/interaction, entity stepping, bonemeal, tool wax/axe scrape, lightning and custom NeoForge mod event/data-driven authors (Caverns & Chasms rail/wall+WeatheringCopper; Farmer's Delight rice/soil/BE cooking). Physical clock sampling never remap; local surface-growth algorithm opt-in, not global BlockPos/Direction mutation. All vanilla modded class source review distinct; exact original24 source promotion leaves 73/241 source pending and all runtime gates pending. Stage35 continues ecology and cross-mod temporal authors rather than declaring every Minecraft BlockState AGE equivalent.

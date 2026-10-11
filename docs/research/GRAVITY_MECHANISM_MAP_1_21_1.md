@@ -1507,3 +1507,8 @@ Coordinate provenance is required for virtual Create ContraptionWorld,
 AE2 remote nodes and WorldEdit clipboard. Separate physical connection
 geometry, graph-specific signed transformation, BlockState and BlockEntity
 transport, cache invalidation and unloading lifecycle.
+
+
+## Stage3A-34 time-changing owner-mechanism crossphase contract (2026-10-12)
+
+User explicitly requests ALL time-changing blocks/loaded mod classes, not just copper. [Whole temporal source clock-vs-author atlas](PHASE2_STAGE3A_TEMPORAL_MUTATION_MECHANISM_MOD_SOURCE_ATLAS_1_21_1.md). Temporal dispatcher categories: ServerLevel.tickChunk→BlockState.randomTick; scheduled blockTicks→BlockState.tick; EntityBlock/BE ticker NBT; FluidState ticks; weather/precipitation/environment; neighbor/onPlace/entity stepping/power; item/axe/wax/lightning/bonemeal/direct commands/templates; mod EventBus/data-driven; client animateTick visuals. The clock is not the orientation algorithm. Physical chunk ticks, schedules, global time, BlockPos, FluidState, concrete mod Level/BE storage must NOT be gravity-transformed; selective source/target canonical local growth/support/face semantics use opt-in typed frame context. Attribution: Phase2 block lifecycle+support+legal state, Phase3/4 renderer/particles, Phase5 fluid, Phase7A signals/BE automation, Phase7 entity, Phase8 climate/worldgen, Phase9 structure, Phase10 mod codecs/Level/EventBus. Exact 24 copper IDs original verified, other pending temporal classes Stage35. Runtime and mod PASS all absent.
