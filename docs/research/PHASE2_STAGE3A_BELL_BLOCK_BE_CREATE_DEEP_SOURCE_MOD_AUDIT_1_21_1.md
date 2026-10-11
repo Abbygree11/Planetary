@@ -58,3 +58,8 @@ These are real source dispatch comparisons, **not** evidence of loaded mods, suc
 **Ownership split:** Phase2 attachment, survival, wall-pair updates, player creation; Phase3 static model/BER/animation/particles; Phase7A signal; Phase5 waterlogging; Phase7 AI entity senses and contraption movement; Phase8/9 village/structure direct block writers; Phase10 mod interoperability and versioned bridges. Future cross-version port must keep semantic helper in stable Planet core, version-sensitive `BellBlock`/Create hooks thin, and runtime Mixin bytecode proof mandatory before patch.
 
 **NEXT Stage32.4 only after immutable original ZIP and current 241×16 ledger separately verified:** exact `minecraft:bell` BLOCK+ITEM, all five fully-qualified nearest declaring method signatures (distinguish overloads), 241 class roster, 158 old reviewed untouched, plus explicit 159/241 and 695/1060 tally **only if** evidence matches. All 241×3 ASM/adapter/gameplay gates stay REVIEW_PENDING. 32.1–32.3 is source research + planned acceptance, NOT gameplay success.
+
+
+## Stage32.4 original NeoForge registry source confirmation (2026-10-12)
+
+DONE 4/4 for Stage32 SOURCE research. [Physical unchanged original ZIP vs connected GitHub full 159-class ledger report](PHASE2_STAGE3A_BELL_ORIGINAL_159_CLASS_RECONCILIATION_1_21_1.md). One `minecraft:bell`, exact original Item BlockItem and full qualified five method declarations, legal attachment/facing/powered states all physically verified. 159/241 classes, 695/1060 BLOCK IDs SOURCE reviewed; 82 classes/365 IDs pending. Earlier paragraph naming 32.4 as NEXT is superseded. All ASM/Planet/gameplay/mod JAR gates REVIEW_PENDING, all48 future checks UNRUN.
