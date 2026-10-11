@@ -1,0 +1,189 @@
+# Stage3A-30.3 — 181 future AXIS pillar/chain/hay/infested/BOP tests across six faces, 12 edges, eight corners
+
+**181/181 NOT RUN.** This is a strict future acceptance contract, NOT proof of any runtime fix or real mod compatibility. Version target MC1.21.1 NeoForge21.1.215 Java21. Source pinned BOP MC1.21.1 NeoForge21.1.23 is source evidence, requires actual compatible JAR runtime load verification.
+
+Every record must capture test world/Planet field or noPlanet, physical BlockPos, BlockHitResult clicked normal and hit vec, source and target chart+canonical frame, actual ITEM and BLOCK names, real method owner target and ASM trace, AXIS enum before/after, item count, derived shape/collision/render, fluid state (if ChainBlock), actual mod binary/loader version, server+client verdict and exact alternative writer (BlockItem/tool/structure/feature/command). For infested/hay, include separate entity behavior and ownership phase. **No tests executed below.**
+
+- [ ] **RP30-001** — Face +X — Actual BlockItem place all 52 RotatedPillarBlock IDs from canonical local UP, DOWN and side clicks, x/y/z legal AXIS. **NOT RUN**
+- [ ] **RP30-002** — Face +X — ChainBlock actual Item place, narrow AXIS getShape, WATERLOGGED and physical fluid tick; no cube-forcing. **NOT RUN**
+- [ ] **RP30-003** — Face +X — HayBlock Item axis placement plus independent falling entity damage on local floor (compare vanilla +Y). **NOT RUN**
+- [ ] **RP30-004** — Face +X — InfestedRotatedPillarBlock ITEM places from clicked local side independently; existing RPB Mixin must NOT be falsely credited. **NOT RUN**
+- [ ] **RP30-005** — Face +X — AxeItem real stripping of eligible wood/stem/bamboo preserves canonical AXIS and one inventory tool action. **NOT RUN**
+- [ ] **RP30-006** — Face +X — Mod BOP real loaded log via BlockItem vs BOP direct worldgen feature and physically tagged Level / noPlanet regression. **NOT RUN**
+- [ ] **RP30-007** — Face -X — Actual BlockItem place all 52 RotatedPillarBlock IDs from canonical local UP, DOWN and side clicks, x/y/z legal AXIS. **NOT RUN**
+- [ ] **RP30-008** — Face -X — ChainBlock actual Item place, narrow AXIS getShape, WATERLOGGED and physical fluid tick; no cube-forcing. **NOT RUN**
+- [ ] **RP30-009** — Face -X — HayBlock Item axis placement plus independent falling entity damage on local floor (compare vanilla +Y). **NOT RUN**
+- [ ] **RP30-010** — Face -X — InfestedRotatedPillarBlock ITEM places from clicked local side independently; existing RPB Mixin must NOT be falsely credited. **NOT RUN**
+- [ ] **RP30-011** — Face -X — AxeItem real stripping of eligible wood/stem/bamboo preserves canonical AXIS and one inventory tool action. **NOT RUN**
+- [ ] **RP30-012** — Face -X — Mod BOP real loaded log via BlockItem vs BOP direct worldgen feature and physically tagged Level / noPlanet regression. **NOT RUN**
+- [ ] **RP30-013** — Face +Y — Actual BlockItem place all 52 RotatedPillarBlock IDs from canonical local UP, DOWN and side clicks, x/y/z legal AXIS. **NOT RUN**
+- [ ] **RP30-014** — Face +Y — ChainBlock actual Item place, narrow AXIS getShape, WATERLOGGED and physical fluid tick; no cube-forcing. **NOT RUN**
+- [ ] **RP30-015** — Face +Y — HayBlock Item axis placement plus independent falling entity damage on local floor (compare vanilla +Y). **NOT RUN**
+- [ ] **RP30-016** — Face +Y — InfestedRotatedPillarBlock ITEM places from clicked local side independently; existing RPB Mixin must NOT be falsely credited. **NOT RUN**
+- [ ] **RP30-017** — Face +Y — AxeItem real stripping of eligible wood/stem/bamboo preserves canonical AXIS and one inventory tool action. **NOT RUN**
+- [ ] **RP30-018** — Face +Y — Mod BOP real loaded log via BlockItem vs BOP direct worldgen feature and physically tagged Level / noPlanet regression. **NOT RUN**
+- [ ] **RP30-019** — Face -Y — Actual BlockItem place all 52 RotatedPillarBlock IDs from canonical local UP, DOWN and side clicks, x/y/z legal AXIS. **NOT RUN**
+- [ ] **RP30-020** — Face -Y — ChainBlock actual Item place, narrow AXIS getShape, WATERLOGGED and physical fluid tick; no cube-forcing. **NOT RUN**
+- [ ] **RP30-021** — Face -Y — HayBlock Item axis placement plus independent falling entity damage on local floor (compare vanilla +Y). **NOT RUN**
+- [ ] **RP30-022** — Face -Y — InfestedRotatedPillarBlock ITEM places from clicked local side independently; existing RPB Mixin must NOT be falsely credited. **NOT RUN**
+- [ ] **RP30-023** — Face -Y — AxeItem real stripping of eligible wood/stem/bamboo preserves canonical AXIS and one inventory tool action. **NOT RUN**
+- [ ] **RP30-024** — Face -Y — Mod BOP real loaded log via BlockItem vs BOP direct worldgen feature and physically tagged Level / noPlanet regression. **NOT RUN**
+- [ ] **RP30-025** — Face +Z — Actual BlockItem place all 52 RotatedPillarBlock IDs from canonical local UP, DOWN and side clicks, x/y/z legal AXIS. **NOT RUN**
+- [ ] **RP30-026** — Face +Z — ChainBlock actual Item place, narrow AXIS getShape, WATERLOGGED and physical fluid tick; no cube-forcing. **NOT RUN**
+- [ ] **RP30-027** — Face +Z — HayBlock Item axis placement plus independent falling entity damage on local floor (compare vanilla +Y). **NOT RUN**
+- [ ] **RP30-028** — Face +Z — InfestedRotatedPillarBlock ITEM places from clicked local side independently; existing RPB Mixin must NOT be falsely credited. **NOT RUN**
+- [ ] **RP30-029** — Face +Z — AxeItem real stripping of eligible wood/stem/bamboo preserves canonical AXIS and one inventory tool action. **NOT RUN**
+- [ ] **RP30-030** — Face +Z — Mod BOP real loaded log via BlockItem vs BOP direct worldgen feature and physically tagged Level / noPlanet regression. **NOT RUN**
+- [ ] **RP30-031** — Face -Z — Actual BlockItem place all 52 RotatedPillarBlock IDs from canonical local UP, DOWN and side clicks, x/y/z legal AXIS. **NOT RUN**
+- [ ] **RP30-032** — Face -Z — ChainBlock actual Item place, narrow AXIS getShape, WATERLOGGED and physical fluid tick; no cube-forcing. **NOT RUN**
+- [ ] **RP30-033** — Face -Z — HayBlock Item axis placement plus independent falling entity damage on local floor (compare vanilla +Y). **NOT RUN**
+- [ ] **RP30-034** — Face -Z — InfestedRotatedPillarBlock ITEM places from clicked local side independently; existing RPB Mixin must NOT be falsely credited. **NOT RUN**
+- [ ] **RP30-035** — Face -Z — AxeItem real stripping of eligible wood/stem/bamboo preserves canonical AXIS and one inventory tool action. **NOT RUN**
+- [ ] **RP30-036** — Face -Z — Mod BOP real loaded log via BlockItem vs BOP direct worldgen feature and physically tagged Level / noPlanet regression. **NOT RUN**
+- [ ] **RP30-037** — Edge +X/+Y — Log placed against chart boundary uses physical clicked target and canonical target frame, no sign flip. **NOT RUN**
+- [ ] **RP30-038** — Edge +X/+Y — Two-axis 90°/180° RotatedPillarBlock structure transform through edge and AXIS preservation. **NOT RUN**
+- [ ] **RP30-039** — Edge +X/+Y — Chain rotated shape and water tick cross edge, correct physical/target chart provenance. **NOT RUN**
+- [ ] **RP30-040** — Edge +X/+Y — Stripped BOP/vanilla log keeps source block AXIS, new block identity and drops across edge. **NOT RUN**
+- [ ] **RP30-041** — Edge +X/+Y — Infested deepslate copies AXIS host↔infested and spawned silverfish uses real physical spawn position. **NOT RUN**
+- [ ] **RP30-042** — Edge +X/+Y — Late ItemStack BLOCK_STATE axis override and foreign fake-world passthrough across edge. **NOT RUN**
+- [ ] **RP30-043** — Edge +X/-Y — Log placed against chart boundary uses physical clicked target and canonical target frame, no sign flip. **NOT RUN**
+- [ ] **RP30-044** — Edge +X/-Y — Two-axis 90°/180° RotatedPillarBlock structure transform through edge and AXIS preservation. **NOT RUN**
+- [ ] **RP30-045** — Edge +X/-Y — Chain rotated shape and water tick cross edge, correct physical/target chart provenance. **NOT RUN**
+- [ ] **RP30-046** — Edge +X/-Y — Stripped BOP/vanilla log keeps source block AXIS, new block identity and drops across edge. **NOT RUN**
+- [ ] **RP30-047** — Edge +X/-Y — Infested deepslate copies AXIS host↔infested and spawned silverfish uses real physical spawn position. **NOT RUN**
+- [ ] **RP30-048** — Edge +X/-Y — Late ItemStack BLOCK_STATE axis override and foreign fake-world passthrough across edge. **NOT RUN**
+- [ ] **RP30-049** — Edge +X/+Z — Log placed against chart boundary uses physical clicked target and canonical target frame, no sign flip. **NOT RUN**
+- [ ] **RP30-050** — Edge +X/+Z — Two-axis 90°/180° RotatedPillarBlock structure transform through edge and AXIS preservation. **NOT RUN**
+- [ ] **RP30-051** — Edge +X/+Z — Chain rotated shape and water tick cross edge, correct physical/target chart provenance. **NOT RUN**
+- [ ] **RP30-052** — Edge +X/+Z — Stripped BOP/vanilla log keeps source block AXIS, new block identity and drops across edge. **NOT RUN**
+- [ ] **RP30-053** — Edge +X/+Z — Infested deepslate copies AXIS host↔infested and spawned silverfish uses real physical spawn position. **NOT RUN**
+- [ ] **RP30-054** — Edge +X/+Z — Late ItemStack BLOCK_STATE axis override and foreign fake-world passthrough across edge. **NOT RUN**
+- [ ] **RP30-055** — Edge +X/-Z — Log placed against chart boundary uses physical clicked target and canonical target frame, no sign flip. **NOT RUN**
+- [ ] **RP30-056** — Edge +X/-Z — Two-axis 90°/180° RotatedPillarBlock structure transform through edge and AXIS preservation. **NOT RUN**
+- [ ] **RP30-057** — Edge +X/-Z — Chain rotated shape and water tick cross edge, correct physical/target chart provenance. **NOT RUN**
+- [ ] **RP30-058** — Edge +X/-Z — Stripped BOP/vanilla log keeps source block AXIS, new block identity and drops across edge. **NOT RUN**
+- [ ] **RP30-059** — Edge +X/-Z — Infested deepslate copies AXIS host↔infested and spawned silverfish uses real physical spawn position. **NOT RUN**
+- [ ] **RP30-060** — Edge +X/-Z — Late ItemStack BLOCK_STATE axis override and foreign fake-world passthrough across edge. **NOT RUN**
+- [ ] **RP30-061** — Edge -X/+Y — Log placed against chart boundary uses physical clicked target and canonical target frame, no sign flip. **NOT RUN**
+- [ ] **RP30-062** — Edge -X/+Y — Two-axis 90°/180° RotatedPillarBlock structure transform through edge and AXIS preservation. **NOT RUN**
+- [ ] **RP30-063** — Edge -X/+Y — Chain rotated shape and water tick cross edge, correct physical/target chart provenance. **NOT RUN**
+- [ ] **RP30-064** — Edge -X/+Y — Stripped BOP/vanilla log keeps source block AXIS, new block identity and drops across edge. **NOT RUN**
+- [ ] **RP30-065** — Edge -X/+Y — Infested deepslate copies AXIS host↔infested and spawned silverfish uses real physical spawn position. **NOT RUN**
+- [ ] **RP30-066** — Edge -X/+Y — Late ItemStack BLOCK_STATE axis override and foreign fake-world passthrough across edge. **NOT RUN**
+- [ ] **RP30-067** — Edge -X/-Y — Log placed against chart boundary uses physical clicked target and canonical target frame, no sign flip. **NOT RUN**
+- [ ] **RP30-068** — Edge -X/-Y — Two-axis 90°/180° RotatedPillarBlock structure transform through edge and AXIS preservation. **NOT RUN**
+- [ ] **RP30-069** — Edge -X/-Y — Chain rotated shape and water tick cross edge, correct physical/target chart provenance. **NOT RUN**
+- [ ] **RP30-070** — Edge -X/-Y — Stripped BOP/vanilla log keeps source block AXIS, new block identity and drops across edge. **NOT RUN**
+- [ ] **RP30-071** — Edge -X/-Y — Infested deepslate copies AXIS host↔infested and spawned silverfish uses real physical spawn position. **NOT RUN**
+- [ ] **RP30-072** — Edge -X/-Y — Late ItemStack BLOCK_STATE axis override and foreign fake-world passthrough across edge. **NOT RUN**
+- [ ] **RP30-073** — Edge -X/+Z — Log placed against chart boundary uses physical clicked target and canonical target frame, no sign flip. **NOT RUN**
+- [ ] **RP30-074** — Edge -X/+Z — Two-axis 90°/180° RotatedPillarBlock structure transform through edge and AXIS preservation. **NOT RUN**
+- [ ] **RP30-075** — Edge -X/+Z — Chain rotated shape and water tick cross edge, correct physical/target chart provenance. **NOT RUN**
+- [ ] **RP30-076** — Edge -X/+Z — Stripped BOP/vanilla log keeps source block AXIS, new block identity and drops across edge. **NOT RUN**
+- [ ] **RP30-077** — Edge -X/+Z — Infested deepslate copies AXIS host↔infested and spawned silverfish uses real physical spawn position. **NOT RUN**
+- [ ] **RP30-078** — Edge -X/+Z — Late ItemStack BLOCK_STATE axis override and foreign fake-world passthrough across edge. **NOT RUN**
+- [ ] **RP30-079** — Edge -X/-Z — Log placed against chart boundary uses physical clicked target and canonical target frame, no sign flip. **NOT RUN**
+- [ ] **RP30-080** — Edge -X/-Z — Two-axis 90°/180° RotatedPillarBlock structure transform through edge and AXIS preservation. **NOT RUN**
+- [ ] **RP30-081** — Edge -X/-Z — Chain rotated shape and water tick cross edge, correct physical/target chart provenance. **NOT RUN**
+- [ ] **RP30-082** — Edge -X/-Z — Stripped BOP/vanilla log keeps source block AXIS, new block identity and drops across edge. **NOT RUN**
+- [ ] **RP30-083** — Edge -X/-Z — Infested deepslate copies AXIS host↔infested and spawned silverfish uses real physical spawn position. **NOT RUN**
+- [ ] **RP30-084** — Edge -X/-Z — Late ItemStack BLOCK_STATE axis override and foreign fake-world passthrough across edge. **NOT RUN**
+- [ ] **RP30-085** — Edge +Y/+Z — Log placed against chart boundary uses physical clicked target and canonical target frame, no sign flip. **NOT RUN**
+- [ ] **RP30-086** — Edge +Y/+Z — Two-axis 90°/180° RotatedPillarBlock structure transform through edge and AXIS preservation. **NOT RUN**
+- [ ] **RP30-087** — Edge +Y/+Z — Chain rotated shape and water tick cross edge, correct physical/target chart provenance. **NOT RUN**
+- [ ] **RP30-088** — Edge +Y/+Z — Stripped BOP/vanilla log keeps source block AXIS, new block identity and drops across edge. **NOT RUN**
+- [ ] **RP30-089** — Edge +Y/+Z — Infested deepslate copies AXIS host↔infested and spawned silverfish uses real physical spawn position. **NOT RUN**
+- [ ] **RP30-090** — Edge +Y/+Z — Late ItemStack BLOCK_STATE axis override and foreign fake-world passthrough across edge. **NOT RUN**
+- [ ] **RP30-091** — Edge +Y/-Z — Log placed against chart boundary uses physical clicked target and canonical target frame, no sign flip. **NOT RUN**
+- [ ] **RP30-092** — Edge +Y/-Z — Two-axis 90°/180° RotatedPillarBlock structure transform through edge and AXIS preservation. **NOT RUN**
+- [ ] **RP30-093** — Edge +Y/-Z — Chain rotated shape and water tick cross edge, correct physical/target chart provenance. **NOT RUN**
+- [ ] **RP30-094** — Edge +Y/-Z — Stripped BOP/vanilla log keeps source block AXIS, new block identity and drops across edge. **NOT RUN**
+- [ ] **RP30-095** — Edge +Y/-Z — Infested deepslate copies AXIS host↔infested and spawned silverfish uses real physical spawn position. **NOT RUN**
+- [ ] **RP30-096** — Edge +Y/-Z — Late ItemStack BLOCK_STATE axis override and foreign fake-world passthrough across edge. **NOT RUN**
+- [ ] **RP30-097** — Edge -Y/+Z — Log placed against chart boundary uses physical clicked target and canonical target frame, no sign flip. **NOT RUN**
+- [ ] **RP30-098** — Edge -Y/+Z — Two-axis 90°/180° RotatedPillarBlock structure transform through edge and AXIS preservation. **NOT RUN**
+- [ ] **RP30-099** — Edge -Y/+Z — Chain rotated shape and water tick cross edge, correct physical/target chart provenance. **NOT RUN**
+- [ ] **RP30-100** — Edge -Y/+Z — Stripped BOP/vanilla log keeps source block AXIS, new block identity and drops across edge. **NOT RUN**
+- [ ] **RP30-101** — Edge -Y/+Z — Infested deepslate copies AXIS host↔infested and spawned silverfish uses real physical spawn position. **NOT RUN**
+- [ ] **RP30-102** — Edge -Y/+Z — Late ItemStack BLOCK_STATE axis override and foreign fake-world passthrough across edge. **NOT RUN**
+- [ ] **RP30-103** — Edge -Y/-Z — Log placed against chart boundary uses physical clicked target and canonical target frame, no sign flip. **NOT RUN**
+- [ ] **RP30-104** — Edge -Y/-Z — Two-axis 90°/180° RotatedPillarBlock structure transform through edge and AXIS preservation. **NOT RUN**
+- [ ] **RP30-105** — Edge -Y/-Z — Chain rotated shape and water tick cross edge, correct physical/target chart provenance. **NOT RUN**
+- [ ] **RP30-106** — Edge -Y/-Z — Stripped BOP/vanilla log keeps source block AXIS, new block identity and drops across edge. **NOT RUN**
+- [ ] **RP30-107** — Edge -Y/-Z — Infested deepslate copies AXIS host↔infested and spawned silverfish uses real physical spawn position. **NOT RUN**
+- [ ] **RP30-108** — Edge -Y/-Z — Late ItemStack BLOCK_STATE axis override and foreign fake-world passthrough across edge. **NOT RUN**
+- [ ] **RP30-109** — Corner +X/+Y/+Z — Physical +Y/-Y chart transitions retain single BlockPos/one saved AXIS value across 3 faces. **NOT RUN**
+- [ ] **RP30-110** — Corner +X/+Y/+Z — Axis-dependent chain shape collision/hit/render at triple corner without double rotation. **NOT RUN**
+- [ ] **RP30-111** — Corner +X/+Y/+Z — BOP feature original world-XZ axis vs opt-in source-chart-aware worldgen at triple corner. **NOT RUN**
+- [ ] **RP30-112** — Corner +X/+Y/+Z — Axe stripping and Infested host mapping through three charts preserves legal AXIS. **NOT RUN**
+- [ ] **RP30-113** — Corner +X/+Y/-Z — Physical +Y/-Y chart transitions retain single BlockPos/one saved AXIS value across 3 faces. **NOT RUN**
+- [ ] **RP30-114** — Corner +X/+Y/-Z — Axis-dependent chain shape collision/hit/render at triple corner without double rotation. **NOT RUN**
+- [ ] **RP30-115** — Corner +X/+Y/-Z — BOP feature original world-XZ axis vs opt-in source-chart-aware worldgen at triple corner. **NOT RUN**
+- [ ] **RP30-116** — Corner +X/+Y/-Z — Axe stripping and Infested host mapping through three charts preserves legal AXIS. **NOT RUN**
+- [ ] **RP30-117** — Corner +X/-Y/+Z — Physical +Y/-Y chart transitions retain single BlockPos/one saved AXIS value across 3 faces. **NOT RUN**
+- [ ] **RP30-118** — Corner +X/-Y/+Z — Axis-dependent chain shape collision/hit/render at triple corner without double rotation. **NOT RUN**
+- [ ] **RP30-119** — Corner +X/-Y/+Z — BOP feature original world-XZ axis vs opt-in source-chart-aware worldgen at triple corner. **NOT RUN**
+- [ ] **RP30-120** — Corner +X/-Y/+Z — Axe stripping and Infested host mapping through three charts preserves legal AXIS. **NOT RUN**
+- [ ] **RP30-121** — Corner +X/-Y/-Z — Physical +Y/-Y chart transitions retain single BlockPos/one saved AXIS value across 3 faces. **NOT RUN**
+- [ ] **RP30-122** — Corner +X/-Y/-Z — Axis-dependent chain shape collision/hit/render at triple corner without double rotation. **NOT RUN**
+- [ ] **RP30-123** — Corner +X/-Y/-Z — BOP feature original world-XZ axis vs opt-in source-chart-aware worldgen at triple corner. **NOT RUN**
+- [ ] **RP30-124** — Corner +X/-Y/-Z — Axe stripping and Infested host mapping through three charts preserves legal AXIS. **NOT RUN**
+- [ ] **RP30-125** — Corner -X/+Y/+Z — Physical +Y/-Y chart transitions retain single BlockPos/one saved AXIS value across 3 faces. **NOT RUN**
+- [ ] **RP30-126** — Corner -X/+Y/+Z — Axis-dependent chain shape collision/hit/render at triple corner without double rotation. **NOT RUN**
+- [ ] **RP30-127** — Corner -X/+Y/+Z — BOP feature original world-XZ axis vs opt-in source-chart-aware worldgen at triple corner. **NOT RUN**
+- [ ] **RP30-128** — Corner -X/+Y/+Z — Axe stripping and Infested host mapping through three charts preserves legal AXIS. **NOT RUN**
+- [ ] **RP30-129** — Corner -X/+Y/-Z — Physical +Y/-Y chart transitions retain single BlockPos/one saved AXIS value across 3 faces. **NOT RUN**
+- [ ] **RP30-130** — Corner -X/+Y/-Z — Axis-dependent chain shape collision/hit/render at triple corner without double rotation. **NOT RUN**
+- [ ] **RP30-131** — Corner -X/+Y/-Z — BOP feature original world-XZ axis vs opt-in source-chart-aware worldgen at triple corner. **NOT RUN**
+- [ ] **RP30-132** — Corner -X/+Y/-Z — Axe stripping and Infested host mapping through three charts preserves legal AXIS. **NOT RUN**
+- [ ] **RP30-133** — Corner -X/-Y/+Z — Physical +Y/-Y chart transitions retain single BlockPos/one saved AXIS value across 3 faces. **NOT RUN**
+- [ ] **RP30-134** — Corner -X/-Y/+Z — Axis-dependent chain shape collision/hit/render at triple corner without double rotation. **NOT RUN**
+- [ ] **RP30-135** — Corner -X/-Y/+Z — BOP feature original world-XZ axis vs opt-in source-chart-aware worldgen at triple corner. **NOT RUN**
+- [ ] **RP30-136** — Corner -X/-Y/+Z — Axe stripping and Infested host mapping through three charts preserves legal AXIS. **NOT RUN**
+- [ ] **RP30-137** — Corner -X/-Y/-Z — Physical +Y/-Y chart transitions retain single BlockPos/one saved AXIS value across 3 faces. **NOT RUN**
+- [ ] **RP30-138** — Corner -X/-Y/-Z — Axis-dependent chain shape collision/hit/render at triple corner without double rotation. **NOT RUN**
+- [ ] **RP30-139** — Corner -X/-Y/-Z — BOP feature original world-XZ axis vs opt-in source-chart-aware worldgen at triple corner. **NOT RUN**
+- [ ] **RP30-140** — Corner -X/-Y/-Z — Axe stripping and Infested host mapping through three charts preserves legal AXIS. **NOT RUN**
+- [ ] **RP30-141** — Owner/alternate writer/material regression — All 52 vanilla RotatedPillarBlock registered resource IDs iterated, including three froglights, muddy mangrove roots, bone block, quartz and purpur. **NOT RUN**
+- [ ] **RP30-142** — Owner/alternate writer/material regression — All 55 actual original ITEM IDs are 1:1 matching BlockItem, no guessed creative-only missing item. **NOT RUN**
+- [ ] **RP30-143** — Owner/alternate writer/material regression — All three x/y/z AXIS values legal for 55 originals; ChainBlock WATERLOGGED only separate property. **NOT RUN**
+- [ ] **RP30-144** — Owner/alternate writer/material regression — NoPlanet vanilla +Y rotation/wood map-color/drops/collision/interaction regressions. **NOT RUN**
+- [ ] **RP30-145** — Owner/alternate writer/material regression — NoPlanet vanilla -Y player click not silently rewritten without Planet field. **NOT RUN**
+- [ ] **RP30-146** — Owner/alternate writer/material regression — InfestedRotatedPillarBlock unrelated hierarchy physically bypasses RPB Mixin and requires separate shared API adapter. **NOT RUN**
+- [ ] **RP30-147** — Owner/alternate writer/material regression — ChainBlock super invocation ASM method execution and callbacks verified against target NeoForge version. **NOT RUN**
+- [ ] **RP30-148** — Owner/alternate writer/material regression — Subclass override getStateForPlacement does not invoke super: explicit mod author algorithm opt-in. **NOT RUN**
+- [ ] **RP30-149** — Owner/alternate writer/material regression — HayBlock base inherited placement Mixin effective owner and independent fallOn callback. **NOT RUN**
+- [ ] **RP30-150** — Owner/alternate writer/material regression — ChainBlock getFluidState and placeLiquid natural water source + waterlogged shape. **NOT RUN**
+- [ ] **RP30-151** — Owner/alternate writer/material regression — ItemStack BlockState component overrides AXIS after placement and chooses correct legal props. **NOT RUN**
+- [ ] **RP30-152** — Owner/alternate writer/material regression — WorldGenLevel source original vertical/trunk axis must remain physical unless radial algorithm opt-in. **NOT RUN**
+- [ ] **RP30-153** — Owner/alternate writer/material regression — StructureTemplate mirror/rotate must preserve correct canonical axis across source/dest frames. **NOT RUN**
+- [ ] **RP30-154** — Owner/alternate writer/material regression — Command /setblock state AXIS=Y preserves explicit user-authored state instead of placement override. **NOT RUN**
+- [ ] **RP30-155** — Owner/alternate writer/material regression — AxeItem vanilla STRIPPABLES map includes exactly eligible logs/wood/stems/bamboo, excludes quartz, froglights etc. **NOT RUN**
+- [ ] **RP30-156** — Owner/alternate writer/material regression — AxeItem direct Level.setBlock flags11 does not re-enter BlockItem.getStateForPlacement. **NOT RUN**
+- [ ] **RP30-157** — Owner/alternate writer/material regression — Modded wood extra BOP source registered from log()/logNonIgniting() factories and real JAR loaded. **NOT RUN**
+- [ ] **RP30-158** — Owner/alternate writer/material regression — Modded BOP FallenJacarandaLogFeature writes AXIS directly and local graph direction is not guessed. **NOT RUN**
+- [ ] **RP30-159** — Owner/alternate writer/material regression — Every Compat requires STRIPPED_LOG child but does not guarantee owning RotatedPillarBlock placement code. **NOT RUN**
+- [ ] **RP30-160** — Owner/alternate writer/material regression — Independent Create shaft or arbitrary modded AXIS with custom placement owner must be explicitly audited. **NOT RUN**
+- [ ] **RP30-161** — Owner/alternate writer/material regression — Entity silvefish spawnAfterBreak physical location/dimensions, entity local gravity handled separately. **NOT RUN**
+- [ ] **RP30-162** — Owner/alternate writer/material regression — Vary biome/wood/material drops tools hardness sounds mapColor emission without blanket stripping. **NOT RUN**
+- [ ] **RP30-163** — Owner/alternate writer/material regression — String BlockState AXIS=x,y,z cannot replace enum or infer rotation for unrelated NetherPortalBlock. **NOT RUN**
+- [ ] **RP30-164** — Owner/alternate writer/material regression — NetherPortalBlock.axis=x,z source remains outside four-class Stage30 and Phase9 portal algorithm. **NOT RUN**
+- [ ] **RP30-165** — Owner/alternate writer/material regression — Core PlanetBlockStateFrame local->world axes and position boundary physical coordinates. **NOT RUN**
+- [ ] **RP30-166** — Owner/alternate writer/material regression — Fake ContraptionWorld without explicit coordinate provenance does not attach to Planet by accident. **NOT RUN**
+- [ ] **RP30-167** — Owner/alternate writer/material regression — Client render static rotating models cross-face separately from BlockState and collision transform. **NOT RUN**
+- [ ] **RP30-168** — Owner/alternate writer/material regression — Server stored state reload after 6 face boundary keeps AXIS and chain WATERLOGGED. **NOT RUN**
+- [ ] **RP30-169** — Owner/alternate writer/material regression — Source mutated BlockState local orientation doesn't duplicate item/blocks at seam. **NOT RUN**
+- [ ] **RP30-170** — Owner/alternate writer/material regression — Java21 NeoForge21.1.215 ASM/Mixin applies to actual base family callback once per invocation. **NOT RUN**
+- [ ] **RP30-171** — Owner/alternate writer/material regression — Source-only research cannot mark patched ASM/Planet adapter/gameplay pass. **NOT RUN**
+- [ ] **RP30-172** — Owner/alternate writer/material regression — Multiplayer visual and physics agreement while two clients place logs/chain at different gravity faces. **NOT RUN**
+- [ ] **RP30-173** — Owner/alternate writer/material regression — Feature re-ran repeated after terrain update does not accumulate duplicate wood in worldgen. **NOT RUN**
+- [ ] **RP30-174** — Owner/alternate writer/material regression — AXIS is unsigned x/y/z not a signed direction; local signed projection never encodes minus axis as new state. **NOT RUN**
+- [ ] **RP30-175** — Owner/alternate writer/material regression — All block item variants independent placement contexts player fake player dispenser automation. **NOT RUN**
+- [ ] **RP30-176** — Owner/alternate writer/material regression — Log local blocks without face texture rotation errors on -Y and sides; verify actual baked model orientation. **NOT RUN**
+- [ ] **RP30-177** — Owner/alternate writer/material regression — Hay damage 0.2 multiplier not globally applied to other falling targets. **NOT RUN**
+- [ ] **RP30-178** — Owner/alternate writer/material regression — Stripped root/bamboo conversions preserve AXIS and not unrelated block NBT. **NOT RUN**
+- [ ] **RP30-179** — Owner/alternate writer/material regression — Mod tag-only axis block without `RotatedPillarBlock` owner remains original physical semantics. **NOT RUN**
+- [ ] **RP30-180** — Owner/alternate writer/material regression — Fully reset/noPlanet on leaving Planet field and reentering, saved AXIS stable. **NOT RUN**
+- [ ] **RP30-181** — Owner/alternate writer/material regression — Unloaded-neighbor chunk safety at seam in BlockItem hit axis, modded feature and client render. **NOT RUN**
+
+Block-level and mechanism-level future PASS must require actual NeoForge patch bytecode, loaded mod when specified, six faces/12 seams/8 corners, noPlanet and virtual-world safety, client and server, and preserved physical Level/BlockPos.
