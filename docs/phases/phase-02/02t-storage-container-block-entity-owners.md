@@ -1,0 +1,12 @@
+# Stage3A-22 — shared safe storage / BlockEntity / sided container owner group
+
+**ACTIVE 0/4 ORIGINAL SOURCE**, branch2.0 Minecraft1.21.1 NeoForge21.1.215 Java21. One «кк» executes **22.1–22.4 together**, docs commits, no Java/Mixin or gameplay changes unless explicitly separately requested.
+
+Original physical 241/1060 archive verifies five still SOURCE pending registered concrete classes, **one ID each**: `DecoratedPotBlock` → `minecraft:decorated_pot` (cracked,facing,waterlogged, BE fragments/loot); `ChiseledBookShelfBlock` → `minecraft:chiseled_bookshelf` (facing and 6 occupied slots, book BE); `BarrelBlock` → `minecraft:barrel` (facing,open, BE/menu/automation); `ChestBlock` → `minecraft:chest` (facing,type,waterlogged, BE double-chest formation); `EnderChestBlock` → `minecraft:ender_chest` (facing,waterlogged, per-player remote inventory). Family similarity is item-storage/sided context semantics, NOT shared Java inheritance; every independent algorithm must be traced to original owner.
+
+- [ ] 22.1 original physical ZIP 5 exact IDs, properties domains, FULL five nearest declaring owners each, 1333 ITEM joins, BE and method override map.
+- [ ] 22.2 complete BlockItem/BlockState/neighbor/BE/menu/slot/comparator/loot/double pairing/broken storage/state direct writers, actual pinned Minecraft1.21.1 NeoForge third-party source with independent vs inherited overrides, true physical vs local sides and frame.
+- [ ] 22.3 >=40 future UNRUN no-Planet/six-face/12 edges/8 corners, actual player placements, BE save/reload and modded sided inventory/capability and fake world acceptance, deep SHARED_SAFE/OPT_IN_ALGORITHM/MOD_INDEPENDENT/PHYSICAL_DO_NOT_TOUCH boundaries.
+- [ ] 22.4 independently rehash original ZIP prior frozen107+5 vs actual LIVE GitHub 241×16 TSV (full five declaring owners/IDs) and reconcile if and only if verified **112/241 source-reviewed classes /329/1060 exact BLOCK IDs**, remaining129 classes/731 IDs and all 723 runtime flags pending; update plan/context and next cohesive stage. No runtime acceptance from source.
+
+[Stage21 full owner and mod report](../../research/PHASE2_STAGE3A_FLOWERPOT_ORIGINAL_ITEM_REGISTRATION_MOD_MECHANISMS_1_21_1.md) · [50 future UNRUN tests](../../research/PHASE2_STAGE3A_FLOWERPOT_SIX_FACE_INTERACTION_MOD_ACCEPTANCE_1_21_1.md) · [107-class exact archive audit](../../research/PHASE2_STAGE3A_FLOWERPOT_ORIGINAL_107_CLASS_RECONCILIATION_1_21_1.md).
