@@ -1,6 +1,6 @@
 # Stage3A-35 — Time-changing block owner families beyond copper (growth, scheduled ecology, spreading, environment)
 
-**DONE 4/4 SOURCE AUDIT ONLY** as of 2026-10-12, branch 2.0 MC1.21.1 NeoForge21.1.215. User requires **all four 35.1–35.4 in one next `кк`**, maximal mod compatibility. Stage34 establishes [general temporal owner entrypoint atlas](../../research/PHASE2_STAGE3A_TEMPORAL_MUTATION_MECHANISM_MOD_SOURCE_ATLAS_1_21_1.md) but only source-promoted exact **four copper owner classes**; this stage must research **non-copper temporal owners** without declaring 241 registry classes fully done.
+**DONE 4/4 SOURCE AUDIT ONLY** as of 2026-10-12, branch 2.0 MC1.21.1 NeoForge21.1.215. All **four 35.1–35.4 completed together in one `кк`**, including researched mod algorithms; real loaded mod acceptance remains separate. Stage34 establishes [general temporal owner entrypoint atlas](../../research/PHASE2_STAGE3A_TEMPORAL_MUTATION_MECHANISM_MOD_SOURCE_ATLAS_1_21_1.md) but only source-promoted exact **four copper owner classes**; this stage researched **non-copper temporal owners** without declaring 241 registry classes or modded runtime compatibility fully done.
 
 Proposed pending original census groups and exact registered counts from live Stage34 PRE-promotion ledger (verify current before advancing):
 - grow/propagate/place: `AttachedStemBlock:2,StemBlock:2,CocoaBlock:1,BigDripleafBlock:1,BigDripleafStemBlock:1,PinkPetalsBlock:1`;
