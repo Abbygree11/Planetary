@@ -1,0 +1,127 @@
+# Stage 3A-27.3 — future real-item BedBlock / RespawnAnchorBlock six-face sleep & mod acceptance
+
+**121 BR27 acceptance cases · ALL NOT RUN.** These are test definitions, not tests executed or fixes proven. Every player action must use **real original BedItem/BlockItem** or real modded item, not force-set BlockState (except explicitly /setblock/structure regression), verify actual 2-block BED pair, physical HEAD/FOOT BlockPos and dimension key, server player sleeping/respawn location, real item transaction and client camera/BER separately. Six face interiors, 12 face edges, 8 triple corners, vanilla noPlanet, mods, chunk save/reload and fake Level. Do not promote any original 723 ASM/Planet/gameplay gates from this checklist.
+
+- [ ] **BR27-001** — Non-Planet overworld place all 16 real BedItem colors; 1 item => one FOOT + one HEAD, correct BE color both sides. **NOT RUN**
+- [ ] **BR27-002** — Non-Planet glowstone in hand charge respawn anchor from 0→4, exactly one consumed at each charge. **NOT RUN**
+- [ ] **BR27-003** — Non-Planet anchor at charges=4 never accepts additional glowstone; no inventory duplication. **NOT RUN**
+- [ ] **BR27-004** — BedItem.placeBlock uses flags 26, BedBlock.setPlacedBy generates HEAD on server and neighbor updates without ghost head. **NOT RUN**
+- [ ] **BR27-005** — BedBlock getStateForPlacement on clicked FOOT requires true target ahead replaceable and within worldborder. **NOT RUN**
+- [ ] **BR27-006** — BedBlock legal property domain FACING horizontal4, PART FOOT/HEAD, OCCUPIED boolean; reject invalid vertical BlockState. **NOT RUN**
+- [ ] **BR27-007** — RespawnAnchorBlock only legal property CHARGES 0..4, no FACING/rotation property. **NOT RUN**
+- [ ] **BR27-008** — Vanilla BedBlock updateShape removes invalid partner and transfers OCCUPIED between valid halves. **NOT RUN**
+- [ ] **BR27-009** — Creative destruction of bed FOOT breaks linked HEAD without unexpected item/BE residue. **NOT RUN**
+- [ ] **BR27-010** — Bed rendering 3D legs and BedBlockEntity dye color preserve all16 color variants. **NOT RUN**
+- [ ] **BR27-011** — Bed use FOOT redirects to real HEAD before occupancy and server sleep logic. **NOT RUN**
+- [ ] **BR27-012** — Bed at daytime still records spawn position per ServerPlayer.startSleepInBed ordering, even when sleep denied by daytime. **NOT RUN**
+- [ ] **BR27-013** — Bed sleeping at valid time and safe location sets server occupied and player sleeping position. **NOT RUN**
+- [ ] **BR27-014** — Server fails too far/obstructed/unsafe or unnatural dimension without spoofing coordinates. **NOT RUN**
+- [ ] **BR27-015** — Villager occupied bed and player occupied bed have correct response and no extra sleeping entity. **NOT RUN**
+- [ ] **BR27-016** — Bed in dimensions with bedWorks false follows original no-spawn behavior and block interaction outcome. **NOT RUN**
+- [ ] **BR27-017** — Player wake sets both halves unoccupied and uses safe physical dismount around bed. **NOT RUN**
+- [ ] **BR27-018** — Bed startSleeping sets actual pose, +0.6875 world-Y offset in original source; Planet may require typed local pose. **NOT RUN**
+- [ ] **BR27-019** — Anchor with positive CHARGES in respawnAnchorWorks dimension sets player's real dimension/BlockPos. **NOT RUN**
+- [ ] **BR27-020** — Anchor CHARGES 0 interaction PASS; no spawn registered. **NOT RUN**
+- [ ] **BR27-021** — Anchor wrong dimension invokes original server-only interaction branch, no stale respawn persisted. **NOT RUN**
+- [ ] **BR27-022** — Anchor charging with off-hand glowstone and empty main hand preserves skip-default interaction and consumes one. **NOT RUN**
+- [ ] **BR27-023** — Anchor positive charged comparator emits original scaled 0..15 values, no fake orientation. **NOT RUN**
+- [ ] **BR27-024** — Anchor client particles originate physical above Y; identify local visual gravity effect separately from server. **NOT RUN**
+- [ ] **BR27-025** — Vanilla no-Planet dimension switch overworld↔nether↔end retains proper spawn dimension validity. **NOT RUN**
+- [ ] **BR27-026** — Death/respawn using charged anchor selects valid world-space stand-up point and decreases charge where source requires. **NOT RUN**
+- [ ] **BR27-027** — Forced respawn command and invalid/missing-bed fallback do not mutate original spawn dimension unexpectedly. **NOT RUN**
+- [ ] **BR27-028** — Bed/anchor block removal while configured as spawn produces original invalid-spawn handling. **NOT RUN**
+- [ ] **BR27-029** — Original DismountHelper uses world-Y floors/above checks; test baseline and Planet candidate positions independently. **NOT RUN**
+- [ ] **BR27-030** — Bed/anchor randomTick is inherited BlockBehaviour, not owner of scheduled sleep or respawn state. **NOT RUN**
+- [ ] **BR27-031** — Planet face +Y: real BedItem creates valid adjacent HEAD/FOOT on same face, support and both BE colors; use real player ITEM action or real respawn. **NOT RUN**
+- [ ] **BR27-032** — Planet face +Y: BedItem placed near edge with intended local tangent, verify actual 2-block physical positions; use real player ITEM action or real respawn. **NOT RUN**
+- [ ] **BR27-033** — Planet face +Y: interact FOOT or HEAD and start sleep with correct local gravity / server real sleeping position; use real player ITEM action or real respawn. **NOT RUN**
+- [ ] **BR27-034** — Planet face +Y: wake from bed: safe local up, collision, camera smooth, no teleport/clip; use real player ITEM action or real respawn. **NOT RUN**
+- [ ] **BR27-035** — Planet face +Y: RespawnAnchorBlock charge, 0..4, item transaction, comparator and 3D rendering; use real player ITEM action or real respawn. **NOT RUN**
+- [ ] **BR27-036** — Planet face +Y: Respawn in valid dimension at anchor: choose true safe local floor, no physical-world corruption; use real player ITEM action or real respawn. **NOT RUN**
+- [ ] **BR27-037** — Planet face -Y: real BedItem creates valid adjacent HEAD/FOOT on same face, support and both BE colors; use real player ITEM action or real respawn. **NOT RUN**
+- [ ] **BR27-038** — Planet face -Y: BedItem placed near edge with intended local tangent, verify actual 2-block physical positions; use real player ITEM action or real respawn. **NOT RUN**
+- [ ] **BR27-039** — Planet face -Y: interact FOOT or HEAD and start sleep with correct local gravity / server real sleeping position; use real player ITEM action or real respawn. **NOT RUN**
+- [ ] **BR27-040** — Planet face -Y: wake from bed: safe local up, collision, camera smooth, no teleport/clip; use real player ITEM action or real respawn. **NOT RUN**
+- [ ] **BR27-041** — Planet face -Y: RespawnAnchorBlock charge, 0..4, item transaction, comparator and 3D rendering; use real player ITEM action or real respawn. **NOT RUN**
+- [ ] **BR27-042** — Planet face -Y: Respawn in valid dimension at anchor: choose true safe local floor, no physical-world corruption; use real player ITEM action or real respawn. **NOT RUN**
+- [ ] **BR27-043** — Planet face +X: real BedItem creates valid adjacent HEAD/FOOT on same face, support and both BE colors; use real player ITEM action or real respawn. **NOT RUN**
+- [ ] **BR27-044** — Planet face +X: BedItem placed near edge with intended local tangent, verify actual 2-block physical positions; use real player ITEM action or real respawn. **NOT RUN**
+- [ ] **BR27-045** — Planet face +X: interact FOOT or HEAD and start sleep with correct local gravity / server real sleeping position; use real player ITEM action or real respawn. **NOT RUN**
+- [ ] **BR27-046** — Planet face +X: wake from bed: safe local up, collision, camera smooth, no teleport/clip; use real player ITEM action or real respawn. **NOT RUN**
+- [ ] **BR27-047** — Planet face +X: RespawnAnchorBlock charge, 0..4, item transaction, comparator and 3D rendering; use real player ITEM action or real respawn. **NOT RUN**
+- [ ] **BR27-048** — Planet face +X: Respawn in valid dimension at anchor: choose true safe local floor, no physical-world corruption; use real player ITEM action or real respawn. **NOT RUN**
+- [ ] **BR27-049** — Planet face -X: real BedItem creates valid adjacent HEAD/FOOT on same face, support and both BE colors; use real player ITEM action or real respawn. **NOT RUN**
+- [ ] **BR27-050** — Planet face -X: BedItem placed near edge with intended local tangent, verify actual 2-block physical positions; use real player ITEM action or real respawn. **NOT RUN**
+- [ ] **BR27-051** — Planet face -X: interact FOOT or HEAD and start sleep with correct local gravity / server real sleeping position; use real player ITEM action or real respawn. **NOT RUN**
+- [ ] **BR27-052** — Planet face -X: wake from bed: safe local up, collision, camera smooth, no teleport/clip; use real player ITEM action or real respawn. **NOT RUN**
+- [ ] **BR27-053** — Planet face -X: RespawnAnchorBlock charge, 0..4, item transaction, comparator and 3D rendering; use real player ITEM action or real respawn. **NOT RUN**
+- [ ] **BR27-054** — Planet face -X: Respawn in valid dimension at anchor: choose true safe local floor, no physical-world corruption; use real player ITEM action or real respawn. **NOT RUN**
+- [ ] **BR27-055** — Planet face +Z: real BedItem creates valid adjacent HEAD/FOOT on same face, support and both BE colors; use real player ITEM action or real respawn. **NOT RUN**
+- [ ] **BR27-056** — Planet face +Z: BedItem placed near edge with intended local tangent, verify actual 2-block physical positions; use real player ITEM action or real respawn. **NOT RUN**
+- [ ] **BR27-057** — Planet face +Z: interact FOOT or HEAD and start sleep with correct local gravity / server real sleeping position; use real player ITEM action or real respawn. **NOT RUN**
+- [ ] **BR27-058** — Planet face +Z: wake from bed: safe local up, collision, camera smooth, no teleport/clip; use real player ITEM action or real respawn. **NOT RUN**
+- [ ] **BR27-059** — Planet face +Z: RespawnAnchorBlock charge, 0..4, item transaction, comparator and 3D rendering; use real player ITEM action or real respawn. **NOT RUN**
+- [ ] **BR27-060** — Planet face +Z: Respawn in valid dimension at anchor: choose true safe local floor, no physical-world corruption; use real player ITEM action or real respawn. **NOT RUN**
+- [ ] **BR27-061** — Planet face -Z: real BedItem creates valid adjacent HEAD/FOOT on same face, support and both BE colors; use real player ITEM action or real respawn. **NOT RUN**
+- [ ] **BR27-062** — Planet face -Z: BedItem placed near edge with intended local tangent, verify actual 2-block physical positions; use real player ITEM action or real respawn. **NOT RUN**
+- [ ] **BR27-063** — Planet face -Z: interact FOOT or HEAD and start sleep with correct local gravity / server real sleeping position; use real player ITEM action or real respawn. **NOT RUN**
+- [ ] **BR27-064** — Planet face -Z: wake from bed: safe local up, collision, camera smooth, no teleport/clip; use real player ITEM action or real respawn. **NOT RUN**
+- [ ] **BR27-065** — Planet face -Z: RespawnAnchorBlock charge, 0..4, item transaction, comparator and 3D rendering; use real player ITEM action or real respawn. **NOT RUN**
+- [ ] **BR27-066** — Planet face -Z: Respawn in valid dimension at anchor: choose true safe local floor, no physical-world corruption; use real player ITEM action or real respawn. **NOT RUN**
+- [ ] **BR27-067** — Planet edge +X/+Y: BedItem FOOT→HEAD across chart and two BEs consistent. **NOT RUN**
+- [ ] **BR27-068** — Planet edge +X/-Y: Bed sleeping/waking with physical position matching chart transported frame. **NOT RUN**
+- [ ] **BR27-069** — Planet edge -X/+Y: respawn anchor safe adjacent candidate offsets across seam. **NOT RUN**
+- [ ] **BR27-070** — Planet edge -X/-Y: bed or anchor chunk unload/reload during interaction, no double item or ghost entity. **NOT RUN**
+- [ ] **BR27-071** — Planet edge +Z/+Y: BedItem FOOT→HEAD across chart and two BEs consistent. **NOT RUN**
+- [ ] **BR27-072** — Planet edge +Z/-Y: Bed sleeping/waking with physical position matching chart transported frame. **NOT RUN**
+- [ ] **BR27-073** — Planet edge -Z/+Y: respawn anchor safe adjacent candidate offsets across seam. **NOT RUN**
+- [ ] **BR27-074** — Planet edge -Z/-Y: bed or anchor chunk unload/reload during interaction, no double item or ghost entity. **NOT RUN**
+- [ ] **BR27-075** — Planet edge +X/+Z: BedItem FOOT→HEAD across chart and two BEs consistent. **NOT RUN**
+- [ ] **BR27-076** — Planet edge +X/-Z: Bed sleeping/waking with physical position matching chart transported frame. **NOT RUN**
+- [ ] **BR27-077** — Planet edge -X/+Z: respawn anchor safe adjacent candidate offsets across seam. **NOT RUN**
+- [ ] **BR27-078** — Planet edge -X/-Z: bed or anchor chunk unload/reload during interaction, no double item or ghost entity. **NOT RUN**
+- [ ] **BR27-079** — Planet triple corner +X/+Y/+Z: real spawn or BedItem near corner, actual BlockPos, no looping between gravity charts and local safe landing. **NOT RUN**
+- [ ] **BR27-080** — Planet triple corner +X/+Y/-Z: real spawn or BedItem near corner, actual BlockPos, no looping between gravity charts and local safe landing. **NOT RUN**
+- [ ] **BR27-081** — Planet triple corner +X/-Y/+Z: real spawn or BedItem near corner, actual BlockPos, no looping between gravity charts and local safe landing. **NOT RUN**
+- [ ] **BR27-082** — Planet triple corner +X/-Y/-Z: real spawn or BedItem near corner, actual BlockPos, no looping between gravity charts and local safe landing. **NOT RUN**
+- [ ] **BR27-083** — Planet triple corner -X/+Y/+Z: real spawn or BedItem near corner, actual BlockPos, no looping between gravity charts and local safe landing. **NOT RUN**
+- [ ] **BR27-084** — Planet triple corner -X/+Y/-Z: real spawn or BedItem near corner, actual BlockPos, no looping between gravity charts and local safe landing. **NOT RUN**
+- [ ] **BR27-085** — Planet triple corner -X/-Y/+Z: real spawn or BedItem near corner, actual BlockPos, no looping between gravity charts and local safe landing. **NOT RUN**
+- [ ] **BR27-086** — Planet triple corner -X/-Y/-Z: real spawn or BedItem near corner, actual BlockPos, no looping between gravity charts and local safe landing. **NOT RUN**
+- [ ] **BR27-087** — Real 16 vanilla BedItem direct original item classes not individually reimplemented. **NOT RUN**
+- [ ] **BR27-088** — Anchor BlockItem original registry only and no separate custom item path. **NOT RUN**
+- [ ] **BR27-089** — Anchor glowing particle original Y+1 vs 6 Planet rotated local normals/visibility; server charges unaffected. **NOT RUN**
+- [ ] **BR27-090** — Bed fall contact bounce vector originally checks velocity Y<0, identify required local gravity compatibility. **NOT RUN**
+- [ ] **BR27-091** — Bed state rotation/mirror by structure template retains HEAD↔FOOT physical pair, no invalid FACING values. **NOT RUN**
+- [ ] **BR27-092** — Structure and worldgen bed placements bypass BedItem and must produce both halves correctly. **NOT RUN**
+- [ ] **BR27-093** — Fake Level/contraption captured bed/anchor preserves PHYSICAL Level and BlockPos semantics. **NOT RUN**
+- [ ] **BR27-094** — Concurrent multiplayer sleep voting/time acceleration on differently oriented faces remains consistent. **NOT RUN**
+- [ ] **BR27-095** — Two-player simultaneous bed HEAD click has server authoritative occupancy. **NOT RUN**
+- [ ] **BR27-096** — Entity sleeping transitions after chunk unload do not persist invalid sleeping state. **NOT RUN**
+- [ ] **BR27-097** — BedBlockEntity rendering when crossing ±Y to side face preserves color, orientation, loaded model. **NOT RUN**
+- [ ] **BR27-098** — Server worldborder adjacent HEAD placement reject without consuming item. **NOT RUN**
+- [ ] **BR27-099** — Server voxel collision and physical LevelRenderer vs sleeping pose agree, no player clipping. **NOT RUN**
+- [ ] **BR27-100** — Vanilla bed falling contact maintains expected damage/bounce while local gravity is active. **NOT RUN**
+- [ ] **BR27-101** — Respawn anchor water-influenced explosion branch reads true physical FluidState and below/above, not globally altered. **NOT RUN**
+- [ ] **BR27-102** — Wrong-dimension interaction at bed/anchor remains consistent and independent of Planet gravity frame. **NOT RUN**
+- [ ] **BR27-103** — Command-defined spawn dimension and real coords untouched by local gravity patch. **NOT RUN**
+- [ ] **BR27-104** — Comforts 1.21.1 BaseComfortsBlock extends BedBlock but overrides useWithoutItem, updateShape, getStateForPlacement, setPlacedBy: actual jar class dispatch. **NOT RUN**
+- [ ] **BR27-105** — Comforts SleepingBagItem.useOn auto-sleep direct action before placement, physical position and permission preserved. **NOT RUN**
+- [ ] **BR27-106** — Comforts HammockItem source RopeAndNailBlock 3-block lateral anchor and bespoke placement on six faces. **NOT RUN**
+- [ ] **BR27-107** — Comforts BaseComfortsItem.placeBlock uses same flags26 but independent owner, verify two-half item transaction. **NOT RUN**
+- [ ] **BR27-108** — Comforts waterlogged sleep bag/hammock retains true fluid property and no phantom water. **NOT RUN**
+- [ ] **BR27-109** — Comforts own sleep permission via NeoForge EventHooks.canPlayerStartSleeping not swallowed by Planet adapter. **NOT RUN**
+- [ ] **BR27-110** — Comforts server sleep without setting new respawn point, obey mod config, compare to vanilla bed. **NOT RUN**
+- [ ] **BR27-111** — Comforts custom packet SPacketAutoSleep original world-space BlockPos dimension consistency. **NOT RUN**
+- [ ] **BR27-112** — Unknown mod sleeping mat not subclassing BedBlock: physical default, opt-in only. **NOT RUN**
+- [ ] **BR27-113** — Known mod BedBlock subclass with overridden useWithoutItem must not be assumed covered by base BedBlock method Mixin. **NOT RUN**
+- [ ] **BR27-114** — Known mod custom spawn block independent of vanilla anchor: server data remains physical unless explicit opt-in. **NOT RUN**
+- [ ] **BR27-115** — Api bilateral typed local bed partner/source+target frame opt-in keeps physical neighbor callbacks unmodified. **NOT RUN**
+- [ ] **BR27-116** — NeoForge21.1.215 patched ASM full owner method descriptors verified separately from immutable original reflection. **NOT RUN**
+- [ ] **BR27-117** — Actual loaded mod binary, client and dedicated server acceptance recorded independently (not original source only). **NOT RUN**
+- [ ] **BR27-118** — Performance long-distance anchor search/bed standup candidate set does not allocate excessively or loop across corners. **NOT RUN**
+- [ ] **BR27-119** — Support/partner chunk load synchronous vs asynchronous behavior tested without orphan HEAD or FOOT. **NOT RUN**
+- [ ] **BR27-120** — Sleep pose network synchronization after respawn/camera face change does not desynchronize entity. **NOT RUN**
+- [ ] **BR27-121** — Dimension no-Planet ordinary survival game mode regression remains unchanged with adapter enabled. **NOT RUN**
+
+Acceptance evidence must include actual branch SHA/version/server logs, Source/Target frame and world real BlockPos, item type, two-part state and both BEs, entity server pose/location and client camera separately, whether exact mod JAR was loaded, and proof for each patched ASM target/adapter. Unknown mod PHYSICAL until explicit semantic opt-in.
