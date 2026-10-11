@@ -1,0 +1,189 @@
+# Stage3A-29.3 — 179 all-material 6-face/12-edge/8-corner modded acceptance scenarios
+
+**All 179 BR29 cases NOT RUN (research-only 2026-10-11).** These are future client+dedicated-server+real-item tests, NOT Java code, CI proof or mod JAR acceptance.
+
+Every case must log: exact 1.21.1 registered BlockItem and Block class ID; material and mod ID/version; actual loader version and verified override/inherited effective method declaring owner; click BlockHitResult physical location/face and canonical local hit fractions; original and target physical BlockPos, source/target PlanetFace, source local direction/transported target-local direction; final legal state, inventory, collision/occlusion/shape/server/client; original and patched NeoForge ASM invocation, and explicit PASS/FAIL/NOT_RUN. Unrecognized fake Level or mod remains physical without opt-in.
+
+Cases are mechanism-based; baseline 'all52'/'all56' cases mean parameterize over **every** registered ID, not one representative. `+Y` is a baseline, not evidence for `-Y` or four wall faces. No future count implies test coverage already passed.
+
+- [ ] **BR29-001** — +X face — Vanilla real BlockItem stair with wall/floor/ceiling hit: canonical FACING and HALF, five SHAPE states and physical collision. **NOT RUN**
+- [ ] **BR29-002** — +X face — Vanilla real BlockItem slab: canonical TOP/BOTTOM and same-ID merge to DOUBLE, other-ID rejection, inventory count. **NOT RUN**
+- [ ] **BR29-003** — +X face — Stair forward/back side pair: INNER/OUTER L/R automatic update and canTakeShape side exclusion. **NOT RUN**
+- [ ] **BR29-004** — +X face — Waterlogged single stair/slab vs DOUBLE slab: legal state, fluid scheduling, no unexpected global-Y leak. **NOT RUN**
+- [ ] **BR29-005** — +X face — Waxed/unwaxed cut copper stair+slab: preserve state through ageing and axe/honeycomb mutation. **NOT RUN**
+- [ ] **BR29-006** — +X face — Modded inherited callback AND separately custom geometry owner: real versioned JAR required, compare click hit and voxel shapes. **NOT RUN**
+- [ ] **BR29-007** — -X face — Vanilla real BlockItem stair with wall/floor/ceiling hit: canonical FACING and HALF, five SHAPE states and physical collision. **NOT RUN**
+- [ ] **BR29-008** — -X face — Vanilla real BlockItem slab: canonical TOP/BOTTOM and same-ID merge to DOUBLE, other-ID rejection, inventory count. **NOT RUN**
+- [ ] **BR29-009** — -X face — Stair forward/back side pair: INNER/OUTER L/R automatic update and canTakeShape side exclusion. **NOT RUN**
+- [ ] **BR29-010** — -X face — Waterlogged single stair/slab vs DOUBLE slab: legal state, fluid scheduling, no unexpected global-Y leak. **NOT RUN**
+- [ ] **BR29-011** — -X face — Waxed/unwaxed cut copper stair+slab: preserve state through ageing and axe/honeycomb mutation. **NOT RUN**
+- [ ] **BR29-012** — -X face — Modded inherited callback AND separately custom geometry owner: real versioned JAR required, compare click hit and voxel shapes. **NOT RUN**
+- [ ] **BR29-013** — +Y face — Vanilla real BlockItem stair with wall/floor/ceiling hit: canonical FACING and HALF, five SHAPE states and physical collision. **NOT RUN**
+- [ ] **BR29-014** — +Y face — Vanilla real BlockItem slab: canonical TOP/BOTTOM and same-ID merge to DOUBLE, other-ID rejection, inventory count. **NOT RUN**
+- [ ] **BR29-015** — +Y face — Stair forward/back side pair: INNER/OUTER L/R automatic update and canTakeShape side exclusion. **NOT RUN**
+- [ ] **BR29-016** — +Y face — Waterlogged single stair/slab vs DOUBLE slab: legal state, fluid scheduling, no unexpected global-Y leak. **NOT RUN**
+- [ ] **BR29-017** — +Y face — Waxed/unwaxed cut copper stair+slab: preserve state through ageing and axe/honeycomb mutation. **NOT RUN**
+- [ ] **BR29-018** — +Y face — Modded inherited callback AND separately custom geometry owner: real versioned JAR required, compare click hit and voxel shapes. **NOT RUN**
+- [ ] **BR29-019** — -Y face — Vanilla real BlockItem stair with wall/floor/ceiling hit: canonical FACING and HALF, five SHAPE states and physical collision. **NOT RUN**
+- [ ] **BR29-020** — -Y face — Vanilla real BlockItem slab: canonical TOP/BOTTOM and same-ID merge to DOUBLE, other-ID rejection, inventory count. **NOT RUN**
+- [ ] **BR29-021** — -Y face — Stair forward/back side pair: INNER/OUTER L/R automatic update and canTakeShape side exclusion. **NOT RUN**
+- [ ] **BR29-022** — -Y face — Waterlogged single stair/slab vs DOUBLE slab: legal state, fluid scheduling, no unexpected global-Y leak. **NOT RUN**
+- [ ] **BR29-023** — -Y face — Waxed/unwaxed cut copper stair+slab: preserve state through ageing and axe/honeycomb mutation. **NOT RUN**
+- [ ] **BR29-024** — -Y face — Modded inherited callback AND separately custom geometry owner: real versioned JAR required, compare click hit and voxel shapes. **NOT RUN**
+- [ ] **BR29-025** — +Z face — Vanilla real BlockItem stair with wall/floor/ceiling hit: canonical FACING and HALF, five SHAPE states and physical collision. **NOT RUN**
+- [ ] **BR29-026** — +Z face — Vanilla real BlockItem slab: canonical TOP/BOTTOM and same-ID merge to DOUBLE, other-ID rejection, inventory count. **NOT RUN**
+- [ ] **BR29-027** — +Z face — Stair forward/back side pair: INNER/OUTER L/R automatic update and canTakeShape side exclusion. **NOT RUN**
+- [ ] **BR29-028** — +Z face — Waterlogged single stair/slab vs DOUBLE slab: legal state, fluid scheduling, no unexpected global-Y leak. **NOT RUN**
+- [ ] **BR29-029** — +Z face — Waxed/unwaxed cut copper stair+slab: preserve state through ageing and axe/honeycomb mutation. **NOT RUN**
+- [ ] **BR29-030** — +Z face — Modded inherited callback AND separately custom geometry owner: real versioned JAR required, compare click hit and voxel shapes. **NOT RUN**
+- [ ] **BR29-031** — -Z face — Vanilla real BlockItem stair with wall/floor/ceiling hit: canonical FACING and HALF, five SHAPE states and physical collision. **NOT RUN**
+- [ ] **BR29-032** — -Z face — Vanilla real BlockItem slab: canonical TOP/BOTTOM and same-ID merge to DOUBLE, other-ID rejection, inventory count. **NOT RUN**
+- [ ] **BR29-033** — -Z face — Stair forward/back side pair: INNER/OUTER L/R automatic update and canTakeShape side exclusion. **NOT RUN**
+- [ ] **BR29-034** — -Z face — Waterlogged single stair/slab vs DOUBLE slab: legal state, fluid scheduling, no unexpected global-Y leak. **NOT RUN**
+- [ ] **BR29-035** — -Z face — Waxed/unwaxed cut copper stair+slab: preserve state through ageing and axe/honeycomb mutation. **NOT RUN**
+- [ ] **BR29-036** — -Z face — Modded inherited callback AND separately custom geometry owner: real versioned JAR required, compare click hit and voxel shapes. **NOT RUN**
+- [ ] **BR29-037** — Edge +X/+Y — Stair crossing edge: local FACING transformed at both charts, same HALF, OUTER L/R and side neighbor. **NOT RUN**
+- [ ] **BR29-038** — Edge +X/+Y — Stair crossing edge: INNER L/R, no shape ghost when opposite neighbor changes. **NOT RUN**
+- [ ] **BR29-039** — Edge +X/+Y — Stair canonical SHAPE and physical VoxelShape cross edge: no double-rotation and no missing corner. **NOT RUN**
+- [ ] **BR29-040** — Edge +X/+Y — Slab same-material second placement across edge merges correct local TOP/BOTTOM, never different material. **NOT RUN**
+- [ ] **BR29-041** — Edge +X/+Y — Stair/slab WATERLOGGED across edge plus fluid tick and two source/target chart IDs. **NOT RUN**
+- [ ] **BR29-042** — Edge +X/+Y — Modded Macaw/Rechiseled/custom cross edge; unknown-mod physical passthrough until verified. **NOT RUN**
+- [ ] **BR29-043** — Edge +X/-Y — Stair crossing edge: local FACING transformed at both charts, same HALF, OUTER L/R and side neighbor. **NOT RUN**
+- [ ] **BR29-044** — Edge +X/-Y — Stair crossing edge: INNER L/R, no shape ghost when opposite neighbor changes. **NOT RUN**
+- [ ] **BR29-045** — Edge +X/-Y — Stair canonical SHAPE and physical VoxelShape cross edge: no double-rotation and no missing corner. **NOT RUN**
+- [ ] **BR29-046** — Edge +X/-Y — Slab same-material second placement across edge merges correct local TOP/BOTTOM, never different material. **NOT RUN**
+- [ ] **BR29-047** — Edge +X/-Y — Stair/slab WATERLOGGED across edge plus fluid tick and two source/target chart IDs. **NOT RUN**
+- [ ] **BR29-048** — Edge +X/-Y — Modded Macaw/Rechiseled/custom cross edge; unknown-mod physical passthrough until verified. **NOT RUN**
+- [ ] **BR29-049** — Edge +X/+Z — Stair crossing edge: local FACING transformed at both charts, same HALF, OUTER L/R and side neighbor. **NOT RUN**
+- [ ] **BR29-050** — Edge +X/+Z — Stair crossing edge: INNER L/R, no shape ghost when opposite neighbor changes. **NOT RUN**
+- [ ] **BR29-051** — Edge +X/+Z — Stair canonical SHAPE and physical VoxelShape cross edge: no double-rotation and no missing corner. **NOT RUN**
+- [ ] **BR29-052** — Edge +X/+Z — Slab same-material second placement across edge merges correct local TOP/BOTTOM, never different material. **NOT RUN**
+- [ ] **BR29-053** — Edge +X/+Z — Stair/slab WATERLOGGED across edge plus fluid tick and two source/target chart IDs. **NOT RUN**
+- [ ] **BR29-054** — Edge +X/+Z — Modded Macaw/Rechiseled/custom cross edge; unknown-mod physical passthrough until verified. **NOT RUN**
+- [ ] **BR29-055** — Edge +X/-Z — Stair crossing edge: local FACING transformed at both charts, same HALF, OUTER L/R and side neighbor. **NOT RUN**
+- [ ] **BR29-056** — Edge +X/-Z — Stair crossing edge: INNER L/R, no shape ghost when opposite neighbor changes. **NOT RUN**
+- [ ] **BR29-057** — Edge +X/-Z — Stair canonical SHAPE and physical VoxelShape cross edge: no double-rotation and no missing corner. **NOT RUN**
+- [ ] **BR29-058** — Edge +X/-Z — Slab same-material second placement across edge merges correct local TOP/BOTTOM, never different material. **NOT RUN**
+- [ ] **BR29-059** — Edge +X/-Z — Stair/slab WATERLOGGED across edge plus fluid tick and two source/target chart IDs. **NOT RUN**
+- [ ] **BR29-060** — Edge +X/-Z — Modded Macaw/Rechiseled/custom cross edge; unknown-mod physical passthrough until verified. **NOT RUN**
+- [ ] **BR29-061** — Edge -X/+Y — Stair crossing edge: local FACING transformed at both charts, same HALF, OUTER L/R and side neighbor. **NOT RUN**
+- [ ] **BR29-062** — Edge -X/+Y — Stair crossing edge: INNER L/R, no shape ghost when opposite neighbor changes. **NOT RUN**
+- [ ] **BR29-063** — Edge -X/+Y — Stair canonical SHAPE and physical VoxelShape cross edge: no double-rotation and no missing corner. **NOT RUN**
+- [ ] **BR29-064** — Edge -X/+Y — Slab same-material second placement across edge merges correct local TOP/BOTTOM, never different material. **NOT RUN**
+- [ ] **BR29-065** — Edge -X/+Y — Stair/slab WATERLOGGED across edge plus fluid tick and two source/target chart IDs. **NOT RUN**
+- [ ] **BR29-066** — Edge -X/+Y — Modded Macaw/Rechiseled/custom cross edge; unknown-mod physical passthrough until verified. **NOT RUN**
+- [ ] **BR29-067** — Edge -X/-Y — Stair crossing edge: local FACING transformed at both charts, same HALF, OUTER L/R and side neighbor. **NOT RUN**
+- [ ] **BR29-068** — Edge -X/-Y — Stair crossing edge: INNER L/R, no shape ghost when opposite neighbor changes. **NOT RUN**
+- [ ] **BR29-069** — Edge -X/-Y — Stair canonical SHAPE and physical VoxelShape cross edge: no double-rotation and no missing corner. **NOT RUN**
+- [ ] **BR29-070** — Edge -X/-Y — Slab same-material second placement across edge merges correct local TOP/BOTTOM, never different material. **NOT RUN**
+- [ ] **BR29-071** — Edge -X/-Y — Stair/slab WATERLOGGED across edge plus fluid tick and two source/target chart IDs. **NOT RUN**
+- [ ] **BR29-072** — Edge -X/-Y — Modded Macaw/Rechiseled/custom cross edge; unknown-mod physical passthrough until verified. **NOT RUN**
+- [ ] **BR29-073** — Edge -X/+Z — Stair crossing edge: local FACING transformed at both charts, same HALF, OUTER L/R and side neighbor. **NOT RUN**
+- [ ] **BR29-074** — Edge -X/+Z — Stair crossing edge: INNER L/R, no shape ghost when opposite neighbor changes. **NOT RUN**
+- [ ] **BR29-075** — Edge -X/+Z — Stair canonical SHAPE and physical VoxelShape cross edge: no double-rotation and no missing corner. **NOT RUN**
+- [ ] **BR29-076** — Edge -X/+Z — Slab same-material second placement across edge merges correct local TOP/BOTTOM, never different material. **NOT RUN**
+- [ ] **BR29-077** — Edge -X/+Z — Stair/slab WATERLOGGED across edge plus fluid tick and two source/target chart IDs. **NOT RUN**
+- [ ] **BR29-078** — Edge -X/+Z — Modded Macaw/Rechiseled/custom cross edge; unknown-mod physical passthrough until verified. **NOT RUN**
+- [ ] **BR29-079** — Edge -X/-Z — Stair crossing edge: local FACING transformed at both charts, same HALF, OUTER L/R and side neighbor. **NOT RUN**
+- [ ] **BR29-080** — Edge -X/-Z — Stair crossing edge: INNER L/R, no shape ghost when opposite neighbor changes. **NOT RUN**
+- [ ] **BR29-081** — Edge -X/-Z — Stair canonical SHAPE and physical VoxelShape cross edge: no double-rotation and no missing corner. **NOT RUN**
+- [ ] **BR29-082** — Edge -X/-Z — Slab same-material second placement across edge merges correct local TOP/BOTTOM, never different material. **NOT RUN**
+- [ ] **BR29-083** — Edge -X/-Z — Stair/slab WATERLOGGED across edge plus fluid tick and two source/target chart IDs. **NOT RUN**
+- [ ] **BR29-084** — Edge -X/-Z — Modded Macaw/Rechiseled/custom cross edge; unknown-mod physical passthrough until verified. **NOT RUN**
+- [ ] **BR29-085** — Edge +Y/+Z — Stair crossing edge: local FACING transformed at both charts, same HALF, OUTER L/R and side neighbor. **NOT RUN**
+- [ ] **BR29-086** — Edge +Y/+Z — Stair crossing edge: INNER L/R, no shape ghost when opposite neighbor changes. **NOT RUN**
+- [ ] **BR29-087** — Edge +Y/+Z — Stair canonical SHAPE and physical VoxelShape cross edge: no double-rotation and no missing corner. **NOT RUN**
+- [ ] **BR29-088** — Edge +Y/+Z — Slab same-material second placement across edge merges correct local TOP/BOTTOM, never different material. **NOT RUN**
+- [ ] **BR29-089** — Edge +Y/+Z — Stair/slab WATERLOGGED across edge plus fluid tick and two source/target chart IDs. **NOT RUN**
+- [ ] **BR29-090** — Edge +Y/+Z — Modded Macaw/Rechiseled/custom cross edge; unknown-mod physical passthrough until verified. **NOT RUN**
+- [ ] **BR29-091** — Edge +Y/-Z — Stair crossing edge: local FACING transformed at both charts, same HALF, OUTER L/R and side neighbor. **NOT RUN**
+- [ ] **BR29-092** — Edge +Y/-Z — Stair crossing edge: INNER L/R, no shape ghost when opposite neighbor changes. **NOT RUN**
+- [ ] **BR29-093** — Edge +Y/-Z — Stair canonical SHAPE and physical VoxelShape cross edge: no double-rotation and no missing corner. **NOT RUN**
+- [ ] **BR29-094** — Edge +Y/-Z — Slab same-material second placement across edge merges correct local TOP/BOTTOM, never different material. **NOT RUN**
+- [ ] **BR29-095** — Edge +Y/-Z — Stair/slab WATERLOGGED across edge plus fluid tick and two source/target chart IDs. **NOT RUN**
+- [ ] **BR29-096** — Edge +Y/-Z — Modded Macaw/Rechiseled/custom cross edge; unknown-mod physical passthrough until verified. **NOT RUN**
+- [ ] **BR29-097** — Edge -Y/+Z — Stair crossing edge: local FACING transformed at both charts, same HALF, OUTER L/R and side neighbor. **NOT RUN**
+- [ ] **BR29-098** — Edge -Y/+Z — Stair crossing edge: INNER L/R, no shape ghost when opposite neighbor changes. **NOT RUN**
+- [ ] **BR29-099** — Edge -Y/+Z — Stair canonical SHAPE and physical VoxelShape cross edge: no double-rotation and no missing corner. **NOT RUN**
+- [ ] **BR29-100** — Edge -Y/+Z — Slab same-material second placement across edge merges correct local TOP/BOTTOM, never different material. **NOT RUN**
+- [ ] **BR29-101** — Edge -Y/+Z — Stair/slab WATERLOGGED across edge plus fluid tick and two source/target chart IDs. **NOT RUN**
+- [ ] **BR29-102** — Edge -Y/+Z — Modded Macaw/Rechiseled/custom cross edge; unknown-mod physical passthrough until verified. **NOT RUN**
+- [ ] **BR29-103** — Edge -Y/-Z — Stair crossing edge: local FACING transformed at both charts, same HALF, OUTER L/R and side neighbor. **NOT RUN**
+- [ ] **BR29-104** — Edge -Y/-Z — Stair crossing edge: INNER L/R, no shape ghost when opposite neighbor changes. **NOT RUN**
+- [ ] **BR29-105** — Edge -Y/-Z — Stair canonical SHAPE and physical VoxelShape cross edge: no double-rotation and no missing corner. **NOT RUN**
+- [ ] **BR29-106** — Edge -Y/-Z — Slab same-material second placement across edge merges correct local TOP/BOTTOM, never different material. **NOT RUN**
+- [ ] **BR29-107** — Edge -Y/-Z — Stair/slab WATERLOGGED across edge plus fluid tick and two source/target chart IDs. **NOT RUN**
+- [ ] **BR29-108** — Edge -Y/-Z — Modded Macaw/Rechiseled/custom cross edge; unknown-mod physical passthrough until verified. **NOT RUN**
+- [ ] **BR29-109** — Corner +X/+Y/+Z — Stair 3-chart L-turn shape and BLOCK collision remain coherent across all three face charts. **NOT RUN**
+- [ ] **BR29-110** — Corner +X/+Y/+Z — Slab TOP/BOTTOM/DOUBLE corner placement, raycast and support without world-Y bias. **NOT RUN**
+- [ ] **BR29-111** — Corner +X/+Y/+Z — Liquid/skylight/culling stair+slab 3-chart face ownership and render vs server collision equality. **NOT RUN**
+- [ ] **BR29-112** — Corner +X/+Y/+Z — Modded inherited vs unrelated independent owner at triple corner and noPlanet safety. **NOT RUN**
+- [ ] **BR29-113** — Corner +X/+Y/-Z — Stair 3-chart L-turn shape and BLOCK collision remain coherent across all three face charts. **NOT RUN**
+- [ ] **BR29-114** — Corner +X/+Y/-Z — Slab TOP/BOTTOM/DOUBLE corner placement, raycast and support without world-Y bias. **NOT RUN**
+- [ ] **BR29-115** — Corner +X/+Y/-Z — Liquid/skylight/culling stair+slab 3-chart face ownership and render vs server collision equality. **NOT RUN**
+- [ ] **BR29-116** — Corner +X/+Y/-Z — Modded inherited vs unrelated independent owner at triple corner and noPlanet safety. **NOT RUN**
+- [ ] **BR29-117** — Corner +X/-Y/+Z — Stair 3-chart L-turn shape and BLOCK collision remain coherent across all three face charts. **NOT RUN**
+- [ ] **BR29-118** — Corner +X/-Y/+Z — Slab TOP/BOTTOM/DOUBLE corner placement, raycast and support without world-Y bias. **NOT RUN**
+- [ ] **BR29-119** — Corner +X/-Y/+Z — Liquid/skylight/culling stair+slab 3-chart face ownership and render vs server collision equality. **NOT RUN**
+- [ ] **BR29-120** — Corner +X/-Y/+Z — Modded inherited vs unrelated independent owner at triple corner and noPlanet safety. **NOT RUN**
+- [ ] **BR29-121** — Corner +X/-Y/-Z — Stair 3-chart L-turn shape and BLOCK collision remain coherent across all three face charts. **NOT RUN**
+- [ ] **BR29-122** — Corner +X/-Y/-Z — Slab TOP/BOTTOM/DOUBLE corner placement, raycast and support without world-Y bias. **NOT RUN**
+- [ ] **BR29-123** — Corner +X/-Y/-Z — Liquid/skylight/culling stair+slab 3-chart face ownership and render vs server collision equality. **NOT RUN**
+- [ ] **BR29-124** — Corner +X/-Y/-Z — Modded inherited vs unrelated independent owner at triple corner and noPlanet safety. **NOT RUN**
+- [ ] **BR29-125** — Corner -X/+Y/+Z — Stair 3-chart L-turn shape and BLOCK collision remain coherent across all three face charts. **NOT RUN**
+- [ ] **BR29-126** — Corner -X/+Y/+Z — Slab TOP/BOTTOM/DOUBLE corner placement, raycast and support without world-Y bias. **NOT RUN**
+- [ ] **BR29-127** — Corner -X/+Y/+Z — Liquid/skylight/culling stair+slab 3-chart face ownership and render vs server collision equality. **NOT RUN**
+- [ ] **BR29-128** — Corner -X/+Y/+Z — Modded inherited vs unrelated independent owner at triple corner and noPlanet safety. **NOT RUN**
+- [ ] **BR29-129** — Corner -X/+Y/-Z — Stair 3-chart L-turn shape and BLOCK collision remain coherent across all three face charts. **NOT RUN**
+- [ ] **BR29-130** — Corner -X/+Y/-Z — Slab TOP/BOTTOM/DOUBLE corner placement, raycast and support without world-Y bias. **NOT RUN**
+- [ ] **BR29-131** — Corner -X/+Y/-Z — Liquid/skylight/culling stair+slab 3-chart face ownership and render vs server collision equality. **NOT RUN**
+- [ ] **BR29-132** — Corner -X/+Y/-Z — Modded inherited vs unrelated independent owner at triple corner and noPlanet safety. **NOT RUN**
+- [ ] **BR29-133** — Corner -X/-Y/+Z — Stair 3-chart L-turn shape and BLOCK collision remain coherent across all three face charts. **NOT RUN**
+- [ ] **BR29-134** — Corner -X/-Y/+Z — Slab TOP/BOTTOM/DOUBLE corner placement, raycast and support without world-Y bias. **NOT RUN**
+- [ ] **BR29-135** — Corner -X/-Y/+Z — Liquid/skylight/culling stair+slab 3-chart face ownership and render vs server collision equality. **NOT RUN**
+- [ ] **BR29-136** — Corner -X/-Y/+Z — Modded inherited vs unrelated independent owner at triple corner and noPlanet safety. **NOT RUN**
+- [ ] **BR29-137** — Corner -X/-Y/-Z — Stair 3-chart L-turn shape and BLOCK collision remain coherent across all three face charts. **NOT RUN**
+- [ ] **BR29-138** — Corner -X/-Y/-Z — Slab TOP/BOTTOM/DOUBLE corner placement, raycast and support without world-Y bias. **NOT RUN**
+- [ ] **BR29-139** — Corner -X/-Y/-Z — Liquid/skylight/culling stair+slab 3-chart face ownership and render vs server collision equality. **NOT RUN**
+- [ ] **BR29-140** — Corner -X/-Y/-Z — Modded inherited vs unrelated independent owner at triple corner and noPlanet safety. **NOT RUN**
+- [ ] **BR29-141** — Cross-material/owner baseline — All 52 StairBlock registered IDs via original BlockItem + baseline +Y item path. **NOT RUN**
+- [ ] **BR29-142** — Cross-material/owner baseline — All 56 SlabBlock registered IDs via BlockItem, including petrified_oak_slab, cut_sandstone_slab. **NOT RUN**
+- [ ] **BR29-143** — Cross-material/owner baseline — All 4 unwaxed WeatheringCopperStairBlock IDs per age and all4 waxed StairBlock IDs. **NOT RUN**
+- [ ] **BR29-144** — Cross-material/owner baseline — All 4 unwaxed WeatheringCopperSlabBlock IDs per age and all4 waxed SlabBlock IDs. **NOT RUN**
+- [ ] **BR29-145** — Cross-material/owner baseline — Non-copper stone/cobble/quartz/prismarine/nether/tuff/deepslate and ALL 11 wood and bamboo mosaic source cohort. **NOT RUN**
+- [ ] **BR29-146** — Cross-material/owner baseline — Wood stair vs stone stair collision/slipperiness/explosion resistance/occlusion inherited properties. **NOT RUN**
+- [ ] **BR29-147** — Cross-material/owner baseline — Foreign noPlanet Level: original physical face and click local fractions, no graph rewrite. **NOT RUN**
+- [ ] **BR29-148** — Cross-material/owner baseline — Fake/virtual Level/contraption: no accidental Planet selection and no global thread-local leak. **NOT RUN**
+- [ ] **BR29-149** — Cross-material/owner baseline — All 116 ITEMS BlockItem same registry ID, exact 1:1 placed_block join and no missing drops. **NOT RUN**
+- [ ] **BR29-150** — Cross-material/owner baseline — Stair updateShape triggered by physically vertical world neighbor that is locally TANGENT on side face. **NOT RUN**
+- [ ] **BR29-151** — Cross-material/owner baseline — Stair updateShape ignores physical-horizontal world neighbor that is locally UP/DOWN. **NOT RUN**
+- [ ] **BR29-152** — Cross-material/owner baseline — Stair getStairsShape FRONT/BACK local direction neighbor callback owner invoked exactly once. **NOT RUN**
+- [ ] **BR29-153** — Cross-material/owner baseline — Stair shape corner when neighbor is vanilla subclass versus independent non-StairBlock. **NOT RUN**
+- [ ] **BR29-154** — Cross-material/owner baseline — Stair shape corner when neighbor is different material StairBlock, HALF equal/different. **NOT RUN**
+- [ ] **BR29-155** — Cross-material/owner baseline — Slab canBeReplaced must not combine different registry blocks even if same material. **NOT RUN**
+- [ ] **BR29-156** — Cross-material/owner baseline — Slab DOUBLE must set WATERLOGGED false and disallow placeLiquid/canPlaceLiquid. **NOT RUN**
+- [ ] **BR29-157** — Cross-material/owner baseline — Slab WATERLOGGED must schedule fluid tick on neighbor update. **NOT RUN**
+- [ ] **BR29-158** — Cross-material/owner baseline — Stair WATERLOGGED must schedule fluid tick when neighboring changes. **NOT RUN**
+- [ ] **BR29-159** — Cross-material/owner baseline — Structure rotation/mirror with old chart -> new chart for FACING and SHAPE. **NOT RUN**
+- [ ] **BR29-160** — Cross-material/owner baseline — Mirrored inner-left/right and outer-left/right keep exact block state in crosschart structures. **NOT RUN**
+- [ ] **BR29-161** — Cross-material/owner baseline — Blockstate component (item-authored) post-placement override preserve legal state and source frame. **NOT RUN**
+- [ ] **BR29-162** — Cross-material/owner baseline — Structure/worldgen + cloned state, commands and schematic alternate writer accepted only when source chart specified. **NOT RUN**
+- [ ] **BR29-163** — Cross-material/owner baseline — Material change via oxidation/unoxidation while FACING/HALF/SHAPE or TYPE remains unchanged. **NOT RUN**
+- [ ] **BR29-164** — Cross-material/owner baseline — Wax removes randomTick ageing; axe scrape and honeycomb returns correct legal block variant. **NOT RUN**
+- [ ] **BR29-165** — Cross-material/owner baseline — Snow/light/torch mounting to slab/stair side using canonical support shape and actual physical raycast. **NOT RUN**
+- [ ] **BR29-166** — Cross-material/owner baseline — Client separate occlusion vs render culling and server collision across rotated stair shapes. **NOT RUN**
+- [ ] **BR29-167** — Cross-material/owner baseline — Multiplayer two players act across different faces, saved/reloaded block states stable. **NOT RUN**
+- [ ] **BR29-168** — Cross-material/owner baseline — Macaw StairPlatform/TerraceStairs/SkylineStairs independent source and actual JAR binary gate. **NOT RUN**
+- [ ] **BR29-169** — Cross-material/owner baseline — Macaw BaseRoof/SteepRoof geometry independent of StairBlock. **NOT RUN**
+- [ ] **BR29-170** — Cross-material/owner baseline — RechiseledStairBlock connected vs nonconnected material and overridden neighbor graph. **NOT RUN**
+- [ ] **BR29-171** — Cross-material/owner baseline — RechiseledSlabBlock connected vs nonconnected item placement and DOUBLE semantics. **NOT RUN**
+- [ ] **BR29-172** — Cross-material/owner baseline — Biomes O' Plenty extra wood constructors must be proven from loaded concrete class. **NOT RUN**
+- [ ] **BR29-173** — Cross-material/owner baseline — Every Compat dynamically generated WoodType materials must dispatch by type, no hardcoded IDs. **NOT RUN**
+- [ ] **BR29-174** — Cross-material/owner baseline — Create/Chipped/other custom blocks are NOT automatically vanilla StairBlock/SlabBlock implementations. **NOT RUN**
+- [ ] **BR29-175** — Cross-material/owner baseline — World border/min-max build-height/missing-neighbor safety and no client server divergence. **NOT RUN**
+- [ ] **BR29-176** — Cross-material/owner baseline — Item count one on single slab, one on merge, no ghost block after failed placement. **NOT RUN**
+- [ ] **BR29-177** — Cross-material/owner baseline — Sound/drops/light/hardness inherited material differences maintained. **NOT RUN**
+- [ ] **BR29-178** — Cross-material/owner baseline — All new source classes VERIFIED Java dispatch but NeoForge patch-body and Planet injected ASM not yet verified. **NOT RUN**
+- [ ] **BR29-179** — Cross-material/owner baseline — Verify no incorrect redstone/automation callback semantic rewrite for Shape updates. **NOT RUN**
+
+This acceptance contract is intentionally gated for release: no Planet game PASS without real JAR (where named), ASMs against exact NeoForge 21.1.215, client+server crosscheck, vanilla noPlanet and fake Level unchanged, material- and geometry-owner evidence.
