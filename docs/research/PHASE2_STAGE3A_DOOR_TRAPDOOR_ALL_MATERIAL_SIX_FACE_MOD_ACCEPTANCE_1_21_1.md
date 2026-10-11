@@ -1,0 +1,253 @@
+# Stage3A-28.3 — 247 real-item all-material 6-face/12-edge/8-corner/cross-mod acceptance cases
+
+**2026-10-11. ALL 247 BR28 cases are NOT RUN.** This is future dedicated server/client integration plan, **not a claim that any door/trapdoor gameplay was repaired**. Exercise actual 20 registered door `DoubleHighBlockItem` and20 trapdoor `BlockItem` and actual third-party item classes on 1.21.1, not only forced BlockState, plus structure/worldgen/commands explicitly labeled bypass cases. Every check must record source+target original physical BlockPos and current chart, real world Level/dimension, exact registered block/item type and owner method, legal BlockState, item count/rollback, actual mod JAR + binary version, action callbacks, render/shape, client vs server results, and whether patched NeoForge ASM and Planet semantic adapters actually ran. Unknown mod / fake Level PHYSICAL by default.
+
+- [ ] **BR28-001** — Vanilla no-Planet 11 wooden door ITEMs each place one LOWER and one UPPER without inventory duplication. **NOT RUN**
+- [ ] **BR28-002** — Vanilla no-Planet 11 wooden trapdoor ITEMs each place one valid Half.TOP/BOTTOM block with correct WATERLOGGED. **NOT RUN**
+- [ ] **BR28-003** — Vanilla no-Planet iron door ITEM DoubleHighBlockItem places both parts; survival vs creative drops match. **NOT RUN**
+- [ ] **BR28-004** — Vanilla no-Planet iron trapdoor BlockItem places exactly one half with no fabricated upper partner. **NOT RUN**
+- [ ] **BR28-005** — Vanilla no-Planet waxed copper four-age door ITEMs place two parts and never randomTick weathering. **NOT RUN**
+- [ ] **BR28-006** — Vanilla no-Planet waxed copper four-age trapdoor ITEMs place one part, never weathering. **NOT RUN**
+- [ ] **BR28-007** — Vanilla no-Planet unwaxed copper four-age door ITEMs place both parts and tick only LOWER by source. **NOT RUN**
+- [ ] **BR28-008** — Vanilla no-Planet unwaxed copper four-age trapdoor ITEMs are one block and use randomTick weathering. **NOT RUN**
+- [ ] **BR28-009** — Door placement at last world build height fails cleanly without consuming ITEM or overwriting neighbor. **NOT RUN**
+- [ ] **BR28-010** — DoubleHighBlockItem.placeBlock first sets upper block to actual WATER/AIR with update flags27 before BlockItem.placeBlock; preserve original fluids and callbacks. **NOT RUN**
+- [ ] **BR28-011** — DoorBlock.setPlacedBy writes UPPER above LOWER with update flags3 while preserving physical world positions. **NOT RUN**
+- [ ] **BR28-012** — DoorBlock.updateShape physical Y-axis links complementary halves and removes a detached partner; verify actual same block identity versus instanceof semantics. **NOT RUN**
+- [ ] **BR28-013** — DoorBlock.canSurvive LOWER uses physical below sturdy UP face; UPPER requires compatible lower. **NOT RUN**
+- [ ] **BR28-014** — DoorBlock hinge decision checks both side neighbor occupancy and hitpoint local geometry. **NOT RUN**
+- [ ] **BR28-015** — Two neighboring same-color wooden doors choose hinge pair and player toggling does not corrupt partner. **NOT RUN**
+- [ ] **BR28-016** — Two different material doors adjacent survive separate ITEM placing and correct hinge selection. **NOT RUN**
+- [ ] **BR28-017** — Door OPEN and POWERED sync across both halves with neighbor redstone events without ghost states. **NOT RUN**
+- [ ] **BR28-018** — Iron door cannot be opened by empty-hand player; does react to powered redstone. **NOT RUN**
+- [ ] **BR28-019** — Iron trapdoor cannot be opened by empty-hand player; does react to powered redstone. **NOT RUN**
+- [ ] **BR28-020** — Copper door canOpenByHand true and canOpenByWindCharge true (unlike iron) according to original BlockSetType. **NOT RUN**
+- [ ] **BR28-021** — Copper trapdoor canOpenByHand true and correct copper audio. **NOT RUN**
+- [ ] **BR28-022** — Wooden door and trapdoor audio uses BlockSetType-specific wood sound, including crimson and warped. **NOT RUN**
+- [ ] **BR28-023** — Door redstone from LOWER side sets both physical halves; redstone from UPPER side, matching power. **NOT RUN**
+- [ ] **BR28-024** — Door power loss closes and updates POWERED status when original behavior applies. **NOT RUN**
+- [ ] **BR28-025** — Trapdoor power update from any physical neighbor changes POWERED/OPEN and retains WATERLOGGED state. **NOT RUN**
+- [ ] **BR28-026** — Trapdoor manual click (useWithoutItem) can open by hand for permitted types, while iron remains PASS. **NOT RUN**
+- [ ] **BR28-027** — Trapdoor orientation from clicked face/hit.y correctly chooses HALF.TOP or BOTTOM, without any door UPPER partner. **NOT RUN**
+- [ ] **BR28-028** — Trapdoor WATERLOGGED scheduled water tick after neighbor update and manual/redstone opening. **NOT RUN**
+- [ ] **BR28-029** — Door state legal domain FACING E/N/S/W, HALF LOWER/UPPER, HINGE L/R, OPEN/POWERED booleans only. **NOT RUN**
+- [ ] **BR28-030** — Trapdoor state legal domain FACING E/N/S/W, HALF TOP/BOTTOM, OPEN/POWERED/WATERLOGGED booleans only. **NOT RUN**
+- [ ] **BR28-031** — Door has NO WATERLOGGED property; reject attempt to force illegal state. **NOT RUN**
+- [ ] **BR28-032** — Door creative removal both halves, correct actual tool drops and no double ITEM drops. **NOT RUN**
+- [ ] **BR28-033** — Door placed via structure/worldgen/setblock bypasses Item and verifies both halves only if exact mechanism writes them. **NOT RUN**
+- [ ] **BR28-034** — Trapdoor naturally placed underwater preserves source fluid and schedules fluid ticks. **NOT RUN**
+- [ ] **BR28-035** — Door open geometry/rotation/mirror/culling and entity collision correspond to source FACING+HINGE. **NOT RUN**
+- [ ] **BR28-036** — Trapdoor open geometry/rotation/mirror/culling and entity collision correspond to FACING+HALF. **NOT RUN**
+- [ ] **BR28-037** — Door and trapdoor AI pathfinder/canPathfindThrough respects actual OPEN and material semantics. **NOT RUN**
+- [ ] **BR28-038** — Door and trapdoor projectile/windcharge reactions obey BlockSetType flags separately from manual/open. **NOT RUN**
+- [ ] **BR28-039** — Door redstone comparator/wire pressure-plate modded signal provider preserves real PHYSICAL redstone update APIs. **NOT RUN**
+- [ ] **BR28-040** — Door and trapdoor save/reload preserve exact BLOCK ID and all legal blockstate properties. **NOT RUN**
+- [ ] **BR28-041** — Random-tick unwaxed copper door lower-only changes over time; no double mutation or orphan UPPER half. **NOT RUN**
+- [ ] **BR28-042** — Random-tick unwaxed copper trapdoor changes over time with open/half/facing/powered/waterlogged preserved. **NOT RUN**
+- [ ] **BR28-043** — World copper weathering neighbor influence uses source physical block positions; no forced chart-space mutation. **NOT RUN**
+- [ ] **BR28-044** — HoneycombItem waxing copper DOOR applied to clicked LOWER or UPPER half yields valid paired state and no duplicate item. **NOT RUN**
+- [ ] **BR28-045** — HoneycombItem waxing copper TRAPDOOR applied in any HALF/WATERLOGGED preserves semantics. **NOT RUN**
+- [ ] **BR28-046** — AxeItem scraping one oxidation stage from copper door lower or upper does not orphan opposite half. **NOT RUN**
+- [ ] **BR28-047** — AxeItem scraping or removing wax from copper trapdoor preserves water and powered/open. **NOT RUN**
+- [ ] **BR28-048** — Unwaxed fully oxidized copper door/trapdoor randomTick disabled when no WeatheringCopper.getNext. **NOT RUN**
+- [ ] **BR28-049** — Waxed copper door and trapdoor originally do NOT have WeatheringCopper subclass random tick; no unintended aging. **NOT RUN**
+- [ ] **BR28-050** — Copper weathering during powered door opening/closing does not reset wire/open/hinge. **NOT RUN**
+- [ ] **BR28-051** — Repeated vanilla door item placement against unreplaceable opposite half/fluids fails without ghost upper-half. **NOT RUN**
+- [ ] **BR28-052** — Door and trapdoor item placement by dispenser/mod scripted action verified with actual item/BlockState path. **NOT RUN**
+- [ ] **BR28-053** — Vanilla entities villagers/iron golems crossing opened doors respect physical collision and local world gravity baseline. **NOT RUN**
+- [ ] **BR28-054** — Planet six-face +Y: every 11 wood door items place stable LOWER/UPPER pair with source+target frame and correct hit/facing. **NOT RUN**
+- [ ] **BR28-055** — Planet six-face +Y: iron door ITEM pair respects local supporting face and requires redstone to open. **NOT RUN**
+- [ ] **BR28-056** — Planet six-face +Y: all 8 copper door oxidation+wax statuses place pair and preserve both ages after scrape/wax/tick. **NOT RUN**
+- [ ] **BR28-057** — Planet six-face +Y: wood, iron, copper trapdoor ITEMs use one BLOCK only, 4 legal horizontal FACING and local upper/lower attachment. **NOT RUN**
+- [ ] **BR28-058** — Planet six-face +Y: trapdoor WATERLOGGED and opening fluid tick remain real physical FluidState while shape locally oriented. **NOT RUN**
+- [ ] **BR28-059** — Planet six-face +Y: door manual interaction/redstone/open-state propagation and hinge choose legal state without global Direction rewrite. **NOT RUN**
+- [ ] **BR28-060** — Planet six-face +Y: door geometry, player/animal/AI collision and culling while walking on face, camera remains upright. **NOT RUN**
+- [ ] **BR28-061** — Planet six-face +Y: door partner support removal/creative destruction during seam crossing, no ghost half. **NOT RUN**
+- [ ] **BR28-062** — Planet six-face +Y: modded same-base-class BOP/WoodGood door/looker interaction preserves original mod audio/BlockSetType. **NOT RUN**
+- [ ] **BR28-063** — Planet six-face +Y: modded DramaticDoors special 1-block/3-block door actual geometry and custom update owner (source-only until loaded). **NOT RUN**
+- [ ] **BR28-064** — Planet six-face -Y: every 11 wood door items place stable LOWER/UPPER pair with source+target frame and correct hit/facing. **NOT RUN**
+- [ ] **BR28-065** — Planet six-face -Y: iron door ITEM pair respects local supporting face and requires redstone to open. **NOT RUN**
+- [ ] **BR28-066** — Planet six-face -Y: all 8 copper door oxidation+wax statuses place pair and preserve both ages after scrape/wax/tick. **NOT RUN**
+- [ ] **BR28-067** — Planet six-face -Y: wood, iron, copper trapdoor ITEMs use one BLOCK only, 4 legal horizontal FACING and local upper/lower attachment. **NOT RUN**
+- [ ] **BR28-068** — Planet six-face -Y: trapdoor WATERLOGGED and opening fluid tick remain real physical FluidState while shape locally oriented. **NOT RUN**
+- [ ] **BR28-069** — Planet six-face -Y: door manual interaction/redstone/open-state propagation and hinge choose legal state without global Direction rewrite. **NOT RUN**
+- [ ] **BR28-070** — Planet six-face -Y: door geometry, player/animal/AI collision and culling while walking on face, camera remains upright. **NOT RUN**
+- [ ] **BR28-071** — Planet six-face -Y: door partner support removal/creative destruction during seam crossing, no ghost half. **NOT RUN**
+- [ ] **BR28-072** — Planet six-face -Y: modded same-base-class BOP/WoodGood door/looker interaction preserves original mod audio/BlockSetType. **NOT RUN**
+- [ ] **BR28-073** — Planet six-face -Y: modded DramaticDoors special 1-block/3-block door actual geometry and custom update owner (source-only until loaded). **NOT RUN**
+- [ ] **BR28-074** — Planet six-face +X: every 11 wood door items place stable LOWER/UPPER pair with source+target frame and correct hit/facing. **NOT RUN**
+- [ ] **BR28-075** — Planet six-face +X: iron door ITEM pair respects local supporting face and requires redstone to open. **NOT RUN**
+- [ ] **BR28-076** — Planet six-face +X: all 8 copper door oxidation+wax statuses place pair and preserve both ages after scrape/wax/tick. **NOT RUN**
+- [ ] **BR28-077** — Planet six-face +X: wood, iron, copper trapdoor ITEMs use one BLOCK only, 4 legal horizontal FACING and local upper/lower attachment. **NOT RUN**
+- [ ] **BR28-078** — Planet six-face +X: trapdoor WATERLOGGED and opening fluid tick remain real physical FluidState while shape locally oriented. **NOT RUN**
+- [ ] **BR28-079** — Planet six-face +X: door manual interaction/redstone/open-state propagation and hinge choose legal state without global Direction rewrite. **NOT RUN**
+- [ ] **BR28-080** — Planet six-face +X: door geometry, player/animal/AI collision and culling while walking on face, camera remains upright. **NOT RUN**
+- [ ] **BR28-081** — Planet six-face +X: door partner support removal/creative destruction during seam crossing, no ghost half. **NOT RUN**
+- [ ] **BR28-082** — Planet six-face +X: modded same-base-class BOP/WoodGood door/looker interaction preserves original mod audio/BlockSetType. **NOT RUN**
+- [ ] **BR28-083** — Planet six-face +X: modded DramaticDoors special 1-block/3-block door actual geometry and custom update owner (source-only until loaded). **NOT RUN**
+- [ ] **BR28-084** — Planet six-face -X: every 11 wood door items place stable LOWER/UPPER pair with source+target frame and correct hit/facing. **NOT RUN**
+- [ ] **BR28-085** — Planet six-face -X: iron door ITEM pair respects local supporting face and requires redstone to open. **NOT RUN**
+- [ ] **BR28-086** — Planet six-face -X: all 8 copper door oxidation+wax statuses place pair and preserve both ages after scrape/wax/tick. **NOT RUN**
+- [ ] **BR28-087** — Planet six-face -X: wood, iron, copper trapdoor ITEMs use one BLOCK only, 4 legal horizontal FACING and local upper/lower attachment. **NOT RUN**
+- [ ] **BR28-088** — Planet six-face -X: trapdoor WATERLOGGED and opening fluid tick remain real physical FluidState while shape locally oriented. **NOT RUN**
+- [ ] **BR28-089** — Planet six-face -X: door manual interaction/redstone/open-state propagation and hinge choose legal state without global Direction rewrite. **NOT RUN**
+- [ ] **BR28-090** — Planet six-face -X: door geometry, player/animal/AI collision and culling while walking on face, camera remains upright. **NOT RUN**
+- [ ] **BR28-091** — Planet six-face -X: door partner support removal/creative destruction during seam crossing, no ghost half. **NOT RUN**
+- [ ] **BR28-092** — Planet six-face -X: modded same-base-class BOP/WoodGood door/looker interaction preserves original mod audio/BlockSetType. **NOT RUN**
+- [ ] **BR28-093** — Planet six-face -X: modded DramaticDoors special 1-block/3-block door actual geometry and custom update owner (source-only until loaded). **NOT RUN**
+- [ ] **BR28-094** — Planet six-face +Z: every 11 wood door items place stable LOWER/UPPER pair with source+target frame and correct hit/facing. **NOT RUN**
+- [ ] **BR28-095** — Planet six-face +Z: iron door ITEM pair respects local supporting face and requires redstone to open. **NOT RUN**
+- [ ] **BR28-096** — Planet six-face +Z: all 8 copper door oxidation+wax statuses place pair and preserve both ages after scrape/wax/tick. **NOT RUN**
+- [ ] **BR28-097** — Planet six-face +Z: wood, iron, copper trapdoor ITEMs use one BLOCK only, 4 legal horizontal FACING and local upper/lower attachment. **NOT RUN**
+- [ ] **BR28-098** — Planet six-face +Z: trapdoor WATERLOGGED and opening fluid tick remain real physical FluidState while shape locally oriented. **NOT RUN**
+- [ ] **BR28-099** — Planet six-face +Z: door manual interaction/redstone/open-state propagation and hinge choose legal state without global Direction rewrite. **NOT RUN**
+- [ ] **BR28-100** — Planet six-face +Z: door geometry, player/animal/AI collision and culling while walking on face, camera remains upright. **NOT RUN**
+- [ ] **BR28-101** — Planet six-face +Z: door partner support removal/creative destruction during seam crossing, no ghost half. **NOT RUN**
+- [ ] **BR28-102** — Planet six-face +Z: modded same-base-class BOP/WoodGood door/looker interaction preserves original mod audio/BlockSetType. **NOT RUN**
+- [ ] **BR28-103** — Planet six-face +Z: modded DramaticDoors special 1-block/3-block door actual geometry and custom update owner (source-only until loaded). **NOT RUN**
+- [ ] **BR28-104** — Planet six-face -Z: every 11 wood door items place stable LOWER/UPPER pair with source+target frame and correct hit/facing. **NOT RUN**
+- [ ] **BR28-105** — Planet six-face -Z: iron door ITEM pair respects local supporting face and requires redstone to open. **NOT RUN**
+- [ ] **BR28-106** — Planet six-face -Z: all 8 copper door oxidation+wax statuses place pair and preserve both ages after scrape/wax/tick. **NOT RUN**
+- [ ] **BR28-107** — Planet six-face -Z: wood, iron, copper trapdoor ITEMs use one BLOCK only, 4 legal horizontal FACING and local upper/lower attachment. **NOT RUN**
+- [ ] **BR28-108** — Planet six-face -Z: trapdoor WATERLOGGED and opening fluid tick remain real physical FluidState while shape locally oriented. **NOT RUN**
+- [ ] **BR28-109** — Planet six-face -Z: door manual interaction/redstone/open-state propagation and hinge choose legal state without global Direction rewrite. **NOT RUN**
+- [ ] **BR28-110** — Planet six-face -Z: door geometry, player/animal/AI collision and culling while walking on face, camera remains upright. **NOT RUN**
+- [ ] **BR28-111** — Planet six-face -Z: door partner support removal/creative destruction during seam crossing, no ghost half. **NOT RUN**
+- [ ] **BR28-112** — Planet six-face -Z: modded same-base-class BOP/WoodGood door/looker interaction preserves original mod audio/BlockSetType. **NOT RUN**
+- [ ] **BR28-113** — Planet six-face -Z: modded DramaticDoors special 1-block/3-block door actual geometry and custom update owner (source-only until loaded). **NOT RUN**
+- [ ] **BR28-114** — Planet edge +X/+Y: real DoubleHighBlockItem extends LOWER toward local UP through gravity chart boundary, correct partner real BlockPos/rollback. **NOT RUN**
+- [ ] **BR28-115** — Planet edge +X/+Y: LOWER and UPPER updateShape physical Direction distinguished from semantic direction, no duplicate block drops. **NOT RUN**
+- [ ] **BR28-116** — Planet edge +X/+Y: powered door or manual copper/wood toggling across seam maintains both states and shape collision. **NOT RUN**
+- [ ] **BR28-117** — Planet edge +X/+Y: trapdoor HALF TOP/BOTTOM placement straddling wall/ceiling, WATERLOGGED and fluid neighbors remain physical. **NOT RUN**
+- [ ] **BR28-118** — Planet edge +X/+Y: modded three-high door or one-high custom door with independent geometry chooses local axis without coercing vanilla HALF. **NOT RUN**
+- [ ] **BR28-119** — Planet edge +X/+Y: door/fence/wall/conduit adjacent block shape and culling, fake Level and no-Planet regressions. **NOT RUN**
+- [ ] **BR28-120** — Planet edge -X/+Y: real DoubleHighBlockItem extends LOWER toward local UP through gravity chart boundary, correct partner real BlockPos/rollback. **NOT RUN**
+- [ ] **BR28-121** — Planet edge -X/+Y: LOWER and UPPER updateShape physical Direction distinguished from semantic direction, no duplicate block drops. **NOT RUN**
+- [ ] **BR28-122** — Planet edge -X/+Y: powered door or manual copper/wood toggling across seam maintains both states and shape collision. **NOT RUN**
+- [ ] **BR28-123** — Planet edge -X/+Y: trapdoor HALF TOP/BOTTOM placement straddling wall/ceiling, WATERLOGGED and fluid neighbors remain physical. **NOT RUN**
+- [ ] **BR28-124** — Planet edge -X/+Y: modded three-high door or one-high custom door with independent geometry chooses local axis without coercing vanilla HALF. **NOT RUN**
+- [ ] **BR28-125** — Planet edge -X/+Y: door/fence/wall/conduit adjacent block shape and culling, fake Level and no-Planet regressions. **NOT RUN**
+- [ ] **BR28-126** — Planet edge +Z/+Y: real DoubleHighBlockItem extends LOWER toward local UP through gravity chart boundary, correct partner real BlockPos/rollback. **NOT RUN**
+- [ ] **BR28-127** — Planet edge +Z/+Y: LOWER and UPPER updateShape physical Direction distinguished from semantic direction, no duplicate block drops. **NOT RUN**
+- [ ] **BR28-128** — Planet edge +Z/+Y: powered door or manual copper/wood toggling across seam maintains both states and shape collision. **NOT RUN**
+- [ ] **BR28-129** — Planet edge +Z/+Y: trapdoor HALF TOP/BOTTOM placement straddling wall/ceiling, WATERLOGGED and fluid neighbors remain physical. **NOT RUN**
+- [ ] **BR28-130** — Planet edge +Z/+Y: modded three-high door or one-high custom door with independent geometry chooses local axis without coercing vanilla HALF. **NOT RUN**
+- [ ] **BR28-131** — Planet edge +Z/+Y: door/fence/wall/conduit adjacent block shape and culling, fake Level and no-Planet regressions. **NOT RUN**
+- [ ] **BR28-132** — Planet edge -Z/+Y: real DoubleHighBlockItem extends LOWER toward local UP through gravity chart boundary, correct partner real BlockPos/rollback. **NOT RUN**
+- [ ] **BR28-133** — Planet edge -Z/+Y: LOWER and UPPER updateShape physical Direction distinguished from semantic direction, no duplicate block drops. **NOT RUN**
+- [ ] **BR28-134** — Planet edge -Z/+Y: powered door or manual copper/wood toggling across seam maintains both states and shape collision. **NOT RUN**
+- [ ] **BR28-135** — Planet edge -Z/+Y: trapdoor HALF TOP/BOTTOM placement straddling wall/ceiling, WATERLOGGED and fluid neighbors remain physical. **NOT RUN**
+- [ ] **BR28-136** — Planet edge -Z/+Y: modded three-high door or one-high custom door with independent geometry chooses local axis without coercing vanilla HALF. **NOT RUN**
+- [ ] **BR28-137** — Planet edge -Z/+Y: door/fence/wall/conduit adjacent block shape and culling, fake Level and no-Planet regressions. **NOT RUN**
+- [ ] **BR28-138** — Planet edge +X/-Y: real DoubleHighBlockItem extends LOWER toward local UP through gravity chart boundary, correct partner real BlockPos/rollback. **NOT RUN**
+- [ ] **BR28-139** — Planet edge +X/-Y: LOWER and UPPER updateShape physical Direction distinguished from semantic direction, no duplicate block drops. **NOT RUN**
+- [ ] **BR28-140** — Planet edge +X/-Y: powered door or manual copper/wood toggling across seam maintains both states and shape collision. **NOT RUN**
+- [ ] **BR28-141** — Planet edge +X/-Y: trapdoor HALF TOP/BOTTOM placement straddling wall/ceiling, WATERLOGGED and fluid neighbors remain physical. **NOT RUN**
+- [ ] **BR28-142** — Planet edge +X/-Y: modded three-high door or one-high custom door with independent geometry chooses local axis without coercing vanilla HALF. **NOT RUN**
+- [ ] **BR28-143** — Planet edge +X/-Y: door/fence/wall/conduit adjacent block shape and culling, fake Level and no-Planet regressions. **NOT RUN**
+- [ ] **BR28-144** — Planet edge -X/-Y: real DoubleHighBlockItem extends LOWER toward local UP through gravity chart boundary, correct partner real BlockPos/rollback. **NOT RUN**
+- [ ] **BR28-145** — Planet edge -X/-Y: LOWER and UPPER updateShape physical Direction distinguished from semantic direction, no duplicate block drops. **NOT RUN**
+- [ ] **BR28-146** — Planet edge -X/-Y: powered door or manual copper/wood toggling across seam maintains both states and shape collision. **NOT RUN**
+- [ ] **BR28-147** — Planet edge -X/-Y: trapdoor HALF TOP/BOTTOM placement straddling wall/ceiling, WATERLOGGED and fluid neighbors remain physical. **NOT RUN**
+- [ ] **BR28-148** — Planet edge -X/-Y: modded three-high door or one-high custom door with independent geometry chooses local axis without coercing vanilla HALF. **NOT RUN**
+- [ ] **BR28-149** — Planet edge -X/-Y: door/fence/wall/conduit adjacent block shape and culling, fake Level and no-Planet regressions. **NOT RUN**
+- [ ] **BR28-150** — Planet edge +Z/-Y: real DoubleHighBlockItem extends LOWER toward local UP through gravity chart boundary, correct partner real BlockPos/rollback. **NOT RUN**
+- [ ] **BR28-151** — Planet edge +Z/-Y: LOWER and UPPER updateShape physical Direction distinguished from semantic direction, no duplicate block drops. **NOT RUN**
+- [ ] **BR28-152** — Planet edge +Z/-Y: powered door or manual copper/wood toggling across seam maintains both states and shape collision. **NOT RUN**
+- [ ] **BR28-153** — Planet edge +Z/-Y: trapdoor HALF TOP/BOTTOM placement straddling wall/ceiling, WATERLOGGED and fluid neighbors remain physical. **NOT RUN**
+- [ ] **BR28-154** — Planet edge +Z/-Y: modded three-high door or one-high custom door with independent geometry chooses local axis without coercing vanilla HALF. **NOT RUN**
+- [ ] **BR28-155** — Planet edge +Z/-Y: door/fence/wall/conduit adjacent block shape and culling, fake Level and no-Planet regressions. **NOT RUN**
+- [ ] **BR28-156** — Planet edge -Z/-Y: real DoubleHighBlockItem extends LOWER toward local UP through gravity chart boundary, correct partner real BlockPos/rollback. **NOT RUN**
+- [ ] **BR28-157** — Planet edge -Z/-Y: LOWER and UPPER updateShape physical Direction distinguished from semantic direction, no duplicate block drops. **NOT RUN**
+- [ ] **BR28-158** — Planet edge -Z/-Y: powered door or manual copper/wood toggling across seam maintains both states and shape collision. **NOT RUN**
+- [ ] **BR28-159** — Planet edge -Z/-Y: trapdoor HALF TOP/BOTTOM placement straddling wall/ceiling, WATERLOGGED and fluid neighbors remain physical. **NOT RUN**
+- [ ] **BR28-160** — Planet edge -Z/-Y: modded three-high door or one-high custom door with independent geometry chooses local axis without coercing vanilla HALF. **NOT RUN**
+- [ ] **BR28-161** — Planet edge -Z/-Y: door/fence/wall/conduit adjacent block shape and culling, fake Level and no-Planet regressions. **NOT RUN**
+- [ ] **BR28-162** — Planet edge +X/+Z: real DoubleHighBlockItem extends LOWER toward local UP through gravity chart boundary, correct partner real BlockPos/rollback. **NOT RUN**
+- [ ] **BR28-163** — Planet edge +X/+Z: LOWER and UPPER updateShape physical Direction distinguished from semantic direction, no duplicate block drops. **NOT RUN**
+- [ ] **BR28-164** — Planet edge +X/+Z: powered door or manual copper/wood toggling across seam maintains both states and shape collision. **NOT RUN**
+- [ ] **BR28-165** — Planet edge +X/+Z: trapdoor HALF TOP/BOTTOM placement straddling wall/ceiling, WATERLOGGED and fluid neighbors remain physical. **NOT RUN**
+- [ ] **BR28-166** — Planet edge +X/+Z: modded three-high door or one-high custom door with independent geometry chooses local axis without coercing vanilla HALF. **NOT RUN**
+- [ ] **BR28-167** — Planet edge +X/+Z: door/fence/wall/conduit adjacent block shape and culling, fake Level and no-Planet regressions. **NOT RUN**
+- [ ] **BR28-168** — Planet edge +X/-Z: real DoubleHighBlockItem extends LOWER toward local UP through gravity chart boundary, correct partner real BlockPos/rollback. **NOT RUN**
+- [ ] **BR28-169** — Planet edge +X/-Z: LOWER and UPPER updateShape physical Direction distinguished from semantic direction, no duplicate block drops. **NOT RUN**
+- [ ] **BR28-170** — Planet edge +X/-Z: powered door or manual copper/wood toggling across seam maintains both states and shape collision. **NOT RUN**
+- [ ] **BR28-171** — Planet edge +X/-Z: trapdoor HALF TOP/BOTTOM placement straddling wall/ceiling, WATERLOGGED and fluid neighbors remain physical. **NOT RUN**
+- [ ] **BR28-172** — Planet edge +X/-Z: modded three-high door or one-high custom door with independent geometry chooses local axis without coercing vanilla HALF. **NOT RUN**
+- [ ] **BR28-173** — Planet edge +X/-Z: door/fence/wall/conduit adjacent block shape and culling, fake Level and no-Planet regressions. **NOT RUN**
+- [ ] **BR28-174** — Planet edge -X/+Z: real DoubleHighBlockItem extends LOWER toward local UP through gravity chart boundary, correct partner real BlockPos/rollback. **NOT RUN**
+- [ ] **BR28-175** — Planet edge -X/+Z: LOWER and UPPER updateShape physical Direction distinguished from semantic direction, no duplicate block drops. **NOT RUN**
+- [ ] **BR28-176** — Planet edge -X/+Z: powered door or manual copper/wood toggling across seam maintains both states and shape collision. **NOT RUN**
+- [ ] **BR28-177** — Planet edge -X/+Z: trapdoor HALF TOP/BOTTOM placement straddling wall/ceiling, WATERLOGGED and fluid neighbors remain physical. **NOT RUN**
+- [ ] **BR28-178** — Planet edge -X/+Z: modded three-high door or one-high custom door with independent geometry chooses local axis without coercing vanilla HALF. **NOT RUN**
+- [ ] **BR28-179** — Planet edge -X/+Z: door/fence/wall/conduit adjacent block shape and culling, fake Level and no-Planet regressions. **NOT RUN**
+- [ ] **BR28-180** — Planet edge -X/-Z: real DoubleHighBlockItem extends LOWER toward local UP through gravity chart boundary, correct partner real BlockPos/rollback. **NOT RUN**
+- [ ] **BR28-181** — Planet edge -X/-Z: LOWER and UPPER updateShape physical Direction distinguished from semantic direction, no duplicate block drops. **NOT RUN**
+- [ ] **BR28-182** — Planet edge -X/-Z: powered door or manual copper/wood toggling across seam maintains both states and shape collision. **NOT RUN**
+- [ ] **BR28-183** — Planet edge -X/-Z: trapdoor HALF TOP/BOTTOM placement straddling wall/ceiling, WATERLOGGED and fluid neighbors remain physical. **NOT RUN**
+- [ ] **BR28-184** — Planet edge -X/-Z: modded three-high door or one-high custom door with independent geometry chooses local axis without coercing vanilla HALF. **NOT RUN**
+- [ ] **BR28-185** — Planet edge -X/-Z: door/fence/wall/conduit adjacent block shape and culling, fake Level and no-Planet regressions. **NOT RUN**
+- [ ] **BR28-186** — Planet triple-corner +X/+Y/+Z: DoorBlock real item placement LOWER/UPPER with transported local-UP and legal horizontal FACING, no loop/chart bounce. **NOT RUN**
+- [ ] **BR28-187** — Planet triple-corner +X/+Y/+Z: TrapDoorBlock WATERLOGGED/half and interaction with two nearby transitions, no unsupported real Position. **NOT RUN**
+- [ ] **BR28-188** — Planet triple-corner +X/+Y/+Z: DramaticDoors 3-part door cross chart source/target resolved independently, no orphan part after chunk reload. **NOT RUN**
+- [ ] **BR28-189** — Planet triple-corner +X/+Y/-Z: DoorBlock real item placement LOWER/UPPER with transported local-UP and legal horizontal FACING, no loop/chart bounce. **NOT RUN**
+- [ ] **BR28-190** — Planet triple-corner +X/+Y/-Z: TrapDoorBlock WATERLOGGED/half and interaction with two nearby transitions, no unsupported real Position. **NOT RUN**
+- [ ] **BR28-191** — Planet triple-corner +X/+Y/-Z: DramaticDoors 3-part door cross chart source/target resolved independently, no orphan part after chunk reload. **NOT RUN**
+- [ ] **BR28-192** — Planet triple-corner +X/-Y/+Z: DoorBlock real item placement LOWER/UPPER with transported local-UP and legal horizontal FACING, no loop/chart bounce. **NOT RUN**
+- [ ] **BR28-193** — Planet triple-corner +X/-Y/+Z: TrapDoorBlock WATERLOGGED/half and interaction with two nearby transitions, no unsupported real Position. **NOT RUN**
+- [ ] **BR28-194** — Planet triple-corner +X/-Y/+Z: DramaticDoors 3-part door cross chart source/target resolved independently, no orphan part after chunk reload. **NOT RUN**
+- [ ] **BR28-195** — Planet triple-corner +X/-Y/-Z: DoorBlock real item placement LOWER/UPPER with transported local-UP and legal horizontal FACING, no loop/chart bounce. **NOT RUN**
+- [ ] **BR28-196** — Planet triple-corner +X/-Y/-Z: TrapDoorBlock WATERLOGGED/half and interaction with two nearby transitions, no unsupported real Position. **NOT RUN**
+- [ ] **BR28-197** — Planet triple-corner +X/-Y/-Z: DramaticDoors 3-part door cross chart source/target resolved independently, no orphan part after chunk reload. **NOT RUN**
+- [ ] **BR28-198** — Planet triple-corner -X/+Y/+Z: DoorBlock real item placement LOWER/UPPER with transported local-UP and legal horizontal FACING, no loop/chart bounce. **NOT RUN**
+- [ ] **BR28-199** — Planet triple-corner -X/+Y/+Z: TrapDoorBlock WATERLOGGED/half and interaction with two nearby transitions, no unsupported real Position. **NOT RUN**
+- [ ] **BR28-200** — Planet triple-corner -X/+Y/+Z: DramaticDoors 3-part door cross chart source/target resolved independently, no orphan part after chunk reload. **NOT RUN**
+- [ ] **BR28-201** — Planet triple-corner -X/+Y/-Z: DoorBlock real item placement LOWER/UPPER with transported local-UP and legal horizontal FACING, no loop/chart bounce. **NOT RUN**
+- [ ] **BR28-202** — Planet triple-corner -X/+Y/-Z: TrapDoorBlock WATERLOGGED/half and interaction with two nearby transitions, no unsupported real Position. **NOT RUN**
+- [ ] **BR28-203** — Planet triple-corner -X/+Y/-Z: DramaticDoors 3-part door cross chart source/target resolved independently, no orphan part after chunk reload. **NOT RUN**
+- [ ] **BR28-204** — Planet triple-corner -X/-Y/+Z: DoorBlock real item placement LOWER/UPPER with transported local-UP and legal horizontal FACING, no loop/chart bounce. **NOT RUN**
+- [ ] **BR28-205** — Planet triple-corner -X/-Y/+Z: TrapDoorBlock WATERLOGGED/half and interaction with two nearby transitions, no unsupported real Position. **NOT RUN**
+- [ ] **BR28-206** — Planet triple-corner -X/-Y/+Z: DramaticDoors 3-part door cross chart source/target resolved independently, no orphan part after chunk reload. **NOT RUN**
+- [ ] **BR28-207** — Planet triple-corner -X/-Y/-Z: DoorBlock real item placement LOWER/UPPER with transported local-UP and legal horizontal FACING, no loop/chart bounce. **NOT RUN**
+- [ ] **BR28-208** — Planet triple-corner -X/-Y/-Z: TrapDoorBlock WATERLOGGED/half and interaction with two nearby transitions, no unsupported real Position. **NOT RUN**
+- [ ] **BR28-209** — Planet triple-corner -X/-Y/-Z: DramaticDoors 3-part door cross chart source/target resolved independently, no orphan part after chunk reload. **NOT RUN**
+- [ ] **BR28-210** — Biomes O' Plenty MC1.21.1 custom FIR/PINE/MAPLE/MAGIC/UMBRAN BlockSetType + modded item/door registries real loaded; check own FACING semantics. **NOT RUN**
+- [ ] **BR28-211** — Biomes O' Plenty actual NeoForge21.1.23 <= Planet target21.1.215 metadata but binary load must be independently confirmed. **NOT RUN**
+- [ ] **BR28-212** — Biomes O' Plenty exotic BlockSetType natural/cherry/nether sound and hand-open flags preserve all mod-specific values. **NOT RUN**
+- [ ] **BR28-213** — Every Compat/WoodGood NeoForge 1.21.1 dynamic unknown WoodType registry creates anonymous DoorBlock subclass and maintains its original metadata. **NOT RUN**
+- [ ] **BR28-214** — Every Compat dynamic TrapDoorBlock anonymous subclass useOn/getStateForPlacement updates actual physical neighboring fluids. **NOT RUN**
+- [ ] **BR28-215** — Every Compat WoodGood target source NeoForge21.1.248 > target21.1.215: never claim binary compatible until separately loaded. **NOT RUN**
+- [ ] **BR28-216** — Every Compat JapaneseDoors/StableDoor branches are independent mod classes; do not declare vanilla DoorBlock owner patch coverage. **NOT RUN**
+- [ ] **BR28-217** — Every Compat Chipped many style variants use independent item tags/loot generated textures and may vary structural semantics. **NOT RUN**
+- [ ] **BR28-218** — Macaw's Doors actual 1.21.1 source-to-loaded binary matching required, not based on old GitHub archived folder source. **NOT RUN**
+- [ ] **BR28-219** — Macaw's Japanese doors own class and sliding/animation controls with custom physical geometry independently tested. **NOT RUN**
+- [ ] **BR28-220** — Macaw's stable doors custom player use toggles and own BlockState legal domain, source specific. **NOT RUN**
+- [ ] **BR28-221** — DramaticDoors source 1.21.1 TallDoorBlock extends Block (not DoorBlock), three HIGH parts in triple BlockState. **NOT RUN**
+- [ ] **BR28-222** — DramaticDoors source 1.21.1 ShortDoorBlock extends Block (not DoorBlock), no vanilla UPPER requirement. **NOT RUN**
+- [ ] **BR28-223** — DramaticDoors TallWeatheringDoorBlock randomTick only LOWER of THREE PART state, wax/scrape synchronizes all 3. **NOT RUN**
+- [ ] **BR28-224** — DramaticDoors NeoForge TallNeoForgeCreateSlidingDoorBlock uses own BlockEntity and redstone-driven movement. **NOT RUN**
+- [ ] **BR28-225** — DramaticDoors 21.1.219 source compile > Planet21.1.215: only evidence until binary load verified. **NOT RUN**
+- [ ] **BR28-226** — DramaticDoors special sliding/folding door geometry/collision not converted to vanilla hinges by broad patch. **NOT RUN**
+- [ ] **BR28-227** — DramaticDoors short/tall double door pair interactions and entity AI own mod mixins and pathfinding. **NOT RUN**
+- [ ] **BR28-228** — Modded iron/steel/gold/glass or stone door still uses custom BlockSetType.canOpenByHand not material name heuristics. **NOT RUN**
+- [ ] **BR28-229** — Unknown mods whose door-like block doesn't subclass DoorBlock default to PHYSICAL; typed opt-in only. **NOT RUN**
+- [ ] **BR28-230** — Unknown mod fake Level/contraption implementing LevelReader continues receiving PHYSICAL BlockPos/Direction/FluidState. **NOT RUN**
+- [ ] **BR28-231** — API typed source gravity chart+target gravity chart normal/tangent and physical two-part relative placement coexist. **NOT RUN**
+- [ ] **BR28-232** — API no global Level.setBlock, BlockPos.above, Direction.Axis.Y, getHorizontalDirection or Property rewrite. **NOT RUN**
+- [ ] **BR28-233** — Server-authoritative single-item consumed only after successful all-part placement in participating mod provider. **NOT RUN**
+- [ ] **BR28-234** — Server-client 2-player simultaneously place powered double doors across chart boundary, no desync. **NOT RUN**
+- [ ] **BR28-235** — Modded door break loot tables preserve original drops even where style is generated and multiple parts. **NOT RUN**
+- [ ] **BR28-236** — Modded door/lucr customs registered later by mod loader don't require hardcoded registry IDs by Planet. **NOT RUN**
+- [ ] **BR28-237** — Create moving contraption captured doors/trapdoors retain PHYSICAL pose and geometry unless opted-in. **NOT RUN**
+- [ ] **BR28-238** — Actual patched NeoForge21.1.215 method bytecode descriptors independently checked, not inferred from source only. **NOT RUN**
+- [ ] **BR28-239** — Actual Planet adapter tests and Minecraft client/server loaded mod test checked separately against ORIGINAL SOURCE_COMPLETE. **NOT RUN**
+- [ ] **BR28-240** — Large modpack thousands of generated doors memory/performance no per-ID brittle special cases. **NOT RUN**
+- [ ] **BR28-241** — NonPlanet all modded doors/copper/iron no behavior changes with Planet installed. **NOT RUN**
+- [ ] **BR28-242** — Disable Planet local gravity at far boundary then reenter door geometry sync and saved server states. **NOT RUN**
+- [ ] **BR28-243** — Particle/sound opening and copper scrape client visuals face aware while item/world block updates physical. **NOT RUN**
+- [ ] **BR28-244** — Player on -Y gravity side toggles door from inside both opening directions and survives slab/door seam. **NOT RUN**
+- [ ] **BR28-245** — Native door item placed by mod fake BlockPlaceContext across chunk not prematurely altering upper water. **NOT RUN**
+- [ ] **BR28-246** — Unloaded adjacent chunk for 3-part tall door placement preserve transactional rollback or explicit safe failure. **NOT RUN**
+- [ ] **BR28-247** — Modded multiwidth garage gate owner class not silently assumed vanilla or automatically opted into chart rules. **NOT RUN**
+
+Promotion gates are independent: SOURCE original reflection; PATCHED NeoForge21.1.215 bytecode signatures and mixin app; Planet unit-level typed core; real vanilla no-Planet control; real ±6 face,12 seam,8 corner; real multi-PLAYER dedicated-server CLIENT collision/render, reloading; target-version actual mod JAR proof. Every one of 241×3=723 original runtime fields remains REVIEW_PENDING here.

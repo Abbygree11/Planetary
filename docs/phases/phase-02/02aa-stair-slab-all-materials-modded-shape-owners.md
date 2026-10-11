@@ -1,0 +1,12 @@
+# Stage3A-29 — ALL-material StairBlock / SlabBlock + copper weathering, modded shaped geometry and fluid / light / collision
+
+**ACTIVE SOURCE 0/4**, 2026-10-11 branch2.0 MC1.21.1 NeoForge21.1.215. Single user «кк» completes ALL 29.1–29.4 as one coherent batch, strictly docs research until explicit runtime instruction.
+
+**Physical original ZIP preliminary registered source-pending class groups**: `StairBlock=52`, `SlabBlock=56`, `WeatheringCopperStairBlock=4`, `WeatheringCopperSlabBlock=4`, **four original class groups,116 BLOCK IDs**, all remain SOURCE_PENDING and counts may only promote once physical ZIP+ITEM/property/full five-method owner verification. Include all vanilla woods, stone, cobble, quartz, nether, blackstone, copper/waxed and iron/metal/etc modded variants as actual present (DO NOT invent vanilla iron stair/slab). Deepest-safe original shared BlockState FACING/HALF/STAIR_SHAPE/SLAB_TYPE/WATERLOGGED and full independent geometry/collision/corner-neighbor owner, not just copper.
+
+- [ ] **29.1** immutable original physical ZIP SHA and all **116 exact IDs**, original ITEM classes/joins, four legal STATE schemas and full five FULL nearest declaring owners, shape calculation and inheritance.
+- [ ] **29.2** read original vanilla StairBlock/SlabBlock collision/neighbor getShape, WATERLOGGED, SLAB DOUBLE combinability, local stair corners/inside-outside/rotation/mirror, occlusion/light/skylight/pathfinding, actual roof integration and weathering/wax/honeycomb/axe owner; pinned MC1.21.1 *real* modded stairs/slabs from Biomes O' Plenty/Oh The Biomes We've Gone/Chipped/Every Compat/Create etc as version/source proven; both inherited and custom geometry and non-wood/metal/stone materials. Unknown third-party physical default, only safe typed opt-in.
+- [ ] **29.3** >=90 future NOT RUN real ITEM, vanilla all materials, six faces,12 edges,8 triple corners, stair-to-stair corner neighbors across chart, upward/downward slab HALF/DOUBLE and water, mods independently, noPlanet and client/server collision/occlusion.
+- [ ] **29.4** independent Python original ZIP frozen 141 reviewed names+4 vs LIVE 241×16 source ledger JS hashes five qualified method signatures and registered IDs. Expected 145 classes/611 BLOCK IDs ONLY IF proven. Keep all723 runtime fields REVIEW_PENDING and never claim mods loadable without actual JAR test.
+
+Previous [Stage28 all 40 vanilla door/trapdoor IDs plus modded algorithm owners](02z-door-trapdoor-copper-two-part-owners.md) COMPLETE SOURCE 4/4; all BR28 acceptance cases NOT RUN.
