@@ -1,0 +1,102 @@
+# Stage3A-26.3 — original sign/banner real ITEM, BlockEntity, mod and six-face acceptance matrix
+
+**96 FUTURE SB26 test cases, ALL NOT RUN.** SOURCE research only, no Java/Mixin, client/server or real game acceptance. For player placements the oracle requires actual `SignItem/HangingSignItem/BannerItem` interaction (not forced `setBlock`), physical hit+target and item count, server-side BE edit/permissions/data, client-side BER, and recorded original NeoForge ASM owner/Planet runtime adapter/mod jar separately. Test world types: vanilla no Planet; six face interiors ±X/±Y/±Z; all 12 face-pair edges; all 8 triple corners; chunk save/reload, foreign/fake Levels. Unknown mods PHYSICAL unless opt-in.
+
+- [ ] **SB26-001** — Normal no-Planet survival real oak SignItem standing placement/BE/edit GUI/once-only item. **NOT RUN**
+- [ ] **SB26-002** — Normal physical north/east/south/west wall SignItem chooses WallSignBlock with same item. **NOT RUN**
+- [ ] **SB26-003** — Normal HangingSignItem ceiling ATTACHED/suspended conditions and own BE. **NOT RUN**
+- [ ] **SB26-004** — Normal HangingSignItem wall uses lateral canPlace and chosen FACING, once-only item. **NOT RUN**
+- [ ] **SB26-005** — Normal BannerItem standing and wall mapping of 16 variants, correct item count. **NOT RUN**
+- [ ] **SB26-006** — All 11 wood standing sign BLOCK IDs and correct SignItem joins. **NOT RUN**
+- [ ] **SB26-007** — All 11 wood wall signs have no unique items and preserve same SignItem. **NOT RUN**
+- [ ] **SB26-008** — All 11 ceiling hanging signs and 11 wall hanging signs preserve wood/material/sound. **NOT RUN**
+- [ ] **SB26-009** — All 16 banner base colors and all16 wall variants preserve dye item mapping. **NOT RUN**
+- [ ] **SB26-010** — ROTATION_16 legal 0..15 FACING legal N/E/S/W, reject invalid UP/DOWN. **NOT RUN**
+- [ ] **SB26-011** — WallHangingSign canPlace lateral check separate from inherited canSurvive on support loss. **NOT RUN**
+- [ ] **SB26-012** — Standing+wall sign under WATER source sets WATERLOGGED; banner never exposes it. **NOT RUN**
+- [ ] **SB26-013** — Vanilla non-Planet original physical structure template rotate/mirror sign/banner 16 angles. **NOT RUN**
+- [ ] **SB26-014** — Sign clone/pick and BannerBlockEntity component roundtrip with patterns/name. **NOT RUN**
+- [ ] **SB26-015** — Physical shape/hit of standing/wall/hanging signs valid with server and client. **NOT RUN**
+- [ ] **SB26-016** — Actual player ITEM behavior vs forced block fixture on vanilla world. **NOT RUN**
+- [ ] **SB26-017** — Planet face +Y: standing sign real player item support/front-back BE; real player item, no forced state. **NOT RUN**
+- [ ] **SB26-018** — Planet face +Y: wall sign variant via SignItem and local/physical support; real player item, no forced state. **NOT RUN**
+- [ ] **SB26-019** — Planet face +Y: ceiling hanging sign ATTACHED/chain and actual HangingSignBlockEntity; real player item, no forced state. **NOT RUN**
+- [ ] **SB26-020** — Planet face +Y: wall hanging sign lateral support, click panel and chaining; real player item, no forced state. **NOT RUN**
+- [ ] **SB26-021** — Planet face +Y: standing+wall BannerItem pattern/BE/visual rotation; real player item, no forced state. **NOT RUN**
+- [ ] **SB26-022** — Planet face -Y: standing sign real player item support/front-back BE; real player item, no forced state. **NOT RUN**
+- [ ] **SB26-023** — Planet face -Y: wall sign variant via SignItem and local/physical support; real player item, no forced state. **NOT RUN**
+- [ ] **SB26-024** — Planet face -Y: ceiling hanging sign ATTACHED/chain and actual HangingSignBlockEntity; real player item, no forced state. **NOT RUN**
+- [ ] **SB26-025** — Planet face -Y: wall hanging sign lateral support, click panel and chaining; real player item, no forced state. **NOT RUN**
+- [ ] **SB26-026** — Planet face -Y: standing+wall BannerItem pattern/BE/visual rotation; real player item, no forced state. **NOT RUN**
+- [ ] **SB26-027** — Planet face +X: standing sign real player item support/front-back BE; real player item, no forced state. **NOT RUN**
+- [ ] **SB26-028** — Planet face +X: wall sign variant via SignItem and local/physical support; real player item, no forced state. **NOT RUN**
+- [ ] **SB26-029** — Planet face +X: ceiling hanging sign ATTACHED/chain and actual HangingSignBlockEntity; real player item, no forced state. **NOT RUN**
+- [ ] **SB26-030** — Planet face +X: wall hanging sign lateral support, click panel and chaining; real player item, no forced state. **NOT RUN**
+- [ ] **SB26-031** — Planet face +X: standing+wall BannerItem pattern/BE/visual rotation; real player item, no forced state. **NOT RUN**
+- [ ] **SB26-032** — Planet face -X: standing sign real player item support/front-back BE; real player item, no forced state. **NOT RUN**
+- [ ] **SB26-033** — Planet face -X: wall sign variant via SignItem and local/physical support; real player item, no forced state. **NOT RUN**
+- [ ] **SB26-034** — Planet face -X: ceiling hanging sign ATTACHED/chain and actual HangingSignBlockEntity; real player item, no forced state. **NOT RUN**
+- [ ] **SB26-035** — Planet face -X: wall hanging sign lateral support, click panel and chaining; real player item, no forced state. **NOT RUN**
+- [ ] **SB26-036** — Planet face -X: standing+wall BannerItem pattern/BE/visual rotation; real player item, no forced state. **NOT RUN**
+- [ ] **SB26-037** — Planet face +Z: standing sign real player item support/front-back BE; real player item, no forced state. **NOT RUN**
+- [ ] **SB26-038** — Planet face +Z: wall sign variant via SignItem and local/physical support; real player item, no forced state. **NOT RUN**
+- [ ] **SB26-039** — Planet face +Z: ceiling hanging sign ATTACHED/chain and actual HangingSignBlockEntity; real player item, no forced state. **NOT RUN**
+- [ ] **SB26-040** — Planet face +Z: wall hanging sign lateral support, click panel and chaining; real player item, no forced state. **NOT RUN**
+- [ ] **SB26-041** — Planet face +Z: standing+wall BannerItem pattern/BE/visual rotation; real player item, no forced state. **NOT RUN**
+- [ ] **SB26-042** — Planet face -Z: standing sign real player item support/front-back BE; real player item, no forced state. **NOT RUN**
+- [ ] **SB26-043** — Planet face -Z: wall sign variant via SignItem and local/physical support; real player item, no forced state. **NOT RUN**
+- [ ] **SB26-044** — Planet face -Z: ceiling hanging sign ATTACHED/chain and actual HangingSignBlockEntity; real player item, no forced state. **NOT RUN**
+- [ ] **SB26-045** — Planet face -Z: wall hanging sign lateral support, click panel and chaining; real player item, no forced state. **NOT RUN**
+- [ ] **SB26-046** — Planet face -Z: standing+wall BannerItem pattern/BE/visual rotation; real player item, no forced state. **NOT RUN**
+- [ ] **SB26-047** — Planet edge +X/+Y: sign front/back text+real item and real chart transported source/target positions. **NOT RUN**
+- [ ] **SB26-048** — Planet edge +X/-Y: hanging chain and true side support and real chart transported source/target positions. **NOT RUN**
+- [ ] **SB26-049** — Planet edge -X/+Y: banner dye/pattern item BE sync and real chart transported source/target positions. **NOT RUN**
+- [ ] **SB26-050** — Planet edge -X/-Y: waterlogged sign FluidState/scheduled tick and real chart transported source/target positions. **NOT RUN**
+- [ ] **SB26-051** — Planet edge +Z/+Y: sign front/back text+real item and real chart transported source/target positions. **NOT RUN**
+- [ ] **SB26-052** — Planet edge +Z/-Y: hanging chain and true side support and real chart transported source/target positions. **NOT RUN**
+- [ ] **SB26-053** — Planet edge -Z/+Y: banner dye/pattern item BE sync and real chart transported source/target positions. **NOT RUN**
+- [ ] **SB26-054** — Planet edge -Z/-Y: waterlogged sign FluidState/scheduled tick and real chart transported source/target positions. **NOT RUN**
+- [ ] **SB26-055** — Planet edge +X/+Z: sign front/back text+real item and real chart transported source/target positions. **NOT RUN**
+- [ ] **SB26-056** — Planet edge +X/-Z: hanging chain and true side support and real chart transported source/target positions. **NOT RUN**
+- [ ] **SB26-057** — Planet edge -X/+Z: banner dye/pattern item BE sync and real chart transported source/target positions. **NOT RUN**
+- [ ] **SB26-058** — Planet edge -X/-Z: waterlogged sign FluidState/scheduled tick and real chart transported source/target positions. **NOT RUN**
+- [ ] **SB26-059** — Planet triple corner (X,Y,Z signs +++): physical BlockPos, real item support, sign BE text and banner pattern/drop after crossing. **NOT RUN**
+- [ ] **SB26-060** — Planet triple corner (X,Y,Z signs ++-): physical BlockPos, real item support, sign BE text and banner pattern/drop after crossing. **NOT RUN**
+- [ ] **SB26-061** — Planet triple corner (X,Y,Z signs +-+): physical BlockPos, real item support, sign BE text and banner pattern/drop after crossing. **NOT RUN**
+- [ ] **SB26-062** — Planet triple corner (X,Y,Z signs -++): physical BlockPos, real item support, sign BE text and banner pattern/drop after crossing. **NOT RUN**
+- [ ] **SB26-063** — Planet triple corner (X,Y,Z signs +--): physical BlockPos, real item support, sign BE text and banner pattern/drop after crossing. **NOT RUN**
+- [ ] **SB26-064** — Planet triple corner (X,Y,Z signs -+-): physical BlockPos, real item support, sign BE text and banner pattern/drop after crossing. **NOT RUN**
+- [ ] **SB26-065** — Planet triple corner (X,Y,Z signs --+): physical BlockPos, real item support, sign BE text and banner pattern/drop after crossing. **NOT RUN**
+- [ ] **SB26-066** — Planet triple corner (X,Y,Z signs ---): physical BlockPos, real item support, sign BE text and banner pattern/drop after crossing. **NOT RUN**
+- [ ] **SB26-067** — Server sign editor allowed player UUID preserved; another player denied edit. **NOT RUN**
+- [ ] **SB26-068** — Sign editor after player moved >4 blocks cannot write BE. **NOT RUN**
+- [ ] **SB26-069** — Waxed signs deny editing, clicked RUN_COMMAND authorization unchanged. **NOT RUN**
+- [ ] **SB26-070** — Honeycomb wax item count, GameEvent, action sound and BE persisted. **NOT RUN**
+- [ ] **SB26-071** — Dye front/back sign side correct on -Y camera; no unwanted opposite-side update. **NOT RUN**
+- [ ] **SB26-072** — Glow ink/regular ink front/back edit and ItemStack counts. **NOT RUN**
+- [ ] **SB26-073** — Server commands run real dimension and physical BlockPos, not a local chart coordinate. **NOT RUN**
+- [ ] **SB26-074** — Filtered/unfiltered front/back text JSON serialization survives chunk reload. **NOT RUN**
+- [ ] **SB26-075** — Two players at different gravity faces get same authoritative sign BE. **NOT RUN**
+- [ ] **SB26-076** — HangingSignBlockEntity text width/line height differs correctly from SignBlockEntity. **NOT RUN**
+- [ ] **SB26-077** — Hanging-sign chaining pass-through on physical clicked side but panel remains editable. **NOT RUN**
+- [ ] **SB26-078** — Banner six layers, base color, custom name round-trip ITEM->BE->drop->ITEM. **NOT RUN**
+- [ ] **SB26-079** — Banner patterns/cloth renderer correct on all face normals and mirrored camera. **NOT RUN**
+- [ ] **SB26-080** — Hanging signs mounted under mixed ceiling/side and chunk boundary. **NOT RUN**
+- [ ] **SB26-081** — Waterlogged signs schedule water ticks across edge, banner not waterlogged. **NOT RUN**
+- [ ] **SB26-082** — No item duplication on rejected block support or repeated use. **NOT RUN**
+- [ ] **SB26-083** — Player mayBuild=false and claim protection do not bypass permissions. **NOT RUN**
+- [ ] **SB26-084** — Structure/worldgen and commands use real position/dimension, not Planet virtual coords. **NOT RUN**
+- [ ] **SB26-085** — Pixel collision/hitbox matches physical render and editable sign plane. **NOT RUN**
+- [ ] **SB26-086** — Unknown mod independent custom BlockItem gets physical defaults without typed registration. **NOT RUN**
+- [ ] **SB26-087** — Actual pinned ClickSigns jar loaded and custom RoadSignBlock getStateForPlacement owner dispatch verified. **NOT RUN**
+- [ ] **SB26-088** — ClickSigns custom BE packet BlockPos and content sync remain physically exact. **NOT RUN**
+- [ ] **SB26-089** — ClickSigns custom renderer/GUI work on real Planet edge if opted in. **NOT RUN**
+- [ ] **SB26-090** — A mod SignBlock subclass overriding useItemOn receives its own dispatch. **NOT RUN**
+- [ ] **SB26-091** — Opted-in PlanetSignSurfaceFrame caller+provider handles local tangents without rewriting Level. **NOT RUN**
+- [ ] **SB26-092** — Foreign fake Level/schematic captures preserve physical world axes. **NOT RUN**
+- [ ] **SB26-093** — NeoForge21.1.215 compiled ASM full owner signatures and mixin targets verified separately. **NOT RUN**
+- [ ] **SB26-094** — Client and dedicated server actual mod jar tested independently. **NOT RUN**
+- [ ] **SB26-095** — Stress test many simultaneous signs/banner BEs around seams without leaks or tick storm. **NOT RUN**
+- [ ] **SB26-096** — Server save/reload all 6 families including fluid and attachments across chart boundary. **NOT RUN**
+
+A passed compilation is not patched ASM proof; a successful forced fixture isn't successful item placement; a vanilla pass isn't a loaded mod pass. Case PASS requires logs, source/target face, real BlockPos, original item/state and dedicated server+client evidence.
