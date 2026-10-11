@@ -1,0 +1,199 @@
+# Stage3A-31.3 — 193 future oriented pattern / blockstate / asset tests, vanilla plus Chipped and Rechiseled
+
+**193 tests ALL NOT RUN.** These are future integration acceptance cases, not game fixes, compiled NeoForge ASM proof or JAR compatibility. Check six Planet faces, 12 edges and eight corners with real player/admin/alternate creators and actual source material/model. Material and class names alone are not visual acceptance.
+
+Each record shall capture exact original/item registered resource ID, effective callback original declaring-owner signature and patched ASM (if checked), mod name/JAR binary version, block model asset/JSON variant, original `BlockState` and server-saved value, original physical BlockPos and BlockHitResult normal, canonical source/target chart, transformed quad normal/UV/RenderType/ModelData, client/server screenshot/physics, and **PASS/FAIL/NOT_RUN**. For `GameMasterBlockItem` permission requirements, retain vanilla rules; no fake bypass needed. Cross seam/in-Planet + vanilla noPlanet and foreign/fake Level independent. "All 16" means all registered IDs parameterized, not one representative.
+
+- [ ] **PAT31-001** — Face +X — All 16 original GlazedTerracottaBlock colors real BlockItem/FACING and pattern tile/arrow visible orientation. **NOT RUN**
+- [ ] **PAT31-002** — Face +X — PumpkinBlock shears-created CarvedPumpkinBlock vs direct BlockItem carved/jack-o-lantern with face/front direction and seeds spawn. **NOT RUN**
+- [ ] **PAT31-003** — Face +X — LoomBlock, AnvilBlock and EndPortalFrameBlock real ITEM with oriented texture/shape and portal eye independent state. **NOT RUN**
+- [ ] **PAT31-004** — Face +X — JigsawBlock 12 legal FrontAndTop orientations via actual GameMasterBlockItem or administrative structure, no invalid pair. **NOT RUN**
+- [ ] **PAT31-005** — Face +X — All 3 CommandBlock variants six FACING, conditional flag and actual GameMasterBlockItem/admin permissions unaffected. **NOT RUN**
+- [ ] **PAT31-006** — Face +X — Chipped 1.21.1 GlazedTerracottaBlock factory vs Chipped DirectionBlock and WorkbenchBlock; actual compatible mod JAR owner. **NOT RUN**
+- [ ] **PAT31-007** — Face +X — Rechiseled 1.21.1 independent RechiseledPillarBlock state rotation vs generated model JSON, Fusion CTM with real loaded JAR. **NOT RUN**
+- [ ] **PAT31-008** — Face +X — Unknown mod decor flat/no-FACING/CTM and vanilla static model with UV orientation, no global state mutation. **NOT RUN**
+- [ ] **PAT31-009** — Face -X — All 16 original GlazedTerracottaBlock colors real BlockItem/FACING and pattern tile/arrow visible orientation. **NOT RUN**
+- [ ] **PAT31-010** — Face -X — PumpkinBlock shears-created CarvedPumpkinBlock vs direct BlockItem carved/jack-o-lantern with face/front direction and seeds spawn. **NOT RUN**
+- [ ] **PAT31-011** — Face -X — LoomBlock, AnvilBlock and EndPortalFrameBlock real ITEM with oriented texture/shape and portal eye independent state. **NOT RUN**
+- [ ] **PAT31-012** — Face -X — JigsawBlock 12 legal FrontAndTop orientations via actual GameMasterBlockItem or administrative structure, no invalid pair. **NOT RUN**
+- [ ] **PAT31-013** — Face -X — All 3 CommandBlock variants six FACING, conditional flag and actual GameMasterBlockItem/admin permissions unaffected. **NOT RUN**
+- [ ] **PAT31-014** — Face -X — Chipped 1.21.1 GlazedTerracottaBlock factory vs Chipped DirectionBlock and WorkbenchBlock; actual compatible mod JAR owner. **NOT RUN**
+- [ ] **PAT31-015** — Face -X — Rechiseled 1.21.1 independent RechiseledPillarBlock state rotation vs generated model JSON, Fusion CTM with real loaded JAR. **NOT RUN**
+- [ ] **PAT31-016** — Face -X — Unknown mod decor flat/no-FACING/CTM and vanilla static model with UV orientation, no global state mutation. **NOT RUN**
+- [ ] **PAT31-017** — Face +Y — All 16 original GlazedTerracottaBlock colors real BlockItem/FACING and pattern tile/arrow visible orientation. **NOT RUN**
+- [ ] **PAT31-018** — Face +Y — PumpkinBlock shears-created CarvedPumpkinBlock vs direct BlockItem carved/jack-o-lantern with face/front direction and seeds spawn. **NOT RUN**
+- [ ] **PAT31-019** — Face +Y — LoomBlock, AnvilBlock and EndPortalFrameBlock real ITEM with oriented texture/shape and portal eye independent state. **NOT RUN**
+- [ ] **PAT31-020** — Face +Y — JigsawBlock 12 legal FrontAndTop orientations via actual GameMasterBlockItem or administrative structure, no invalid pair. **NOT RUN**
+- [ ] **PAT31-021** — Face +Y — All 3 CommandBlock variants six FACING, conditional flag and actual GameMasterBlockItem/admin permissions unaffected. **NOT RUN**
+- [ ] **PAT31-022** — Face +Y — Chipped 1.21.1 GlazedTerracottaBlock factory vs Chipped DirectionBlock and WorkbenchBlock; actual compatible mod JAR owner. **NOT RUN**
+- [ ] **PAT31-023** — Face +Y — Rechiseled 1.21.1 independent RechiseledPillarBlock state rotation vs generated model JSON, Fusion CTM with real loaded JAR. **NOT RUN**
+- [ ] **PAT31-024** — Face +Y — Unknown mod decor flat/no-FACING/CTM and vanilla static model with UV orientation, no global state mutation. **NOT RUN**
+- [ ] **PAT31-025** — Face -Y — All 16 original GlazedTerracottaBlock colors real BlockItem/FACING and pattern tile/arrow visible orientation. **NOT RUN**
+- [ ] **PAT31-026** — Face -Y — PumpkinBlock shears-created CarvedPumpkinBlock vs direct BlockItem carved/jack-o-lantern with face/front direction and seeds spawn. **NOT RUN**
+- [ ] **PAT31-027** — Face -Y — LoomBlock, AnvilBlock and EndPortalFrameBlock real ITEM with oriented texture/shape and portal eye independent state. **NOT RUN**
+- [ ] **PAT31-028** — Face -Y — JigsawBlock 12 legal FrontAndTop orientations via actual GameMasterBlockItem or administrative structure, no invalid pair. **NOT RUN**
+- [ ] **PAT31-029** — Face -Y — All 3 CommandBlock variants six FACING, conditional flag and actual GameMasterBlockItem/admin permissions unaffected. **NOT RUN**
+- [ ] **PAT31-030** — Face -Y — Chipped 1.21.1 GlazedTerracottaBlock factory vs Chipped DirectionBlock and WorkbenchBlock; actual compatible mod JAR owner. **NOT RUN**
+- [ ] **PAT31-031** — Face -Y — Rechiseled 1.21.1 independent RechiseledPillarBlock state rotation vs generated model JSON, Fusion CTM with real loaded JAR. **NOT RUN**
+- [ ] **PAT31-032** — Face -Y — Unknown mod decor flat/no-FACING/CTM and vanilla static model with UV orientation, no global state mutation. **NOT RUN**
+- [ ] **PAT31-033** — Face +Z — All 16 original GlazedTerracottaBlock colors real BlockItem/FACING and pattern tile/arrow visible orientation. **NOT RUN**
+- [ ] **PAT31-034** — Face +Z — PumpkinBlock shears-created CarvedPumpkinBlock vs direct BlockItem carved/jack-o-lantern with face/front direction and seeds spawn. **NOT RUN**
+- [ ] **PAT31-035** — Face +Z — LoomBlock, AnvilBlock and EndPortalFrameBlock real ITEM with oriented texture/shape and portal eye independent state. **NOT RUN**
+- [ ] **PAT31-036** — Face +Z — JigsawBlock 12 legal FrontAndTop orientations via actual GameMasterBlockItem or administrative structure, no invalid pair. **NOT RUN**
+- [ ] **PAT31-037** — Face +Z — All 3 CommandBlock variants six FACING, conditional flag and actual GameMasterBlockItem/admin permissions unaffected. **NOT RUN**
+- [ ] **PAT31-038** — Face +Z — Chipped 1.21.1 GlazedTerracottaBlock factory vs Chipped DirectionBlock and WorkbenchBlock; actual compatible mod JAR owner. **NOT RUN**
+- [ ] **PAT31-039** — Face +Z — Rechiseled 1.21.1 independent RechiseledPillarBlock state rotation vs generated model JSON, Fusion CTM with real loaded JAR. **NOT RUN**
+- [ ] **PAT31-040** — Face +Z — Unknown mod decor flat/no-FACING/CTM and vanilla static model with UV orientation, no global state mutation. **NOT RUN**
+- [ ] **PAT31-041** — Face -Z — All 16 original GlazedTerracottaBlock colors real BlockItem/FACING and pattern tile/arrow visible orientation. **NOT RUN**
+- [ ] **PAT31-042** — Face -Z — PumpkinBlock shears-created CarvedPumpkinBlock vs direct BlockItem carved/jack-o-lantern with face/front direction and seeds spawn. **NOT RUN**
+- [ ] **PAT31-043** — Face -Z — LoomBlock, AnvilBlock and EndPortalFrameBlock real ITEM with oriented texture/shape and portal eye independent state. **NOT RUN**
+- [ ] **PAT31-044** — Face -Z — JigsawBlock 12 legal FrontAndTop orientations via actual GameMasterBlockItem or administrative structure, no invalid pair. **NOT RUN**
+- [ ] **PAT31-045** — Face -Z — All 3 CommandBlock variants six FACING, conditional flag and actual GameMasterBlockItem/admin permissions unaffected. **NOT RUN**
+- [ ] **PAT31-046** — Face -Z — Chipped 1.21.1 GlazedTerracottaBlock factory vs Chipped DirectionBlock and WorkbenchBlock; actual compatible mod JAR owner. **NOT RUN**
+- [ ] **PAT31-047** — Face -Z — Rechiseled 1.21.1 independent RechiseledPillarBlock state rotation vs generated model JSON, Fusion CTM with real loaded JAR. **NOT RUN**
+- [ ] **PAT31-048** — Face -Z — Unknown mod decor flat/no-FACING/CTM and vanilla static model with UV orientation, no global state mutation. **NOT RUN**
+- [ ] **PAT31-049** — Edge +X/+Y — Pattern neighbor across edge: FACING front orientation and baked quad texture direction transported without duplicate 90 degree rotation. **NOT RUN**
+- [ ] **PAT31-050** — Edge +X/+Y — Chipped multi-part WorkbenchBlock FACING-signed side cell physical target and one inventory placement/rollback across chart. **NOT RUN**
+- [ ] **PAT31-051** — Edge +X/+Y — Rechiseled independent AXIS/GPU visual rotation model variant and fusion connectivity across seam (no physical world alias). **NOT RUN**
+- [ ] **PAT31-052** — Edge +X/+Y — Pumpkin SHEARS click world normal translated only at owner semantic boundary, seeds spawn physical and restore checks. **NOT RUN**
+- [ ] **PAT31-053** — Edge +X/+Y — Jigsaw FRONT/TOP structure matching across chart, explicit source and target chart, keep structure-space physical provenance. **NOT RUN**
+- [ ] **PAT31-054** — Edge +X/+Y — Glazed mosaic corner and rotated pattern stitching across materials/adjacent IDs vs noPlanet same geometry. **NOT RUN**
+- [ ] **PAT31-055** — Edge +X/-Y — Pattern neighbor across edge: FACING front orientation and baked quad texture direction transported without duplicate 90 degree rotation. **NOT RUN**
+- [ ] **PAT31-056** — Edge +X/-Y — Chipped multi-part WorkbenchBlock FACING-signed side cell physical target and one inventory placement/rollback across chart. **NOT RUN**
+- [ ] **PAT31-057** — Edge +X/-Y — Rechiseled independent AXIS/GPU visual rotation model variant and fusion connectivity across seam (no physical world alias). **NOT RUN**
+- [ ] **PAT31-058** — Edge +X/-Y — Pumpkin SHEARS click world normal translated only at owner semantic boundary, seeds spawn physical and restore checks. **NOT RUN**
+- [ ] **PAT31-059** — Edge +X/-Y — Jigsaw FRONT/TOP structure matching across chart, explicit source and target chart, keep structure-space physical provenance. **NOT RUN**
+- [ ] **PAT31-060** — Edge +X/-Y — Glazed mosaic corner and rotated pattern stitching across materials/adjacent IDs vs noPlanet same geometry. **NOT RUN**
+- [ ] **PAT31-061** — Edge +X/+Z — Pattern neighbor across edge: FACING front orientation and baked quad texture direction transported without duplicate 90 degree rotation. **NOT RUN**
+- [ ] **PAT31-062** — Edge +X/+Z — Chipped multi-part WorkbenchBlock FACING-signed side cell physical target and one inventory placement/rollback across chart. **NOT RUN**
+- [ ] **PAT31-063** — Edge +X/+Z — Rechiseled independent AXIS/GPU visual rotation model variant and fusion connectivity across seam (no physical world alias). **NOT RUN**
+- [ ] **PAT31-064** — Edge +X/+Z — Pumpkin SHEARS click world normal translated only at owner semantic boundary, seeds spawn physical and restore checks. **NOT RUN**
+- [ ] **PAT31-065** — Edge +X/+Z — Jigsaw FRONT/TOP structure matching across chart, explicit source and target chart, keep structure-space physical provenance. **NOT RUN**
+- [ ] **PAT31-066** — Edge +X/+Z — Glazed mosaic corner and rotated pattern stitching across materials/adjacent IDs vs noPlanet same geometry. **NOT RUN**
+- [ ] **PAT31-067** — Edge +X/-Z — Pattern neighbor across edge: FACING front orientation and baked quad texture direction transported without duplicate 90 degree rotation. **NOT RUN**
+- [ ] **PAT31-068** — Edge +X/-Z — Chipped multi-part WorkbenchBlock FACING-signed side cell physical target and one inventory placement/rollback across chart. **NOT RUN**
+- [ ] **PAT31-069** — Edge +X/-Z — Rechiseled independent AXIS/GPU visual rotation model variant and fusion connectivity across seam (no physical world alias). **NOT RUN**
+- [ ] **PAT31-070** — Edge +X/-Z — Pumpkin SHEARS click world normal translated only at owner semantic boundary, seeds spawn physical and restore checks. **NOT RUN**
+- [ ] **PAT31-071** — Edge +X/-Z — Jigsaw FRONT/TOP structure matching across chart, explicit source and target chart, keep structure-space physical provenance. **NOT RUN**
+- [ ] **PAT31-072** — Edge +X/-Z — Glazed mosaic corner and rotated pattern stitching across materials/adjacent IDs vs noPlanet same geometry. **NOT RUN**
+- [ ] **PAT31-073** — Edge -X/+Y — Pattern neighbor across edge: FACING front orientation and baked quad texture direction transported without duplicate 90 degree rotation. **NOT RUN**
+- [ ] **PAT31-074** — Edge -X/+Y — Chipped multi-part WorkbenchBlock FACING-signed side cell physical target and one inventory placement/rollback across chart. **NOT RUN**
+- [ ] **PAT31-075** — Edge -X/+Y — Rechiseled independent AXIS/GPU visual rotation model variant and fusion connectivity across seam (no physical world alias). **NOT RUN**
+- [ ] **PAT31-076** — Edge -X/+Y — Pumpkin SHEARS click world normal translated only at owner semantic boundary, seeds spawn physical and restore checks. **NOT RUN**
+- [ ] **PAT31-077** — Edge -X/+Y — Jigsaw FRONT/TOP structure matching across chart, explicit source and target chart, keep structure-space physical provenance. **NOT RUN**
+- [ ] **PAT31-078** — Edge -X/+Y — Glazed mosaic corner and rotated pattern stitching across materials/adjacent IDs vs noPlanet same geometry. **NOT RUN**
+- [ ] **PAT31-079** — Edge -X/-Y — Pattern neighbor across edge: FACING front orientation and baked quad texture direction transported without duplicate 90 degree rotation. **NOT RUN**
+- [ ] **PAT31-080** — Edge -X/-Y — Chipped multi-part WorkbenchBlock FACING-signed side cell physical target and one inventory placement/rollback across chart. **NOT RUN**
+- [ ] **PAT31-081** — Edge -X/-Y — Rechiseled independent AXIS/GPU visual rotation model variant and fusion connectivity across seam (no physical world alias). **NOT RUN**
+- [ ] **PAT31-082** — Edge -X/-Y — Pumpkin SHEARS click world normal translated only at owner semantic boundary, seeds spawn physical and restore checks. **NOT RUN**
+- [ ] **PAT31-083** — Edge -X/-Y — Jigsaw FRONT/TOP structure matching across chart, explicit source and target chart, keep structure-space physical provenance. **NOT RUN**
+- [ ] **PAT31-084** — Edge -X/-Y — Glazed mosaic corner and rotated pattern stitching across materials/adjacent IDs vs noPlanet same geometry. **NOT RUN**
+- [ ] **PAT31-085** — Edge -X/+Z — Pattern neighbor across edge: FACING front orientation and baked quad texture direction transported without duplicate 90 degree rotation. **NOT RUN**
+- [ ] **PAT31-086** — Edge -X/+Z — Chipped multi-part WorkbenchBlock FACING-signed side cell physical target and one inventory placement/rollback across chart. **NOT RUN**
+- [ ] **PAT31-087** — Edge -X/+Z — Rechiseled independent AXIS/GPU visual rotation model variant and fusion connectivity across seam (no physical world alias). **NOT RUN**
+- [ ] **PAT31-088** — Edge -X/+Z — Pumpkin SHEARS click world normal translated only at owner semantic boundary, seeds spawn physical and restore checks. **NOT RUN**
+- [ ] **PAT31-089** — Edge -X/+Z — Jigsaw FRONT/TOP structure matching across chart, explicit source and target chart, keep structure-space physical provenance. **NOT RUN**
+- [ ] **PAT31-090** — Edge -X/+Z — Glazed mosaic corner and rotated pattern stitching across materials/adjacent IDs vs noPlanet same geometry. **NOT RUN**
+- [ ] **PAT31-091** — Edge -X/-Z — Pattern neighbor across edge: FACING front orientation and baked quad texture direction transported without duplicate 90 degree rotation. **NOT RUN**
+- [ ] **PAT31-092** — Edge -X/-Z — Chipped multi-part WorkbenchBlock FACING-signed side cell physical target and one inventory placement/rollback across chart. **NOT RUN**
+- [ ] **PAT31-093** — Edge -X/-Z — Rechiseled independent AXIS/GPU visual rotation model variant and fusion connectivity across seam (no physical world alias). **NOT RUN**
+- [ ] **PAT31-094** — Edge -X/-Z — Pumpkin SHEARS click world normal translated only at owner semantic boundary, seeds spawn physical and restore checks. **NOT RUN**
+- [ ] **PAT31-095** — Edge -X/-Z — Jigsaw FRONT/TOP structure matching across chart, explicit source and target chart, keep structure-space physical provenance. **NOT RUN**
+- [ ] **PAT31-096** — Edge -X/-Z — Glazed mosaic corner and rotated pattern stitching across materials/adjacent IDs vs noPlanet same geometry. **NOT RUN**
+- [ ] **PAT31-097** — Edge +Y/+Z — Pattern neighbor across edge: FACING front orientation and baked quad texture direction transported without duplicate 90 degree rotation. **NOT RUN**
+- [ ] **PAT31-098** — Edge +Y/+Z — Chipped multi-part WorkbenchBlock FACING-signed side cell physical target and one inventory placement/rollback across chart. **NOT RUN**
+- [ ] **PAT31-099** — Edge +Y/+Z — Rechiseled independent AXIS/GPU visual rotation model variant and fusion connectivity across seam (no physical world alias). **NOT RUN**
+- [ ] **PAT31-100** — Edge +Y/+Z — Pumpkin SHEARS click world normal translated only at owner semantic boundary, seeds spawn physical and restore checks. **NOT RUN**
+- [ ] **PAT31-101** — Edge +Y/+Z — Jigsaw FRONT/TOP structure matching across chart, explicit source and target chart, keep structure-space physical provenance. **NOT RUN**
+- [ ] **PAT31-102** — Edge +Y/+Z — Glazed mosaic corner and rotated pattern stitching across materials/adjacent IDs vs noPlanet same geometry. **NOT RUN**
+- [ ] **PAT31-103** — Edge +Y/-Z — Pattern neighbor across edge: FACING front orientation and baked quad texture direction transported without duplicate 90 degree rotation. **NOT RUN**
+- [ ] **PAT31-104** — Edge +Y/-Z — Chipped multi-part WorkbenchBlock FACING-signed side cell physical target and one inventory placement/rollback across chart. **NOT RUN**
+- [ ] **PAT31-105** — Edge +Y/-Z — Rechiseled independent AXIS/GPU visual rotation model variant and fusion connectivity across seam (no physical world alias). **NOT RUN**
+- [ ] **PAT31-106** — Edge +Y/-Z — Pumpkin SHEARS click world normal translated only at owner semantic boundary, seeds spawn physical and restore checks. **NOT RUN**
+- [ ] **PAT31-107** — Edge +Y/-Z — Jigsaw FRONT/TOP structure matching across chart, explicit source and target chart, keep structure-space physical provenance. **NOT RUN**
+- [ ] **PAT31-108** — Edge +Y/-Z — Glazed mosaic corner and rotated pattern stitching across materials/adjacent IDs vs noPlanet same geometry. **NOT RUN**
+- [ ] **PAT31-109** — Edge -Y/+Z — Pattern neighbor across edge: FACING front orientation and baked quad texture direction transported without duplicate 90 degree rotation. **NOT RUN**
+- [ ] **PAT31-110** — Edge -Y/+Z — Chipped multi-part WorkbenchBlock FACING-signed side cell physical target and one inventory placement/rollback across chart. **NOT RUN**
+- [ ] **PAT31-111** — Edge -Y/+Z — Rechiseled independent AXIS/GPU visual rotation model variant and fusion connectivity across seam (no physical world alias). **NOT RUN**
+- [ ] **PAT31-112** — Edge -Y/+Z — Pumpkin SHEARS click world normal translated only at owner semantic boundary, seeds spawn physical and restore checks. **NOT RUN**
+- [ ] **PAT31-113** — Edge -Y/+Z — Jigsaw FRONT/TOP structure matching across chart, explicit source and target chart, keep structure-space physical provenance. **NOT RUN**
+- [ ] **PAT31-114** — Edge -Y/+Z — Glazed mosaic corner and rotated pattern stitching across materials/adjacent IDs vs noPlanet same geometry. **NOT RUN**
+- [ ] **PAT31-115** — Edge -Y/-Z — Pattern neighbor across edge: FACING front orientation and baked quad texture direction transported without duplicate 90 degree rotation. **NOT RUN**
+- [ ] **PAT31-116** — Edge -Y/-Z — Chipped multi-part WorkbenchBlock FACING-signed side cell physical target and one inventory placement/rollback across chart. **NOT RUN**
+- [ ] **PAT31-117** — Edge -Y/-Z — Rechiseled independent AXIS/GPU visual rotation model variant and fusion connectivity across seam (no physical world alias). **NOT RUN**
+- [ ] **PAT31-118** — Edge -Y/-Z — Pumpkin SHEARS click world normal translated only at owner semantic boundary, seeds spawn physical and restore checks. **NOT RUN**
+- [ ] **PAT31-119** — Edge -Y/-Z — Jigsaw FRONT/TOP structure matching across chart, explicit source and target chart, keep structure-space physical provenance. **NOT RUN**
+- [ ] **PAT31-120** — Edge -Y/-Z — Glazed mosaic corner and rotated pattern stitching across materials/adjacent IDs vs noPlanet same geometry. **NOT RUN**
+- [ ] **PAT31-121** — Corner +X/+Y/+Z — Pattern continuity/glazed 4-block motif across triple-face chart, no globally wrong yaw. **NOT RUN**
+- [ ] **PAT31-122** — Corner +X/+Y/+Z — Chipped Athena CTM and Rechiseled Fusion texture graph at triple corner, target-local vs physical neighbor rule declared. **NOT RUN**
+- [ ] **PAT31-123** — Corner +X/+Y/+Z — Carved pumpkin/golet spawn pattern structure physical vs canonical/local semantics explicitly owned. **NOT RUN**
+- [ ] **PAT31-124** — Corner +X/+Y/+Z — Baked static cube/BER dynamic renderer model axes, culling normals, UV lock and tint at triple corner. **NOT RUN**
+- [ ] **PAT31-125** — Corner +X/+Y/-Z — Pattern continuity/glazed 4-block motif across triple-face chart, no globally wrong yaw. **NOT RUN**
+- [ ] **PAT31-126** — Corner +X/+Y/-Z — Chipped Athena CTM and Rechiseled Fusion texture graph at triple corner, target-local vs physical neighbor rule declared. **NOT RUN**
+- [ ] **PAT31-127** — Corner +X/+Y/-Z — Carved pumpkin/golet spawn pattern structure physical vs canonical/local semantics explicitly owned. **NOT RUN**
+- [ ] **PAT31-128** — Corner +X/+Y/-Z — Baked static cube/BER dynamic renderer model axes, culling normals, UV lock and tint at triple corner. **NOT RUN**
+- [ ] **PAT31-129** — Corner +X/-Y/+Z — Pattern continuity/glazed 4-block motif across triple-face chart, no globally wrong yaw. **NOT RUN**
+- [ ] **PAT31-130** — Corner +X/-Y/+Z — Chipped Athena CTM and Rechiseled Fusion texture graph at triple corner, target-local vs physical neighbor rule declared. **NOT RUN**
+- [ ] **PAT31-131** — Corner +X/-Y/+Z — Carved pumpkin/golet spawn pattern structure physical vs canonical/local semantics explicitly owned. **NOT RUN**
+- [ ] **PAT31-132** — Corner +X/-Y/+Z — Baked static cube/BER dynamic renderer model axes, culling normals, UV lock and tint at triple corner. **NOT RUN**
+- [ ] **PAT31-133** — Corner +X/-Y/-Z — Pattern continuity/glazed 4-block motif across triple-face chart, no globally wrong yaw. **NOT RUN**
+- [ ] **PAT31-134** — Corner +X/-Y/-Z — Chipped Athena CTM and Rechiseled Fusion texture graph at triple corner, target-local vs physical neighbor rule declared. **NOT RUN**
+- [ ] **PAT31-135** — Corner +X/-Y/-Z — Carved pumpkin/golet spawn pattern structure physical vs canonical/local semantics explicitly owned. **NOT RUN**
+- [ ] **PAT31-136** — Corner +X/-Y/-Z — Baked static cube/BER dynamic renderer model axes, culling normals, UV lock and tint at triple corner. **NOT RUN**
+- [ ] **PAT31-137** — Corner -X/+Y/+Z — Pattern continuity/glazed 4-block motif across triple-face chart, no globally wrong yaw. **NOT RUN**
+- [ ] **PAT31-138** — Corner -X/+Y/+Z — Chipped Athena CTM and Rechiseled Fusion texture graph at triple corner, target-local vs physical neighbor rule declared. **NOT RUN**
+- [ ] **PAT31-139** — Corner -X/+Y/+Z — Carved pumpkin/golet spawn pattern structure physical vs canonical/local semantics explicitly owned. **NOT RUN**
+- [ ] **PAT31-140** — Corner -X/+Y/+Z — Baked static cube/BER dynamic renderer model axes, culling normals, UV lock and tint at triple corner. **NOT RUN**
+- [ ] **PAT31-141** — Corner -X/+Y/-Z — Pattern continuity/glazed 4-block motif across triple-face chart, no globally wrong yaw. **NOT RUN**
+- [ ] **PAT31-142** — Corner -X/+Y/-Z — Chipped Athena CTM and Rechiseled Fusion texture graph at triple corner, target-local vs physical neighbor rule declared. **NOT RUN**
+- [ ] **PAT31-143** — Corner -X/+Y/-Z — Carved pumpkin/golet spawn pattern structure physical vs canonical/local semantics explicitly owned. **NOT RUN**
+- [ ] **PAT31-144** — Corner -X/+Y/-Z — Baked static cube/BER dynamic renderer model axes, culling normals, UV lock and tint at triple corner. **NOT RUN**
+- [ ] **PAT31-145** — Corner -X/-Y/+Z — Pattern continuity/glazed 4-block motif across triple-face chart, no globally wrong yaw. **NOT RUN**
+- [ ] **PAT31-146** — Corner -X/-Y/+Z — Chipped Athena CTM and Rechiseled Fusion texture graph at triple corner, target-local vs physical neighbor rule declared. **NOT RUN**
+- [ ] **PAT31-147** — Corner -X/-Y/+Z — Carved pumpkin/golet spawn pattern structure physical vs canonical/local semantics explicitly owned. **NOT RUN**
+- [ ] **PAT31-148** — Corner -X/-Y/+Z — Baked static cube/BER dynamic renderer model axes, culling normals, UV lock and tint at triple corner. **NOT RUN**
+- [ ] **PAT31-149** — Corner -X/-Y/-Z — Pattern continuity/glazed 4-block motif across triple-face chart, no globally wrong yaw. **NOT RUN**
+- [ ] **PAT31-150** — Corner -X/-Y/-Z — Chipped Athena CTM and Rechiseled Fusion texture graph at triple corner, target-local vs physical neighbor rule declared. **NOT RUN**
+- [ ] **PAT31-151** — Corner -X/-Y/-Z — Carved pumpkin/golet spawn pattern structure physical vs canonical/local semantics explicitly owned. **NOT RUN**
+- [ ] **PAT31-152** — Corner -X/-Y/-Z — Baked static cube/BER dynamic renderer model axes, culling normals, UV lock and tint at triple corner. **NOT RUN**
+- [ ] **PAT31-153** — Cross-mechanism/visual owner regression — All 16 GlazedTerracottaBlock vanilla items including every dye color exact registry names. **NOT RUN**
+- [ ] **PAT31-154** — Cross-mechanism/visual owner regression — Vanilla FACING horizontal NORTH SOUTH EAST WEST baseline with physically inverted/side Planet face. **NOT RUN**
+- [ ] **PAT31-155** — Cross-mechanism/visual owner regression — Glazed 2x2 quadrant motif winding/order clockwise and counterclockwise (not mistaken for model single quad rotation). **NOT RUN**
+- [ ] **PAT31-156** — Cross-mechanism/visual owner regression — Vanilla unglazed 16 colored terracottas no orientation property, static texture baseline, no false source promotion. **NOT RUN**
+- [ ] **PAT31-157** — Cross-mechanism/visual owner regression — PumpkinBlock initially has NO FACING, only shearing creates carved block FACING. **NOT RUN**
+- [ ] **PAT31-158** — Cross-mechanism/visual owner regression — CarvedPumpkinBlock inherited by EquipableCarvedPumpkinBlock, JACK_O_LANTERN separate physical registry. **NOT RUN**
+- [ ] **PAT31-159** — Cross-mechanism/visual owner regression — Pumpkin seed ItemEntity spawn impulse/drops physically measured no double-ejection and no world-Y local cheat. **NOT RUN**
+- [ ] **PAT31-160** — Cross-mechanism/visual owner regression — CarvedPumpkinBlock golem BlockPattern search real physical 3D axes vs explicit planet-local semantics. **NOT RUN**
+- [ ] **PAT31-161** — Cross-mechanism/visual owner regression — Loom model face texture and UI orientation without rotating GUI/BlockHitResult incorrectly. **NOT RUN**
+- [ ] **PAT31-162** — Cross-mechanism/visual owner regression — EndPortalFrameBlock FACING/EYE and portal frame structure formation Phase9, no source-only game PASS. **NOT RUN**
+- [ ] **PAT31-163** — Cross-mechanism/visual owner regression — Jigsaw has precisely twelve original FRONT_AND_TOP legal pairs, not all 24 possible signed permutations. **NOT RUN**
+- [ ] **PAT31-164** — Cross-mechanism/visual owner regression — Jigsaw GameMasterBlockItem permission/admin gate preserved and structure template rotation/mirror. **NOT RUN**
+- [ ] **PAT31-165** — Cross-mechanism/visual owner regression — CommandBlock 3 types GameMasterBlockItem not ordinary BlockItem, six-direction FACING plus conditional. **NOT RUN**
+- [ ] **PAT31-166** — Cross-mechanism/visual owner regression — CommandBlock chain propagation uses own direction, admin/powered/BE context independently (Phase7A). **NOT RUN**
+- [ ] **PAT31-167** — Cross-mechanism/visual owner regression — Anvil shape FACING and damaged/chipped variants, FallingBlock updateShape independently. **NOT RUN**
+- [ ] **PAT31-168** — Cross-mechanism/visual owner regression — Anvil falling preserved FACING and collision/texture alignment on six Planet faces. **NOT RUN**
+- [ ] **PAT31-169** — Cross-mechanism/visual owner regression — Chipped 1.21.1 4.0.2 literal GlazedTerracottaBlock factories all16, dynamically generated palette across variants. **NOT RUN**
+- [ ] **PAT31-170** — Cross-mechanism/visual owner regression — Chipped 1.21.1 separate DirectionBlock own getStateForPlacement, must not treat every direction block as Glazed subclass. **NOT RUN**
+- [ ] **PAT31-171** — Cross-mechanism/visual owner regression — Chipped 1.21.1 no-FACING acacia_planks_mosaic model JSON versus FACING black_glazed_terracotta_tiles blockstate. **NOT RUN**
+- [ ] **PAT31-172** — Cross-mechanism/visual owner regression — Chipped 1.21.1 athena:pillar blockstate ctM black_terracotta_column no FACING requiring source connector provenance. **NOT RUN**
+- [ ] **PAT31-173** — Cross-mechanism/visual owner regression — Chipped 1.21.1 WorkbenchBlock second cell physical adjacency and MODEL_TYPE MAIN/SIDE render shape. **NOT RUN**
+- [ ] **PAT31-174** — Cross-mechanism/visual owner regression — Rechiseled 1.21.1 independent RechiseledPillarBlock extends RechiseledBlock (not RotatedPillarBlock), separate AXIS. **NOT RUN**
+- [ ] **PAT31-175** — Cross-mechanism/visual owner regression — Rechiseled 1.21.1 RegistrationBlockStateGenerator x/y/z variant rotations and _horizontal model. **NOT RUN**
+- [ ] **PAT31-176** — Cross-mechanism/visual owner regression — Rechiseled 1.21.1 Fusion connected texture uses block model and neighboring per-face states separately. **NOT RUN**
+- [ ] **PAT31-177** — Cross-mechanism/visual owner regression — Chipped/Rechiseled mod code source-version pinned vs actual runtime JAR version/NeoForge range gates. **NOT RUN**
+- [ ] **PAT31-178** — Cross-mechanism/visual owner regression — Modded blank cube but directional pixel texture authored per face without facing property. **NOT RUN**
+- [ ] **PAT31-179** — Cross-mechanism/visual owner regression — UVLOCK true versus false JSON model rotation and texture alignment on -Y and +X sides. **NOT RUN**
+- [ ] **PAT31-180** — Cross-mechanism/visual owner regression — Multi-layer transparent model / emissive / ambient occlusion and tinting with authoritative mod BakedModel. **NOT RUN**
+- [ ] **PAT31-181** — Cross-mechanism/visual owner regression — ModelBlockRendererPlanetMixin tesselateBlock only - distinguish from BER, custom render pipeline or CTM. **NOT RUN**
+- [ ] **PAT31-182** — Cross-mechanism/visual owner regression — PlanetBakedModelRotation quad cache keyed original model quad + PlanetFace but must check ModelData/RenderType and modulation. **NOT RUN**
+- [ ] **PAT31-183** — Cross-mechanism/visual owner regression — BlockRenderCulling model normal physical side vs state canonical model side, seam face preservation. **NOT RUN**
+- [ ] **PAT31-184** — Cross-mechanism/visual owner regression — Render chunk region fallback to client level may carry foreign fake view and needs provenance validation. **NOT RUN**
+- [ ] **PAT31-185** — Cross-mechanism/visual owner regression — Dynamic material palette mod resource pack/other texture pack equivalent transform. **NOT RUN**
+- [ ] **PAT31-186** — Cross-mechanism/visual owner regression — StructureTemplate mirrored pattern/BE NBT retains explicit source frame, no model-only patch state corruption. **NOT RUN**
+- [ ] **PAT31-187** — Cross-mechanism/visual owner regression — ItemStack BLOCK_STATE post-place override changes facing late; verify render uses final BlockState. **NOT RUN**
+- [ ] **PAT31-188** — Cross-mechanism/visual owner regression — Direct commands `/setblock` `/fill` with explicit facing and resource pack variants not force-click interpretation. **NOT RUN**
+- [ ] **PAT31-189** — Cross-mechanism/visual owner regression — Vanilla noPlanet region and outside Planet field should not rotate standard textured geometry. **NOT RUN**
+- [ ] **PAT31-190** — Cross-mechanism/visual owner regression — Dedicated server+client visually same block and material/BE data after save and reload. **NOT RUN**
+- [ ] **PAT31-191** — Cross-mechanism/visual owner regression — Blended render passes/translucency for glazing vs stained glass face ownership and seam underculling. **NOT RUN**
+- [ ] **PAT31-192** — Cross-mechanism/visual owner regression — Random/weighted BlockState variant deterministic state and seed after model wrapper. **NOT RUN**
+- [ ] **PAT31-193** — Cross-mechanism/visual owner regression — All reviewed 158 SOURCE classes remain ASM Planet gameplay REVIEW_PENDING until actual acceptance. **NOT RUN**
