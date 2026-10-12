@@ -213,26 +213,35 @@ final class Phase23C3MultiblockAuthorAsmContractTest {
                         return new AnnotationVisitor(Opcodes.ASM9) {
                             @Override
                             public AnnotationVisitor visitArray(String key) {
-                                if (!key.equals("method")) return null;
-                                return new AnnotationVisitor(Opcodes.ASM9) {
-                                    @Override
-                                    public void visit(String name, Object value) {
-                                        selector.add((String) value);
-                                    }
-                                };
+                                if (key.equals("method")) {
+                                    return new AnnotationVisitor(Opcodes.ASM9) {
+                                        @Override
+                                        public void visit(String unused, Object value) {
+                                            selector.add((String) value);
+                                        }
+                                    };
+                                }
+                                if (key.equals("at")) {
+                                    return new AnnotationVisitor(Opcodes.ASM9) {
+                                        @Override
+                                        public AnnotationVisitor visitAnnotation(
+                                                String unused, String desc) {
+                                            if (!desc.equals(AT)) return null;
+                                            return new AnnotationVisitor(Opcodes.ASM9) {
+                                                @Override
+                                                public void visit(String property, Object value) {
+                                                    if (property.equals("value"))
+                                                        anchors.add((String) value);
+                                                }
+                                            };
+                                        }
+                                    };
+                                }
+                                return null;
                             }
                             @Override
                             public void visit(String key, Object value) {
                                 if (key.equals("cancellable")) cancellation.add((Boolean)value);
-                            }
-                            @Override
-                            public AnnotationVisitor visitAnnotation(String key, String desc) {
-                                if (!key.equals("at") || !desc.equals(AT)) return null;
-                                return new AnnotationVisitor(Opcodes.ASM9) {
-                                    @Override public void visit(String key, Object value) {
-                                        if (key.equals("value")) anchors.add((String)value);
-                                    }
-                                };
                             }
                         };
                     }
