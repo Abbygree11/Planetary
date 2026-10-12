@@ -151,3 +151,6 @@ Stage 2.3C-1 ([research](research/PHASE2_STAGE3C1_BLOCKITEM_STANDINGWALL_NEOFORG
 
 
 **2.3C-11 exact ABI gate CONFIRMED:** [CI38289949215](https://github.com/Abbygree11/Planetary/actions/runs/38289949215) completed SUCCESS after code/test commit [e587255](https://github.com/Abbygree11/Planetary/commit/e5872552a0840334475e38240b138e7fbbec5b79). Tests cover selected NeoForge21.1.215 shape/support/occlusion/BakedModel/compiled Planet Mixins; no game/mod/real Mixin transform acceptance. Root and phases README refreshed; historic partial Stage3A rows are noncurrent snapshots.
+
+
+**Stage2.3C-12 (2026-10-12):** [exact NeoForge light/AO/TriState/BlockColors/BiomeColors/alternate renderer source research](../research/PHASE2_STAGE3C12_LIGHT_AO_BIOME_TINT_NEOFORGE_MODEL_ASM_1_21_1.md) 4/4; [strict 21.1.215 compiled target and Planet model-Mixin test](../../src/test/java/dev/planetary/world/Phase23C12LightingAoTintAsmContractTest.java); [first CI38296937423](https://github.com/Abbygree11/Planetary/actions/runs/38296937423) needs independently verified result. Only selected patched classfile & Mixin annotations gate; in-game side shadows, active mod/NeoForge shader pipelines and all 6 faces/12 edges/8 corners NOT RUN. Phase3 owns runtime integration, production source untouched.
