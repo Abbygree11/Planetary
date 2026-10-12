@@ -116,8 +116,16 @@ final class Phase23C6BlockEntityLifecycleAsmContractTest {
         assertTrue(has(body, "tick"));
         // NeoForge 21.1.215 may add onLoad for freshly registered BEs.
         // Pin the original target behavior and do not infer it from later patches.
-        assertTrue(has(body, "onLoad"),
-                "NeoForge onLoad lifecycle dispatch absent in exact target");
+        // Java compiles the freshEntities.forEach(be -> be.onLoad())
+        // callback into a synthetic lambda body, not necessarily directly
+        // into Level.tickBlockEntities. Check actual declaring class callsites.
+        assertTrue(methods(LEVEL).stream().anyMatch(m -> {
+            try {
+                return has(calls(LEVEL, m.name, m.desc), "onLoad");
+            } catch (IOException exception) {
+                throw new AssertionError(exception);
+            }
+        }), "NeoForge onLoad invocation absent from exact Level class");
         assertTrue(declares(LEVEL, "addFreshBlockEntities",
                 "(Ljava/util/Collection;)V"));
         assertTrue(has(calls(CHUNK, "addAndRegisterBlockEntity", SET_BE),
