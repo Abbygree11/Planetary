@@ -1,6 +1,6 @@
 # 2.4A: установка и свойства ориентации
 
-**Статус:** 2.4A-1 API CI PASS / user reports no regression; 2.4A-2 typed properties code / CI PENDING / GAMEPLAY PENDING (not phase `PASS`). [Индекс фазы](../phase-02.md).
+**Статус:** 2.4A-1 API CI PASS / user reports no regression; 2.4A-2 typed properties code / CI PASS / GAMEPLAY PENDING (not phase `PASS`). [Индекс фазы](../phase-02.md).
 
 **Контекст:** После evidence-backed owner audit по соответствующим семьям; стадия не требует ждать *всю* вселенную классов, но не допускает слепых блоковых костылей. [Final 2.3C-1…19 scope gate](../../research/PHASE2_STAGE3C_1_TO_19_FINAL_SELECTED_ABI_SCOPE_GATE_1_21_1.md) — 19/19 selected exact ABI PASS, original 40 mechanisms accounted with 16 shared-only / 4 partial; source survey sufficiently scoped, **NEXT `2.4A-1` code**. Runtime/UI/real mod and six-face acceptance OPEN.
 
@@ -19,7 +19,7 @@
 
 **2.4A-1 foundation:** [typed intent, target resolver and test contract](../../research/PHASE2_STAGE4A1_TYPED_PLACEMENT_INTENT_1_21_1.md). Code: `PlanetPlacementIntent`, `PlanetPlacementResolver`, `PlanetPlacementContextAdapter`, `PlanetPlacementIntentTest`. No gameplay/NeoForge Mixin behavior claimed; first CI had one mistaken null exception assertion, fixed in 893a093; repeat [CI #38313939066](https://github.com/Abbygree11/Planetary/actions/runs/38313939066) COMPLETED SUCCESS (compile, JUnit, registry).
 
-**2.4A-2 typed API:** [property semantics and limits](../../research/PHASE2_STAGE4A2_TYPED_ORIENTATION_PROPERTIES_1_21_1.md), `PlanetOrientationProperties` and `PlanetOrientationPropertiesTest`. This does NOT close checklist 2: runtime author adapters remain open. 2.4A-1 manual user response: “Все ок”; record only no reported regression, not comprehensive 6/12/8 acceptance. CI for new code pending.
+**2.4A-2 typed API:** [property semantics and limits](../../research/PHASE2_STAGE4A2_TYPED_ORIENTATION_PROPERTIES_1_21_1.md), `PlanetOrientationProperties` and `PlanetOrientationPropertiesTest`. This does NOT close checklist 2: runtime author adapters remain open. 2.4A-1 manual user response: “Все ок”; record only no reported regression, not comprehensive 6/12/8 acceptance. New [CI #38315358373](https://github.com/Abbygree11/Planetary/actions/runs/38315358373) completed SUCCESS, new code compiled and full JUnit and registry checks green; runtime author adapters still OPEN.
 
 ### Checkpoint для следующего захода
 

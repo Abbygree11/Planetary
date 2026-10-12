@@ -1,6 +1,6 @@
 # Planetary — 2.4A-2 typed property-domain semantics (Minecraft 1.21.1 / NeoForge 21.1.215)
 
-Date: 2026-10-13. Branch `2.0`. **Semantic API implementation only**; green compile/JUnit and actual placement gameplay are independently tracked.
+Date: 2026-10-13. Branch `2.0`. **Semantic API implementation only**; green compile/JUnit and actual placement gameplay are independently tracked. [CI #38315358373](https://github.com/Abbygree11/Planetary/actions/runs/38315358373) **COMPLETED SUCCESS** (production and test Java compilation, full JUnit suite, NeoForge 21.1.215 registry census) for code commit `ce954e7`.
 
 ## Scope / actual implementation
 
@@ -30,7 +30,7 @@ Relevant exact-version research: [C16](PHASE2_STAGE3C16_FRONT_AND_TOP_ROTATION16
 
 ## Automated gates
 
-New `PlanetOrientationPropertiesTest`: six faces × six directions, AXIS_3, half and attach, all 12 real FrontAndTop states per face, all 16 rotation segments per face with two zero policies, 12 cube edges and eight corners (canonical target invariant), unrelated-state preservation, legal property checks, vanilla and foreign fallback. **Runtime dispatch, applied Mixins, player item placement and real mod load are NOT covered by these pure tests**.
+New `PlanetOrientationPropertiesTest`: six faces × six directions, AXIS_3, half and attach, all 12 real FrontAndTop states per face, all 16 rotation segments per face with two zero policies, 12 cube edges and eight corners (canonical target invariant), unrelated-state preservation, legal property checks, vanilla and foreign fallback. **Runtime dispatch, applied Mixins, player item placement and real mod load are NOT covered by these pure tests**. [CI #38315358373](https://github.com/Abbygree11/Planetary/actions/runs/38315358373) completed successfully with 21.1.215 Gradle classpath; don't infer gameplay acceptance.
 
 Required later real checks: +Y and five other faces, 12 edges, eight corners, normal hit vs replacement, actual player click and no-player dispenser/structure, full matched NeoForge 21.1.215 ABI/loaded mod, post-placement item components, neighbor survival, ROTATION_16 visuals + BER, rotate/mirror order, no-Planet baseline and save/reload. Source family [2.4A card](../phases/phase-02/05-implementation-a.md).
 
