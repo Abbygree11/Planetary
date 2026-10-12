@@ -178,7 +178,18 @@ final class Phase23C6BlockEntityLifecycleAsmContractTest {
                 "(" + B + CI + ")V"));
         List<Call> body = calls(MIXIN_LEVEL, "planetary$setBlockEntity",
                 "(" + B + CI + ")V");
-        assertTrue(has(body, "put"), "Planet BE storage must remain visible");
+        assertTrue(has(body, "blockEntities"),
+                "LevelMixin handler must route to the Planet BE store");
+        // Direct store.put is inside the compiled Consumer lambda passed to
+        // Optional.ifPresent, not necessarily in the injector's own code body.
+        assertTrue(methods(MIXIN_LEVEL).stream().anyMatch(m -> {
+            try {
+                return m.name.startsWith("lambda$planetary$setBlockEntity") &&
+                        has(calls(MIXIN_LEVEL, m.name, m.desc), "put");
+            } catch (IOException exception) {
+                throw new AssertionError(exception);
+            }
+        }), "Compiled Planet BE store lambda must perform put");
         assertFalse(has(body, "addAndRegisterBlockEntity"),
                 "A direct hashmap store is not LevelChunk ticker registration");
         assertFalse(has(body, "updateBlockEntityTicker"),
@@ -248,7 +259,12 @@ final class Phase23C6BlockEntityLifecycleAsmContractTest {
                 };
             }
         }, ClassReader.SKIP_CODE | ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
-        assertEquals(List.of(target), methods);
+        // NeoForge capability injections are remap=false and deliberately
+        // use the full overloaded method selector. Level's ordinary targets
+        // use a bare method name. Pin both forms rather than accepting either.
+        String selector = mixin.equals(MIXIN_SERVER)
+                ? target + targetDesc : target;
+        assertEquals(List.of(selector), methods);
         assertEquals(List.of("HEAD"), at);
         assertEquals(List.of(cancellable), cancels);
     }
