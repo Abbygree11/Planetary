@@ -50,3 +50,4 @@
 Цель — survival-совместимый мир с локальной гравитацией, полноценным строительством, жидкостями, существами, сигналами, генерацией и модами. Для этого Planetary исследует **общие владельцы механизмов**, а не вводит отдельный патч для каждого ванильного или модового блока.
 
 Неподтверждённые механизмы остаются открытыми в roadmap. Файлы исследований фиксируют необходимые точки интеграции; они не являются утверждением, что соответствующая функция уже реализована.
+\n\n**2.3C-18:** [P26 Multiface/Vine/three spread operators research](docs/research/PHASE2_STAGE3C18_MULTIFACE_VINE_SPREAD_GROWTH_NEOFORGE_MOD_ASM_1_21_1.md), [CI38307680178](https://github.com/Abbygree11/Planetary/actions/runs/38307680178) selected NeoForge21.1.215 classpath ASM/JUnit SUCCESS; six faces/12 seams/8 corners and actual mod game acceptance remain OPEN. Next 2.3C-19 P29 GrowingPlant.\n
