@@ -75,7 +75,10 @@ final class Phase23C12LightingAoTintAsmContractTest {
         assertTrue(declares(LIGHT_MODEL,"tesselateWithAO",BLOCK_TESSEL));
         assertTrue(declares(LIGHT_MODEL,"tesselateWithoutAO",BLOCK_TESSEL));
         assertTrue(has(all(LIGHT_MODEL),"render"));
-        assertTrue(has(all(LIGHT_MODEL),"getQuadLighter"));
+        // The factory method is declared on the specialized renderer;
+        // the normal render path can access its thread-local lighter fields directly.
+        assertTrue(declares(LIGHT_MODEL,"getQuadLighter",
+                "(Z)Lnet/neoforged/neoforge/client/model/lighting/QuadLighter;"));
         assertTrue(has(all(LIGHT_MODEL),"getQuads"));
         assertTrue(has(all(QUAD),"getShade"),"NeoForge normal-vector shading must be preserved");
         assertTrue(has(all(QUAD),"getColor"),"NeoForge quad tint must call BlockColors");
@@ -111,7 +114,11 @@ final class Phase23C12LightingAoTintAsmContractTest {
         assertTrue(declares(BLOCK_AND_TINT,"getRawBrightness","("+POS+"I)I"));
         assertTrue(declares(LIGHT,"getRawBrightness","("+POS+"I)I"));
         assertTrue(has(call(LIGHT,"getRawBrightness","("+POS+"I)I"),"getLightValue"));
-        assertTrue(declares(STATE_BASE,"getLightEmission","("+GETTER+POS+")I"));
+        // NeoForge exposes the position-aware value via IBlockStateExtension,
+        // not a method declared on BlockBehaviour$BlockStateBase itself.
+        assertTrue(declares(
+                "net/neoforged/neoforge/common/extensions/IBlockStateExtension",
+                "getLightEmission","("+GETTER+POS+")I"));
         assertTrue(declares(STATE_BASE,"getLightBlock","("+GETTER+POS+")I"));
         assertTrue(declares(STATE_BASE,"getShadeBrightness","("+GETTER+POS+")F"));
         assertTrue(has(call(STATE_BASE,"getLightBlock","("+GETTER+POS+")I"),
@@ -126,7 +133,10 @@ final class Phase23C12LightingAoTintAsmContractTest {
                 "Lcom/mojang/blaze3d/vertex/PoseStack;"+
                 "Lcom/mojang/blaze3d/vertex/VertexConsumer;"+
                 "ZLnet/minecraft/util/RandomSource;JI"+DATA+TYPE+")"+BAKED));
-        assertTrue(has(byName(PLANET_MIXIN,"planetary$orientModel"),"orientForBlock"));
+        // orientForBlock lives in javac's lambda$... method generated for
+        // Optional.map; the Mixin handler itself calls Optional.map.
+        assertTrue(has(byName(PLANET_MIXIN,"planetary$orientModel"),"map"));
+        assertTrue(has(all(PLANET_MIXIN),"orientForBlock"));
         assertTrue(has(all(PLANET_MODEL),"getQuads"));
         assertTrue(has(all(PLANET_MODEL),"getDirection"));
         assertTrue(has(all(PLANET_MODEL),"getTintIndex") ||
