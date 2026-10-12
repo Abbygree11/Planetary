@@ -10,7 +10,7 @@
 
 - [ ] **1.** Маленькими пакетами закрыть BlockItem/useOn, replacement-state authoring, server/client interaction и placement states.
 - [ ] **2.** Огниво/огонь: сначала локальная установка, затем отдельный handoff PortalShape владельцу Phase9.
-- [ ] **3.** rotate/mirror/structure templates: canonical property transform vs physical structure rotation; запрет двойного поворота.
+- [ ] **3.** rotate/mirror/structure templates: canonical property transform vs physical structure rotation; запрет двойного поворота. **C16 source audit** [exact owner + mod routes](../../research/PHASE2_STAGE3C16_FRONT_AND_TOP_ROTATION16_STATE_TRANSFORMS_NEOFORGE_ASM_1_21_1.md): context-free `BlockStateBase.rotate(Rotation)` vs NeoForge world-aware `IBlockStateExtension.rotate(LevelAccessor,BlockPos,Rotation)` and mod `IBlockExtension`; template processes + mirrors + rotates explicit physical structure author state, never unconditional second rotate in `Level.setBlock`. Runtime/gameplay TODO.
 - [ ] **4.** Сохранить NeoForge hooks, gameplay packet validation and explicit cross-phase boundaries.
 
 ## Условия завершения этой карточки
