@@ -38,7 +38,7 @@
 | 10 | [phase-10.md](phase-10.md) | Совместимость с модами |
 | 11 | [phase-11.md](phase-11.md) | Итоговые проверки и релизные критерии |
 
-Подробные подпакеты [фазы 2](phase-02/) и [текущий Stage2.3C](phase-02/04-lifecycle-neoforge.md). **`2.3C-1…16` завершены как ограниченные 4/4 исследования с успешными *выбранными* NeoForge ASM/JUnit-контрактами**; [C17 — RailState](../research/PHASE2_STAGE3C17_RAILSTATE_PHYSICAL_GRAPH_NEOFORGE_MOD_ASM_1_21_1.md) source/test committed, selected CI separately verify. Это **НЕ** полный байткод-аудит всех P01–P40 и НЕ игровые проверки. [Сверка C1–C15](../research/PHASE2_STAGE3C_1_TO_15_SCOPE_RECONCILIATION_AND_NEXT_OWNER_GATES_1_21_1.md) первоначально выявила шесть target-ABI пробелов; C16 закрыл P09/P10/P35 по выбранным ASM-контрактам, C17 проверяет P28, затем P26/P29. Статусы всегда проверять по GitHub HEAD.
+Подробные подпакеты [фазы 2](phase-02/) и [текущий Stage2.3C](phase-02/04-lifecycle-neoforge.md). **`2.3C-1…17` завершены как ограниченные 4/4 исследования с успешными *выбранными* NeoForge ASM/JUnit-контрактами**; [C17 — RailState](../research/PHASE2_STAGE3C17_RAILSTATE_PHYSICAL_GRAPH_NEOFORGE_MOD_ASM_1_21_1.md) [CI38306600972](https://github.com/Abbygree11/Planetary/actions/runs/38306600972) PASS. Это **НЕ** полный байткод-аудит всех P01–P40 и НЕ игровые проверки. [Сверка C1–C15](../research/PHASE2_STAGE3C_1_TO_15_SCOPE_RECONCILIATION_AND_NEXT_OWNER_GATES_1_21_1.md) первоначально выявила шесть target-ABI пробелов; C16 закрыл P09/P10/P35 по выбранным ASM-контрактам, C17 завершил выбранный ABI P28; затем P26/P29. Статусы всегда проверять по GitHub HEAD.
 
 ## Если чат или проверка оборвались
 
