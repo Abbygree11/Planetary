@@ -219,7 +219,16 @@ final class Phase23C5TemporalTicksAsmContractTest {
         });
         assertEquals(List.of(target), names);
         assertEquals(List.of(atValue), anchors);
-        assertEquals(List.of(cancellable), cancels);
+        // The Java/Mixin annotation default is cancellable=false. When an
+        // injector omits that default, ASM has NO "cancellable" member.
+        // The positive case must be explicit; the negative case must not
+        // declare true. Keep selector, handler and ordinal assertions strict.
+        if (cancellable) {
+            assertEquals(List.of(true), cancels);
+        } else {
+            assertTrue(cancels.isEmpty() || cancels.equals(List.of(false)),
+                    "Noncancellable @Inject unexpectedly declares true");
+        }
         if (ordinal != null) {
             assertEquals(List.of(ordinal), ordinals);
             assertEquals(List.of("AFTER"), shifts);
