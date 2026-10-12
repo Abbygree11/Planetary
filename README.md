@@ -43,7 +43,7 @@
 - [Непрерывный контекст — `docs/AI_CONTEXT.md`](docs/AI_CONTEXT.md) — последние проверенные решения и открытые проблемы.
 - [Карты и карточки фаз](docs/phases/README.md) — короткие пакеты с восстановлением после обрыва чата.
 - [Механизмы гравитации](docs/research/GRAVITY_MECHANISM_MAP_1_21_1.md), [переносимость версий](docs/research/PORTABILITY_STRATEGY.md), [матрица форм](docs/research/SHAPES_1_21_1.md), [жидкости](docs/research/FLUID_MECHANISM_MATRIX_1_21_1.md).
-- [Актуальная фаза 2.3C: точный NeoForge ABI/lifecycle](docs/phases/phase-02/04-lifecycle-neoforge.md) — ограниченные семейства механизмов и ссылки на доказательства; [сверка всех 15 пакетов с P01–P40](docs/research/PHASE2_STAGE3C_1_TO_15_SCOPE_RECONCILIATION_AND_NEXT_OWNER_GATES_1_21_1.md) отделяет проверенные выбранные ABI от шести ещё не проверенных конкретных алгоритмов.
+- [Актуальная фаза 2.3C: точный NeoForge ABI/lifecycle](docs/phases/phase-02/04-lifecycle-neoforge.md) — ограниченные семейства механизмов и ссылки на доказательства; [исходная сверка 15 пакетов с P01–P40](docs/research/PHASE2_STAGE3C_1_TO_15_SCOPE_RECONCILIATION_AND_NEXT_OWNER_GATES_1_21_1.md) и [живая матрица 40 механизмов](docs/research/PHASE2_STAGE3C_P01_P40_ABI_COVERAGE_DISPOSITION_1_21_1.tsv) отделяют проверенные выбранные ABI от ещё не проверенных конкретных алгоритмов. C16 закрыл P09/P10/P35 по выбранному ABI; [C17 исследует рельсовый граф](docs/research/PHASE2_STAGE3C17_RAILSTATE_PHYSICAL_GRAPH_NEOFORGE_MOD_ASM_1_21_1.md).
 
 ## Направление развития
 
