@@ -72,8 +72,13 @@ Implementation owner `2.4A` (state/property placement); `2.4D` (state transforms
 | 1/4 source + NeoForge and Create mod-dispatch reference owner coverage | DOCUMENTED |
 | 2/4 lifecycle, all independent writers and transforms, stage/source/target frames | DOCUMENTED |
 | 3/4 deepest safe mod-compatible typed interface and portability | DOCUMENTED |
-| 4/4 exact selected 21.1.215 classfile ASM/JUnit | TEST COMMITTED; CI separately pending |
+| 4/4 exact selected 21.1.215 classfile ASM/JUnit | **PASS** — [CI38303484382](https://github.com/Abbygree11/Planetary/actions/runs/38303484382) |
 | Production Java/Mixins and applied game transforms | **NOT CHANGED / NOT RUN** |
 | Loaded 1.21.1 Create/Jigsaw/16-angle shader/BER, six-face/12-edge/8-corner survival | **NOT RUN** |
 
-**After PASS:** update [40-row scope matrix](PHASE2_STAGE3C_P01_P40_ABI_COVERAGE_DISPOSITION_1_21_1.tsv) P09/P10/P35 to `SELECTED_SPECIFIC_ABI` only for actually targeted tests and independently verified CI. Remaining specific owner gaps **P26 Multiface/Vine, P28 RailState and P29 GrowingPlant** need coherent 4/4 follow-on packets (e.g. C17), not a claim the entire 2.3C or Phase 2 is DONE. Existing research 2.3C-1..15 remains valid.
+**After [PASS](https://github.com/Abbygree11/Planetary/actions/runs/38303484382):** update [40-row scope matrix](PHASE2_STAGE3C_P01_P40_ABI_COVERAGE_DISPOSITION_1_21_1.tsv) P09/P10/P35 to `SELECTED_SPECIFIC_ABI` only for actually targeted tests and independently verified CI. Remaining specific owner gaps **P26 Multiface/Vine, P28 RailState and P29 GrowingPlant** need coherent 4/4 follow-on packets (e.g. C17), not a claim the entire 2.3C or Phase 2 is DONE. Existing research 2.3C-1..15 remains valid.
+
+
+### Verified CI closure — 2026-10-12
+
+[CI38303484382](https://github.com/Abbygree11/Planetary/actions/runs/38303484382) **COMPLETED SUCCESS** for new [Phase23C16PropertyOrientationTransformAsmContractTest.java](../../src/test/java/dev/planetary/world/Phase23C16PropertyOrientationTransformAsmContractTest.java) committed at [640b4ec](https://github.com/Abbygree11/Planetary/commit/640b4ec26b878fecc837856f7f3fd345d71cf3fe): actual Gradle-loaded target NeoForge21.1.215 FrontAndTop enum values / CrafterBlock / JigsawBlock, 16-way StandingSign/CeilingHangingSign/Banner/Skull and four-way wall counterparts, state Rotation/Mirror overloaded transforms, independent NeoForge IBlockStateExtension/IBlockExtension world-aware rotate and StructureTemplate transformation callsites. Java compile, JUnit and registry census PASS. No runtime production patch, applied Mixin, live mod, six face/12 seam/8 corner or shader correctness. Following that independent evidence, [40-row P01–P40 ledger](PHASE2_STAGE3C_P01_P40_ABI_COVERAGE_DISPOSITION_1_21_1.tsv) P09/P10/P35 changed `SPECIFIC_TARGET_GAP → SELECTED_SPECIFIC_ABI`. Counts now 6 selected specific, 11 selected shared, 16 shared-only, 4 partial, **3 still specific target gaps P26/P28/P29**. Next coherent target package P28 RailState graph, not treating C16 as entire Stage2.3C.
