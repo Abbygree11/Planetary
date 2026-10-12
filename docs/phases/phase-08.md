@@ -21,3 +21,8 @@ PlanetChunkGenerator/fixed plains — стартовая платформа, н�
 ## Resume checkpoint
 
 **Следующий шаг:** первый пункт `[ ]`, который ещё не подтверждён исходниками или игровым результатом. По завершении добавить конкретный артефакт, SHA коммита, CI run (если применимо), следующий чекбокс; закончить ответ, не переходить к следующей фазе автоматически.
+
+
+### P26 source/growth and attachment handoff (2026-10-12 C18)
+
+[Exact P26 Multiface/Vine/Spreader/Feature owner study](../research/PHASE2_STAGE3C18_MULTIFACE_VINE_SPREAD_GROWTH_NEOFORGE_MOD_ASM_1_21_1.md): Phase2.4C handles attachment validity and target port transport; Phase8 owns vanilla worldgen `MultifaceGrowthFeature.placeGrowthIfPossible`, natural Vine random ticks, GlowLichen bonemeal spread and SculkVein charge-driven regrowth, including unloaded-chunk guards, postprocessing and mod-defined `SpreadConfig`. The source ASM packet **does not implement growth**, mod Biome features or gameplay. Keep `GrowingPlantBlock` P29 as separate mechanism, C19 research pending.
