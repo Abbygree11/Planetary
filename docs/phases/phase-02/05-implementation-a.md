@@ -2,7 +2,7 @@
 
 **Статус:** TODO (не `PASS`). [Индекс фазы](../phase-02.md).
 
-**Контекст:** После evidence-backed owner audit по соответствующим семьям; стадия не требует ждать *всю* вселенную классов, но не допускает слепых блоковых костылей.
+**Контекст:** После evidence-backed owner audit по соответствующим семьям; стадия не требует ждать *всю* вселенную классов, но не допускает слепых блоковых костылей. [Final 2.3C-1…19 scope gate](../../research/PHASE2_STAGE3C_1_TO_19_FINAL_SELECTED_ABI_SCOPE_GATE_1_21_1.md) — 19/19 selected exact ABI PASS, original 40 mechanisms accounted with 16 shared-only / 4 partial; source survey sufficiently scoped, **NEXT `2.4A-1` code**. Runtime/UI/real mod and six-face acceptance OPEN.
 
 **Источники:** [точка восстановления](../../research/PHASE2_RESEARCH_EXECUTION_CHECKPOINT_1_21_1.md), [P01–P40](../../research/ORIENTATION_MECHANISMS_ATLAS_1_21_1.md), [владельцы Stage3A](../../research/PHASE2_STAGE3A_OWNER_FINDINGS_1_21_1.md), [roadmap](../../IMPLEMENTATION_PLAN.md).
 
@@ -19,7 +19,7 @@
 
 ### Checkpoint для следующего захода
 
-- Последний подтверждённый подпакет: **не зафиксирован в этой карточке**.
+- Last research prerequisite: `2.3C-19` [CI38311748785](https://github.com/Abbygree11/Planetary/actions/runs/38311748785) COMPLETED SUCCESS plus [final 19/19 report/ASM/P01–P40 scope gate](../../research/PHASE2_STAGE3C_1_TO_19_FINAL_SELECTED_ABI_SCOPE_GATE_1_21_1.md). **No production 2.4A-1 implementation has been committed yet.** First implementation checkbox remains open.
 - Последний рабочий commit: смотреть HEAD ветки `2.0`, не выдумывать SHA.
-- Следующее действие: первый `[ ]` сверху. После успешного подпакета отметить `[x]`, ссылку на исходники/тест/CI, commit SHA и следующий шаг.
+- **NEXT `кк` → 2.4A-1:** implement a stable **typed** source-and-target physical/canonical `PlanetPlacementIntent`-like semantic API, author provenance (player/block item/synthetic/structure/foreign), explicit Level chart, unchanged physical `BlockPos/Direction` and vanilla passthrough. Unit tests and CI, no global `BlockState.rotate` or `Level.setBlock` interception, no guarantee mod runtime until loaded. Mark checkbox ONLY after code/test/CI.
 - Если соединение оборвалось до коммита — эта работа считается незавершённой.
