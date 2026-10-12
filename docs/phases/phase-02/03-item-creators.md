@@ -1,25 +1,20 @@
 # 2.3B: item authors и альтернативная установка
 
-**Статус:** TODO (не `PASS`). [Индекс фазы](../phase-02.md).
+**Статус:** ACTIVE / **2.3B-1 SOURCE RESEARCH COMPLETE (четыре внутренние проверки 4/4)**; full Stage 2.3B **NOT DONE**, compiled/Planet/gameplay/actual mod JAR gates **REVIEW_PENDING**. [Индекс фазы](../phase-02.md).
 
-**Контекст:** Проверки item source census 121 файлов и concrete classes 87 — предварительный сбор, не ручной аудит.
+**Оригинальный baseline:** Minecraft 1.21.1 / NeoForge 21.1.215, immutable registry artifact11643813158/run37988064055 with 1333 ITEM IDs, 87 concrete registered ITEM classes, 925 BlockItem subclass IDs, 121 candidate item source files. The census is not proof 87 audited methods or mod compatibility.
 
-**Источники:** [точка восстановления](../../research/PHASE2_RESEARCH_EXECUTION_CHECKPOINT_1_21_1.md), [P01–P40](../../research/ORIENTATION_MECHANISMS_ATLAS_1_21_1.md), [владельцы Stage3A](../../research/PHASE2_STAGE3A_OWNER_FINDINGS_1_21_1.md), [roadmap](../../IMPLEMENTATION_PLAN.md).
+## Пакеты / очередной checkpoint (каждый следующий пакет — все четыре внутренние проверки за один ответ)
 
-## Независимые микропакеты (по ОДНОМУ на отдельный ответ)
+- [x] **2.3B-1 — normal/variant/rewriting item placement**: comparative 1.21.1 source dispatch of `UseOnContext`/`BlockPlaceContext`/`BlockItem`, `StandingAndWallBlockItem`/`SignItem`/`HangingSignItem`, `ScaffoldingBlockItem`, `DirectionalPlaceContext`, `BedItem`/`DoubleHighBlockItem`, late state component, NeoForge comparative patch, pinned independent mod boundary; [all 4/4 internal sections](../../research/PHASE2_STAGE3B_ITEM_PLACEMENT_FIRST_FAMILY_SOURCE_AUDIT_1_21_1.md); [24 future cases ALL NOT RUN](../../research/PHASE2_STAGE3B_ITEM_PLACEMENT_FIRST_FAMILY_ACCEPTANCE_1_21_1.md). Source reviewed selected family only, no original ITEM class-disposition count or exact applied 21.1.215 ASM claim.
+- [ ] **2.3B-2 — remaining item useOn/use/components & effective subclasses**: 4/4 source dispatch, registration inheritance, type/property contracts, independent mods. Include `PlaceOnWaterBlockItem`, fire/tool/growth/containers/creative, all remaining identified effective item overrides; preserve post-place data.
+- [ ] **2.3B-3 — alternate non-item creators**: dispenser, `FallingBlockEntity` and direct state replacement, structure/features/commands/`Level.setBlock`, BE/interaction/temporal updates with real source and physical/canonical/foreign classification. Four internal checks.
+- [ ] **2.3B-4 — immutable exact original item-registry reconciliation**: crossjoin all 1333 exact ITEM IDs / 87 registered classes / 925 BlockItem subclass rows, record per-class inherited and overridden `use`, `useOn`, `place`, `getPlacementState`, `updatePlacementContext`, `placeBlock`, `BLOCK_STATE`, actual `placed_block`/wall variants and provenance. Explicit REVIEW_PENDING for each uncertain class/call; do not mark SOURCE reviewed based on names. Four internal checks.
 
-- [ ] **1.** Проверить маленькими партиями BlockItem, StandingAndWallBlockItem, WallOrFloor, Hanging, DirectionalPlaceContext, обработку замены target.
-- [ ] **2.** Затем item useOn/use и обновление BLOCK_STATE data component, кастомные placement context.
-- [ ] **3.** Затем dispenser, falling replacement, feature/structure/runtime command, post-placement state mutation.
-- [ ] **4.** В каждый commit дополнять item disposition: API owner, source/physical argument, orientation output и владелец фазы.
+## Conditions for closing the ENTIRE 2.3B card
 
-## Условия завершения этой карточки
+Evidence-backed disposition for **every registered concrete item class** and relevant non-item authors; clear subtype override/bypass classifications, full linkage to original BLOCK IDs, effect of late properties, and future acceptance fixtures. Only transition to 2.3C exact patched NeoForge 21.1.215 ASM once source owners/dispositions have been reconciled. No runtime implementation PASS is implied.
 
-Явно разобраны 87 concrete item owners и альтернативные creation paths или честно перечислены незакрытые; найдено, где BlockItem базовый путь недостаточен.
+### Checkpoint for next `кк`
 
-### Checkpoint для следующего захода
-
-- Последний подтверждённый подпакет: **не зафиксирован в этой карточке**.
-- Последний рабочий commit: смотреть HEAD ветки `2.0`, не выдумывать SHA.
-- Следующее действие: первый `[ ]` сверху. После успешного подпакета отметить `[x]`, ссылку на исходники/тест/CI, commit SHA и следующий шаг.
-- Если соединение оборвалось до коммита — эта работа считается незавершённой.
+Last completed: **2.3B-1** source packet. Current expected branch `2.0`, obtain actual HEAD from GitHub; don't guess commit. Next first unfinished: **2.3B-2 four internal tasks in one response**. If a write did not commit, it is not complete. Java/Mixin/Gradle/CI/client/server/loaded-mod gameplay untouched in 2.3B-1.
