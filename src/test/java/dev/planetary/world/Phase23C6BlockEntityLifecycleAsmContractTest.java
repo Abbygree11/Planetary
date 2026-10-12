@@ -178,13 +178,15 @@ final class Phase23C6BlockEntityLifecycleAsmContractTest {
                 "(" + B + CI + ")V"));
         List<Call> body = calls(MIXIN_LEVEL, "planetary$setBlockEntity",
                 "(" + B + CI + ")V");
-        assertTrue(has(body, "blockEntities"),
-                "LevelMixin handler must route to the Planet BE store");
+        assertTrue(has(body, "resolve"));
+        assertTrue(has(body, "ifPresent"),
+                "Planetary LevelMixin handler must route through Optional callback");
         // Direct store.put is inside the compiled Consumer lambda passed to
         // Optional.ifPresent, not necessarily in the injector's own code body.
         assertTrue(methods(MIXIN_LEVEL).stream().anyMatch(m -> {
             try {
                 return m.name.startsWith("lambda$planetary$setBlockEntity") &&
+                        has(calls(MIXIN_LEVEL, m.name, m.desc), "blockEntities") &&
                         has(calls(MIXIN_LEVEL, m.name, m.desc), "put");
             } catch (IOException exception) {
                 throw new AssertionError(exception);
