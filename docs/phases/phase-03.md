@@ -32,3 +32,8 @@ Phase 2 исправляет состояние, Phase 3 — визуальну�
 ### P26 multiface/vine render and shape handoff (2026-10-12 C18)
 
 [Six-face MultifaceBlock vs five-face VineBlock orientation, support shapes and mod Create pipe comparison](../research/PHASE2_STAGE3C18_MULTIFACE_VINE_SPREAD_GROWTH_NEOFORGE_MOD_ASM_1_21_1.md): source `MultifaceBlock` caches union of six face plates, VineBlock caches five face plates, GlowLichen has light and waterlog, SculkVein uses custom spread; even correctly transported BlockState flags do NOT automatically transform physical `VoxelShape`/AO/model or client-chunk materialization on Planet side faces. Phase3 must test face-culling/light/water/BER and fallback no-Planet world independently; avoid global render-space remap or applying Vine DOWN face that cannot exist.
+
+
+### P29 head/body chain and source-specific model/shape handoff (2026-10-13 C19)
+
+[C19 concrete 8 vanilla GrowingPlant subclasses and real BOP1.21.1 hanging-strand/moss variants](../research/PHASE2_STAGE3C19_GROWINGPLANT_HEAD_BODY_DIRECTED_GROWTH_NEOFORGE_MOD_ASM_1_21_1.md): local growth and head/body state conversion are NOT equivalent to physically reoriented Kelp/CaveVines/WeepingVines textures, voxel shapes, water transparency, hanging cobweb web/collision or worldgen visual; Phase3 separately must verify quads/culling/lighting and real mod models on six faces/seams. No rendered client or mod Jar tested by source/ASM.
