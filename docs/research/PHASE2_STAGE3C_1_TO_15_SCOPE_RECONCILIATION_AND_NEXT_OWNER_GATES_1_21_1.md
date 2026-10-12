@@ -81,3 +81,8 @@ These are actual **mechanisms**, not 6 arbitrary block-name fixups. One C16 pack
 - Once that research is finished, choose a genuinely uncovered graph family (rails/attachment/growth) from this matrix, rather than launching another generic renderer survey. Implementation entrypoint `2.4A-1` is already separately defined and should be scheduled without confusing any source audit with live game readiness.
 
 **Independent documentation-only scope audit**: no new Java/Gradle files; the prior successful test run stands, but is not an Actions run for this new narrative.
+
+
+### Post-inventory delta: C16 now verified, do not rewrite historical C1–15 counts
+
+[Stage2.3C-16 full property-domain research](PHASE2_STAGE3C16_FRONT_AND_TOP_ROTATION16_STATE_TRANSFORMS_NEOFORGE_ASM_1_21_1.md) and [CI38303484382](https://github.com/Abbygree11/Planetary/actions/runs/38303484382) **COMPLETE SUCCESS**, selected loaded NeoForge21.1.215 FrontAndTop, 16-way, contextual BlockState/IBlockExtension and StructureTemplate targets. The [live P01–P40 ledger](PHASE2_STAGE3C_P01_P40_ABI_COVERAGE_DISPOSITION_1_21_1.tsv) now has **6 SELECTED_SPECIFIC_ABI, 11 SELECTED_SHARED_ABI, 16 SHARED_ABI_ONLY, 4 PARTIAL_SHARED_ABI, 3 SPECIFIC_TARGET_GAP** (remaining P26 multi-face graph, P28 RailState graph, P29 directional growth). This original report is intentionally a frozen *C1–15* checkpoint with historical counts; the ledger is authoritative for CURRENT C16 coverage. No runtime game or mod evidence gained from docs/ASM. Next C17 P28.
