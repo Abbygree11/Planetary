@@ -154,3 +154,6 @@ Stage 2.3C-1 ([research](research/PHASE2_STAGE3C1_BLOCKITEM_STANDINGWALL_NEOFORG
 
 
 **Stage2.3C-12 (2026-10-12):** [exact NeoForge light/AO/TriState/BlockColors/BiomeColors/alternate renderer source research](../research/PHASE2_STAGE3C12_LIGHT_AO_BIOME_TINT_NEOFORGE_MODEL_ASM_1_21_1.md) 4/4; [strict 21.1.215 compiled target and Planet model-Mixin test](../../src/test/java/dev/planetary/world/Phase23C12LightingAoTintAsmContractTest.java); [first CI38296937423](https://github.com/Abbygree11/Planetary/actions/runs/38296937423) needs independently verified result. Only selected patched classfile & Mixin annotations gate; in-game side shadows, active mod/NeoForge shader pipelines and all 6 faces/12 edges/8 corners NOT RUN. Phase3 owns runtime integration, production source untouched.
+
+
+**Stage2.3C-12 final ABI PASS (2026-10-12):** [CI38297478474](https://github.com/Abbygree11/Planetary/actions/runs/38297478474) completed SUCCESS compiling Java and checking selected exact NeoForge21.1.215 lighting/AO/biome tint/compiled Planet model-Mixin contracts after test-only correction d6fdefa. Full [C12 report](../research/PHASE2_STAGE3C12_LIGHT_AO_BIOME_TINT_NEOFORGE_MODEL_ASM_1_21_1.md). No real render/game/mod acceptance; next C13 alternate client render owners.
