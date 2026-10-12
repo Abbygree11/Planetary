@@ -188,19 +188,24 @@ final class Phase23C2PlacementContextAsmContractTest {
     }
 
     @Test
-    void neoforgeSolidBucketBridgesSensitivePlacementSound()
+    void neoforge215SolidBucketMissingLaterSensitiveSoundBridge()
             throws IOException {
-        // Official comparable patch adds this bridge to retain the special
-        // powder-snow sound even though BlockItem.place invokes the sensitive
-        // four-argument overload. This assertion pins the REAL 21.1.215 ABI.
+        // Evidence from the ACTUAL Gradle-resolved NeoForge 21.1.215 bytecode:
+        // SolidBucketItem owns the old override, but NOT the context-sensitive
+        // getPlaceSound(BlockState, Level, BlockPos, Player) override.
+        // This is a confirmed VERSION DELTA vs NeoForge official later source
+        // 3cae645, which adds the bridge. Do NOT claim that the later patch
+        // is installed or that the powder-snow sound is gameplay-verified.
         assertTrue(declares(SOLID, "getPlaceSound", "(" + STATE + ")" + SOUND));
-        assertTrue(declares(SOLID, "getPlaceSound", PLACE_SOUND),
-                "NeoForge sensitive sound override missing; compare target patch");
-        assertTrue(calls(SOLID, "getPlaceSound", PLACE_SOUND)
-                        .stream().anyMatch(c ->
-                                c.name.equals("getPlaceSound") &&
-                                c.desc.equals("(" + STATE + ")" + SOUND)),
-                "Contextual sound bridge no longer calls custom item sound");
+        assertFalse(declares(SOLID, "getPlaceSound", PLACE_SOUND),
+                "Target's known missing 21.1.215 bridge has changed; re-audit");
+        assertTrue(declares(BLOCK_ITEM, "getPlaceSound", PLACE_SOUND),
+                "Base NeoForge sensitive sound ABI unexpectedly absent");
+        String place = "(" + PLACE_CONTEXT + ")" + RESULT;
+        assertEquals(1L, count(calls(BLOCK_ITEM, "place", place),
+                BLOCK_ITEM, "getPlaceSound", PLACE_SOUND,
+                Opcodes.INVOKEVIRTUAL),
+                "BlockItem.place expected to invoke contextual base method");
     }
 
     private record Method(String name, String desc) {}
