@@ -113,7 +113,7 @@ final class Phase23C8PistonMovementAsmContractTest {
     @Test
     void movingPlaceholderFactoryAndTickerHaveIndependentOwners()
             throws IOException {
-        String factory="("+POS+STATE+STATE+DIR+"ZZ)L"+MOVING+";";
+        String factory="("+POS+STATE+STATE+DIR+"ZZ)"+BE;
         assertTrue(declares(MOVING_BLOCK,"newMovingBlockEntity",factory));
         String ticker="("+LEV+STATE+TYPE+")"+TICKER;
         assertTrue(declares(MOVING_BLOCK,"getTicker",ticker));
@@ -137,7 +137,11 @@ final class Phase23C8PistonMovementAsmContractTest {
         List<Call> body=calls(MOVING,"moveCollidedEntities",collision);
         assertTrue(has(body,"isSlimeBlock"),
                 "NeoForge slime-like mod extension must survive entity push");
-        assertTrue(has(body,"move"));
+        assertTrue(has(body,"moveEntityByPiston"),
+                "Collision loop must dispatch to the physical entity mover helper");
+        String helper="("+DIR+"Lnet/minecraft/world/entity/Entity;D"+DIR+")V";
+        assertTrue(has(calls(MOVING,"moveEntityByPiston",helper),"move"),
+                "The entity helper must preserve Entity.move(MoverType.PISTON, Vec3)");
         List<Call> sticky=calls(MOVING,"moveStuckEntities",collision);
         assertTrue(has(sticky,"isHorizontal"),
                 "Honey physical-horizontal movement is distinct from local gravity");
