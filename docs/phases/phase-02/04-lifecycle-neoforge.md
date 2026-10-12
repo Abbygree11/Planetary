@@ -27,6 +27,6 @@ The four generic tasks above are **phase-wide**, and remain open until all relev
 ### Checkpoint для следующего захода
 
 - Последний подтверждённый подпакет: **2.3C-1: документация и тест закоммичены, первый CI FAIL из-за ошибочной ожидаемой строки, исправлено в 56721e4; повторный CI 38258262302 PASS. Игровая приёмка NOT RUN; реальный Mixin/gameplay не тестировались.**
-- Последний рабочий commit: смотреть HEAD ветки `2.0`, не выдумывать SHA.
-- Следующее действие: **2.3C-2** полный owner-family пакет, четыре внутренние проверки (patch/bytecode, lifecycle, signature/mod hooks, ASM/contract tests/plan). Не растягивать четыре пункта на четыре сообщения. После успешного подпакета отметить `[x]`, ссылку на исходники/тест/CI, commit SHA и следующий шаг.
+- Последний доказанный checkpoint: 2.3C-2 research/strict exact-version contract committed; repeat CI 38260347819 pending at time of writing. All runtime Mixin/client/server/mod/game checks NOT RUN.\n- Последний рабочий commit: смотреть HEAD ветки `2.0`, не выдумывать SHA.
+- Следующее действие: **2.3C-3** полный owner-family пакет, четыре внутренние проверки (patch/bytecode, lifecycle, signature/mod hooks, ASM/contract tests/plan). Не растягивать четыре пункта на четыре сообщения. После успешного подпакета отметить `[x]`, ссылку на исходники/тест/CI, commit SHA и следующий шаг.
 - Если соединение оборвалось до коммита — эта работа считается незавершённой.
