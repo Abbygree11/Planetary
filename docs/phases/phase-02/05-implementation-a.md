@@ -23,6 +23,8 @@
 
 **2.4A-3 runtime author bridge:** [new research/implementation packet](../../research/PHASE2_STAGE4A3_USEON_ORIGINAL_HIT_AUTHOR_ADAPTER_1_21_1.md), `PlanetOriginalHitSource`, `UseOnContextOriginalHitInvoker`, original-hit overload in `PlanetPlacementContextAdapter`, typed integration in `PlanetFrameApi.placementFrame(context)`, new JUnit/ASM tests. **[CI #38316982504](https://github.com/Abbygree11/Planetary/actions/runs/38316982504) PASS after null-hit mock fallback correction 272e73d; gameplay PENDING; item overriding authors not solved.**
 
+**Ручной checkpoint (2026-10-13):** пользователь сообщил, что 2.4A-3 работает нормально, кроме боковой недорисовки на ребре кубической планеты. Это относится к **любым блокам на стыке граней**, а травяная текстура на скриншоте лишь пример. Владелец: [Phase 3B / задача 3.2S](../phase-03.md), а НЕ 2.4A-4. **Не чинить здесь и не писать GrassBlock-specific костыль.** Полная 6/12/8 приёмка Phase2 остаётся открытой; визуальный баг не является дефектом собственно author/context адаптера.
+
 ### Checkpoint для следующего захода
 
 - Last research prerequisite: `2.3C-19` [CI38311748785](https://github.com/Abbygree11/Planetary/actions/runs/38311748785) COMPLETED SUCCESS plus [final 19/19 report/ASM/P01–P40 scope gate](../../research/PHASE2_STAGE3C_1_TO_19_FINAL_SELECTED_ABI_SCOPE_GATE_1_21_1.md). **2.4A-1 implementation committed in this stage; CI [CI #38313939066](https://github.com/Abbygree11/Planetary/actions/runs/38313939066) PASS; runtime remains separately gated.** First implementation checkbox covers semantic API only.
