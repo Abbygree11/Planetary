@@ -145,3 +145,6 @@ Stage 2.3C-1 ([research](research/PHASE2_STAGE3C1_BLOCKITEM_STANDINGWALL_NEOFORG
 
 
 **Stage2.3C-10 ABI validation (2026-10-12):** [run38288455692](https://github.com/Abbygree11/Planetary/actions/runs/38288455692) completed SUCCESS Java compile/JUnit/census including actual loaded NeoForge 21.1.215 selected fluid-mod ASM checks. Phase5 local-gravity liquid graph, collision cache, registry neighbor semantics, face/seam game tests and loaded mods remain NOT RUN, no production changes.
+
+
+**Stage2.3C-11 source+ABI research 2026-10-12:** [VoxelShape/collision/SupportType + NeoForge external face hiding / dynamic-mod shape full report](../research/PHASE2_STAGE3C11_SHAPES_OCCLUSION_SUPPORT_RENDER_CULLING_NEOFORGE_ASM_1_21_1.md), [strict actual target21.1.215 ASM/JUnit](../../src/test/java/dev/planetary/world/Phase23C11ShapesOcclusionCullingAsmContractTest.java), [initial CI38289949215](https://github.com/Abbygree11/Planetary/actions/runs/38289949215) requires independent verdict. This package is research and compiled method contract only; no production Java/Mixin changes, actual six-face/12edge/8corner client/server and loaded-mod games NOT RUN. Root and phase READMEs updated; historic intermediate class counts above are not current source coverage. Next candidate C-12 dynamic light/ambient occlusion/biome tint 4/4.
