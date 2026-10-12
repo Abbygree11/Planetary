@@ -7,7 +7,8 @@
 - [ ] **3.1** 3A: аудит формы outline/collision/visual/interact и seam/occlusion caches; короткая отдельная матрица.
 - [ ] **3.2** 3B: BakedModel quad orientation, culling, AO, lighting, grass edge; отдельная группа доказательств.
 - [ ] **3.3** 3C: BlockEntityRenderer general frame policy и отдельный специальный случай Chest/EnderChest/Enchanting book — без обмана с BlockState FACING.
-- [ ] **3.4** 3D: moving block/accelerated render engine; интеграция с pose matrix и модами.
+- [ ] **3.4** 3D: moving block/accelerated render engines (Flywheel/Create), GPU instance/normal and current/previous-frame pose matrices; shaderpack shadow pass compatibility.
+- [ ] **3.4S** Iris (NeoForge 1.21.1) shaderpack integration as a separate acceptance branch: GBuffer normals, shadow-map matrices, day/night/world-light vs gravity, PBR normal maps, transparent fluids, optional Flywheel-Iris compatibility addon, vanilla/no-Planet regression. Source audit: [C13](../research/PHASE2_STAGE3C13_ALTERNATE_BER_FLUID_INSTANCING_SHADERS_ASM_1_21_1.md).
 - [ ] **3.5** Финальная Phase3 acceptance отдельно для static vs BER; не просить повторно тестировать принятые частицы.
 
 ## Критерии и зависимости
