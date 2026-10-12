@@ -7,8 +7,8 @@ P05	non-BlockItem-use-tools	C2,C10	PARTIAL_SHARED_ABI	2.4D/Phase5/Phase9	No comp
 P06	axis-pillar-rod-chain	C1,C11	SHARED_ABI_ONLY	2.4A	Need concrete axis author overrides incl mod inheritance
 P07	full-six-facing	C1,C8,C9	SHARED_ABI_ONLY	2.4A	No target ABI proof for every concrete FACING author
 P08	horizontal-facing	C1,C6	SHARED_ABI_ONLY	2.4A	No target ABI proof for independent furnace chest and machine placement
-P09	FrontAndTop-dual-axis	C7	SPECIFIC_TARGET_GAP	2.3C-16/2.4A	CrafterBlock JigsawBlock FrontAndTop full property domain and transform
-P10	rotation16-sign-banner-skull	C1,C13	SPECIFIC_TARGET_GAP	2.3C-16/2.4A/Phase3	16-way yaw and renderer/data owner not exact checked
+P09	FrontAndTop-dual-axis	C7,C16	SELECTED_SPECIFIC_ABI	2.3C-16/2.4A	Actual 21.1.215 Crafter/Jigsaw + FrontAndTop 12-valued selected ASM CI38303484382 PASS; gameplay and mod overrides pending
+P10	rotation16-sign-banner-skull	C1,C13,C16	SELECTED_SPECIFIC_ABI	2.3C-16/2.4A/Phase3	Actual 21.1.215 four 16-segment original declaring owners and wall 4-way variants selected ASM CI38303484382 PASS; item/render/gameplay pending
 P11	face-attached-horizontal	C1,C4,C11	SHARED_ABI_ONLY	2.4A/2.4B	Special render/runtime metadata differs
 P12	dual-standing-wall-items	C1	SELECTED_SHARED_ABI	2.4A	Special hanging sign override pending game acceptance
 P13	hanging-and-ceiling-attachments	C1,C4,C11	SHARED_ABI_ONLY	2.4B	Exact attachment family and mods not tested
@@ -33,7 +33,7 @@ P31	scaffolding-collapse	C2,C4,C5	SHARED_ABI_ONLY	2.4C	ScaffoldingBlockItem targ
 P32	falling-and-support-trigger	C5,C14	PARTIAL_SHARED_ABI	2.4B/Phase7	FallingBlockEntity render anchor checked not all falling physics semantics
 P33	flat-attached-ground-plants	C4,C11	SHARED_ABI_ONLY	2.4B/Phase5	Special cases have Stage3A source not specific ABI
 P34	item-interaction-hit-slot	C2,C3,C10	PARTIAL_SHARED_ABI	2.4D/Phase5/Phase9	No full per-useOn/useWithoutItem receiver target matrix
-P35	BlockState-rotate-mirror-structure	C7	SPECIFIC_TARGET_GAP	2.3C-16/2.4D/Phase9	C7 structure transform route does not prove all property-domain rotate/mirror owners
+P35	BlockState-rotate-mirror-structure	C7,C16	SELECTED_SPECIFIC_ABI	2.3C-16/2.4D/Phase9	NeoForge IBlockStateExtension.rotate(Level,pos,rot) + IBlockExtension.rotate contextual bridge, concrete rotate/mirror and StructureTemplate callsite selected ASM CI38303484382 PASS; actual world-aware mod override gameplay pending
 P36	redstone-facing-and-piston	C8,C9	SELECTED_SHARED_ABI	Phase7A/2.4C	Transport and real signal connectivity still unaccepted
 P37	fluid-waterlogging-tick	C5,C10	SELECTED_SHARED_ABI	Phase5/2.4B	Dynamic fluid geometry and simulation separate
 P38	BE-lifecycle-render-capability	C6,C13	SELECTED_SHARED_ABI	Phase3/Phase7A	Virtual BE ticker save/load and mod capability parity open
