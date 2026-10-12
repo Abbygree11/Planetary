@@ -1,0 +1,41 @@
+mechanism_id	owner_domain	c3c_evidence	c3c_target_abi_disposition	implementation_owner	remaining_gate
+P01	physical-hit-and-placement-context	C1,C2	SELECTED_SHARED_ABI	2.4A	Verify actual author intent and after-placement override
+P02	synthetic-no-player-placement	C2	SELECTED_SHARED_ABI	2.4A	Dispenser and foreign actor acceptance absent
+P03	BlockItem-component-post-override	C1,C3	SELECTED_SHARED_ABI	2.4A	Per-owner post-placement game assertion absent
+P04	special-BlockItem-context	C1,C2,C3	SELECTED_SHARED_ABI	2.4A	Only selected specialized item owners checked
+P05	non-BlockItem-use-tools	C2,C10	PARTIAL_SHARED_ABI	2.4D/Phase5/Phase9	No complete selected per-tool target ABI audit
+P06	axis-pillar-rod-chain	C1,C11	SHARED_ABI_ONLY	2.4A	Need concrete axis author overrides incl mod inheritance
+P07	full-six-facing	C1,C8,C9	SHARED_ABI_ONLY	2.4A	No target ABI proof for every concrete FACING author
+P08	horizontal-facing	C1,C6	SHARED_ABI_ONLY	2.4A	No target ABI proof for independent furnace chest and machine placement
+P09	FrontAndTop-dual-axis	C7	SPECIFIC_TARGET_GAP	2.3C-16/2.4A	CrafterBlock JigsawBlock FrontAndTop full property domain and transform
+P10	rotation16-sign-banner-skull	C1,C13	SPECIFIC_TARGET_GAP	2.3C-16/2.4A/Phase3	16-way yaw and renderer/data owner not exact checked
+P11	face-attached-horizontal	C1,C4,C11	SHARED_ABI_ONLY	2.4A/2.4B	Special render/runtime metadata differs
+P12	dual-standing-wall-items	C1	SELECTED_SHARED_ABI	2.4A	Special hanging sign override pending game acceptance
+P13	hanging-and-ceiling-attachments	C1,C4,C11	SHARED_ABI_ONLY	2.4B	Exact attachment family and mods not tested
+P14	stairs-shapes-and-placement	C11	SHARED_ABI_ONLY	2.4A/2.4B	StairBlock neighbor-derived shape not specifically target checked
+P15	slab-replacement-and-half	C1,C11	SHARED_ABI_ONLY	2.4A	SlabBlock replacement/half concrete target ASM not comprehensive
+P16	trapdoor-half-facing	C3,C4	SHARED_ABI_ONLY	2.4A/2.4B	Trapdoor concrete placement and support target pending
+P17	door-two-cell-pair	C3,C4	SELECTED_SPECIFIC_ABI	2.4C	Runtime pairing and NeoForge interaction still open
+P18	fencegate-in-wall	C4,C9,C11	SHARED_ABI_ONLY	2.4C	Independent IN_WALL/open target dispatch remains pending
+P19	bed-two-cell-pair	C3,C13	SELECTED_SPECIFIC_ABI	2.4C/Phase3	Pairing/player interaction vs BER not accepted
+P20	doubleplant-vertical-chain	C3,C5	SELECTED_SPECIFIC_ABI	2.4C	Head/body seam lifecycle and actual mods not accepted
+P21	doublechest-combiner	C6,C13	SHARED_ABI_ONLY	2.4C/Phase3	No specific ChestBlock DoubleBlockCombiner target ABI proof
+P22	canonical-down-support	C4,C11	SELECTED_SHARED_ABI	2.4B	Full subclass override and actual gameplay coverage open
+P23	ceiling-side-sturdy-support	C4,C11	SHARED_ABI_ONLY	2.4B	Position-aware mod support and live game open
+P24	survival-neighbor-invalidation	C4	SELECTED_SHARED_ABI	2.4B	NeoForge onNeighborNotify lost by HEAD cancellation is risk
+P25	tangent-connection-graph	C4,C11	SHARED_ABI_ONLY	2.4C	Fence Wall Tripwire physical graph semantics not specifically checked
+P26	multiface-and-vine-graph	C4,C11	SPECIFIC_TARGET_GAP	2.3C-next/2.4C	No precise MultifaceBlock or VineBlock growth graph target ASM
+P27	wall-post-and-side-height	C11	SHARED_ABI_ONLY	2.4C/Phase3	WallBlock property/shape graph target not checked
+P28	RailState-and-slope-graph	C9	SPECIFIC_TARGET_GAP	2.3C-next/2.4C/Phase7	C9 touches RailShape but not full BaseRailBlock/RailState graph target
+P29	growingplant-head-body	C5	SPECIFIC_TARGET_GAP	2.3C-next/2.4C/Phase8	No exact GrowingPlantBlock heads/bodies/survival target ABI
+P30	vegetation-growth-columns	C5	SHARED_ABI_ONLY	2.4C/Phase8/Phase9	Random tick driver checked not all source-specific growth writers
+P31	scaffolding-collapse	C2,C4,C5	SHARED_ABI_ONLY	2.4C	ScaffoldingBlockItem target checked but full ScaffoldingBlock graph unverified
+P32	falling-and-support-trigger	C5,C14	PARTIAL_SHARED_ABI	2.4B/Phase7	FallingBlockEntity render anchor checked not all falling physics semantics
+P33	flat-attached-ground-plants	C4,C11	SHARED_ABI_ONLY	2.4B/Phase5	Special cases have Stage3A source not specific ABI
+P34	item-interaction-hit-slot	C2,C3,C10	PARTIAL_SHARED_ABI	2.4D/Phase5/Phase9	No full per-useOn/useWithoutItem receiver target matrix
+P35	BlockState-rotate-mirror-structure	C7	SPECIFIC_TARGET_GAP	2.3C-16/2.4D/Phase9	C7 structure transform route does not prove all property-domain rotate/mirror owners
+P36	redstone-facing-and-piston	C8,C9	SELECTED_SHARED_ABI	Phase7A/2.4C	Transport and real signal connectivity still unaccepted
+P37	fluid-waterlogging-tick	C5,C10	SELECTED_SHARED_ABI	Phase5/2.4B	Dynamic fluid geometry and simulation separate
+P38	BE-lifecycle-render-capability	C6,C13	SELECTED_SHARED_ABI	Phase3/Phase7A	Virtual BE ticker save/load and mod capability parity open
+P39	structure-command-schematics	C7,C15	SELECTED_SHARED_ABI	Phase9/Phase10	Direct writers selected but foreign templates/generation runtime open
+P40	foreign-virtual-world-mod-hooks	C7,C13,C15	PARTIAL_SHARED_ABI	Phase10/Phase1	Unknown Level provenance fallback unsafe; loaded mod tests unrun
