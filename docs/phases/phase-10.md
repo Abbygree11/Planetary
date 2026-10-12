@@ -20,3 +20,8 @@
 ## Resume checkpoint
 
 **Следующий шаг:** первый пункт `[ ]`, который ещё не подтверждён исходниками или игровым результатом. По завершении добавить конкретный артефакт, SHA коммита, CI run (если применимо), следующий чекбокс; закончить ответ, не переходить к следующей фазе автоматически.
+
+
+### P26 third-party six-port mod graph vs MultifaceSpreader (2026-10-12 C18)
+
+[Full P26 NeoForge/vanilla owner + pinned real Create FluidPipeBlock/AxisPipeBlock source audit](../research/PHASE2_STAGE3C18_MULTIFACE_VINE_SPREAD_GROWTH_NEOFORGE_MOD_ASM_1_21_1.md): Create extends `PipeBlock` and shares six `PROPERTY_BY_DIRECTION` state flags but **does not** inherit `MultifaceBlock` and does not call `MultifaceSpreader`. Create `canConnectTo/updateShape/onWrenched/FluidTransportBehaviour` is a different physical connector/fluid algorithm. A universal `PipeBlock` or `Direction` mixin would break other mods/fake Levels; offer opt-in typed port adapter and independently verify truly compatible Create JAR. Real mod runtime tests remain NOT RUN.
