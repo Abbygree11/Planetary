@@ -82,8 +82,8 @@ Portability: core `PlanetGravityFrame` and partial-tick transform semantic compo
 | --- | --- |
 | 1. Pinned Mojang comparative source + official NeoForge patch + Create source owner inventory | RESEARCH 4/4 completed |
 | 2. Lifecycle and separate physical/local/camera/virtual sources, all alternate paths | DOCUMENTED |
-| 3. Exact compiled NeoForge21.1.215 selected ABI and compiled Planet Mixin annotation contract | TEST COMMITTED, RUN PENDING |
-| 4. Java compilation, JUnit, registry | CHECK CI separately |
+| 3. Exact compiled NeoForge21.1.215 selected ABI and compiled Planet Mixin annotation contract | **CI PASS** after one test-only correction |
+| 4. Java compilation, JUnit, registry | **PASS** — [Actions38300577734](https://github.com/Abbygree11/Planetary/actions/runs/38300577734) |
 | Applied 1.21.1 NeoForge Mixin startup and renderer injection | NOT RUN |
 | Actual Create 1.21.1 Flywheel visuals and fallback BER plus contraption VirtualRenderWorld | NOT RUN |
 | Iris shaderpack hand, entity, block, ground-shadow vs actual shadow map, weather and motion temporal | NOT RUN |
@@ -92,3 +92,8 @@ Portability: core `PlanetGravityFrame` and partial-tick transform semantic compo
 Manual future visual fixtures (separate screenshot and telemetry proofs for each rendering family): Player/armor/cape/held map/first-person hand/offhand, living mobs and mod entity, dropped item bob/rotation, ItemFrame with attached item and map and mod event cancellation, minecart with block contents on six local rail orientations, boat in water and transitions, TNT/primed falling block anchor, moving piston with modded moving BlockState/RenderType, Create flywheel both visual GPU and fallback BER modes, Create contraption virtual world and child visuals, vanilla projected ground shadow, flame and hitboxes, rain/snow/cloud/sky/beacon/portal, third-person/frustum near six seams, shaderpack gbuffer_terrain/entities/hand/weather/shadow passes plus previous matrices and shadow camera, reverse F5/first person, no-Planet level or foreign Level. Compare physical matrices/normal frame/pose current-vs-previous, light/RenderType, no double rotations, and capture actual loaded mod/pack version/hash. Real Phase3/7/10 gameplay acceptance remains separate.
 
 **Next candidate:** `2.3C-15` only after CI confirmation, likely selected remaining NeoForge client lifecycle/resource reload/particle/weather/auxiliary renderer owner family; use roadmap to avoid duplicating exhaustive R2 particle research. End source packet here, do not silently implement runtime.
+
+
+### Verified selected ABI JUnit CI delta, 2026-10-12
+
+[First CI38300054685](https://github.com/Abbygree11/Planetary/actions/runs/38300054685) compiled Java but failed **1 of 393 tests** at newly-added GameRenderer method-presence expectation: `renderHand` was from the comparative **OptiFine-modified** decompilation, not the true NeoForge 21.1.215 GameRenderer. Real vanilla/NeoForge 1.21.1 [GameRenderer API](https://lexxie.dev/neoforge/1.21.1/net/minecraft/client/renderer/GameRenderer.html) declares private `renderItemInHand(Camera,float,Matrix4f)`. [Test-only revision 93628fc](https://github.com/Abbygree11/Planetary/commit/93628fc5799cd0da4f3fe38c155f20ffb2ef6426) pins this original method instead; **no production patch**. [Repeat GitHub Actions38300577734](https://github.com/Abbygree11/Planetary/actions/runs/38300577734) **COMPLETED SUCCESS**: production/test compilation, selected target21.1.215 camera/entity/item/piston/NeoForge render-stage/Planet Mixin bytecode JUnit contracts and original registry census. Not applied client Mixin or GPU shaders/mods/gameplay; the 4/4 research-only packet is closed. Next C15 resource/client lifecycle family.
