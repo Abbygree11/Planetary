@@ -1,8 +1,8 @@
 # 2.4A: установка и свойства ориентации
 
-**Статус:** 2.4A-1 API CI PASS / user reports no regression; 2.4A-2 typed properties code / CI PASS / GAMEPLAY PENDING (not phase `PASS`). [Индекс фазы](../phase-02.md).
+**Статус:** 2.4A-1/2 typed APIs CI PASS; 2.4A-3 original-hit runtime bridge COMMITTED / CI PENDING / GAMEPLAY PENDING (not phase `PASS`). [Индекс фазы](../phase-02.md).
 
-**Контекст:** После evidence-backed owner audit по соответствующим семьям; стадия не требует ждать *всю* вселенную классов, но не допускает слепых блоковых костылей. [Final 2.3C-1…19 scope gate](../../research/PHASE2_STAGE3C_1_TO_19_FINAL_SELECTED_ABI_SCOPE_GATE_1_21_1.md) — 19/19 selected exact ABI PASS, original 40 mechanisms accounted with 16 shared-only / 4 partial; source survey sufficiently scoped, **NEXT `2.4A-1` code**. Runtime/UI/real mod and six-face acceptance OPEN.
+**Контекст:** После evidence-backed owner audit по соответствующим семьям; стадия не требует ждать *всю* вселенную классов, но не допускает слепых блоковых костылей. [Final 2.3C-1…19 scope gate](../../research/PHASE2_STAGE3C_1_TO_19_FINAL_SELECTED_ABI_SCOPE_GATE_1_21_1.md) — 19/19 selected exact ABI PASS, original 40 mechanisms accounted with 16 shared-only / 4 partial; source survey sufficiently scoped, implementation sequence 2.4A-1 onward. Runtime/UI/real mod and six-face acceptance OPEN.
 
 **Источники:** [точка восстановления](../../research/PHASE2_RESEARCH_EXECUTION_CHECKPOINT_1_21_1.md), [P01–P40](../../research/ORIENTATION_MECHANISMS_ATLAS_1_21_1.md), [владельцы Stage3A](../../research/PHASE2_STAGE3A_OWNER_FINDINGS_1_21_1.md), [roadmap](../../IMPLEMENTATION_PLAN.md).
 
@@ -21,9 +21,11 @@
 
 **2.4A-2 typed API:** [property semantics and limits](../../research/PHASE2_STAGE4A2_TYPED_ORIENTATION_PROPERTIES_1_21_1.md), `PlanetOrientationProperties` and `PlanetOrientationPropertiesTest`. This does NOT close checklist 2: runtime author adapters remain open. 2.4A-1 manual user response: “Все ок”; record only no reported regression, not comprehensive 6/12/8 acceptance. New [CI #38315358373](https://github.com/Abbygree11/Planetary/actions/runs/38315358373) completed SUCCESS, new code compiled and full JUnit and registry checks green; runtime author adapters still OPEN.
 
+**2.4A-3 runtime author bridge:** [new research/implementation packet](../../research/PHASE2_STAGE4A3_USEON_ORIGINAL_HIT_AUTHOR_ADAPTER_1_21_1.md), `PlanetOriginalHitSource`, `UseOnContextOriginalHitInvoker`, original-hit overload in `PlanetPlacementContextAdapter`, typed integration in `PlanetFrameApi.placementFrame(context)`, new JUnit/ASM tests. **CI PENDING; gameplay PENDING; item overriding authors not solved.**
+
 ### Checkpoint для следующего захода
 
 - Last research prerequisite: `2.3C-19` [CI38311748785](https://github.com/Abbygree11/Planetary/actions/runs/38311748785) COMPLETED SUCCESS plus [final 19/19 report/ASM/P01–P40 scope gate](../../research/PHASE2_STAGE3C_1_TO_19_FINAL_SELECTED_ABI_SCOPE_GATE_1_21_1.md). **2.4A-1 implementation committed in this stage; CI [CI #38313939066](https://github.com/Abbygree11/Planetary/actions/runs/38313939066) PASS; runtime remains separately gated.** First implementation checkbox covers semantic API only.
 - Последний рабочий commit: смотреть HEAD ветки `2.0`, не выдумывать SHA.
-- **NEXT `кк` → 2.4A author adapters:** Typed [2.4A-2 property domains](../../research/PHASE2_STAGE4A2_TYPED_ORIENTATION_PROPERTIES_1_21_1.md) are implemented at helper level. Still require exact declaring-owner adapters, applied Mixin proof, six-face real item placement and mod tests; no class-specific patch roulette.
+- **NEXT `кк` → audited property author implementations:** after checking 2.4A-3 CI, adapt coherent real declaring-owner getStateForPlacement/item override families without guessing mod algorithms; keep runtime, 6/12/8, original/retarget and loaded-mod proof gates separate.
 - Если соединение оборвалось до коммита — эта работа считается незавершённой.

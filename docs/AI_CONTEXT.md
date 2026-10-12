@@ -10,9 +10,13 @@ Minecraft 1.21.1, NeoForge 21.1.215, Java 21, Gradle 8.12.
 User local check: git pull && .\test.ps1 && .\run-client.ps1
 Never claim build/runtime success before user confirms it.
 
+## 2026-10-13 — 2.4A-3 read-only UseOn hit author bridge (CI PENDING; gameplay OPEN)
+
+Code f51bb9b: ordinary `PlanetOriginalHitSource` + versioned `UseOnContextOriginalHitInvoker` expose protected current-context hit; typed `PlanetPlacementContextAdapter` obtains physical hit and final target independently. Existing PlanetFrameApi placementFrame(BlockPlaceContext) routes to PlanetPlacementResolver on woven contexts; unwoven tests retain previous fallback without pretending original provenance. Existing physical primitive getters and all BlockItem/NeoForge lifecycle methods untouched. Exact ASM and semantic test added. Source/architecture: [2.4A-3](research/PHASE2_STAGE4A3_USEON_ORIGINAL_HIT_AUTHOR_ADAPTER_1_21_1.md). Applied Mixin, real mod and six-face game acceptance OPEN.
+
 ## 2026-10-13 — 2.4A-2 typed orientation property API (CI PASS; no runtime rewrite)
 
-User stated “Все ок” after 2.4A-1. Record as no reported regression of existing behavior; no quantified gameplay coverage was supplied, so 6/12/8 manual acceptance remains OPEN. Added opt-in `PlanetOrientationProperties`: six/four-facing, three axes, half, support attachment, 12 legal FrontAndTop, 16 tangent yaw with explicit owner zero, and safe property writer. Helper tests cover six faces, 12 edges, 8 corners, legal domains, no-Planet and foreign bypass. ${ci} completed SUCCESS on ce954e7 (compile / full JUnit / registry); no new Mixins, author-specific placement and NeoForge/mod gameplay remain pending. [Packet](research/PHASE2_STAGE4A2_TYPED_ORIENTATION_PROPERTIES_1_21_1.md).
+User stated “Все ок” after 2.4A-1. Record as no reported regression of existing behavior; no quantified gameplay coverage was supplied, so 6/12/8 manual acceptance remains OPEN. Added opt-in `PlanetOrientationProperties`: six/four-facing, three axes, half, support attachment, 12 legal FrontAndTop, 16 tangent yaw with explicit owner zero, and safe property writer. Helper tests cover six faces, 12 edges, 8 corners, legal domains, no-Planet and foreign bypass. [CI #38315358373](https://github.com/Abbygree11/Planetary/actions/runs/38315358373) completed SUCCESS on ce954e7 (compile / full JUnit / registry); no new Mixins, author-specific placement and NeoForge/mod gameplay remain pending. [Packet](research/PHASE2_STAGE4A2_TYPED_ORIENTATION_PROPERTIES_1_21_1.md).
 
 ## 2026-10-13 — 2.4A-1 typed placement API (code + CI PASS, gameplay OPEN)
 

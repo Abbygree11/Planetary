@@ -753,6 +753,10 @@ Source-owner/selected ASM stage 2.3C-1…19 is research-complete in bounded scop
 
 User replied “Все ок” to 2.4A-1; record no reported regression rather than comprehensive 6/12/8 acceptance. [2.4A-2 typed orientation report](research/PHASE2_STAGE4A2_TYPED_ORIENTATION_PROPERTIES_1_21_1.md) adds opt-in typed six/four FACING, AXIS_3, HALF preference, AttachFace support direction, FrontAndTop 12-state lookup, 16-way tangent rotation with explicit zero and legal concrete BlockState property writing; tests enumerate six faces, 12 edges, eight corners and vanilla/foreign no-op. [CI #38315358373](https://github.com/Abbygree11/Planetary/actions/runs/38315358373) completed SUCCESS (Java21 compile / full JUnit / 21.1.215 registry) for ce954e7. **No Mixin/writer adaptation, no change to placement callbacks**; next implementation item is source-audited actual owner adapters and their ABI/runtime/mod test gates. User reported existing behavior OK for prior unchanged-runtime 2.4A-1.
 
+### 2026-10-13 — Stage 2.4A-3 read-only author placement-context adapter [COMMITTED; CI AND GAMEPLAY PENDING]
+
+Actual common `UseOnContext.getHitResult` @Invoker captures original physical hit for that context, while `BlockPlaceContext.getClickedPos` stays final physical target. Version-specific adapter builds original-hit-aware `PlanetPlacementIntent`; current existing `PlanetFrameApi.placementFrame(context)` uses typed canonical target resolution if the Mixin is woven, retaining old unwoven JUnit fallback. **No generic BlockItem, Level.setBlock, event or lifecycle changes**; independent mod and structure writers and later state component application remain open. [Evidence and tests](research/PHASE2_STAGE4A3_USEON_ORIGINAL_HIT_AUTHOR_ADAPTER_1_21_1.md). Compile/JUnit/ASM and applied client/server/mod behavior are independent gates.
+
 ## Phase 2 — block semantic subsystem [R1 RESEARCH COMPLETE; IMPLEMENTATION PARTIAL, BATCH ACCEPTANCE]
 
 Detailed mechanism ownership:
