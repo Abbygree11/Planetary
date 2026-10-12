@@ -25,3 +25,8 @@
 ### P26 third-party six-port mod graph vs MultifaceSpreader (2026-10-12 C18)
 
 [Full P26 NeoForge/vanilla owner + pinned real Create FluidPipeBlock/AxisPipeBlock source audit](../research/PHASE2_STAGE3C18_MULTIFACE_VINE_SPREAD_GROWTH_NEOFORGE_MOD_ASM_1_21_1.md): Create extends `PipeBlock` and shares six `PROPERTY_BY_DIRECTION` state flags but **does not** inherit `MultifaceBlock` and does not call `MultifaceSpreader`. Create `canConnectTo/updateShape/onWrenched/FluidTransportBehaviour` is a different physical connector/fluid algorithm. A universal `PipeBlock` or `Direction` mixin would break other mods/fake Levels; offer opt-in typed port adapter and independently verify truly compatible Create JAR. Real mod runtime tests remain NOT RUN.
+
+
+### P29 concrete 1.21.1 BOP head/body mod overrides (2026-10-13 C19)
+
+[C19 exact original vanilla and real Biomes O' Plenty 1.21.1 pinned source review](../research/PHASE2_STAGE3C19_GROWINGPLANT_HEAD_BODY_DIRECTED_GROWTH_NEOFORGE_MOD_ASM_1_21_1.md): `Glitchfiend/BiomesOPlenty@32ec5f0a17c2101802fc0458f3c6ea85052f70fb` HangingStrand/Bottom classes extend `GrowingPlantBodyBlock/HeadBlock` but override `canSurvive`, `randomTick` and `performBonemeal`. SpanishMossBody/Bottom extends the same original vanilla bases, but accepts `BlockTags.LEAVES/LOGS` as supports; hanging cobweb subclass inherits its own overrides. CommonHooks crop events inside vanilla base randomTick are not implicitly invoked by mod override, so **never blindly fire NeoForge Pre/Post** on every subclass. Preserve polymorphism with a typed Planet chain helper at allowed virtual callback boundary; verify a genuinely compatible loaded 1.21.1 BOP JAR and no-Planet world. C19 ASM is vanilla/NeoForge selected ABI only, mod acceptance unrun.
