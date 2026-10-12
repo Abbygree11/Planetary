@@ -7,7 +7,7 @@
 - [ ] **7.1** 7.1: Entity.move/physical AABB/contact and gravity vs local projection, impulse and collision separation.
 - [ ] **7.2** 7.2: Living locomotion/jump/fall/motion state, foot support, effects и damage.
 - [ ] **7.3** 7.3: non-living entities, projectiles, falling blocks, particles-owning entity types; не считать визуальный результат физическим.
-- [ ] **7.4** 7.4: boats/minecarts/vehicles and rail-geometry dependency on Phase2.
+- [ ] **7.4** 7.4: boats/minecarts/vehicles and rail-geometry dependency on Phase2. [C17 RailState / IBaseRailBlockExtension / IAbstractMinecartExtension audit](../research/PHASE2_STAGE3C17_RAILSTATE_PHYSICAL_GRAPH_NEOFORGE_MOD_ASM_1_21_1.md): rail-graph Phase2 correctness **does not** imply `AbstractMinecart.moveAlongTrack`, cart-specific `getRailDirection`, speed-cap and onMinecartPass physics work on vertical faces/edges; loaded client/server and mod acceptance required.
 - [ ] **7.5** 7.5: passengers, mounts, attachments, leash/tethers and forces.
 - [ ] **7.5V** Moving entity and vehicle visual pose interpolation vs physical collision: camera current/previous frame and local eye, minecart/boat/TNT/nonliving entity, FallingBlockEntity anchor; custom Create Flywheel DynamicVisual and contraption independent Phase3/Phase10 rendering. Reference [C14](../research/PHASE2_STAGE3C14_CAMERA_ENTITY_ITEM_MOVING_WORLD_EFFECTS_ASM_1_21_1.md).
 - [ ] **7.6** Отдельная acceptance: physical-world velocities consistent, rotated-face controls, seams, replication.
