@@ -8,7 +8,7 @@
 - **Readable comparative Mojang source:** [BlockItem.java](https://github.com/hackersense/OptiFine-Source/blob/b77c5c6995874f6cf2755bc5234428906b337b75/1.21.1/net/minecraft/world/item/BlockItem.java), [StandingAndWallBlockItem.java](https://github.com/hackersense/OptiFine-Source/blob/b77c5c6995874f6cf2755bc5234428906b337b75/1.21.1/net/minecraft/world/item/StandingAndWallBlockItem.java).
 - **Comparative, NOT proved exact at 21.1.215:** official [BlockItem.java.patch](https://github.com/neoforged/NeoForge/blob/3cae64530de368936d4c07497d3f0a25e2f9ffec/patches/net/minecraft/world/item/BlockItem.java.patch), [Items.java.patch](https://github.com/neoforged/NeoForge/blob/3cae64530de368936d4c07497d3f0a25e2f9ffec/patches/net/minecraft/world/item/Items.java.patch). The repository does not expose a ref literally named `21.1.215`; a later 1.21.1 patch snapshot cannot substitute for target bytecode.
 - **Actual project hooks:** `StandingAndWallBlockItemMixin`, `StandingAndWallBlockItemAccessor`, `PlanetFrameApi.localNearestLookingDirections`; no production Java/Mixin/Gradle edits in this packet.
-- **Real Gradle-resolved target ASM verification:** new [Phase23C1ItemPlacementAsmContractTest](../../src/test/java/dev/planetary/world/Phase23C1ItemPlacementAsmContractTest.java) checks loaded `.class` files from target dependency and compiled Planetary Mixin. Source review and test *authorship* are done; record test outcome separately from committed code. GitHub Actions [run 38257655791](https://github.com/Abbygree11/Planetary/actions/runs/38257655791) initiated by test commit.
+- **Real Gradle-resolved target ASM verification:** new [Phase23C1ItemPlacementAsmContractTest](../../src/test/java/dev/planetary/world/Phase23C1ItemPlacementAsmContractTest.java) checks loaded `.class` files from target dependency and compiled Planetary Mixin. Source review and test *authorship* are done; record test outcome separately from committed code. GitHub Actions [run 38257655791](https://github.com/Abbygree11/Planetary/actions/runs/38257655791) initiated by test commit; 315 JUnit tests reached execution and one test assertion failed because the test mistakenly expected an annotation method *descriptor without its method name*. Corrected in test commit [56721e4](https://github.com/Abbygree11/Planetary/commit/56721e4470521beb391ac58e1b91c3960084717e), now checking full `getPlacementState` selector. [Repeat CI run 38258262302](https://github.com/Abbygree11/Planetary/actions/runs/38258262302) launched; do not claim the second run succeeded before checking.
 
 ## 1/4 — precise patch + effective loaded bytecode owner
 
@@ -52,7 +52,7 @@ Later NeoForge patch adds context-aware `getPlaceSound` and `BlockState.getSound
 | --- | --- |
 | Source and existing 2.3B original effective-owner evidence | REVIEWED |
 | Strict ASM test authored and committed | DONE |
-| Actual NeoForge21.1.215 classpath ASM/JUnit run | CI PENDING until run conclusion is independently inspected |
+| Actual NeoForge21.1.215 classpath ASM/JUnit run | Original run 38257655791 FAIL (test assertion typo); corrected run 38258262302 PENDING until its conclusion is independently inspected |
 | Mixin transformer actually applied in client/server | NOT RUN |
 | Planetary item semantics on 6 canonical faces/12 seams/8 corners | NOT RUN |
 | Actual loaded third-party mod subclasses | NOT RUN |
