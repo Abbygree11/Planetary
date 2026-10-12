@@ -157,3 +157,8 @@ Stage 2.3C-1 ([research](research/PHASE2_STAGE3C1_BLOCKITEM_STANDINGWALL_NEOFORG
 
 
 **Stage2.3C-12 final ABI PASS (2026-10-12):** [CI38297478474](https://github.com/Abbygree11/Planetary/actions/runs/38297478474) completed SUCCESS compiling Java and checking selected exact NeoForge21.1.215 lighting/AO/biome tint/compiled Planet model-Mixin contracts after test-only correction d6fdefa. Full [C12 report](../research/PHASE2_STAGE3C12_LIGHT_AO_BIOME_TINT_NEOFORGE_MODEL_ASM_1_21_1.md). No real render/game/mod acceptance; next C13 alternate client render owners.
+
+
+## 2026-10-12 Stage2.3C-1…15 scope reconciliation (source/selected ABI, not runtime acceptance)
+
+[Evidence inventory with 15 successful selected target21.1.215 ASM/JUnit CI runs](research/PHASE2_STAGE3C_1_TO_15_SCOPE_RECONCILIATION_AND_NEXT_OWNER_GATES_1_21_1.md) · [full 40-row P01–P40 evidence map](research/PHASE2_STAGE3C_P01_P40_ABI_COVERAGE_DISPOSITION_1_21_1.tsv). The prior original BLOCK241/241 and ITEM87/87 counts are original **source/registry**, not complete patched target-method dispatch coverage. `2.3C-1…15` are research packet DONE; `2.3C` itself remains ACTIVE because P09 FrontAndTop, P10 16-angle rotation, P35 block canonical rotate/mirror, P26 multi-face attachment, P28 RailState and P29 GrowingPlant have family-specific target-ABI gaps. `2.3C-16` (NEXT): P09/P10/P35 whole state-property orientation/rotate-mirror packet 4/4, strict ASM CI. Remaining P26/P28/P29 are independent coherent graph packets. 2.4A–2.4E implementation and Phase2 gameplay still OPEN. No new source-report docs can be cited as passed Mixin weaving or real mods.
