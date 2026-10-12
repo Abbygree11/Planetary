@@ -55,7 +55,7 @@ final class Phase23C15ResourceReloadSectionEffectsAsmContractTest {
         assertMethod(EVENT + "RegisterClientReloadListenersEvent", "registerReloadListener",
                 "(Lnet/minecraft/server/packs/resources/PreparableReloadListener;)V");
         assertMethod(HOOKS, "initClientHooks");
-        assertCalls(HOOKS, "registerReloadListener");
+        assertConstructs(HOOKS, EVENT + "RegisterClientReloadListenersEvent");
         assertMethod(DISPATCH, "onResourceManagerReload");
         assertMethod(LEVEL, "onResourceManagerReload");
         assertMethod(LEVEL, "setLevel");
@@ -138,6 +138,22 @@ final class Phase23C15ResourceReloadSectionEffectsAsmContractTest {
         }, ClassReader.SKIP_CODE | ClassReader.SKIP_FRAMES | ClassReader.SKIP_DEBUG);
         assertTrue(found[0], "Missing selected target classpath method " + owner +
                 "." + name + (descriptor == null ? "" : descriptor));
+    }
+
+    private static void assertConstructs(String owner, String constructedClass) throws IOException {
+        final boolean[] found = {false};
+        reader(owner).accept(new ClassVisitor(Opcodes.ASM9) {
+            @Override public MethodVisitor visitMethod(int a, String n, String d,
+                                                         String s, String[] e) {
+                return new MethodVisitor(Opcodes.ASM9) {
+                    @Override public void visitTypeInsn(int opcode, String type) {
+                        if (opcode == Opcodes.NEW && type.equals(constructedClass)) found[0] = true;
+                    }
+                };
+            }
+        }, ClassReader.SKIP_FRAMES | ClassReader.SKIP_DEBUG);
+        assertTrue(found[0], "Missing selected target event creation " + owner +
+                " -> " + constructedClass);
     }
 
     private static void assertCalls(String owner, String callee) throws IOException {
