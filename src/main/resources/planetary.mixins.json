@@ -75,6 +75,7 @@
     "HopperBlockPlacementMixin",
     "RotatedPillarBlockPlacementMixin",
     "SlabBlockPlacementMixin",
+    "TrapDoorBlockLocalPlacementMixin",
     "RedstoneWallTorchSupportMixin",
     "BaseTorchBlockSupportMixin",
     "FaceAttachedHorizontalDirectionalBlockSupportMixin",
