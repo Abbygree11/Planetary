@@ -19,3 +19,8 @@
 ## Resume checkpoint
 
 **Следующий шаг:** первый пункт `[ ]`, который ещё не подтверждён исходниками или игровым результатом. По завершении добавить конкретный артефакт, SHA коммита, CI run (если применимо), следующий чекбокс; закончить ответ, не переходить к следующей фазе автоматически.
+
+
+### P29 kelp head/body fluid constraint handoff (C19 2026-10-13)
+
+[Actual NeoForge21.1.215 growing plant/kelp source and mod contract research](../research/PHASE2_STAGE3C19_GROWINGPLANT_HEAD_BODY_DIRECTED_GROWTH_NEOFORGE_MOD_ASM_1_21_1.md): KelpBlock/KelpPlantBlock grow UP and require source water/fluid-level validity, LiquidBlockContainer and specific `FluidState`; head/body `updateShape` may schedule water ticks based on `scheduleFluidTicks`. A chain local-gravity fix must NOT invent water, omit fluid callbacks or duplicate water ticks. Full `FluidState` local dynamics, waterlogged renderer and real side-face liquid behavior remain **Phase5 acceptance**, not C19 source ASM PASS.
