@@ -5,6 +5,8 @@ import dev.planetary.topology.PlanetFace;
 import dev.planetary.topology.PlanetGravityFrame;
 import dev.planetary.world.PlanetBlockNeighborQuery;
 import dev.planetary.world.PlanetBlockRuntime;
+import dev.planetary.world.PlanetPlacementContextAdapter;
+import dev.planetary.world.PlanetPlacementResolver;
 import dev.planetary.world.PlanetVanillaDirection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -115,6 +117,22 @@ public final class PlanetFrameApi {
     ) {
         Objects.requireNonNull(context, "context");
 
+        /*
+         * Existing family Mixins call this shared API. When woven, the typed
+         * bridge retains the actual current-context physical hit and distinct
+         * final physical target. Unwoven unit tests retain legacy fallback.
+         */
+        Optional<PlanetPlacementIntent> intent =
+                PlanetPlacementContextAdapter.fromPhysicalBlockPlaceContext(
+                        context, PlanetPlacementIntent.Author.UNKNOWN);
+        if (intent.isPresent()) {
+            return PlanetPlacementResolver.resolve(intent.get())
+                    .targetPlacementFrame()
+                    .map(frame -> new PlacementFrame(
+                            frame.targetPos(), frame.targetStateFrame().face(),
+                            frame.physicalClickedFace(), frame.localClickedFace(),
+                            frame.worldClickLocation(), frame.localHitOffset()));
+        }
         return placementFrame(
                 context.getLevel(),
                 context.getClickedPos(),

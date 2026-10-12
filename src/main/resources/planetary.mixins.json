@@ -81,6 +81,7 @@
     "LadderBlockSupportMixin",
     "WallTorchBlockSupportMixin",
     "BlockStateShapeMixin",
+    "UseOnContextOriginalHitInvoker",
     "StandingAndWallBlockItemMixin",
     "StandingAndWallBlockItemAccessor",
     "SpreadingSnowyDirtBlockGravityMixin",
