@@ -22,3 +22,8 @@ Phase 2 исправляет состояние, Phase 3 — визуальну�
 ## Resume checkpoint
 
 **Следующий шаг:** первый пункт `[ ]`, который ещё не подтверждён исходниками или игровым результатом. По завершении добавить конкретный артефакт, SHA коммита, CI run (если применимо), следующий чекбокс; закончить ответ, не переходить к следующей фазе автоматически.
+
+
+### P28 RailShape geometry/visualization handoff (2026-10-12 C17)
+
+[RailState, NeoForge custom slope and source-owned Create TrackShape audit](../research/PHASE2_STAGE3C17_RAILSTATE_PHYSICAL_GRAPH_NEOFORGE_MOD_ASM_1_21_1.md): Phase2 owns local graph endpoints/shape selection, but Phase3 must separately rotate vanilla rail render quads/voxel hitboxes at all local faces/edges; custom rail `isValidRailShape` shapes may not match vanilla 10-value rendering assumptions. Create TrackBlock/TrackShape/Bezier model is independent; GPU/BER/rail-curve render must preserve physical coordinate provenance. Selected ASM contract is not visual acceptance. Check texture orientation, rise height, culling/light and no-Planet pass-through with real mod JAR only in later Phase3/10 tests.
