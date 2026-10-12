@@ -91,7 +91,7 @@ final class Phase23C14CameraEntityItemRenderAsmContractTest {
         assertTrue(declaresName(IR, "renderStatic"));
         assertTrue(declaresName(IR, "render"));
         assertTrue(declaresName(IH, "renderHandsWithItems"));
-        assertTrue(declaresName(G, "renderHand"));
+        assertTrue(declaresName(G, "renderItemInHand")); // vanilla/NeoForge 1.21.1 owner, not OptiFine-only renderHand
         assertTrue(declaresName(IE, "render"));
         assertTrue(declaresName(IF, "render"));
         assertTrue(callsAny(IE, "renderMultipleFromCount"));
