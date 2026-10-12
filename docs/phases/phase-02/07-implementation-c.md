@@ -10,7 +10,7 @@
 
 - [ ] **1.** Разобрать рост по ванильным альтернативным growth owners: sapling, crops, vines, growing plant, multiface attachment.
 - [ ] **2.** Отдельными итерациями door/bed/chest pairing, сборка/разборка, UPDATE и сериализация.
-- [ ] **3.** Отдельно rails/face attachments/fences/walls local tangent graph и seam connection.
+- [ ] **3.** Отдельно rails/face attachments/fences/walls local tangent graph и seam connection. **P28 researched and selected target ASM C17:** [RailState/NeoForge exact ABI + semantic contract](../../research/PHASE2_STAGE3C17_RAILSTATE_PHYSICAL_GRAPH_NEOFORGE_MOD_ASM_1_21_1.md). Implementation must preserve `IBaseRailBlockExtension.isValidRailShape/canMakeSlopes/isFlexibleRail/getRailDirection`; `RailState` owns multi-write, world-XZ and above/below graph, not only `RailShape`; use typed local chart-endpoint transport and physical world identity. Create `TrackBlock extends Block` independent graph. No Java implementation from source audit.
 - [ ] **4.** Для каждого подвида маленький deterministic test + CI; заранее пометить перекрестные Phase 7A и Phase 9 контракты.
 
 ## Условия завершения этой карточки
