@@ -60,7 +60,7 @@ Future design only: Planet-owned MovementPlan with typed author, source/target p
 | --- | --- |
 | 4/4 comprehensive source/patch/comparator/mechanism study | DONE |
 | Exact target JVM ASM/JUnit compiled tests authored/committed | DONE |
-| CI compile, JUnit, registry | [Run38281757960](https://github.com/Abbygree11/Planetary/actions/runs/38281757960) requires verified conclusion |
+| CI compile, JUnit, registry | [initial 38281757960](https://github.com/Abbygree11/Planetary/actions/runs/38281757960) failed two TEST assumptions, [repeat 38282239773](https://github.com/Abbygree11/Planetary/actions/runs/38282239773) **PASS / completed SUCCESS** |
 | Live client/server Mixin weave | NOT RUN |
 | 72 predesigned piston fixtures: 6 faces/12 seams/8 corners, mods, controls | NOT RUN |
 | Actual NeoForge event subscriber, cancellation and custom adhesive blocks | NOT RUN |
@@ -75,3 +75,6 @@ Manual cases: genuine placement vs forced state, six-face push/pull, 12 seam pat
 ### CI delta 2.3C-8
 
 [Initial CI 38281757960](https://github.com/Abbygree11/Planetary/actions/runs/38281757960) **FAILED 2/361 JUnit test assertions; production/test compilation PASS**: source-level assumption wrongly specified the return of `MovingPistonBlock.newMovingBlockEntity` as `PistonMovingBlockEntity` rather than actual declared `BlockEntity`; another assertion searched for `Entity.move` directly in `moveCollidedEntities` instead of following the owning `moveEntityByPiston` helper. Dynamic NeoForge events/isStickyBlock/canStickTo/isSlimeBlock and other 4 Stage2.3C-8 tests PASSED. [Strict correction commit 4612c77](https://github.com/Abbygree11/Planetary/commit/4612c77dfbb2fdfd5d014d1c6aa3b5589fc076e6) pins exact factory return and checks helper's Entity.move; [repeat CI 38282239773](https://github.com/Abbygree11/Planetary/actions/runs/38282239773) **needs independent conclusion**. No production code changed.
+
+
+**Final CI confirmation:** [Actions 38282239773](https://github.com/Abbygree11/Planetary/actions/runs/38282239773) **completed SUCCESS**, including exact Gradle-resolved NeoForge 21.1.215 selected piston/NeoForge extension ASM and compiled Planet LevelMixin assertions. The selected method-dispatch invariants in this file are now **CI VERIFIED**. This does NOT prove client/server applied Mixin, vanilla no-Planet piston runtime, Planet faces/seams, actual BE motion after tick, dynamic NeoForge listener cancellation, 72 manual tests or loaded Create jar compatibility.
