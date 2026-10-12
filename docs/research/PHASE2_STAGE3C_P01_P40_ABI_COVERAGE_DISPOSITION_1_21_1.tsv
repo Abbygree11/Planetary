@@ -24,7 +24,7 @@ P22	canonical-down-support	C4,C11	SELECTED_SHARED_ABI	2.4B	Full subclass overrid
 P23	ceiling-side-sturdy-support	C4,C11	SHARED_ABI_ONLY	2.4B	Position-aware mod support and live game open
 P24	survival-neighbor-invalidation	C4	SELECTED_SHARED_ABI	2.4B	NeoForge onNeighborNotify lost by HEAD cancellation is risk
 P25	tangent-connection-graph	C4,C11	SHARED_ABI_ONLY	2.4C	Fence Wall Tripwire physical graph semantics not specifically checked
-P26	multiface-and-vine-graph	C4,C11	SPECIFIC_TARGET_GAP	2.3C-next/2.4C	No precise MultifaceBlock or VineBlock growth graph target ASM
+P26	multiface-and-vine-graph	C4,C11,C18	SELECTED_SPECIFIC_ABI	2.3C-next/2.4C	Actual NeoForge21.1.215 JVM MultifaceBlock six-face vs VineBlock five-face and NeoForge isAreaLoaded growth, MultifaceSpreader three strategies/SpreadConfig, GlowLichen/SculkVein charge, MultifaceGrowthFeature selected ASM/JUnit CI38307680178 PASS; six-face/seam world runtime and loaded mod acceptance UNRUN
 P27	wall-post-and-side-height	C11	SHARED_ABI_ONLY	2.4C/Phase3	WallBlock property/shape graph target not checked
 P28	RailState-and-slope-graph	C9,C17	SELECTED_SPECIFIC_ABI	2.3C-next/2.4C/Phase7	Exact Gradle-loaded 21.1.215 RailState XZ/above/below graph, BaseRailBlock, 10 RailShape values, NeoForge IBaseRailBlockExtension slope/flexible/valid/vehicle policy and AbstractMinecart selected ABI PASS run38306600972; rail graph runtime, Create mod, 6face/seam and cart motion unrun
 P29	growingplant-head-body	C5	SPECIFIC_TARGET_GAP	2.3C-next/2.4C/Phase8	No exact GrowingPlantBlock heads/bodies/survival target ABI
