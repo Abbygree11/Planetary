@@ -70,3 +70,8 @@ Future design only: Planet-owned MovementPlan with typed author, source/target p
 Manual cases: genuine placement vs forced state, six-face push/pull, 12 seam paths physical vs semantic decision, 8 corners no dupes, sticky/honey modded adhesive symmetry, NeoForge pre/post counts on cancellation, destroy-push block fluid/drop hooks, entity support/bounce/sliding, moving BE progress, chunk unloading/save+restart and physical out-of-Planet/fake world behavior. The existing [72-case matrix](PHASE2_STAGE3A_PISTON_SIX_FACE_SEAM_CORNER_MOD_ACCEPTANCE_1_21_1.md) is a PLAN, not performed tests.
 
 **Next 2.3C-9:** redstone/automation signal owner family plus NeoForge events and modded signal sideports, 4/4 package.
+
+
+### CI delta 2.3C-8
+
+[Initial CI 38281757960](https://github.com/Abbygree11/Planetary/actions/runs/38281757960) **FAILED 2/361 JUnit test assertions; production/test compilation PASS**: source-level assumption wrongly specified the return of `MovingPistonBlock.newMovingBlockEntity` as `PistonMovingBlockEntity` rather than actual declared `BlockEntity`; another assertion searched for `Entity.move` directly in `moveCollidedEntities` instead of following the owning `moveEntityByPiston` helper. Dynamic NeoForge events/isStickyBlock/canStickTo/isSlimeBlock and other 4 Stage2.3C-8 tests PASSED. [Strict correction commit 4612c77](https://github.com/Abbygree11/Planetary/commit/4612c77dfbb2fdfd5d014d1c6aa3b5589fc076e6) pins exact factory return and checks helper's Entity.move; [repeat CI 38282239773](https://github.com/Abbygree11/Planetary/actions/runs/38282239773) **needs independent conclusion**. No production code changed.
