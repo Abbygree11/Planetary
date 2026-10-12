@@ -101,7 +101,8 @@ final class Phase23C17RailGraphNeoForgeAsmContractTest {
         assertCalls(BASE, "onPlace", "updateState");
         assertCalls(BASE, "updateShape", "scheduleTick");
         assertCalls(BASE, "getStateForPlacement", "getFluidState");
-        assertCalls(BASE, "shouldBeRemoved", "isAscending");
+        assertCalls(BASE, "shouldBeRemoved", "canSupportRigidBlock");
+        assertCalls(BASE, "getShape", "isAscending");
     }
 
     @Test void allThreeConcreteVanillaOwnersRotateAndMirrorDifferentRailPropertyDomains()
