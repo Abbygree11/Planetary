@@ -9,6 +9,7 @@
 - [ ] **7.3** 7.3: non-living entities, projectiles, falling blocks, particles-owning entity types; не считать визуальный результат физическим.
 - [ ] **7.4** 7.4: boats/minecarts/vehicles and rail-geometry dependency on Phase2.
 - [ ] **7.5** 7.5: passengers, mounts, attachments, leash/tethers and forces.
+- [ ] **7.5V** Moving entity and vehicle visual pose interpolation vs physical collision: camera current/previous frame and local eye, minecart/boat/TNT/nonliving entity, FallingBlockEntity anchor; custom Create Flywheel DynamicVisual and contraption independent Phase3/Phase10 rendering. Reference [C14](../research/PHASE2_STAGE3C14_CAMERA_ENTITY_ITEM_MOVING_WORLD_EFFECTS_ASM_1_21_1.md).
 - [ ] **7.6** Отдельная acceptance: physical-world velocities consistent, rotated-face controls, seams, replication.
 
 ## Критерии и зависимости
