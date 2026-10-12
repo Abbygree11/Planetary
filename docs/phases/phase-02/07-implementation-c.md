@@ -8,7 +8,7 @@
 
 ## Независимые микропакеты (по ОДНОМУ на отдельный ответ)
 
-- [ ] **1.** Разобрать рост по ванильным альтернативным growth owners: sapling, crops, vines, growing plant, multiface attachment.
+- [ ] **1.** Разобрать рост по ванильным альтернативным growth owners: sapling, crops, vines, growing plant, multiface attachment. **P26 C18 source + selected ABI study:** [six-face MultifaceBlock, five-face VineBlock, 3 spread modes and independent Sculk/GlowLichen/NeoForge/Create APIs](../../research/PHASE2_STAGE3C18_MULTIFACE_VINE_SPREAD_GROWTH_NEOFORGE_MOD_ASM_1_21_1.md). Implement typed `PlanetAttachmentPort` world provenance and two-step seam traversal only for Planet-owned graphs; never synthesize Vine DOWN property or break arbitrary mod SpreadConfig. **Research != actual runtime fix.**
 - [ ] **2.** Отдельными итерациями door/bed/chest pairing, сборка/разборка, UPDATE и сериализация.
 - [ ] **3.** Отдельно rails/face attachments/fences/walls local tangent graph и seam connection. **P28 researched and selected target ASM C17:** [RailState/NeoForge exact ABI + semantic contract](../../research/PHASE2_STAGE3C17_RAILSTATE_PHYSICAL_GRAPH_NEOFORGE_MOD_ASM_1_21_1.md). Implementation must preserve `IBaseRailBlockExtension.isValidRailShape/canMakeSlopes/isFlexibleRail/getRailDirection`; `RailState` owns multi-write, world-XZ and above/below graph, not only `RailShape`; use typed local chart-endpoint transport and physical world identity. Create `TrackBlock extends Block` independent graph. No Java implementation from source audit.
 - [ ] **4.** Для каждого подвида маленький deterministic test + CI; заранее пометить перекрестные Phase 7A и Phase 9 контракты.
