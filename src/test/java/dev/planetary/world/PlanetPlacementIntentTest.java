@@ -143,7 +143,7 @@ final class PlanetPlacementIntentTest {
                 PlanetPlacementIntent.Author.SYNTHETIC, physical, physical,
                 Direction.UP, Vec3.ZERO, true,
                 Optional.of(new PlanetGravityFrame(PlanetFace.POS_Y))));
-        assertThrows(IllegalArgumentException.class, () -> PlanetPlacementIntent.foreign(
+        assertThrows(NullPointerException.class, () -> PlanetPlacementIntent.foreign(
                 PlanetPlacementIntent.Author.MOD_CUSTOM,
                 ResourceLocation.parse("test:virtual"), BlockPos.ZERO, BlockPos.ZERO,
                 null, Vec3.ZERO, true));
