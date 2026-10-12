@@ -10,6 +10,10 @@ Minecraft 1.21.1, NeoForge 21.1.215, Java 21, Gradle 8.12.
 User local check: git pull && .\test.ps1 && .\run-client.ps1
 Never claim build/runtime success before user confirms it.
 
+## 2026-10-13 — 2.4A-2 typed orientation property API (CI PENDING; no runtime rewrite)
+
+User stated “Все ок” after 2.4A-1. Record as no reported regression of existing behavior; no quantified gameplay coverage was supplied, so 6/12/8 manual acceptance remains OPEN. Added opt-in `PlanetOrientationProperties`: six/four-facing, three axes, half, support attachment, 12 legal FrontAndTop, 16 tangent yaw with explicit owner zero, and safe property writer. Helper tests cover six faces, 12 edges, 8 corners, legal domains, no-Planet and foreign bypass. No new Mixins; author-specific placement and NeoForge/mod gameplay remain pending. [Packet](research/PHASE2_STAGE4A2_TYPED_ORIENTATION_PROPERTIES_1_21_1.md).
+
 ## 2026-10-13 — 2.4A-1 typed placement API (code + CI PASS, gameplay OPEN)
 
 New `PlanetPlacementIntent` distinguishes original hit, final target, author and optional player body frame. `PlanetPlacementResolver` evaluates canonical target independently of original source; foreign coordinates never activate. `PlanetPlacementContextAdapter` requires explicitly supplied original hit because the BlockPlaceContext accessor is protected and final target may be retargeted. No new Mixins or mutation of vanilla/NeoForge dispatch. Tests: `PlanetPlacementIntentTest`. Initial CI #38313592960 1/430 failed on new assertion's exception-type mismatch (null guard threw NPE as coded), fixed test-only in 893a093; repeat [CI #38313939066](https://github.com/Abbygree11/Planetary/actions/runs/38313939066) SUCCESS (compile/JUnit/census). See [design and gates](research/PHASE2_STAGE4A1_TYPED_PLACEMENT_INTENT_1_21_1.md); 2.4A-2 is next after CI status verification. Real six-face/gameplay/modded acceptance OPEN.

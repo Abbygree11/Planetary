@@ -749,6 +749,10 @@ runtime package has green CI.
 
 Source-owner/selected ASM stage 2.3C-1…19 is research-complete in bounded scope, not runtime complete. First implementation packet introduces `PlanetPlacementIntent` (author, original physical hit, final target, optional body frame or foreign coordinate provenance), `PlanetPlacementResolver` (independent source/target canonical frame), and a version-specific `BlockPlaceContext` adapter requiring the original hit from the author. Exact [scope and independent acceptance gates](research/PHASE2_STAGE4A1_TYPED_PLACEMENT_INTENT_1_21_1.md); package owner [2.4A card](phases/phase-02/05-implementation-a.md). Initial CI #38313592960 compiled but 1 of 430 JUnit failed due new null-guard test wrongly expecting IAE instead of NPE; test-only correction 893a093 then [CI #38313939066](https://github.com/Abbygree11/Planetary/actions/runs/38313939066) COMPLETED SUCCESS (compile, JUnit, registry). CI is separate from in-game client/server and loaded-mod compatibility. NEXT: 2.4A-2 family property adaptations with exact ABI and runtime proof, then 2.4A-3 alternate author sources; no generic `Level.setBlock` or global Direction rewrite.
 
+### 2026-10-13 — 2.4A-2 typed orientation properties [IMPLEMENTED SEMANTIC CORE; CI/GAMEPLAY PENDING]
+
+User replied “Все ок” to 2.4A-1; record no reported regression rather than comprehensive 6/12/8 acceptance. [2.4A-2 typed orientation report](research/PHASE2_STAGE4A2_TYPED_ORIENTATION_PROPERTIES_1_21_1.md) adds opt-in typed six/four FACING, AXIS_3, HALF preference, AttachFace support direction, FrontAndTop 12-state lookup, 16-way tangent rotation with explicit zero and legal concrete BlockState property writing; tests enumerate six faces, 12 edges, eight corners and vanilla/foreign no-op. **No Mixin/writer adaptation, no change to placement callbacks**; next implementation item is source-audited actual owner adapters and their ABI/runtime/mod test gates. User reported existing behavior OK for prior unchanged-runtime 2.4A-1.
+
 ## Phase 2 — block semantic subsystem [R1 RESEARCH COMPLETE; IMPLEMENTATION PARTIAL, BATCH ACCEPTANCE]
 
 Detailed mechanism ownership:
