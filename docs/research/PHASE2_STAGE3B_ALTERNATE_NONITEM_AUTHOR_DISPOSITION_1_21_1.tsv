@@ -1,0 +1,31 @@
+owner	creation_path	coordinate_semantics	safe_boundary	phase_owner	evidence_status	target_21_1_215_asm	actual_planet_gameplay
+DispenserBlock.dispenseFrom	DISPENSER_REGISTRY	physical front side	SHARED_SAFE provenance	2,7A	COMPARATIVE_SOURCE_ONLY	REVIEW_PENDING	NOT_RUN
+DispenseItemBehavior.bootStrap	ANONYMOUS_BEHAVIORS	direct physical writes	OPT_IN_ALGORITHM	2,5,7A	COMPARATIVE_SOURCE_ONLY	REVIEW_PENDING	NOT_RUN
+ShulkerBoxDispenseBehavior.execute	BlockItem.place synth context	physical target / target canonical	OPT_IN_ALGORITHM	2	COMPARATIVE_SOURCE_ONLY	REVIEW_PENDING	NOT_RUN
+DropperBlock.dispenseFrom	default eject or inventory transfer	physical capability sides	PHYSICAL_DO_NOT_TOUCH	7A	COMPARATIVE_SOURCE_ONLY	REVIEW_PENDING	NOT_RUN
+FallingBlock.tick	fall spawn	source physical and entity gravity	OPT_IN_ALGORITHM	2,7	COMPARATIVE_SOURCE_ONLY	REVIEW_PENDING	NOT_RUN
+FallingBlockEntity.fall	fluid-source placeholder	physical World and state	SHARED_SAFE provenance	2,5,7	COMPARATIVE_SOURCE_ONLY	REVIEW_PENDING	NOT_RUN
+FallingBlockEntity.tick	direct landing state and BE	physical landing / canonical support	OPT_IN_ALGORITHM	2,5,7	COMPARATIVE_SOURCE_ONLY	REVIEW_PENDING	NOT_RUN
+Fallable.onLand	post-land transform	physical target, block algorithm	OPT_IN_ALGORITHM	2	COMPARATIVE_SOURCE_ONLY	REVIEW_PENDING	NOT_RUN
+ConcretePowderBlock.onLand	hydrate to concrete	fluid and physical target	NEOFORGE_EXTENSION	2,5	COMPARATIVE_SOURCE_ONLY	REVIEW_PENDING	NOT_RUN
+Feature.place	WorldGenLevel writer	WORLDGEN sampling	PHYSICAL_DO_NOT_TOUCH	8	COMPARATIVE_SOURCE_ONLY	REVIEW_PENDING	NOT_RUN
+TreeFeature.place	worldgen structure tree	WORLDGEN volume	OPT_IN_ALGORITHM	8,2	COMPARATIVE_SOURCE_ONLY	REVIEW_PENDING	NOT_RUN
+ChorusPlantFeature.place	growth feature	WORLDGEN volume	OPT_IN_ALGORITHM	8,2	COMPARATIVE_SOURCE_ONLY	REVIEW_PENDING	NOT_RUN
+PointedDripstoneFeature.place	dripstone feature	WORLDGEN volume	OPT_IN_ALGORITHM	8,2	COMPARATIVE_SOURCE_ONLY	REVIEW_PENDING	NOT_RUN
+StructurePiece.placeBlock	piece direct writer	physical piece transform	OPT_IN_ALGORITHM	9,2	COMPARATIVE_SOURCE_ONLY	REVIEW_PENDING	NOT_RUN
+StructureTemplate.placeInWorld	template/processor/BE/fluid	worldgen, real or foreign	NEOFORGE_EXTENSION	9,2,5	COMPARATIVE_SOURCE_ONLY	REVIEW_PENDING	NOT_RUN
+StructureBlockEntity.placeStructure	BE template trigger	physical origin	OPT_IN_ALGORITHM	9	COMPARATIVE_SOURCE_ONLY	REVIEW_PENDING	NOT_RUN
+JigsawBlockEntity.generate	BE structure connector	orientation and worldgen	OPT_IN_ALGORITHM	9	COMPARATIVE_SOURCE_ONLY	REVIEW_PENDING	NOT_RUN
+BlockInput.place	command literal BlockState	explicit author state/physical	SHARED_SAFE preserve values	2	COMPARATIVE_SOURCE_ONLY	REVIEW_PENDING	NOT_RUN
+SetBlockCommand	single command write	PHYSICAL	PHYSICAL_DO_NOT_TOUCH	2	COMPARATIVE_SOURCE_ONLY	REVIEW_PENDING	NOT_RUN
+FillCommand	multiple command writes	PHYSICAL	PHYSICAL_DO_NOT_TOUCH	2	COMPARATIVE_SOURCE_ONLY	REVIEW_PENDING	NOT_RUN
+CloneCommands	physical translated copy+BE	source/destination physical	SHARED_SAFE preserve values	2,9	COMPARATIVE_SOURCE_ONLY	REVIEW_PENDING	NOT_RUN
+FlowerPotBlock.useItemOn	direct block interaction	physical click+variant	OPT_IN_ALGORITHM	2	COMPARATIVE_SOURCE_ONLY	REVIEW_PENDING	NOT_RUN
+CandleCakeBlock.useItemOn	direct composite conversion	physical click+variant	OPT_IN_ALGORITHM	2	COMPARATIVE_SOURCE_ONLY	REVIEW_PENDING	NOT_RUN
+ChangeOverTimeBlock	random tick mutation	clock and physical neighbor	OPT_IN_ALGORITHM	2,8	COMPARATIVE_SOURCE_ONLY	REVIEW_PENDING	NOT_RUN
+SculkSpreader+BE	gameevent/tick growth	physical charge graph	OPT_IN_ALGORITHM	2,7A	COMPARATIVE_SOURCE_ONLY	REVIEW_PENDING	NOT_RUN
+Create SchematicPrinter	template virtual level	FOREIGN level	MOD_INDEPENDENT	9,10	COMPARATIVE_SOURCE_ONLY	REVIEW_PENDING	NOT_RUN
+Create SchematicannonBlockEntity	progressive real writer	physical world	MOD_INDEPENDENT	9,10	COMPARATIVE_SOURCE_ONLY	REVIEW_PENDING	NOT_RUN
+Create ContraptionWorld	virtual local state	FOREIGN level	PHYSICAL_DO_NOT_TOUCH	10	COMPARATIVE_SOURCE_ONLY	REVIEW_PENDING	NOT_RUN
+AE2 SpatialIOPortBlockEntity	BE spatial transition	real source/destination world	MOD_INDEPENDENT	9,10	COMPARATIVE_SOURCE_ONLY	REVIEW_PENDING	NOT_RUN
+AE2 SpatialStorageHelper	region+BE state swap	cross-dimensional physical	MOD_INDEPENDENT	9,10	COMPARATIVE_SOURCE_ONLY	REVIEW_PENDING	NOT_RUN
