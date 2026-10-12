@@ -68,7 +68,7 @@ Before any fix, compare four renders of **the same physical scene**, camera pose
 | --- | --- |
 | Full 4-part bounded source/owner/lifecycle/alternate path & shader source research | DOCUMENTED |
 | Added exact-version classpath/JUnit selected owner test | COMMITTED; CI result separate |
-| Java compile + ASM/JUnit + original registry census | VERIFY CI BEFORE PASS |
+| Java compile + selected NeoForge21.1.215 ASM/JUnit + original registry census | **PASS** — [GitHub Actions 38298758219](https://github.com/Abbygree11/Planetary/actions/runs/38298758219) |
 | Applied Planet Mixin transformation and client startup | NOT RUN |
 | Real NeoForge/vanilla BER lifecycle + resource reload and no-Planet dimension | NOT RUN |
 | Full 6 faces / 12 seams / 8 corners / arbitrary mod-rendered BE | NOT RUN |
@@ -80,3 +80,8 @@ Before any fix, compare four renders of **the same physical scene**, camera pose
 **Manual client acceptance fixtures:** POS_Y vanilla baseline; other five faces; seams/corners; bed/chest/double chest/ender chest/signs/hanging signs/banners/skulls/beacon/conduit/portal/campfire/bell/brushable block/trial spawner/animated block/item; custom registered mod BER with orientation and billboard; test item GUI held/render; custom NeoForge fluid with replacement renderer, tint/alpha and fog; Create moving gear with instancing on/off and Iris shaderpack on/off plus optional compatibility addon; glass/water/foliage/CTM under shaderpacks with PBR normal maps; daytime and night shadows, AO off/on, shader off/on, world-space beams; chunk-reload, resource-pack reload, fake world and non-Planet dimensions. Record each pass as separate *visual and functional* proof with explicit mod/shaderpack hashes and screenshot baselines. Do not infer coverage from success of selected classpath signatures.
 
 **Next research stage candidate:** `2.3C-14` only after verifying CI — client item/entity renderer, camera, motion interpolation and render world-effect bypasses, or the next genuinely unexamined owner identified in canonical roadmap. Preserve Phase 3 / Phase 10 implementation ownership and avoid re-auditing the same BER source inventory.
+
+
+### Verified exact-classpath CI checkpoint (2026-10-12)
+
+[GitHub Actions 38298758219](https://github.com/Abbygree11/Planetary/actions/runs/38298758219) **COMPLETED SUCCESS** on [test commit 8b5c37f](https://github.com/Abbygree11/Planetary/commit/8b5c37f91263347063af9b0100ba2bfea1e8f2ce): Java production/test compilation, JUnit including new strict BER/BEWLR/custom-fluid/compiled Bed Mixin contract, and original registered orientation census. This is selected Gradle classpath ABI verification, **not** Iris shaders/Flywheel/loaded mod, render transformation, GPU or six-face acceptance. Later docs commits do not change tested Java. Research package 4/4 CLOSED; runtime acceptance still OPEN.
