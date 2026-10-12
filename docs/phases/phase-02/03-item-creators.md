@@ -17,9 +17,9 @@ All 87 source/registered effective owners + relevant non-item author families di
 
 ### Next checkpoint for `кк`
 
-Last completed **2.3B-3 (four internal source subsections)**. Read branch HEAD from GitHub, not chat SHA guess. First incomplete **2.3B-4 exact original registered ITEM roster reconciliation (four internal tasks in one answer)**. If not committed, do not call DONE. No need for user manual game checks on documentation-only changes.
+**2.3B-1…4 SOURCE COMPLETE** including original 1,333 ITEM / 87 Java class / 925 BlockItem links (actual runtime and transformer still OPEN). Do not restart 2.3B-4. Current next work is [2.3C source/selected exact ABI gap reconciliation](../../research/PHASE2_STAGE3C_1_TO_15_SCOPE_RECONCILIATION_AND_NEXT_OWNER_GATES_1_21_1.md): `2.3C-16` concrete `FrontAndTop`, `ROTATION_16`, rotate/mirror owners; [2.4A implementation](05-implementation-a.md) later. Branch HEAD `2.0` wins over historical checkpoint.
 
 
 ### 2.3B-3 persistence
 
-Vanilla comparative source + later official NeoForge 1.21.1 patches, not actual 21.1.215 ASM; pinned Create NeoForge minimum 21.1.219 exceeds Planet 21.1.215, AE2 minimum 21.1.169 but loaded compatibility not verified. 30 owners and 48 future cases NOT RUN. Whole B stage remains open until all 87 registered item-class dispatch owners / 925 BlockItem IDs are reconciled from original source ZIP in 2.3B-4.
+Vanilla comparative source + later official NeoForge 1.21.1 patches, not actual 21.1.215 ASM; pinned Create NeoForge minimum 21.1.219 exceeds Planet 21.1.215, AE2 minimum 21.1.169 but loaded compatibility not verified. 30 owners and 48 future cases NOT RUN. All 87 source/registered item owner groups and 925 BlockItem links have now been reconciled in 2.3B-4. This **closes B source research only**; 2.3C exact patched ABI still selected-family rather than exhaustive, and runtime/gameplay acceptance remains OPEN.
