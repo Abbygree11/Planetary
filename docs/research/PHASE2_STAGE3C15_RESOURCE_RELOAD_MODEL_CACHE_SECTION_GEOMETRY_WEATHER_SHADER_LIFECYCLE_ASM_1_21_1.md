@@ -87,8 +87,8 @@ Sky, clouds, rain/snow, particles, light/fog and shaderpack passes are **differe
 | --- | --- |
 | Full source, NeoForge patch, shaderpack source and mod owner inventory | RESEARCH DOCUMENTED |
 | Exact client/worker/level/resource/model-data lifecycle and deepest safe typed boundary | RESEARCH DOCUMENTED |
-| Strict selected Gradle-loaded 21.1.215 classfile ASM contract | COMMITTED; CI independently to verify |
-| Java compile/JUnit/registry census | NOT YET CONFIRMED |
+| Strict selected Gradle-loaded 21.1.215 classfile ASM contract | **PASS** — [GitHub Actions38301516694](https://github.com/Abbygree11/Planetary/actions/runs/38301516694) |
+| Java compile/JUnit/registry census | **PASS** — [GitHub Actions38301516694](https://github.com/Abbygree11/Planetary/actions/runs/38301516694) |
 | Actual applied client Mixins / reload while compiling / no-Planet world / fake Level | NOT RUN |
 | Actual NeoForge `AddSectionGeometryEvent` renderer and `ModelData` dynamic geometry mod | NOT RUN |
 | Actual Iris shaderpack switch/reload, resource pack switch, light/normal map and shadow comparison | NOT RUN |
@@ -97,3 +97,6 @@ Sky, clouds, rain/snow, particles, light/fog and shaderpack passes are **differe
 Proposed future **manual acceptance**: render scene with all six Planet faces, edges/corners, dynamic BEs/connected glass+CTM and custom chunk geometry; reload assets (`F3+T`), change active resource pack, toggle AO and shaderpack, switch dimensions/non-Planet world, relog, move over seams during concurrent chunk rebuild, compare render error/logs, memory, texture atlas IDs and shader matrices; test `AddSectionGeometryEvent` with a **foreign guidebook Level** to ensure no Planet frame leaks; dynamic BE ModelData refresh on unchanged BlockState, light/face culling at two positions with different shape; verify no stale quad/texture, wrong face or mixed old/new generation. Repeat with independently compiled mod JAR, and no hard Iris dependency. These are **UNRUN** fixtures, not proven tests.
 
 **Next family:** `2.3C-16` only if an unreviewed source owner remains after confirming 2.3C-1..15 census; otherwise explicitly close the research-only 2.3C inventory and transition to the planned Phase2 implementation/gate with separate applied Mixin and gameplay criteria rather than manufacturing more artificial micro-stages.
+
+
+**2026-10-12 Stage2.3C-15 actual target JVM/JUnit CI VERIFIED:** [GitHub Actions38301516694](https://github.com/Abbygree11/Planetary/actions/runs/38301516694) **COMPLETED SUCCESS** on selected [test revision 20bcf68](https://github.com/Abbygree11/Planetary/commit/20bcf686c771ecd9db28d68edf92dba9fc715a21). Production/test Java compilation, JUnit including `Phase23C15ResourceReloadSectionEffectsAsmContractTest`, and original registered orientation census PASS. Selected real Gradle-resolved NeoForge21.1.215 `ModelManager`/NeoForge model events, reload listeners, additional section geometry, `ModelDataManager`, weather/sky and compiled Planet render-cache owners verified. **No production Java/Mixin changes, no client transformed Mixin, loaded mod/shaderpack/GPU or 6 faces/12 edges/8 corners acceptance**; only source/selected bytecode 4/4 closed. Next: reconcile uncovered source owners before adding a C16 stage; proceed to staged implementation/runtime gates rather than claim research solves the behavior.
