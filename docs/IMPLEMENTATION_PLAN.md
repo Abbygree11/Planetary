@@ -1125,6 +1125,14 @@ R2 decisions:
 - special/custom model paths that bypass standard BakedModel remain Phase-10
   integration work.
 
+### 3B-SEAM — ОБЩИЙ БАГ ОТРИСОВКИ БОКОВЫХ ГРАНЕЙ НА РЁБРАХ [USER-REPORTED; CAUSE/IMPLEMENTATION/ACCEPTANCE OPEN]
+
+2026-10-13: пользователь предоставил скриншот, где у блоков на ребре планеты одна боковая поверхность/текстурная окантовка дорисована, а другая — нет. **Скриншот с травяным покрытием — лишь пример: задача относится к любым блокам, а не только GrassBlock.** 2.4A-3 пользователь подтвердил как 'всё ок' за исключением этого визуального дефекта. **Не исправлять в 2.4A-4**: владелец — Phase 3B, общая система статических моделей/culling/AO/light, с Phase 3D/10 только для отдельных нестандартных mod render bypasses.
+
+Изучить и исправить **самый глубокий безопасный общий render boundary**: physical side -> source canonical model side -> NeoForge BakedModel.getQuads/ModelData/RenderType -> transformed quad geometry/normals/physical direction -> source/target canonical side culling and occlusion -> AO/light/tint/shade/overlays and render cache. Диагноз НЕ установлен; проверить, исчезли ли сами квады или только их текстура/переход/освещение. Не вводить одиночный grass-specific patch и не менять физический BlockPos/Direction, глобальную соседнюю топологию, vanilla/NeoForge событийность или неизвестные независимые модели модов. Явно проверить модовые BakedModel реализации, а независимые/custom/accelerated renderer пути оставить отдельными проверяемыми интеграционными границами.
+
+Приёмка: исходники владельцев + точные 21.1.215 ABI/ASM, regression/CI; в игре **6 граней × 12 рёбер × 8 углов**, обе боковые стороны, одинаковые/разные соседние состояния, непрозрачные/прозрачные/неполные/направленные/многотекстурные модели, reload/rebuild, vanilla +Y и no-Planet; отдельно реально загруженные моды. Подробный [Phase-3 task 3.2S](phases/phase-03.md). **STATUS: REPORTED / ROOT_CAUSE_UNCONFIRMED / FIX_PENDING / GAMEPLAY_PENDING.**
+
 ### 3C — block entity / custom renderer frame
 
 Static BakedModel rotation does NOT cover BERs.
