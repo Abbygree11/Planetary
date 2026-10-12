@@ -6,7 +6,7 @@
 
 - [ ] **7A.1** 7A.1: physical-neighbor source selection vs source-local redstone signal Direction.
 - [ ] **7A.2** 7A.2: redstone directed graph owners (wires, repeaters, comparators, observers, torches, sensors).
-- [ ] **7A.3** 7A.3: rail signals + graph semantics поверх Phase2 rail topology.
+- [ ] **7A.3** 7A.3: rail signals + graph semantics поверх Phase2 rail topology. [C17 rail graph exact owner study](../research/PHASE2_STAGE3C17_RAILSTATE_PHYSICAL_GRAPH_NEOFORGE_MOD_ASM_1_21_1.md): `PoweredRailBlock` power recursion/up to 8, activator differentiation, `DetectorRailBlock` minecart/scheduled comparator dispatch, NeoForge subclass/mod APIs independent from physical rail topology. P28 Phase2 produces semantic rail ports; Phase7A signal graph remains OPEN.
 - [ ] **7A.4** 7A.4: pistons/moving structures/neighbor updates; отдельный Phase3 moving-render contract.
 - [ ] **7A.5** 7A.5: NeoForge sided item/fluid/energy capability contracts + side cache invalidation.
 - [ ] **7A.6** Подтвердить работу на шести гранях и seam; не терять сигнал из-за двойного поворота.
