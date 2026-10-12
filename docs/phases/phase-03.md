@@ -27,3 +27,8 @@ Phase 2 исправляет состояние, Phase 3 — визуальну�
 ### P28 RailShape geometry/visualization handoff (2026-10-12 C17)
 
 [RailState, NeoForge custom slope and source-owned Create TrackShape audit](../research/PHASE2_STAGE3C17_RAILSTATE_PHYSICAL_GRAPH_NEOFORGE_MOD_ASM_1_21_1.md): Phase2 owns local graph endpoints/shape selection, but Phase3 must separately rotate vanilla rail render quads/voxel hitboxes at all local faces/edges; custom rail `isValidRailShape` shapes may not match vanilla 10-value rendering assumptions. Create TrackBlock/TrackShape/Bezier model is independent; GPU/BER/rail-curve render must preserve physical coordinate provenance. Selected ASM contract is not visual acceptance. Check texture orientation, rise height, culling/light and no-Planet pass-through with real mod JAR only in later Phase3/10 tests.
+
+
+### P26 multiface/vine render and shape handoff (2026-10-12 C18)
+
+[Six-face MultifaceBlock vs five-face VineBlock orientation, support shapes and mod Create pipe comparison](../research/PHASE2_STAGE3C18_MULTIFACE_VINE_SPREAD_GROWTH_NEOFORGE_MOD_ASM_1_21_1.md): source `MultifaceBlock` caches union of six face plates, VineBlock caches five face plates, GlowLichen has light and waterlog, SculkVein uses custom spread; even correctly transported BlockState flags do NOT automatically transform physical `VoxelShape`/AO/model or client-chunk materialization on Planet side faces. Phase3 must test face-culling/light/water/BER and fallback no-Planet world independently; avoid global render-space remap or applying Vine DOWN face that cannot exist.
