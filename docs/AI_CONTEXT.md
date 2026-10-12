@@ -10,6 +10,10 @@ Minecraft 1.21.1, NeoForge 21.1.215, Java 21, Gradle 8.12.
 User local check: git pull && .\test.ps1 && .\run-client.ps1
 Never claim build/runtime success before user confirms it.
 
+## 2026-10-13 — 2.4A-4 full TrapDoorBlock placement owner (CI PASS; gameplay OPEN)
+
+`PlanetTrapDoorPlacement` returns selected target-local `FACING/HALF` for side-hit vs actor-facing cases; narrow `TrapDoorBlockLocalPlacementMixin` RETURN hook maintains actual vanilla/NeoForge block state, OPEN/POWERED/WATERLOGGED, BlockSetType, copper weathering and existing item author order. Inherits on original wood/iron/waxed/unwaxed copper variants; independent mod overrides not auto patched. Semantic tests 6 faces, 12 edges, 8 corners; exact NeoForge 21.1.215 owner/Mixin ASM. [CI #38319624909](https://github.com/Abbygree11/Planetary/actions/runs/38319624909) COMPLETED SUCCESS (compile/JUnit/registry). Manual client/server and loaded mods PENDING. [Mechanism report](research/PHASE2_STAGE4A4_TRAPDOOR_FULL_OWNER_FACING_HALF_PLACEMENT_NEOFORGE_1_21_1.md). General edge rendering bug remains Phase3B 3.2S, NOT this packet. NEXT StairBlock owner full SHAPE+FACING+HALF family, not state property-only patch.
+
 ## 2026-10-13 — Manual 2.4A-3 acceptance + general Phase 3B seam-side rendering defect
 
 User reported 'всё ок' after 2.4A-3 in-game review, except a visible issue illustrated by a screenshot: at a cube-planet face seam, a side texture/edge of blocks is present on one side and absent on another. The screenshot happens to use grass/dirt, but the user **explicitly states this is a generic bug for arbitrary blocks on an edge, NOT a grass-only issue**. No measured 6-face/12-edge/8-corner acceptance supplied; retain limited 'NO OTHER USER-REPORTED REGRESSIONS' and separate comprehensive acceptance OPEN. Screenshot is symptom, not a confirmed root cause.

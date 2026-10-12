@@ -1,6 +1,6 @@
 # 2.4A: установка и свойства ориентации
 
-**Статус:** 2.4A-1/2 typed APIs CI PASS; 2.4A-3 original-hit runtime bridge COMMITTED / CI PASS / GAMEPLAY PENDING (not phase `PASS`). [Индекс фазы](../phase-02.md).
+**Статус:** 2.4A-1/2/3 CI PASS; 2.4A-4 TrapDoorBlock inherited placement CI PASS / GAMEPLAY PENDING (not phase `PASS`). [Индекс фазы](../phase-02.md).
 
 **Контекст:** После evidence-backed owner audit по соответствующим семьям; стадия не требует ждать *всю* вселенную классов, но не допускает слепых блоковых костылей. [Final 2.3C-1…19 scope gate](../../research/PHASE2_STAGE3C_1_TO_19_FINAL_SELECTED_ABI_SCOPE_GATE_1_21_1.md) — 19/19 selected exact ABI PASS, original 40 mechanisms accounted with 16 shared-only / 4 partial; source survey sufficiently scoped, implementation sequence 2.4A-1 onward. Runtime/UI/real mod and six-face acceptance OPEN.
 
@@ -25,9 +25,11 @@
 
 **Ручной checkpoint (2026-10-13):** пользователь сообщил, что 2.4A-3 работает нормально, кроме боковой недорисовки на ребре кубической планеты. Это относится к **любым блокам на стыке граней**, а травяная текстура на скриншоте лишь пример. Владелец: [Phase 3B / задача 3.2S](../phase-03.md), а НЕ 2.4A-4. **Не чинить здесь и не писать GrassBlock-specific костыль.** Полная 6/12/8 приёмка Phase2 остаётся открытой; визуальный баг не является дефектом собственно author/context адаптера.
 
+**2.4A-4 complete family owner:** [TrapDoorBlock 20 original vanilla IDs, inherited copper + mod comparator, canonical FACING/HALF RETURN adapter](../../research/PHASE2_STAGE4A4_TRAPDOOR_FULL_OWNER_FACING_HALF_PLACEMENT_NEOFORGE_1_21_1.md). `PlanetTrapDoorPlacement`, `TrapDoorBlockLocalPlacementMixin`, 6/12/8 semantics JUnit and exact compiled Mixin+NeoForge ASM; [CI #38319624909](https://github.com/Abbygree11/Planetary/actions/runs/38319624909) COMPLETED SUCCESS. **GAMEPLAY PENDING.** This one full owner family does not close all of checklist 2/3/4; state writer alternatives and other families remain OPEN.
+
 ### Checkpoint для следующего захода
 
 - Last research prerequisite: `2.3C-19` [CI38311748785](https://github.com/Abbygree11/Planetary/actions/runs/38311748785) COMPLETED SUCCESS plus [final 19/19 report/ASM/P01–P40 scope gate](../../research/PHASE2_STAGE3C_1_TO_19_FINAL_SELECTED_ABI_SCOPE_GATE_1_21_1.md). **2.4A-1 implementation committed in this stage; CI [CI #38313939066](https://github.com/Abbygree11/Planetary/actions/runs/38313939066) PASS; runtime remains separately gated.** First implementation checkbox covers semantic API only.
 - Последний рабочий commit: смотреть HEAD ветки `2.0`, не выдумывать SHA.
-- **NEXT `кк` → audited property author implementations:** after checking 2.4A-3 CI, adapt coherent real declaring-owner getStateForPlacement/item override families without guessing mod algorithms; keep runtime, 6/12/8, original/retarget and loaded-mod proof gates separate.
+- **NEXT `кк` → audited Stairs owner cluster:** verify 2.4A-4 gameplay feedback; tackle full placement+SHAPE neighbor algorithm together rather than FACING-only patches, then remaining algorithm families. Do not mix Phase3B generic seam render issue into placement.
 - Если соединение оборвалось до коммита — эта работа считается незавершённой.
