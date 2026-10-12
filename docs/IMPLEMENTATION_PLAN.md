@@ -745,6 +745,10 @@ owner-family inventory. Phase-2 remains PARTIAL; accepted particle
 families must not regress. No manual game test until a coherent
 runtime package has green CI.
 
+### 2026-10-13 — Stage 2.4A-1 typed placement source/target contract [CODE IMPLEMENTED; CI / GAMEPLAY PENDING]
+
+Source-owner/selected ASM stage 2.3C-1…19 is research-complete in bounded scope, not runtime complete. First implementation packet introduces `PlanetPlacementIntent` (author, original physical hit, final target, optional body frame or foreign coordinate provenance), `PlanetPlacementResolver` (independent source/target canonical frame), and a version-specific `BlockPlaceContext` adapter requiring the original hit from the author. Exact [scope and independent acceptance gates](research/PHASE2_STAGE4A1_TYPED_PLACEMENT_INTENT_1_21_1.md); package owner [2.4A card](phases/phase-02/05-implementation-a.md). Unit test and CI separate from in-game, client/server, mod compatibility. NEXT: 2.4A-2 family property adaptations with exact ABI and runtime proof, then 2.4A-3 alternate author sources; no generic `Level.setBlock` or global Direction rewrite.
+
 ## Phase 2 — block semantic subsystem [R1 RESEARCH COMPLETE; IMPLEMENTATION PARTIAL, BATCH ACCEPTANCE]
 
 Detailed mechanism ownership:
