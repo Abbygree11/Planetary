@@ -10,9 +10,9 @@ Minecraft 1.21.1, NeoForge 21.1.215, Java 21, Gradle 8.12.
 User local check: git pull && .\test.ps1 && .\run-client.ps1
 Never claim build/runtime success before user confirms it.
 
-## 2026-10-13 — 2.4A-1 typed placement API (code; CI/gameplay unverified at initial commit)
+## 2026-10-13 — 2.4A-1 typed placement API (code + CI PASS, gameplay OPEN)
 
-New `PlanetPlacementIntent` distinguishes original hit, final target, author and optional player body frame. `PlanetPlacementResolver` evaluates canonical target independently of original source; foreign coordinates never activate. `PlanetPlacementContextAdapter` requires explicitly supplied original hit because the BlockPlaceContext accessor is protected and final target may be retargeted. No new Mixins or mutation of vanilla/NeoForge dispatch. Tests: `PlanetPlacementIntentTest`. See [design and gates](research/PHASE2_STAGE4A1_TYPED_PLACEMENT_INTENT_1_21_1.md); 2.4A-2 is next after CI status verification. Real six-face/gameplay/modded acceptance OPEN.
+New `PlanetPlacementIntent` distinguishes original hit, final target, author and optional player body frame. `PlanetPlacementResolver` evaluates canonical target independently of original source; foreign coordinates never activate. `PlanetPlacementContextAdapter` requires explicitly supplied original hit because the BlockPlaceContext accessor is protected and final target may be retargeted. No new Mixins or mutation of vanilla/NeoForge dispatch. Tests: `PlanetPlacementIntentTest`. Initial CI #38313592960 1/430 failed on new assertion's exception-type mismatch (null guard threw NPE as coded), fixed test-only in 893a093; repeat [CI #38313939066](https://github.com/Abbygree11/Planetary/actions/runs/38313939066) SUCCESS (compile/JUnit/census). See [design and gates](research/PHASE2_STAGE4A1_TYPED_PLACEMENT_INTENT_1_21_1.md); 2.4A-2 is next after CI status verification. Real six-face/gameplay/modded acceptance OPEN.
 
 ## Core architecture
 Physical world is ordinary Minecraft XYZ / BlockPos.

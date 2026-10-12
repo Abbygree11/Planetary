@@ -1,6 +1,6 @@
 # 2.4A: установка и свойства ориентации
 
-**Статус:** 2.4A-1 API implemented / CI PENDING / GAMEPLAY PENDING (not phase `PASS`). [Индекс фазы](../phase-02.md).
+**Статус:** 2.4A-1 API implemented / CI PASS / GAMEPLAY PENDING (not phase `PASS`). [Индекс фазы](../phase-02.md).
 
 **Контекст:** После evidence-backed owner audit по соответствующим семьям; стадия не требует ждать *всю* вселенную классов, но не допускает слепых блоковых костылей. [Final 2.3C-1…19 scope gate](../../research/PHASE2_STAGE3C_1_TO_19_FINAL_SELECTED_ABI_SCOPE_GATE_1_21_1.md) — 19/19 selected exact ABI PASS, original 40 mechanisms accounted with 16 shared-only / 4 partial; source survey sufficiently scoped, **NEXT `2.4A-1` code**. Runtime/UI/real mod and six-face acceptance OPEN.
 
@@ -17,11 +17,11 @@
 
 Каждая законченная family требует тесты+green CI; отметка GAMEPLAY PENDING до пользовательской проверки.
 
-**2.4A-1 foundation:** [typed intent, target resolver and test contract](../../research/PHASE2_STAGE4A1_TYPED_PLACEMENT_INTENT_1_21_1.md). Code: `PlanetPlacementIntent`, `PlanetPlacementResolver`, `PlanetPlacementContextAdapter`, `PlanetPlacementIntentTest`. No gameplay/NeoForge Mixin behavior claimed; JUnit/CI must be checked separately.
+**2.4A-1 foundation:** [typed intent, target resolver and test contract](../../research/PHASE2_STAGE4A1_TYPED_PLACEMENT_INTENT_1_21_1.md). Code: `PlanetPlacementIntent`, `PlanetPlacementResolver`, `PlanetPlacementContextAdapter`, `PlanetPlacementIntentTest`. No gameplay/NeoForge Mixin behavior claimed; first CI had one mistaken null exception assertion, fixed in 893a093; repeat [CI #38313939066](https://github.com/Abbygree11/Planetary/actions/runs/38313939066) COMPLETED SUCCESS (compile, JUnit, registry).
 
 ### Checkpoint для следующего захода
 
-- Last research prerequisite: `2.3C-19` [CI38311748785](https://github.com/Abbygree11/Planetary/actions/runs/38311748785) COMPLETED SUCCESS plus [final 19/19 report/ASM/P01–P40 scope gate](../../research/PHASE2_STAGE3C_1_TO_19_FINAL_SELECTED_ABI_SCOPE_GATE_1_21_1.md). **2.4A-1 implementation committed in this stage; CI and runtime remain separately gated.** First implementation checkbox covers semantic API only.
+- Last research prerequisite: `2.3C-19` [CI38311748785](https://github.com/Abbygree11/Planetary/actions/runs/38311748785) COMPLETED SUCCESS plus [final 19/19 report/ASM/P01–P40 scope gate](../../research/PHASE2_STAGE3C_1_TO_19_FINAL_SELECTED_ABI_SCOPE_GATE_1_21_1.md). **2.4A-1 implementation committed in this stage; CI [CI #38313939066](https://github.com/Abbygree11/Planetary/actions/runs/38313939066) PASS; runtime remains separately gated.** First implementation checkbox covers semantic API only.
 - Последний рабочий commit: смотреть HEAD ветки `2.0`, не выдумывать SHA.
 - **NEXT `кк` → 2.4A-2** after verifying 2.4A-1 CI: coherent orientation-property family code, original source/target physical geometry unchanged and chosen opt-in ABI owner adapters. Do not claim all 2.4A from semantic-only tests.
 - Если соединение оборвалось до коммита — эта работа считается незавершённой.
