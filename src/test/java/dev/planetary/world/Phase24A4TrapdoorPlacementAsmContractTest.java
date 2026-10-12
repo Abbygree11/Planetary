@@ -78,20 +78,26 @@ final class Phase24A4TrapdoorPlacementAsmContractTest {
                                 if ("cancellable".equals(key) && Boolean.TRUE.equals(value))cancel[0]=true;
                             }
                             @Override public AnnotationVisitor visitArray(String key) {
-                                if (!"method".equals(key))return null;
-                                return new AnnotationVisitor(Opcodes.ASM9) {
-                                    @Override public void visit(String unused, Object value) {
-                                        if (("getStateForPlacement"+GET).equals(value))method[0]=true;
-                                    }
-                                };
-                            }
-                            @Override public AnnotationVisitor visitAnnotation(String key, String descriptor) {
-                                if (!"at".equals(key) || !"Lorg/spongepowered/asm/mixin/injection/At;".equals(descriptor))return null;
-                                return new AnnotationVisitor(Opcodes.ASM9) {
-                                    @Override public void visit(String n, Object value) {
-                                        if ("value".equals(n) && "RETURN".equals(value))atReturn[0]=true;
-                                    }
-                                };
+                                if ("method".equals(key)) {
+                                    return new AnnotationVisitor(Opcodes.ASM9) {
+                                        @Override public void visit(String unused, Object value) {
+                                            if (("getStateForPlacement"+GET).equals(value))method[0]=true;
+                                        }
+                                    };
+                                }
+                                if ("at".equals(key)) {
+                                    return new AnnotationVisitor(Opcodes.ASM9) {
+                                        @Override public AnnotationVisitor visitAnnotation(String unused, String desc) {
+                                            if (!"Lorg/spongepowered/asm/mixin/injection/At;".equals(desc)) return null;
+                                            return new AnnotationVisitor(Opcodes.ASM9) {
+                                                @Override public void visit(String n, Object value) {
+                                                    if ("value".equals(n) && "RETURN".equals(value))atReturn[0]=true;
+                                                }
+                                            };
+                                        }
+                                    };
+                                }
+                                return null;
                             }
                         };
                     }
