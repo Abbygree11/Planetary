@@ -10,9 +10,9 @@ Minecraft 1.21.1, NeoForge 21.1.215, Java 21, Gradle 8.12.
 User local check: git pull && .\test.ps1 && .\run-client.ps1
 Never claim build/runtime success before user confirms it.
 
-## 2026-10-13 — 2.4A-3 read-only UseOn hit author bridge (CI PENDING; gameplay OPEN)
+## 2026-10-13 — 2.4A-3 read-only UseOn hit author bridge (CI PASS; gameplay OPEN)
 
-Code f51bb9b: ordinary `PlanetOriginalHitSource` + versioned `UseOnContextOriginalHitInvoker` expose protected current-context hit; typed `PlanetPlacementContextAdapter` obtains physical hit and final target independently. Existing PlanetFrameApi placementFrame(BlockPlaceContext) routes to PlanetPlacementResolver on woven contexts; unwoven tests retain previous fallback without pretending original provenance. Existing physical primitive getters and all BlockItem/NeoForge lifecycle methods untouched. Exact ASM and semantic test added. Source/architecture: [2.4A-3](research/PHASE2_STAGE4A3_USEON_ORIGINAL_HIT_AUTHOR_ADAPTER_1_21_1.md). Applied Mixin, real mod and six-face game acceptance OPEN.
+Code f51bb9b: ordinary `PlanetOriginalHitSource` + versioned `UseOnContextOriginalHitInvoker` expose protected current-context hit; typed `PlanetPlacementContextAdapter` obtains physical hit and final target independently. Existing PlanetFrameApi placementFrame(BlockPlaceContext) routes to PlanetPlacementResolver on woven contexts; unwoven tests retain previous fallback without pretending original provenance. Existing physical primitive getters and all BlockItem/NeoForge lifecycle methods untouched. Exact ASM and semantic tests added. Initial CI #38316514704 had 5/443 JUnit failures because Mockito contexts carried a woven accessor interface with null original hit; fix 272e73d handles absent hit as Optional.empty, preserving unit-test fallback; repeat [CI #38316982504](https://github.com/Abbygree11/Planetary/actions/runs/38316982504) SUCCESS (compile/full JUnit/ASM/census). Source/architecture: [2.4A-3](research/PHASE2_STAGE4A3_USEON_ORIGINAL_HIT_AUTHOR_ADAPTER_1_21_1.md). Applied Mixin, real mod and six-face game acceptance OPEN.
 
 ## 2026-10-13 — 2.4A-2 typed orientation property API (CI PASS; no runtime rewrite)
 
