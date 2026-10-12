@@ -133,8 +133,20 @@ final class Phase23C9RedstoneSignalAsmContractTest {
                         "Lnet/minecraft/util/RandomSource;)V"),"setBlock"));
         assertTrue(declares(POWER_RAIL,"findPoweredRailSignal",
                 "("+LEV+POS+STATE+"ZI)Z"));
-        assertTrue(invokes(calls(POWER_RAIL,"findPoweredRailSignal",
-                "("+LEV+POS+STATE+"ZI)Z"),"relative"));
+        // Powered rails do NOT simply call BlockPos.relative: they read
+        // X/Y/Z, transform the coordinate per RailShape slope and then
+        // recursively call isSameRailWithPower with an eight-rail depth cap.
+        List<Call> path=calls(POWER_RAIL,"findPoweredRailSignal",
+                "("+LEV+POS+STATE+"ZI)Z");
+        assertTrue(invokes(path,"getX"));
+        assertTrue(invokes(path,"getY"));
+        assertTrue(invokes(path,"getZ"));
+        assertTrue(invokes(path,"isSameRailWithPower"));
+        List<Call> recursive=calls(POWER_RAIL,"isSameRailWithPower",
+                "("+LEV+POS+"ZILnet/minecraft/world/level/block/state/properties/RailShape;)Z");
+        assertTrue(invokes(recursive,"hasNeighborSignal"));
+        assertTrue(invokes(recursive,"findPoweredRailSignal"),
+                "Powered rail graph must preserve bounded recursive traversal");
         assertTrue(declares(DETECTOR,"checkPressed","("+LEV+POS+STATE+")V"));
         assertTrue(invokes(calls(DETECTOR,"checkPressed","("+LEV+POS+STATE+")V"),
                 "updateNeighborsAt"));
