@@ -74,7 +74,7 @@ flowchart TD
 | 1/4 full declaring-owner Vanilla/NeoForge patch + real Create/source mod callsite map | AUDITED |
 | 2/4 graph state lifecycle, all major bypasses, 10 shapes/six faces+seam semantics | AUDITED; proposed fixtures NOT RUN |
 | 3/4 deepest safe source/world-aware mod boundary and portability | AUDITED; implementation PENDING |
-| 4/4 strict Gradle target ABI contract added | TEST COMMITTED; GitHub Actions separately verify |
+| 4/4 strict Gradle target ABI contract added | **PASS** — [CI38306600972](https://github.com/Abbygree11/Planetary/actions/runs/38306600972) |
 | Actual compiled Mixin applied in Minecraft, game survival placement, water, NeoForge event callbacks | **NOT RUN** |
 | 6 faces, 12 edges, 8 corners, ascents+reciprocal junction tests, foreign world and modded restricted rail | **NOT RUN** |
 | Actual loaded Create Train, vanilla Minecart, NeoForge `ValidRailShapeTest`, powered/activator/detector cart and renderer | **NOT RUN** |
@@ -88,4 +88,11 @@ flowchart TD
 5. Check powered rail signal line length, activator and comparator/DetectorRail entities, minecart position speed, onMinecartPass once per tick, cross-edge interpolation (Phase7/7A), original physical Level/mod preview.
 6. Test Create TrackBlock shape, custom BlockItem and independent Bezier graph with a genuinely version-compatible loaded 1.21.1 Create binary; no assumption that upstream latest NeoForge patch and Create loaded version match target21.1.215.
 
-**NEXT**: after independent green GitHub Actions (and only then), advance P28 from `SPECIFIC_TARGET_GAP` to `SELECTED_SPECIFIC_ABI` in [40-row ledger](PHASE2_STAGE3C_P01_P40_ABI_COVERAGE_DISPOSITION_1_21_1.tsv), leaving P26 six-face attachment and P29 GrowingPlant directional head/body algorithms as remaining selected-target gaps. One coherent P26/P29 family per next `кк`, not one test per block.
+**NEXT**: after independently verified [CI38306600972](https://github.com/Abbygree11/Planetary/actions/runs/38306600972), advance P28 from `SPECIFIC_TARGET_GAP` to `SELECTED_SPECIFIC_ABI` in [40-row ledger](PHASE2_STAGE3C_P01_P40_ABI_COVERAGE_DISPOSITION_1_21_1.tsv), leaving P26 six-face attachment and P29 GrowingPlant directional head/body algorithms as remaining selected-target gaps. One coherent P26/P29 family per next `кк`, not one test per block.
+
+
+## Final exact target ABI CI and test correction (2026-10-12)
+
+[CI38306600972](https://github.com/Abbygree11/Planetary/actions/runs/38306600972) **COMPLETED SUCCESS**, production/test Java compile, **all JUnit** including `Phase23C17RailGraphNeoForgeAsmContractTest` and original orientation registry census PASS. Original selected test [9760d63](https://github.com/Abbygree11/Planetary/commit/9760d63a1bdae842dd1bcd07aee2fc5fa8a6bdbd) [CI38305903809](https://github.com/Abbygree11/Planetary/actions/runs/38305903809) failed **1/411 tests** due to a test-only **wrong assumption**: `BaseRailBlock.shouldBeRemoved` does **not** call `RailShape.isAscending`; vanilla/target uses a `switch` on `ASCENDING_*` and rigid support checks, while `BaseRailBlock.getShape` uses `isAscending`. Corrected in [fa15481](https://github.com/Abbygree11/Planetary/commit/fa154814aff84c35497c55e8af4f109c53f0f3af): prove `shouldBeRemoved -> canSupportRigidBlock` and `getShape -> isAscending` separately, **no production Java/Mixin change**. Intermediate [CI38306416199](https://github.com/Abbygree11/Planetary/actions/runs/38306416199) was automatically CANCELLED by newer doc commit, therefore not claimed green. Latest complete PASS is run38306600972 with corrected Java ancestry; no subsequent Java test modification.
+
+Following this selected-method proof, the live [40-row P01–P40 matrix](PHASE2_STAGE3C_P01_P40_ABI_COVERAGE_DISPOSITION_1_21_1.tsv) marks **P28 SELECTED_SPECIFIC_ABI** (not GAMEPLAY PASS). Counts 7 selected specific, 11 selected shared, 16 shared-only, 4 partial, **2 remaining specialized target gaps P26 and P29**. Every real Planet rail graph local gravity/minecart/Create mode acceptance remains NOT RUN.
