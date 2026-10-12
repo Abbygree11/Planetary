@@ -123,3 +123,6 @@ Stage 2.3C-1 ([research](research/PHASE2_STAGE3C1_BLOCKITEM_STANDINGWALL_NEOFORG
 
 
 **Stage2.3C-7 verified gate:** [Actions #38280585886](https://github.com/Abbygree11/Planetary/actions/runs/38280585886) green for selected actual21.1.215 bytecode and compiled LevelMixin contract. In-game worldgen/structure/command/mod acceptance NOT RUN; PlanetChunkGenerator decoration/surface/carver stages remain disabled.
+
+
+**2.3C-8 2026-10-12:** [Piston/BE-moving/NeoForge mod hooks full source research](research/PHASE2_STAGE3C8_PISTON_MOVER_NEOFORGE_ADHESION_BE_ASM_1_21_1.md) + [strict target21.1.215 piston bytecode test](../src/test/java/dev/planetary/world/Phase23C8PistonMovementAsmContractTest.java). [CI38281757960](https://github.com/Abbygree11/Planetary/actions/runs/38281757960) compiled/failed 2 new test expectations of generated owners, [fix4612c77](https://github.com/Abbygree11/Planetary/commit/4612c77dfbb2fdfd5d014d1c6aa3b5589fc076e6), [repeat38282239773](https://github.com/Abbygree11/Planetary/actions/runs/38282239773) status must be independently verified. No Mixin/gameplay/moved BE/mod acceptance; next 2.3C-9 redstone owners.
