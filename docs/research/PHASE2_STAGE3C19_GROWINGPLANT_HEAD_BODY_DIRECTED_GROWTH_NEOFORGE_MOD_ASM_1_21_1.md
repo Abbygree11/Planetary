@@ -61,7 +61,7 @@ Let `source = (actual Level, physical BlockPos, chart, localGrowthDir, author)`.
 | 1/4 original declaring owner/NeoForge patch + real independent mod hierarchy and overrides | SOURCE AUDITED |
 | 2/4 physical placement/head conversion/body conversion/bonemeal/event order/writer bypass and chart seam | SOURCE AUDITED, fixtures NOT RUN |
 | 3/4 deepest safe mod-portable directed growth interface preserving real mod author/event semantics | SOURCE AUDITED |
-| 4/4 selected exact target21.1.215 ASM/JUnit | TEST COMMITTED, CI VERIFY SEPARATELY |
+| 4/4 selected exact target21.1.215 ASM/JUnit | **PASS** [CI38311748785](https://github.com/Abbygree11/Planetary/actions/runs/38311748785) |
 | Production Java/Mixins | **NOT CHANGED** |
 | Applied Mixin, loaded Biomes O' Plenty, survival 6 faces/12 seams/8 corners, shader/collision/fluids | **NOT RUN** |
 
@@ -73,4 +73,11 @@ Let `source = (actual Level, physical BlockPos, chart, localGrowthDir, author)`.
 4. Keep kelp full water source, water fluid ticks and `getFluidState`; test CaveVines normal harvest/bonemeal berry toggles independent from AGE growth; confirm `CropGrowEvent.Pre/ Post` actual subscriber invocation **correct target physical pos, original source state and once per successful natural tick** (not implied on bone meal).
 5. Real compatible Biomes O' Plenty `1.21.1` JAR: HangingStrandBody/Bottom, SpanishMossBody/Bottom and hanging cobweb subclass must keep tag-based `canSurvive` logic and mod override `randomTick/performBonemeal`; vanilla-world and foreign visual Level must remain original behavior.
 
-**Next after green CI**: change live P01–P40 `P29 SPECIFIC_TARGET_GAP → SELECTED_SPECIFIC_ABI` and create **separate final scope gate** reconciling 19/19 selected test families and 40 current mechanism dispositions. **Zero remaining `SPECIFIC_TARGET_GAP` is not “all 40 per-owner exact ABI proven”**: many may remain `SHARED_ABI_ONLY` or `PARTIAL_SHARED_ABI`. Prefer move to explicitly owned Phase2.4 implementation and real tests rather than invent C20 without a named missing lower-level owner. Do not mark Phase2 GAMEPLAY PASS.
+**After independently verified [CI38311748785](https://github.com/Abbygree11/Planetary/actions/runs/38311748785): change live P01–P40 `P29 SPECIFIC_TARGET_GAP → SELECTED_SPECIFIC_ABI` and create **separate final scope gate** reconciling 19/19 selected test families and 40 current mechanism dispositions. **Zero remaining `SPECIFIC_TARGET_GAP` is not “all 40 per-owner exact ABI proven”**: many may remain `SHARED_ABI_ONLY` or `PARTIAL_SHARED_ABI`. Prefer move to explicitly owned Phase2.4 implementation and real tests rather than invent C20 without a named missing lower-level owner. Do not mark Phase2 GAMEPLAY PASS.
+
+
+## Final selected exact target NeoForge 21.1.215 CI evidence and StageC closure (2026-10-13)
+
+[CI38311748785](https://github.com/Abbygree11/Planetary/actions/runs/38311748785) **COMPLETED SUCCESS** for [new ASM test source commit caad811](https://github.com/Abbygree11/Planetary/commit/caad811a57609cc709ff4c273f44f1dd1f9e185f): Java production/test compilation, full selected JUnit suite including six C19 method/field/callsite checks (abstract base/head/body, NeoForge CommonHooks.canCropGrow/fireCropGrowPost and physical directed growth, four up/down subclass pairs, BlockUtil/getTopConnectedBlock and direct worldgen writers), original registered orientation census **PASS**. No production Java/Mixin changes; actual Biomes O' Plenty1.21.1 classes were studied from pinned open source, not loaded in CI. Note BOP HangingStrand subclasses override `randomTick/performBonemeal`; those overrides do not automatically call vanilla base CommonHooks and must be preserved. No live 6 faces/12 seams/8 corners, worldgen/biome/mod, client shader or gameplay acceptance.
+
+Live [P01–P40 matrix](PHASE2_STAGE3C_P01_P40_ABI_COVERAGE_DISPOSITION_1_21_1.tsv) P29 now **SELECTED_SPECIFIC_ABI**; counts 9 selected-specific, 11 selected-shared, 16 shared-only, 4 partial, 0 named specific algorithm gaps. See [final 19-family scope gate](PHASE2_STAGE3C_1_TO_19_FINAL_SELECTED_ABI_SCOPE_GATE_1_21_1.md) for the distinction between **19/19 selected research/test packets PASS** and remaining per-class/loaded-mod/runtime integration work. Next bounded action `2.4A-1` typed source/target placement semantic API, not C20 without a named new owner.
