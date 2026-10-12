@@ -41,7 +41,13 @@ public final class PlanetPlacementContextAdapter {
         if (!(context instanceof PlanetOriginalHitSource source)) {
             return Optional.empty();
         }
-        BlockHitResult hit = Objects.requireNonNull(source.planetary$originalHit(), "hit");
+        BlockHitResult hit = source.planetary$originalHit();
+        // NeoForge unit-test mocks may implement the woven interface without
+        // having a backing UseOnContext hit field. In production the vanilla
+        // constructor supplies it; absence must NOT crash the fallback path.
+        if (hit == null) {
+            return Optional.empty();
+        }
         return Optional.of(PlanetPlacementIntent.physical(
                 author, context.getLevel(), hit.getBlockPos(), context.getClickedPos(),
                 hit.getDirection(), hit.getLocation(), context.replacingClickedOnBlock(),
