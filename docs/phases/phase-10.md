@@ -7,6 +7,7 @@
 - [ ] **10.1** Категория automatic: external consumers standard Vanilla/NeoForge hooks.
 - [ ] **10.2** Категория mostly automatic: subclasses/overrides наших базовых механизмов — диспетчеризация и custom BlockState.
 - [ ] **10.3** Категория explicit integration: нестандартные placement, BE, fluids, vehicle, coordinate-space mods.
+- [ ] **10.3R** Explicit source-owned `Level`/section context for third-party `AddSectionGeometryEvent` and guidebook fake-world meshes, Create/Flywheel VirtualRenderWorld and Iris pipeline generation; do not bind render-region `BlockAndTintGetter` implicitly to `Minecraft.level`, and do not capture mutable ModelData on background worker. [C15](../research/PHASE2_STAGE3C15_RESOURCE_RELOAD_MODEL_CACHE_SECTION_GEOMETRY_WEATHER_SHADER_LIFECYCLE_ASM_1_21_1.md).
 - [ ] **10.4** Public PlanetFrameApi, frame capabilities and contract tests; port compatibility and release notes.
 - [ ] **10.5** Финальная кросс-модовая приёмка нескольких классов модов, но обязательный gate действует в каждой фазе.
 
