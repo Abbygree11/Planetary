@@ -1,6 +1,6 @@
 # 2.3C: NeoForge и полный lifecycle
 
-**Статус:** ACTIVE: 2.3C-1 owner-family research/ASM test COMMITTED; exact loaded-classpath ASM/JUnit CI PASS, applied Mixin/gameplay NOT RUN. Остальные owner families не завершены. [Индекс фазы](../phase-02.md).
+**Статус:** ACTIVE: 2.3C-1 и 2.3C-2 ASM/JUnit CI VERIFIED for their bounded families; applied Mixin and gameplay NOT RUN. Остальные owner families не завершены. [Индекс фазы](../phase-02.md).
 
 **Контекст:** Stage2.3A и Stage2.3B original source registry/class/effective-owner исследования завершены; actual NeoForge21.1.215 patched ASM и runtime acceptance ещё не проверены. [2.3B-4 exact 1333/87/925 registry audit](../../research/PHASE2_STAGE3B_ITEM_ORIGINAL_87_SOURCE_OWNER_RECONCILIATION_1_21_1.md).
 
@@ -16,7 +16,7 @@
 ## Завершённые ограниченные owner-family пакеты
 
 - [x] **2.3C-1 — BlockItem → StandingAndWallBlockItem (4/4 исследование и ASM-контракт добавлены, не runtime PASS):** [bytecode/lifecycle research](../../research/PHASE2_STAGE3C1_BLOCKITEM_STANDINGWALL_NEOFORGE_ASM_LIFECYCLE_1_21_1.md), [strict classfile test](../../../src/test/java/dev/planetary/world/Phase23C1ItemPlacementAsmContractTest.java), [CI run 38257655791](https://github.com/Abbygree11/Planetary/actions/runs/38257655791). First JUnit run failed in test selector assertion; fixed in 56721e4; [repeat CI 38258262302](https://github.com/Abbygree11/Planetary/actions/runs/38258262302) **SUCCESS** (compiled ASM tests/JUnit/census); transformer/6-face/12-edge/8-corner/modded gameplay NOT RUN. Commit with test `5668ba7`; research `641d4c0`.
-- [x] **2.3C-2 — placement contexts / synthetic item author family (4/4 research+strict ASM test, NOT gameplay):** [exact-version research](../../research/PHASE2_STAGE3C2_PLACEMENT_CONTEXTS_SYNTHETIC_WATER_SCAFFOLD_BUCKET_ASM_1_21_1.md) and [bytecode test](../../../src/test/java/dev/planetary/world/Phase23C2PlacementContextAsmContractTest.java). [Initial CI 38259861596](https://github.com/Abbygree11/Planetary/actions/runs/38259861596) failed on a **genuine NeoForge 21.1.215 SolidBucket sound ABI difference** from later official patch; test now asserts real missing override in [57b5499](https://github.com/Abbygree11/Planetary/commit/57b54994c364645df51409e18f3ccc1b70903f92), repeat [CI 38260347819](https://github.com/Abbygree11/Planetary/actions/runs/38260347819) pending. Possible audible sound regression NOT gameplay verified; no production code changed.
+- [x] **2.3C-2 — placement contexts / synthetic item author family (4/4 research+strict ASM test, NOT gameplay):** [exact-version research](../../research/PHASE2_STAGE3C2_PLACEMENT_CONTEXTS_SYNTHETIC_WATER_SCAFFOLD_BUCKET_ASM_1_21_1.md) and [bytecode test](../../../src/test/java/dev/planetary/world/Phase23C2PlacementContextAsmContractTest.java). [Initial CI 38259861596](https://github.com/Abbygree11/Planetary/actions/runs/38259861596) failed on a **genuine NeoForge 21.1.215 SolidBucket sound ABI difference** from later official patch; test now asserts real missing override in [57b5499](https://github.com/Abbygree11/Planetary/commit/57b54994c364645df51409e18f3ccc1b70903f92), repeat [CI 38260347819](https://github.com/Abbygree11/Planetary/actions/runs/38260347819) **SUCCESS** (compiled ASM contract/JUnit/census). Possible audible sound regression NOT gameplay verified; no production code changed.
 - [ ] **2.3C-3 (NEXT):** BedItem/DoubleHighBlockItem two-cell authors, BedBlock.setPlacedBy/DoublePlantBlock, late BE/components, support/neighbor lifecycle and modded overrides (all four checks together).
 
 The four generic tasks above are **phase-wide**, and remain open until all relevant owner families are covered; one completed first-family packet does not close the phase.
@@ -27,7 +27,7 @@ The four generic tasks above are **phase-wide**, and remain open until all relev
 
 ### Checkpoint для следующего захода
 
-- Последний подтверждённый подпакет: **2.3C-2 source review + ASM test written. Actual 21.1.215 missing SolidBucket contextual sound bridge documented. First CI failed on the verified delta; revision 57b5499 pins the exact observed ABI. Repeat CI result still pending. Applied Mixin/client/server/gameplay/mod PASS not claimed.**
+- Последний подтверждённый подпакет: **2.3C-2 source review + ASM test written. Actual 21.1.215 missing SolidBucket contextual sound bridge documented. First CI failed on the verified delta; revision 57b5499 pins the exact observed ABI; repeat CI 38260347819 PASS. Applied Mixin/client/server/gameplay/mod PASS not claimed.**
 - Последний доказанный checkpoint: 2.3C-2 research/strict exact-version contract committed; repeat CI 38260347819 pending at time of writing. All runtime Mixin/client/server/mod/game checks NOT RUN.
 - Последний рабочий commit: смотреть HEAD ветки `2.0`, не выдумывать SHA.
 - Следующее действие: **2.3C-3** полный owner-family пакет, четыре внутренние проверки (patch/bytecode, lifecycle, signature/mod hooks, ASM/contract tests/plan). Не растягивать четыре пункта на четыре сообщения. После успешного подпакета отметить `[x]`, ссылку на исходники/тест/CI, commit SHA и следующий шаг.
