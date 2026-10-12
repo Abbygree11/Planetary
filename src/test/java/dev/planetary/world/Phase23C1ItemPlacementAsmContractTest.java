@@ -179,7 +179,7 @@ final class Phase23C1ItemPlacementAsmContractTest {
             }
         }, ClassReader.SKIP_CODE | ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
 
-        assertEquals(List.of(PLACEMENT), methods);
+        assertEquals(List.of("getPlacementState" + PLACEMENT), methods);
         assertEquals(List.of("INVOKE"), atValues);
         assertEquals(List.of("Lnet/minecraft/world/item/context/"
                 + "BlockPlaceContext;getNearestLookingDirections()" + DIRECTIONS),
