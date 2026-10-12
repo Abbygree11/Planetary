@@ -58,7 +58,7 @@ Pinned third-party source comparator: [Farmer's Delight temporal/growth/ecology/
 | Gate | Status |
 | --- | --- |
 | Four parts researched and test authored | DONE |
-| Exact loaded 21.1.215 compiled ASM/NeoForge and compiled Mixin contract | [First CI 38278251342](https://github.com/Abbygree11/Planetary/actions/runs/38278251342) CANCELLED on superseding commit; [repeat CI 38278553607](https://github.com/Abbygree11/Planetary/actions/runs/38278553607) PENDING |
+| Exact loaded 21.1.215 compiled ASM/NeoForge and compiled Mixin contract | [Final CI 38279436034](https://github.com/Abbygree11/Planetary/actions/runs/38279436034) **SUCCESS**, compilation/JUnit/census PASS |
 | Real NeoForge mod BE onLoad/onChunkUnloaded/sync, capability listeners | NOT RUN |
 | Actual client/server Mixin weaving | NOT RUN |
 | Virtual furnace/BE tick, chunk unload, save/restart and component/attachment round-trip | NOT RUN |
@@ -76,3 +76,8 @@ Manual regression instructions for **later implementation/acceptance**: place an
 
 
 Third-run [38279300973](https://github.com/Abbygree11/Planetary/actions/runs/38279300973) superseded by [commit 7b7fd14](https://github.com/Abbygree11/Planetary/commit/7b7fd148e2d4ec7bc53a875e45bafeba71204bca): additional strict correction that the *handler* invokes `PlanetLevelBridge.resolve` + `Optional.ifPresent`, while the *compiled synthetic lambda* invokes `PlanetBlockEntityStore.put` through `blockEntities()`. [Fourth CI run 38279436034](https://github.com/Abbygree11/Planetary/actions/runs/38279436034) must be inspected before accepting exact ABI tests. No functional production behavior changed.
+
+
+### Final strict ABI CI result
+
+[GitHub Actions run 38279436034](https://github.com/Abbygree11/Planetary/actions/runs/38279436034), triggered on [strict fix commit 7b7fd14](https://github.com/Abbygree11/Planetary/commit/7b7fd148e2d4ec7bc53a875e45bafeba71204bca), **completed SUCCESS**. Production/test compilation, JUnit (including all Stage2.3C-6 exact-version classfile assertions) and registry census steps green. The previous runs: initial 38278251342 cancelled; 38278553607 compiled 348 tests with **2 test-expectation failures** (lambda owner and full Mixin selectors); third 38279300973 superseded by 7b7fd14; final 38279436034 passed. This establishes **actual 21.1.215 selected-method bytecode and compiled Mixin-annotation contracts only**. It does not prove actual Mixin application, BE ticking on virtual Planet positions, chunk save/reload, client sync, mod listener/capabilities or third-party jar acceptance. No production Java/Mixin changes.
