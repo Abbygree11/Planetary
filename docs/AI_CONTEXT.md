@@ -10,6 +10,10 @@ Minecraft 1.21.1, NeoForge 21.1.215, Java 21, Gradle 8.12.
 User local check: git pull && .\test.ps1 && .\run-client.ps1
 Never claim build/runtime success before user confirms it.
 
+## 2026-10-14 — User gameplay confirmation of replaceable V2 test lab
+
+After code+CI #38475081760 and documented V2 gold-to-diamond migration, the user replied **"все ок"** to the V2 lab rollout. Treat as **USER SMOKE ACCEPTED / NO REPORTED ISSUE** for the replaceable current-family lab, not independent proof of every marker migration path, all 6 face placements, all 12 seams / 8 corners, mod compatibility, or StairBlock dynamic SHAPE behavior. The user also explicitly approved replacing old lab exhibits instead of retaining a museum. Continue implementation on branch 2.0 with current-only scene updates; leave the separate untested cases open.
+
 ## 2026-10-14 — USER CORRECTION: test lab is a disposable CURRENT-FAMILY scene, not a regression museum
 
 User specifically rejected maintaining the old stations indefinitely: "Да ее незачем сохранять, для регресса у нас тесты есть, а на лабе новые функции тестировать же нужно". The prior 2026-10-14 decision to preserve legacy 20 fixtures and grow a separate independent stair/trapdoor wing is **REVOKED**. This is a direct user requirement, not a proposed future enhancement.
