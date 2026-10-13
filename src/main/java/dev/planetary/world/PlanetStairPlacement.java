@@ -176,14 +176,14 @@ public final class PlanetStairPlacement {
         // The shared typed context separates the original hit from the
         // retargeted final BlockPlaceContext cell. Resolve it only once.
         var physicalHit = PlanetFrameApi.placementFrame(context);
-        Direction clicked = physicalHit
+        Direction physicalClicked = physicalHit
                 .map(PlanetFrameApi.PlacementFrame::physicalClickedFace)
                 .orElseGet(context::getClickedFace);
         var hitLocation = physicalHit
                 .map(PlanetFrameApi.PlacementFrame::worldClickLocation)
                 .orElseGet(context::getClickLocation);
         return PlanetBlockRuntime.placementFrame(
-                context.getLevel(), context.getClickedPos(), clicked, hitLocation)
+                context.getLevel(), context.getClickedPos(), physicalClicked, hitLocation)
                 .flatMap(frame -> {
                     Optional<Direction> horizontal = Optional.empty();
                     if (context.getPlayer() != null) {
