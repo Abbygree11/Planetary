@@ -154,26 +154,19 @@ public final class PlanetDebugServerEvents {
         );
 
         // Only runClient's DEVELOPMENT JVM profile enables this opt-in.
-        // Normal packaged Planetary installs never build debug structures
-        // automatically. Existing blocks in reserved lab regions are never
-        // removed on login, and completed areas use a persistent marker.
+        // A known former lab layout is automatically replaced INSIDE the
+        // reserved lab on version change. Unmarked occupied land and regular
+        // mod JAR worlds are not modified.
         if (Boolean.getBoolean(PlanetTestFixtures.AUTO_PROPERTY)) {
             PlanetTestFixtures.BuildStats fixtures =
                     PlanetTestFixtures.buildAll(level, false);
-
-            // Separate non-destructive placement wing. A previously occupied
-            // wing is preserved, even if the old gold-marked lab already exists.
-            PlanetTestFixtures.BuildStats placementWings =
-                    PlanetTestFixtures.buildAllPlacementWings(level);
 
             player.sendSystemMessage(Component.literal(
                     "[Planetary Test] Six-face fixture lab: newly built "
                             + fixtures.built() + ", already present "
                             + fixtures.alreadyPresent() + ", occupied "
-                            + fixtures.occupied() + " (left untouched). "
-                            + " Placement wings: new " + placementWings.built()
-                            + ", existing " + placementWings.alreadyPresent()
-                            + ", occupied/preserved " + placementWings.occupied()
+                            + fixtures.occupied() + " (unmarked land preserved). "
+                            + " ACTIVE tests: " + PlanetTestFixtures.STATIONS.size()
                             + ". "
                             + "/planetary test legend, /planetary test go pos_y"
             ));
