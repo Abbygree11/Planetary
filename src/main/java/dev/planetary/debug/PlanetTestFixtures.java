@@ -28,17 +28,16 @@ import java.util.Locale;
 import java.util.Objects;
 
 /**
- * Reproducible *server-side* acceptance museum for the dedicated Planet world.
+ * Replaceable, versioned *server-side* development acceptance scene.
  *
  * <p>Each of the six faces has an identical physical layout. CYAN floor cells
  * carry directly installed canonical-local reference states; LIME floor cells
  * next to them are empty for testing real player BlockItem/useOn placement.
  * A reference fixture NEVER proves that natural placement works.</p>
  *
- * <p>One-time auto-creation is enabled only by the runClient development JVM
- * property. Existing scene cells are not overwritten by auto install.
- * Explicit rebuild commands are intentionally destructive inside the reserved
- * 41x33 floor footprint, not outside of it.</p>
+ * <p>Only a marker-owned dev scene is automatically migrated between
+ * versions. Unmarked occupied terrain and all cells outside the bounded
+ * lab are preserved. Historical visual fixtures are not retained.</p>
  */
 public final class PlanetTestFixtures {
     public static final String AUTO_PROPERTY = "planetary.debug.fixtures.auto";
@@ -50,39 +49,13 @@ public final class PlanetTestFixtures {
     public static final int FLOOR_MAX_Z = 16;
     private static final int MAX_UP_OFFSET = 6;
 
-    /**
-     * Independent version-1 placement wing attached at local EAST +21..40.
-     * It is OUTSIDE the original [-20,20] face-lab footprint, with its own
-     * marker/airspace guard. Never force-rebuild this area automatically.
-     */
-    public static final int PLACEMENT_WING_MIN_X = 21;
-    public static final int PLACEMENT_WING_MAX_X = 40;
-    public static final int PLACEMENT_WING_MIN_Z = -12;
-    public static final int PLACEMENT_WING_MAX_Z = 12;
-
-    public record PlacementStation(String name, int east, int south) {
-        public PlacementStation {
-            Objects.requireNonNull(name, "name");
-            if (east - 2 < PLACEMENT_WING_MIN_X
-                    || east + 2 > PLACEMENT_WING_MAX_X
-                    || south - 2 < PLACEMENT_WING_MIN_Z
-                    || south + 2 > PLACEMENT_WING_MAX_Z) {
-                throw new IllegalArgumentException("placement station outside wing");
-            }
-        }
-    }
-
-    public static final List<PlacementStation> PLACEMENT_STATIONS = List.of(
-            new PlacementStation("oak_trapdoor", 27, -9),
-            new PlacementStation("iron_trapdoor", 27, -3),
-            new PlacementStation("copper_trapdoor", 27, 3),
-            new PlacementStation("waxed_copper_trapdoor", 27, 9),
-            new PlacementStation("oak_stairs", 35, -9),
-            new PlacementStation("quartz_stairs_outer_left", 35, -3),
-            new PlacementStation("copper_stairs_inner_right", 35, 3),
-            new PlacementStation("waxed_copper_stairs_top", 35, 9)
-    );
-
+    /** V2: change this marker when acceptance scenarios change. */
+    public static final BlockState CURRENT_MARKER = Blocks.DIAMOND_BLOCK.defaultBlockState();
+    public static final BlockState LEGACY_MARKER = Blocks.GOLD_BLOCK.defaultBlockState();
+    private static final int LEGACY_WING_MIN_X = 21;
+    private static final int LEGACY_WING_MAX_X = 40;
+    private static final int LEGACY_WING_MIN_Z = -12;
+    private static final int LEGACY_WING_MAX_Z = 12;
 
 
     private static final int[] EAST_GRID = {-16, -8, 0, 8, 16};
@@ -109,27 +82,19 @@ public final class PlanetTestFixtures {
         }
     }
 
+    /**
+     * ACTIVE acceptance cases only. Retired fixture scenarios are covered
+     * by JUnit/ASM; the dev pad is intentionally not a historical museum.
+     */
     public static final List<Station> STATIONS = List.of(
-            new Station("end_rod", 0, 0),
-            new Station("ender_chest", 1, 0),
-            new Station("enchanting_table", 2, 0),
-            new Station("spore_blossom", 3, 0),
-            new Station("water_drip", 4, 0),
-            new Station("candle", 0, 1),
-            new Station("candle_cake", 1, 1),
-            new Station("torch", 2, 1),
-            new Station("cherry_leaves", 3, 1),
-            new Station("redstone_torch", 4, 1),
-            new Station("campfire", 0, 2),
-            new Station("soul_campfire", 1, 2),
-            new Station("furnace", 2, 2),
-            new Station("blast_furnace", 3, 2),
-            new Station("smoker", 4, 2),
-            new Station("brewing_stand", 0, 3),
-            new Station("respawn_anchor", 1, 3),
-            new Station("bookshelves", 2, 3),
-            new Station("portal_ignition", 3, 3),
-            new Station("flint_steel", 4, 3)
+            new Station("oak_trapdoor", 1, 0),
+            new Station("oak_stairs", 3, 0),
+            new Station("iron_trapdoor", 1, 1),
+            new Station("quartz_stairs_outer_left", 3, 1),
+            new Station("copper_trapdoor", 1, 2),
+            new Station("copper_stairs_inner_right", 3, 2),
+            new Station("waxed_copper_trapdoor", 1, 3),
+            new Station("waxed_copper_stairs_top", 3, 3)
     );
 
     public record BuildStats(int built, int alreadyPresent, int occupied) {
@@ -178,10 +143,23 @@ public final class PlanetTestFixtures {
         return physical(face, 0, FLOOR_RADIUS, 0);
     }
 
+    public enum BuildAction { ALREADY_CURRENT, REBUILD, PRESERVE_OCCUPIED }
+
     /**
-     * Auto creation is collision-safe: if even one source cell in a face's
-     * reserved airspace is occupied, preserve that face untouched.
+     * A known previous version authorizes replacement ONLY within this
+     * bounded dev-lab volume; unmarked occupied land is never cleared.
+     * Make this a new marker block when the active suite changes again.
      */
+    public static BuildAction planBuild(BlockState existingMarker,
+                                        boolean reservedAirspaceEmpty,
+                                        boolean explicitRebuild) {
+        Objects.requireNonNull(existingMarker, "existingMarker");
+        if (explicitRebuild) return BuildAction.REBUILD;
+        if (existingMarker.equals(CURRENT_MARKER)) return BuildAction.ALREADY_CURRENT;
+        if (existingMarker.equals(LEGACY_MARKER)) return BuildAction.REBUILD;
+        return reservedAirspaceEmpty ? BuildAction.REBUILD : BuildAction.PRESERVE_OCCUPIED;
+    }
+
     public static BuildStats buildAll(ServerLevel level, boolean force) {
         requirePlanet(level);
         BuildStats total = new BuildStats(0, 0, 0);
@@ -191,36 +169,30 @@ public final class PlanetTestFixtures {
         return total;
     }
 
-    public static BuildStats buildFace(
-            ServerLevel level,
-            PlanetFace face,
-            boolean force
-    ) {
+    public static BuildStats buildFace(ServerLevel level, PlanetFace face, boolean force) {
         requirePlanet(level);
         Objects.requireNonNull(face, "face");
 
-        if (!force && level.getBlockState(marker(face))
-                .is(Blocks.GOLD_BLOCK)) {
-            return new BuildStats(0, 1, 0);
-        }
+        BlockState previousMarker = level.getBlockState(marker(face));
+        // Avoid scanning 9,471 cells if this is already an owned/current pad
+        // or an explicitly requested full reset.
+        boolean empty = force || previousMarker.equals(CURRENT_MARKER)
+                || previousMarker.equals(LEGACY_MARKER)
+                || isReservedAirspaceEmpty(level, face);
+        BuildAction action = planBuild(previousMarker, empty, force);
+        if (action == BuildAction.ALREADY_CURRENT) return new BuildStats(0, 1, 0);
+        if (action == BuildAction.PRESERVE_OCCUPIED) return new BuildStats(0, 0, 1);
 
-        if (!force && !isReservedAirspaceEmpty(level, face)) {
-            return new BuildStats(0, 0, 1);
-        }
-
-        // Clear only our bounded development footprint on explicit rebuild.
-        // This can remove PLAYER builds within that footprint: no implicit
-        // force path is used during a login.
-        if (force) {
-            for (int east = FLOOR_MIN_X; east <= FLOOR_MAX_X; east++) {
-                for (int south = FLOOR_MIN_Z; south <= FLOOR_MAX_Z; south++) {
-                    for (int radial = FLOOR_RADIUS;
-                            radial <= FLOOR_RADIUS + MAX_UP_OFFSET;
-                            radial++) {
-                        put(level, physical(face, east, radial, south),
-                                Blocks.AIR.defaultBlockState());
-                    }
-                }
+        // Replace only a known owned pad or the user's explicit rebuild area;
+        // NEVER reset unmarked occupied terrain during dev login.
+        if (force || previousMarker.equals(LEGACY_MARKER)) {
+            clearVolume(level, face, FLOOR_MIN_X, FLOOR_MAX_X, FLOOR_MIN_Z, FLOOR_MAX_Z);
+            // V1 had a second placement wing with its own lapis marker.
+            // Retire it during migration rather than accumulating arenas.
+            BlockPos oldWingMarker = physical(face, 23, FLOOR_RADIUS, -11);
+            if (level.getBlockState(oldWingMarker).is(Blocks.LAPIS_BLOCK)) {
+                clearVolume(level, face, LEGACY_WING_MIN_X, LEGACY_WING_MAX_X,
+                        LEGACY_WING_MIN_Z, LEGACY_WING_MAX_Z);
             }
         }
 
@@ -234,94 +206,52 @@ public final class PlanetTestFixtures {
         for (Station station : STATIONS) {
             int x = station.east();
             int z = station.south();
-
-            // Adjacent green location must remain EMPTY so actual
-            // BlockItem/placement and canSurvive can be tested by player.
             put(level, physical(face, x - 1, FLOOR_RADIUS, z),
                     Blocks.CYAN_CONCRETE.defaultBlockState());
-            // Grass is the required natural substrate for a sapling.
-            // It is deliberately still the GREEN placement lane.
             put(level, physical(face, x + 1, FLOOR_RADIUS, z),
-                    station.name().equals("cherry_leaves")
-                            ? Blocks.GRASS_BLOCK.defaultBlockState()
-                            : Blocks.LIME_CONCRETE.defaultBlockState());
-
+                    Blocks.LIME_CONCRETE.defaultBlockState());
             buildReference(level, face, station);
-
-            // Hanging spore blossoms require a physical LOCAL ceiling
-            // above the player's EMPTY placement target as well as above
-            // the cyan reference. This tests real BlockItem/useOn.
-            if (station.name().equals("spore_blossom")) {
-                put(level, physical(face, x + 1, FLOOR_RADIUS + 2, z),
-                        Blocks.STONE.defaultBlockState());
-            }
         }
 
-        // The persistent gold marker is written LAST. It is never used as
-        // proof of fixture correctness, only as a duplicate-install guard.
-        put(level, marker(face), Blocks.GOLD_BLOCK.defaultBlockState());
+        // Marker last so a failed build is never misreported as current.
+        put(level, marker(face), CURRENT_MARKER);
         return new BuildStats(1, 0, 0);
     }
 
-    public static BlockPos placementWingMarker(PlanetFace face) {
-        return physical(face, 23, FLOOR_RADIUS, -11);
-    }
-
-    public static BuildStats buildAllPlacementWings(ServerLevel level) {
-        requirePlanet(level);
-        BuildStats totals = new BuildStats(0, 0, 0);
-        for (PlanetFace face : PlanetFace.values()) {
-            totals = totals.plus(buildPlacementWing(level, face));
-        }
-        return totals;
-    }
-
-    /**
-     * Strictly non-destructive on existing worlds: a distinct lapis marker or
-     * ANY occupied cell inside wing airspace prevents construction. The
-     * original gold-marker fixture is never rebuilt or moved.
-     */
-    public static BuildStats buildPlacementWing(ServerLevel level, PlanetFace face) {
-        requirePlanet(level);
-        Objects.requireNonNull(face, "face");
-        if (level.getBlockState(placementWingMarker(face)).is(Blocks.LAPIS_BLOCK)) {
-            return new BuildStats(0, 1, 0);
-        }
-        for (int east = PLACEMENT_WING_MIN_X; east <= PLACEMENT_WING_MAX_X; east++) {
-            for (int south = PLACEMENT_WING_MIN_Z; south <= PLACEMENT_WING_MAX_Z; south++) {
+    private static void clearVolume(ServerLevel level, PlanetFace face,
+                                    int minEast, int maxEast, int minSouth, int maxSouth) {
+        for (int east = minEast; east <= maxEast; east++) {
+            for (int south = minSouth; south <= maxSouth; south++) {
                 for (int radial = FLOOR_RADIUS; radial <= FLOOR_RADIUS + MAX_UP_OFFSET; radial++) {
-                    if (!level.getBlockState(physical(face, east, radial, south)).isAir()) {
-                        return new BuildStats(0, 0, 1);
+                    put(level, physical(face, east, radial, south),
+                            Blocks.AIR.defaultBlockState());
+                }
+            }
+        }
+    }
+
+    public static boolean isReservedAirspaceEmpty(
+            ServerLevel level,
+            PlanetFace face
+    ) {
+        for (int east = FLOOR_MIN_X; east <= FLOOR_MAX_X; east++) {
+            for (int south = FLOOR_MIN_Z; south <= FLOOR_MAX_Z; south++) {
+                for (int radial = FLOOR_RADIUS;
+                        radial <= FLOOR_RADIUS + MAX_UP_OFFSET;
+                        radial++) {
+                    if (!level.getBlockState(
+                            physical(face, east, radial, south)
+                    ).isAir()) {
+                        return false;
                     }
                 }
             }
         }
-
-        // Bridge reaches the old x=20 floor without touching that floor.
-        for (int east = PLACEMENT_WING_MIN_X; east <= PLACEMENT_WING_MAX_X; east++) {
-            for (int south = PLACEMENT_WING_MIN_Z; south <= PLACEMENT_WING_MAX_Z; south++) {
-                put(level, physical(face, east, FLOOR_RADIUS, south),
-                        Blocks.POLISHED_ANDESITE.defaultBlockState());
-            }
-        }
-
-        for (PlacementStation station : PLACEMENT_STATIONS) {
-            int east = station.east();
-            int south = station.south();
-            put(level, physical(face, east - 1, FLOOR_RADIUS, south),
-                    Blocks.CYAN_CONCRETE.defaultBlockState());
-            put(level, physical(face, east + 1, FLOOR_RADIUS, south),
-                    Blocks.LIME_CONCRETE.defaultBlockState());
-            buildPlacementReference(level, face, station);
-        }
-
-        // Written last so interruptions cannot mark an incomplete wing ready.
-        put(level, placementWingMarker(face), Blocks.LAPIS_BLOCK.defaultBlockState());
-        return new BuildStats(1, 0, 0);
+        return true;
     }
 
-    private static void buildPlacementReference(
-            ServerLevel level, PlanetFace face, PlacementStation station
+    private static void buildReference(
+            ServerLevel level, PlanetFace face, Station station
     ) {
         int x = station.east() - 1;
         int south = station.south();
@@ -379,115 +309,6 @@ public final class PlanetTestFixtures {
                             .setValue(net.minecraft.world.level.block.StairBlock.HALF,
                                     net.minecraft.world.level.block.state.properties.Half.TOP));
             default -> throw new IllegalStateException("Unrecognized wing station " + station.name());
-        }
-    }
-
-    public static String placementWingLegend() {
-        return "PLACEMENT WING EAST: x=27 oak/iron/copper/waxed trapdoors "
-                + "and x=35 oak/quartz outer-left/copper inner-right/waxed-top stairs; "
-                + "CYAN is reference, LIME is natural placement. "
-                + "Wing has its own LAPIS marker; never auto-rebuild occupied space.";
-    }
-
-    public static boolean isReservedAirspaceEmpty(
-            ServerLevel level,
-            PlanetFace face
-    ) {
-        for (int east = FLOOR_MIN_X; east <= FLOOR_MAX_X; east++) {
-            for (int south = FLOOR_MIN_Z; south <= FLOOR_MAX_Z; south++) {
-                for (int radial = FLOOR_RADIUS;
-                        radial <= FLOOR_RADIUS + MAX_UP_OFFSET;
-                        radial++) {
-                    if (!level.getBlockState(
-                            physical(face, east, radial, south)
-                    ).isAir()) {
-                        return false;
-                    }
-                }
-            }
-        }
-        return true;
-    }
-
-    private static void buildReference(
-            ServerLevel level,
-            PlanetFace face,
-            Station station
-    ) {
-        int x = station.east() - 1;
-        int z = station.south();
-        int radial = FLOOR_RADIUS + 1;
-        BlockPos pos = physical(face, x, radial, z);
-
-        switch (station.name()) {
-            case "end_rod" -> put(level, pos,
-                    Blocks.END_ROD.defaultBlockState()
-                            .setValue(EndRodBlock.FACING, Direction.UP));
-            case "ender_chest" -> put(level, pos,
-                    Blocks.ENDER_CHEST.defaultBlockState().setValue(
-                            HorizontalDirectionalBlock.FACING,
-                            Direction.NORTH));
-            case "enchanting_table" -> put(level, pos,
-                    Blocks.ENCHANTING_TABLE.defaultBlockState());
-            case "spore_blossom" -> {
-                put(level, physical(face, x, radial + 1, z),
-                        Blocks.STONE.defaultBlockState());
-                put(level, pos, Blocks.SPORE_BLOSSOM.defaultBlockState());
-            }
-            case "water_drip" -> {
-                // Scaffold only: fluid topology / drip source is part
-                // of Phase 5. Leave open for interactive water setup.
-                put(level, pos, Blocks.POINTED_DRIPSTONE.defaultBlockState());
-            }
-            case "candle" -> put(level, pos,
-                    Blocks.CANDLE.defaultBlockState()
-                            .setValue(CandleBlock.LIT, true)
-                            .setValue(CandleBlock.CANDLES, 4));
-            case "candle_cake" -> put(level, pos,
-                    Blocks.CANDLE_CAKE.defaultBlockState()
-                            .setValue(CandleCakeBlock.LIT, true));
-            case "torch" -> put(level, pos,
-                    Blocks.TORCH.defaultBlockState());
-            case "cherry_leaves" -> put(level, pos,
-                    Blocks.CHERRY_LEAVES.defaultBlockState()
-                            .setValue(LeavesBlock.PERSISTENT, true));
-            case "redstone_torch" -> put(level, pos,
-                    Blocks.REDSTONE_TORCH.defaultBlockState());
-            case "campfire" -> put(level, pos,
-                    Blocks.CAMPFIRE.defaultBlockState()
-                            .setValue(CampfireBlock.LIT, true));
-            case "soul_campfire" -> put(level, pos,
-                    Blocks.SOUL_CAMPFIRE.defaultBlockState()
-                            .setValue(CampfireBlock.LIT, true));
-            case "furnace" -> {
-                put(level, pos, Blocks.FURNACE.defaultBlockState()
-                        .setValue(AbstractFurnaceBlock.LIT, true));
-                primeFurnace(level, pos, Items.RAW_IRON);
-            }
-            case "blast_furnace" -> {
-                put(level, pos, Blocks.BLAST_FURNACE.defaultBlockState()
-                        .setValue(AbstractFurnaceBlock.LIT, true));
-                primeFurnace(level, pos, Items.RAW_IRON);
-            }
-            case "smoker" -> {
-                put(level, pos, Blocks.SMOKER.defaultBlockState()
-                        .setValue(AbstractFurnaceBlock.LIT, true));
-                primeFurnace(level, pos, Items.BEEF);
-            }
-            case "brewing_stand" -> put(level, pos,
-                    Blocks.BREWING_STAND.defaultBlockState());
-            case "respawn_anchor" -> put(level, pos,
-                    Blocks.RESPAWN_ANCHOR.defaultBlockState()
-                            .setValue(RespawnAnchorBlock.CHARGE, 2));
-            case "bookshelves" -> buildBookshelves(level, face, x, z, radial);
-            case "portal_ignition" -> buildPortalFrame(level, face, x, z);
-            case "flint_steel" -> {
-                put(level, pos, Blocks.OBSIDIAN.defaultBlockState());
-                // Adjacent placement lane stays empty for real useOn.
-            }
-            default -> throw new IllegalStateException(
-                    "Unexpected test station: " + station.name()
-            );
         }
     }
 
@@ -568,25 +389,11 @@ public final class PlanetTestFixtures {
 
     public static String gridLegend() {
         StringBuilder result = new StringBuilder(
-                "CYAN = preset reference; LIME = natural placement slot. "
-        );
-        for (int row = 0; row < SOUTH_GRID.length; row++) {
-            if (row != 0) {
-                result.append(" | ");
-            }
-            result.append("row ").append(row + 1).append(": ");
-            for (int col = 0; col < EAST_GRID.length; col++) {
-                if (col > 0) {
-                    result.append(", ");
-                }
-                int desiredCol = col;
-                int desiredRow = row;
-                Station s = STATIONS.stream()
-                        .filter(station -> station.column() == desiredCol
-                                && station.row() == desiredRow)
-                        .findFirst().orElseThrow();
-                result.append(s.name().replace('_', ' '));
-            }
+                "ACTIVE V2 placement tests (CYAN = reference, LIME = player placement): ");
+        for (Station station : STATIONS) {
+            result.append(station.name().replace('_', ' '))
+                    .append("[row ").append(station.row() + 1)
+                    .append(", east ").append(station.east()).append("]; ");
         }
         return result.toString();
     }
