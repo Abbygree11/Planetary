@@ -1,0 +1,33 @@
+# Planetary — 2.4A-6: complete inherited FenceGateBlock semantic family
+
+Target: Minecraft 1.21.1 / NeoForge 21.1.215 / Java 21, working branch `2.0`.
+
+## Source and real mod comparator
+
+Original pinned comparative Java owner: [FenceGateBlock.java](https://github.com/hackersense/OptiFine-Source/blob/b77c5c6995874f6cf2755bc5234428906b337b75/1.21.1/net/minecraft/world/level/block/FenceGateBlock.java). Original compiled NeoForge declaring owner is tested through `Phase2PlacementFamilyMixinContractTest`, including actual call-site owner `Player.getDirection()`, descriptors and Mixin signatures. Previous Stage3A registration census: **11 actual registered FenceGateBlock IDs**, all from inherited common vanilla class, not 11 different Java owner methods. This is P18/P25/P34, and a separate owner from `FenceBlock`, `WallBlock`, `DoorBlock` and mod-only multi-block gates.
+
+A **specific version-pinned source mod comparator** is [Every Compat (WoodGood) NeoForge MacawFencesModule.java at 18c5c1d](https://github.com/MehVahdJukaar/WoodGood/blob/18c5c1dbd04b4ffdcbcd5316f8cff88f43062996/neoforge/src/main/java/net/mehvahdjukaar/every_compat/modules/neoforge/mcaw/MacawFencesModule.java): its `newFenceGateBlock(WoodType)` returns `new FenceGateBlock(woodType.toVanillaOrOak(), ...)`. [MacawFencesModuleAbstract](https://github.com/MehVahdJukaar/WoodGood/blob/18c5c1dbd04b4ffdcbcd5316f8cff88f43062996/common/src/main/java/net/mehvahdjukaar/every_compat/modules/macaw/MacawFencesModuleAbstract.java) dynamically registers `pyramidGates` and `highleyGates` from this common factory across extra woods. This validates **same owner inheritance with external wood materials**; it is NOT a real loaded mod validation. Its pinned gradle.properties requests NeoForge **21.1.248**, whereas Planetary targets **21.1.215**; do NOT claim the unmodified mod can load, let alone pass tests. Mod-specific independent gate classes and overridden use/shape/placement methods need later opt-in adapters or more general shared owner boundaries.
+
+## Full owner call graph
+
+- `BlockItem.getPlacementState` calls virtual `getStateForPlacement(BlockPlaceContext)`: gate owner starts with `getHorizontalDirection()`, physical `level.hasNeighborSignal(targetPos)`, and physical `west/east/north/south` wall reads. At RETURN only target-local `FACING` and `IN_WALL` are adapted; `POWERED` and `OPEN` from actual redstone stay on vanilla state. Interactive body-local horizontal candidate uses existing PlanetFrameApi with target frame; synthetic `DirectionalPlaceContext` has an explicit physical heading; unknown other null-player/fake authors receive original state.
+- `updateShape(BlockState,physical Direction,neighborState,LevelAccessor,physical positions)`: vanilla interprets update direction by physical axis and may not recognize local east/west on rotated faces. At RETURN recompute `IN_WALL` through two target-canonical horizontal neighbor directions using PlanetBlockRuntime.neighbor; preserved physical actual BlockPos target and walls tag. Foreign/non-Level accessors return vanilla state.
+- `useWithoutItem`: vanilla toggles OPEN, but when opening, compares `Player.getDirection()` against gate state facing and may change FACING. Redirect **one** actual owner INVOKEVIRTUAL to target-local actor direction after transforming the body-local horizontal direction through player's gravity frame into the gate target chart. Keep all original hand permissions, sound, game events, block writes and redstone notifications. Unknown player gravity or vertical target-local heading preserves original player value (no guessed local direction).
+- `neighborChanged` handles redstone power; `onExplosionHit` handles explosion open/close; `getCollisionShape/getShape/getOcclusionShape` consume physical BlockState. All remain vanilla. `FenceGateBlock.connectsToDirection` and separate `WallBlock/FenceBlock` graph consumers require dedicated Phase2B compatibility reviews rather than silently rewriting every generic Direction.
+
+## Deepest safe compatibility matrix
+
+| Contract | Approach |
+| --- | --- |
+| SHARED_SAFE | All inherited `FenceGateBlock` author methods: canonical horizontal FACING, lateral tagged wall graph, interaction player heading; no material / registry ID switches |
+| OPT_IN_ALGORITHM | Explicit helper `PlanetFenceGatePlacement` for source-canonical wall lookup and `PlanetFrameApi.localHorizontalDirection` actor; subclass override should consciously opt in |
+| MOD_INDEPENDENT | Macaw/custom gates with separate owner, item bypass, custom `BlockSetType`, virtual world and mod-specific wall connectivity; source/method census and loaded mod checks separately |
+| PHYSICAL_DO_NOT_TOUCH | World block coordinates, Level neighbor update, signals, Item.useOn, BlockItem, fluid state, tags lookup, collision, actual sounds/events, target world and BlockState identity |
+
+One level deeper, a global `Level.getBlockState/BlockPos.relative/Direction` rewrite damages non-Planet neighbors, mods and redstone. One level shallower, a wood-ID or `FACING`-only patch misses all inherited extra woods, `IN_WALL` and user interaction.
+
+## Tests and acceptance
+
+JUnit: `PlanetOrientationPropertiesTest` tests four heading/two lateral wall choices; actual tagged cobblestone wall and nonwall via PlanetBlockRuntime.neighbor; original material/OPEN/POWERED preservation; six-face and 12 physical edge/8 corner empty-neighbor invariants; no-Planet and foreign accessor fallback. NeoForge ASM: selected three declaring-owner descriptors and compiled Mixin callback descriptor, actual owner of `Player.getDirection`. Versioned current-only V3 six-face dev lab with eight vanilla materials, wall/scaffold/open cases replaces prior StairBlock/TrapDoorBlock samples (which remain in regression tests), using EMERALD marker and migrating DIAMOND/GOLD. A visual reference does NOT prove real BlockItem placement.
+
+Independent acceptance: final CI compile + full JUnit + census; startup applied Mixin; real CYAN-vs-LIME natural placement and OPEN/IN_WALL in six face interiors; wall change and redstone + player open direction; real 12 edges + 8 corners; ordinary no-Planet world; loaded same-owner additional woods and independent override mod with actual target-supported versions; server-side. **Pending** until separately observed. Generic visual culling seam bug stays Phase3B.
