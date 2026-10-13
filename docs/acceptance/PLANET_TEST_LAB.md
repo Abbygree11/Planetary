@@ -44,7 +44,7 @@ Only within the dedicated Planet world. The **automatic migration is confined to
 
 Available commands: `/planetary test build` safely migrates/builds missing scenes, `/planetary test go <face>` builds/migrates the destination face when needed, and `/planetary test rebuild <face>` explicitly forces a destructive reset of one face's active scene. Bump the current scene marker when changing active station content later (and recognize the previous marker); do not silently modify a current-marked scene in place.
 
-**Previous V2** code CI [#38475081760](https://github.com/Abbygree11/Planetary/actions/runs/38475081760) SUCCESS and user smoke reported «все ок». **Current V3 gate lab CI / actual loaded-client gameplay pending.**
+**Previous V2** code CI [#38475081760](https://github.com/Abbygree11/Planetary/actions/runs/38475081760) SUCCESS and user smoke reported «все ок». **Current V3 gate lab:** [CI #38478594846](https://github.com/Abbygree11/Planetary/actions/runs/38478594846) COMPLETED SUCCESS on code 8d73be5 (Java21 compile, full JUnit/ASM, NeoForge registry); **actual loaded-client gameplay and actual mod JAR acceptance PENDING**.
 
 ## Independent evidence gates
 
