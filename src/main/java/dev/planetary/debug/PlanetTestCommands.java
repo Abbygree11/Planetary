@@ -69,17 +69,14 @@ public final class PlanetTestCommands {
 
         PlanetTestFixtures.BuildStats result =
                 PlanetTestFixtures.buildAll(level, false);
-        PlanetTestFixtures.BuildStats placement =
-                PlanetTestFixtures.buildAllPlacementWings(level);
 
         source.sendSuccess(() -> Component.literal(
                 "[Planetary Test] Built " + result.built()
                         + "/6 face labs; existing " + result.alreadyPresent()
                         + "; occupied (preserved) " + result.occupied()
-                        + ". Placement wings: " + placement.built()
-                        + " newly built, " + placement.alreadyPresent()
-                        + " existing, " + placement.occupied()
-                        + " occupied (preserved). Use /planetary test go pos_y and "
+                        + ". Current active scenarios: "
+                        + PlanetTestFixtures.STATIONS.size()
+                        + ". Use /planetary test go pos_y and "
                         + "/planetary test legend."
         ), false);
         return result.built();
@@ -99,9 +96,9 @@ public final class PlanetTestCommands {
 
         PlanetTestFixtures.buildFace(level, face, true);
         source.sendSuccess(() -> Component.literal(
-                "[Planetary Test] Destructively rebuilt face "
+                "[Planetary Test] Reset ACTIVE lab on face "
                         + PlanetTestFixtures.faceName(face)
-                        + " inside its reserved 41x33 lab footprint. "
+                        + " inside its bounded 41x33 lab volume. "
                         + "Anything the player built inside that area was "
                         + "replaced; the rest of the world is unchanged."
         ), false);
@@ -127,18 +124,12 @@ public final class PlanetTestCommands {
                 PlanetTestFixtures.buildFace(level, face, false);
         if (result.occupied() != 0) {
             source.sendFailure(Component.literal(
-                    "[Planetary Test] This face lab area is occupied and was "
-                            + "not overwritten. Move existing builds away, "
-                            + "or explicitly use /planetary test rebuild "
+                    "[Planetary Test] Unmarked occupied lab was preserved. "
+                            + "Use explicit /planetary test rebuild "
                             + PlanetTestFixtures.faceName(face)
             ));
             return 0;
         }
-
-        // Independent non-destructive wing: the old 41x33 fixture marker
-        // never authorizes overwriting a previously occupied placement wing.
-        PlanetTestFixtures.BuildStats placement =
-                PlanetTestFixtures.buildPlacementWing(level, face);
 
         BlockPos target = PlanetTestFixtures.arrival(face);
         player.teleportTo(
@@ -158,19 +149,12 @@ public final class PlanetTestCommands {
         player.sendSystemMessage(Component.literal(
                 PlanetTestFixtures.gridLegend()
         ));
-        player.sendSystemMessage(Component.literal(
-                PlanetTestFixtures.placementWingLegend()
-                        + " Built " + placement.built()
-                        + ", existing " + placement.alreadyPresent()
-                        + ", occupied/preserved " + placement.occupied()
-        ));
         return 1;
     }
 
     private static int legend(CommandSourceStack source) {
         source.sendSuccess(() -> Component.literal(
-                PlanetTestFixtures.gridLegend() + " | "
-                        + PlanetTestFixtures.placementWingLegend()
+                PlanetTestFixtures.gridLegend()
         ), false);
         return 1;
     }
