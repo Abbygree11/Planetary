@@ -69,12 +69,17 @@ public final class PlanetTestCommands {
 
         PlanetTestFixtures.BuildStats result =
                 PlanetTestFixtures.buildAll(level, false);
+        PlanetTestFixtures.BuildStats placement =
+                PlanetTestFixtures.buildAllPlacementWings(level);
 
         source.sendSuccess(() -> Component.literal(
                 "[Planetary Test] Built " + result.built()
                         + "/6 face labs; existing " + result.alreadyPresent()
                         + "; occupied (preserved) " + result.occupied()
-                        + ". Use /planetary test go pos_y and "
+                        + ". Placement wings: " + placement.built()
+                        + " newly built, " + placement.alreadyPresent()
+                        + " existing, " + placement.occupied()
+                        + " occupied (preserved). Use /planetary test go pos_y and "
                         + "/planetary test legend."
         ), false);
         return result.built();
@@ -130,6 +135,11 @@ public final class PlanetTestCommands {
             return 0;
         }
 
+        // Independent non-destructive wing: the old 41x33 fixture marker
+        // never authorizes overwriting a previously occupied placement wing.
+        PlanetTestFixtures.BuildStats placement =
+                PlanetTestFixtures.buildPlacementWing(level, face);
+
         BlockPos target = PlanetTestFixtures.arrival(face);
         player.teleportTo(
                 level,
@@ -148,12 +158,19 @@ public final class PlanetTestCommands {
         player.sendSystemMessage(Component.literal(
                 PlanetTestFixtures.gridLegend()
         ));
+        player.sendSystemMessage(Component.literal(
+                PlanetTestFixtures.placementWingLegend()
+                        + " Built " + placement.built()
+                        + ", existing " + placement.alreadyPresent()
+                        + ", occupied/preserved " + placement.occupied()
+        ));
         return 1;
     }
 
     private static int legend(CommandSourceStack source) {
         source.sendSuccess(() -> Component.literal(
-                PlanetTestFixtures.gridLegend()
+                PlanetTestFixtures.gridLegend() + " | "
+                        + PlanetTestFixtures.placementWingLegend()
         ), false);
         return 1;
     }
