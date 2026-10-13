@@ -210,6 +210,70 @@ final class PlanetOrientationPropertiesTest {
                 PlanetOrientationProperties.Rotation16Zero.NORTH_CLOCKWISE).isEmpty());
     }
 
+    @Test
+    void stairFullCornerGraphMatchesVanillaAcrossAllFourDirectionsAndHalves() {
+        for (Direction facing : Direction.Plane.HORIZONTAL) {
+            for (Half half : Half.values()) {
+                var frontLeft = new PlanetStairPlacement.StairNeighbor(
+                        Blocks.OAK_STAIRS.defaultBlockState()
+                                .setValue(net.minecraft.world.level.block.StairBlock.HALF, half),
+                        facing.getCounterClockWise());
+                var frontRight = new PlanetStairPlacement.StairNeighbor(
+                        Blocks.QUARTZ_STAIRS.defaultBlockState()
+                                .setValue(net.minecraft.world.level.block.StairBlock.HALF, half),
+                        facing.getClockWise());
+                var backLeft = frontLeft;
+                var backRight = frontRight;
+                assertEquals(net.minecraft.world.level.block.state.properties.StairsShape.OUTER_LEFT,
+                        PlanetStairPlacement.shape(facing, half,
+                                direction -> direction == facing
+                                        ? Optional.of(frontLeft) : Optional.empty()));
+                assertEquals(net.minecraft.world.level.block.state.properties.StairsShape.OUTER_RIGHT,
+                        PlanetStairPlacement.shape(facing, half,
+                                direction -> direction == facing
+                                        ? Optional.of(frontRight) : Optional.empty()));
+                assertEquals(net.minecraft.world.level.block.state.properties.StairsShape.INNER_LEFT,
+                        PlanetStairPlacement.shape(facing, half,
+                                direction -> direction == facing.getOpposite()
+                                        ? Optional.of(backLeft) : Optional.empty()));
+                assertEquals(net.minecraft.world.level.block.state.properties.StairsShape.INNER_RIGHT,
+                        PlanetStairPlacement.shape(facing, half,
+                                direction -> direction == facing.getOpposite()
+                                        ? Optional.of(backRight) : Optional.empty()));
+                assertEquals(net.minecraft.world.level.block.state.properties.StairsShape.STRAIGHT,
+                        PlanetStairPlacement.shape(facing, half,
+                                direction -> Optional.empty()));
+
+                var blocker = new PlanetStairPlacement.StairNeighbor(
+                        Blocks.COPPER_STAIRS.defaultBlockState()
+                                .setValue(net.minecraft.world.level.block.StairBlock.HALF, half),
+                        facing);
+                assertEquals(net.minecraft.world.level.block.state.properties.StairsShape.STRAIGHT,
+                        PlanetStairPlacement.shape(facing, half, direction ->
+                                direction == facing ? Optional.of(frontLeft)
+                                        : direction == facing.getClockWise()
+                                        ? Optional.of(blocker) : Optional.empty()));
+            }
+        }
+    }
+
+    @Test
+    void stairCrossSeamHeadingTransportIsInvertibleForSixFaces() {
+        for (PlanetFace face : PlanetFace.values()) {
+            for (Direction localCross : Direction.Plane.HORIZONTAL) {
+                var transition = dev.planetary.topology.PlanetTopology.edgeTransform(
+                        face, PlanetVanillaDirection.fromVanilla(localCross));
+                for (Direction heading : Direction.Plane.HORIZONTAL) {
+                    Direction transported = PlanetVanillaDirection.toVanilla(
+                            transition.transformDirection(
+                                    PlanetVanillaDirection.fromVanilla(heading)));
+                    assertEquals(heading, PlanetStairPlacement.facingInSource(
+                            face, transition.targetFace(), localCross, transported).orElseThrow());
+                }
+            }
+        }
+    }
+
     private static void checkBoundary(BlockPos target) {
         PlanetBlockStateFrame canonical = PlanetBlockStateFrame.resolve(FIELD, target).orElseThrow();
         var resolved = resolved(target, Direction.UP, Vec3.atCenterOf(target));
