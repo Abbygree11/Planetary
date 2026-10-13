@@ -485,6 +485,10 @@ unavailable or not green, disclose that explicitly and do NOT
 pretend the change was build-tested.
 
 
+## Stage-labelled response format (user requirement, 2026-10-14)
+
+The user advances Planetary by replying `кк`. **Every progress/update and final report MUST visibly identify the current named stage**, for example `Planetary — 2.4A-6: FenceGateBlock`, including updates issued while waiting for CI. Never send consecutive anonymous messages such as "код готов" or "проверил тесты" with no stage. Keep final delivery organized under explicit stage/status: implementation/whole owner, mod-compatibility evidence and bypasses, Git commit/branch, exact CI status/run, independent gameplay acceptance and concise in-game checks, and next numbered stage. Do not claim CI/client/mod PASS prematurely. This is presentation discipline in addition to, not instead of, the full-owner mechanism audit and code evidence.
+
 ## 6A. Disposable current-mechanism Planet Test Lab (user-approved policy, 2026-10-14)
 
 The in-game six-face debug lab is a **replaceable scene for CURRENT functionality**, not a museum of all old mechanics. Regression belongs in Java JUnit/ASM tests, with added tests for bugs when required. Retire old reference samples as the implementation advances; do NOT accumulate extra permanent wings just to preserve earlier stations.
