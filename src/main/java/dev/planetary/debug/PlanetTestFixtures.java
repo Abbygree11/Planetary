@@ -38,9 +38,10 @@ public final class PlanetTestFixtures {
     public static final int FLOOR_MAX_Z = 16;
     private static final int MAX_UP_OFFSET = 6;
 
-    /** V2: change this marker when acceptance scenarios change. */
-    public static final BlockState CURRENT_MARKER = Blocks.DIAMOND_BLOCK.defaultBlockState();
-    public static final BlockState LEGACY_MARKER = Blocks.GOLD_BLOCK.defaultBlockState();
+    /** V3: active FenceGateBlock placement, wall graph and interaction. */
+    public static final BlockState CURRENT_MARKER = Blocks.EMERALD_BLOCK.defaultBlockState();
+    public static final BlockState LEGACY_MARKER = Blocks.DIAMOND_BLOCK.defaultBlockState();
+    public static final BlockState OLDEST_MARKER = Blocks.GOLD_BLOCK.defaultBlockState();
     private static final int LEGACY_WING_MIN_X = 21;
     private static final int LEGACY_WING_MAX_X = 40;
     private static final int LEGACY_WING_MIN_Z = -12;
@@ -76,14 +77,14 @@ public final class PlanetTestFixtures {
      * by JUnit/ASM; the dev pad is intentionally not a historical museum.
      */
     public static final List<Station> STATIONS = List.of(
-            new Station("oak_trapdoor", 1, 0),
-            new Station("oak_stairs", 3, 0),
-            new Station("iron_trapdoor", 1, 1),
-            new Station("quartz_stairs_outer_left", 3, 1),
-            new Station("copper_trapdoor", 1, 2),
-            new Station("copper_stairs_inner_right", 3, 2),
-            new Station("waxed_copper_trapdoor", 1, 3),
-            new Station("waxed_copper_stairs_top", 3, 3)
+            new Station("oak_gate_plain", 1, 0),
+            new Station("spruce_gate_one_wall", 3, 0),
+            new Station("cherry_gate_two_walls", 1, 1),
+            new Station("bamboo_gate_open", 3, 1),
+            new Station("crimson_gate_wall", 1, 2),
+            new Station("warped_gate_wall", 3, 2),
+            new Station("mangrove_gate_plain", 1, 3),
+            new Station("dark_oak_gate_open", 3, 3)
     );
 
     public record BuildStats(int built, int alreadyPresent, int occupied) {
@@ -145,7 +146,8 @@ public final class PlanetTestFixtures {
         Objects.requireNonNull(existingMarker, "existingMarker");
         if (explicitRebuild) return BuildAction.REBUILD;
         if (existingMarker.equals(CURRENT_MARKER)) return BuildAction.ALREADY_CURRENT;
-        if (existingMarker.equals(LEGACY_MARKER)) return BuildAction.REBUILD;
+        if (existingMarker.equals(LEGACY_MARKER)
+                || existingMarker.equals(OLDEST_MARKER)) return BuildAction.REBUILD;
         return reservedAirspaceEmpty ? BuildAction.REBUILD : BuildAction.PRESERVE_OCCUPIED;
     }
 
@@ -167,6 +169,7 @@ public final class PlanetTestFixtures {
         // or an explicitly requested full reset.
         boolean empty = force || previousMarker.equals(CURRENT_MARKER)
                 || previousMarker.equals(LEGACY_MARKER)
+                || previousMarker.equals(OLDEST_MARKER)
                 || isReservedAirspaceEmpty(level, face);
         BuildAction action = planBuild(previousMarker, empty, force);
         if (action == BuildAction.ALREADY_CURRENT) return new BuildStats(0, 1, 0);
@@ -174,7 +177,8 @@ public final class PlanetTestFixtures {
 
         // Replace only a known owned pad or the user's explicit rebuild area;
         // NEVER reset unmarked occupied terrain during dev login.
-        if (force || previousMarker.equals(LEGACY_MARKER)) {
+        if (force || previousMarker.equals(LEGACY_MARKER)
+                || previousMarker.equals(OLDEST_MARKER)) {
             clearVolume(level, face, FLOOR_MIN_X, FLOOR_MAX_X, FLOOR_MIN_Z, FLOOR_MAX_Z);
             // V1 had a second placement wing with its own lapis marker.
             // Retire it during migration rather than accumulating arenas.
@@ -246,59 +250,46 @@ public final class PlanetTestFixtures {
         int south = station.south();
         int up = FLOOR_RADIUS + 1;
         BlockPos reference = physical(face, x, up, south);
-        switch (station.name()) {
-            case "oak_trapdoor" -> put(level, reference,
-                    Blocks.OAK_TRAPDOOR.defaultBlockState()
-                            .setValue(net.minecraft.world.level.block.TrapDoorBlock.FACING, Direction.NORTH)
-                            .setValue(net.minecraft.world.level.block.TrapDoorBlock.HALF,
-                                    net.minecraft.world.level.block.state.properties.Half.BOTTOM));
-            case "iron_trapdoor" -> put(level, reference,
-                    Blocks.IRON_TRAPDOOR.defaultBlockState()
-                            .setValue(net.minecraft.world.level.block.TrapDoorBlock.FACING, Direction.EAST)
-                            .setValue(net.minecraft.world.level.block.TrapDoorBlock.HALF,
-                                    net.minecraft.world.level.block.state.properties.Half.TOP));
-            case "copper_trapdoor" -> put(level, reference,
-                    Blocks.COPPER_TRAPDOOR.defaultBlockState()
-                            .setValue(net.minecraft.world.level.block.TrapDoorBlock.FACING, Direction.SOUTH));
-            case "waxed_copper_trapdoor" -> put(level, reference,
-                    Blocks.WAXED_COPPER_TRAPDOOR.defaultBlockState()
-                            .setValue(net.minecraft.world.level.block.TrapDoorBlock.FACING, Direction.WEST));
-            case "oak_stairs" -> put(level, reference,
-                    Blocks.OAK_STAIRS.defaultBlockState()
-                            .setValue(net.minecraft.world.level.block.StairBlock.FACING, Direction.NORTH));
-            case "quartz_stairs_outer_left" -> {
-                put(level, reference,
-                        Blocks.QUARTZ_STAIRS.defaultBlockState()
-                                .setValue(net.minecraft.world.level.block.StairBlock.FACING, Direction.NORTH)
-                                .setValue(net.minecraft.world.level.block.StairBlock.SHAPE,
-                                        net.minecraft.world.level.block.state.properties.StairsShape.OUTER_LEFT));
-                put(level, physical(face, x, up, south - 1),
-                        Blocks.QUARTZ_STAIRS.defaultBlockState()
-                                .setValue(net.minecraft.world.level.block.StairBlock.FACING, Direction.WEST));
-                put(level, physical(face, station.east() + 1, up, south - 1),
-                        Blocks.QUARTZ_STAIRS.defaultBlockState()
-                                .setValue(net.minecraft.world.level.block.StairBlock.FACING, Direction.WEST));
-            }
-            case "copper_stairs_inner_right" -> {
-                put(level, reference,
-                        Blocks.CUT_COPPER_STAIRS.defaultBlockState()
-                                .setValue(net.minecraft.world.level.block.StairBlock.FACING, Direction.NORTH)
-                                .setValue(net.minecraft.world.level.block.StairBlock.SHAPE,
-                                        net.minecraft.world.level.block.state.properties.StairsShape.INNER_RIGHT));
-                put(level, physical(face, x, up, south + 1),
-                        Blocks.CUT_COPPER_STAIRS.defaultBlockState()
-                                .setValue(net.minecraft.world.level.block.StairBlock.FACING, Direction.EAST));
-                put(level, physical(face, station.east() + 1, up, south + 1),
-                        Blocks.CUT_COPPER_STAIRS.defaultBlockState()
-                                .setValue(net.minecraft.world.level.block.StairBlock.FACING, Direction.EAST));
-            }
-            case "waxed_copper_stairs_top" -> put(level, reference,
-                    Blocks.WAXED_CUT_COPPER_STAIRS.defaultBlockState()
-                            .setValue(net.minecraft.world.level.block.StairBlock.FACING, Direction.NORTH)
-                            .setValue(net.minecraft.world.level.block.StairBlock.HALF,
-                                    net.minecraft.world.level.block.state.properties.Half.TOP));
-            default -> throw new IllegalStateException("Unknown active test station " + station.name());
+        BlockState gate = switch (station.name()) {
+            case "oak_gate_plain" -> Blocks.OAK_FENCE_GATE.defaultBlockState()
+                    .setValue(net.minecraft.world.level.block.FenceGateBlock.FACING, Direction.NORTH);
+            case "spruce_gate_one_wall" -> Blocks.SPRUCE_FENCE_GATE.defaultBlockState()
+                    .setValue(net.minecraft.world.level.block.FenceGateBlock.FACING, Direction.NORTH)
+                    .setValue(net.minecraft.world.level.block.FenceGateBlock.IN_WALL, true);
+            case "cherry_gate_two_walls" -> Blocks.CHERRY_FENCE_GATE.defaultBlockState()
+                    .setValue(net.minecraft.world.level.block.FenceGateBlock.FACING, Direction.SOUTH)
+                    .setValue(net.minecraft.world.level.block.FenceGateBlock.IN_WALL, true);
+            case "bamboo_gate_open" -> Blocks.BAMBOO_FENCE_GATE.defaultBlockState()
+                    .setValue(net.minecraft.world.level.block.FenceGateBlock.FACING, Direction.EAST)
+                    .setValue(net.minecraft.world.level.block.FenceGateBlock.OPEN, true);
+            case "crimson_gate_wall" -> Blocks.CRIMSON_FENCE_GATE.defaultBlockState()
+                    .setValue(net.minecraft.world.level.block.FenceGateBlock.FACING, Direction.NORTH)
+                    .setValue(net.minecraft.world.level.block.FenceGateBlock.IN_WALL, true);
+            case "warped_gate_wall" -> Blocks.WARPED_FENCE_GATE.defaultBlockState()
+                    .setValue(net.minecraft.world.level.block.FenceGateBlock.FACING, Direction.NORTH)
+                    .setValue(net.minecraft.world.level.block.FenceGateBlock.IN_WALL, true);
+            case "mangrove_gate_plain" -> Blocks.MANGROVE_FENCE_GATE.defaultBlockState()
+                    .setValue(net.minecraft.world.level.block.FenceGateBlock.FACING, Direction.WEST);
+            case "dark_oak_gate_open" -> Blocks.DARK_OAK_FENCE_GATE.defaultBlockState()
+                    .setValue(net.minecraft.world.level.block.FenceGateBlock.FACING, Direction.WEST)
+                    .setValue(net.minecraft.world.level.block.FenceGateBlock.OPEN, true);
+            default -> throw new IllegalStateException("Unknown gate station " + station.name());
+        };
+        // Wall scaffolding is PHYSICAL, placed in actual adjacent cells.
+        // For N/S gate heading it lies on the gate's local EAST/WEST sides.
+        // Center wall touches both reference and natural placement lanes.
+        boolean oneWall = station.name().contains("wall");
+        if (oneWall) {
+            put(level, physical(face, station.east(), up, south),
+                    Blocks.COBBLESTONE_WALL.defaultBlockState());
         }
+        if (station.name().equals("cherry_gate_two_walls")) {
+            put(level, physical(face, station.east() - 2, up, south),
+                    Blocks.COBBLESTONE_WALL.defaultBlockState());
+            put(level, physical(face, station.east() + 2, up, south),
+                    Blocks.COBBLESTONE_WALL.defaultBlockState());
+        }
+        put(level, reference, gate);
     }
 
     private static void put(
@@ -322,7 +313,7 @@ public final class PlanetTestFixtures {
 
     public static String gridLegend() {
         StringBuilder result = new StringBuilder(
-                "ACTIVE V2 placement tests (CYAN = reference, LIME = player placement): ");
+                "ACTIVE V3 fence gate tests (CYAN = reference, LIME = player placement): ");
         for (Station station : STATIONS) {
             result.append(station.name().replace('_', ' '))
                     .append("[row ").append(station.row() + 1)
