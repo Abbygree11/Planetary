@@ -409,7 +409,7 @@ final class PlanetOrientationPropertiesTest {
                     .thenReturn(Blocks.OAK_FENCE.defaultBlockState());
             assertEquals(false, PlanetFenceGatePlacement.inWallAt(level, target, gate).orElseThrow());
 
-            BlockState iron = Blocks.NETHER_BRICK_FENCE_GATE.defaultBlockState()
+            BlockState iron = Blocks.SPRUCE_FENCE_GATE.defaultBlockState()
                     .setValue(net.minecraft.world.level.block.FenceGateBlock.OPEN, true)
                     .setValue(net.minecraft.world.level.block.FenceGateBlock.POWERED, true);
             assertTrue(PlanetFenceGatePlacement.afterNeighborUpdate(level,target,iron)
