@@ -100,6 +100,19 @@ and drip emitter graph remains Phase 4/5 integration, so a
 drip source at that stand is **not yet acceptance evidence**.
 The portal's ignition/shape is Phase 9, not a particle emitter fix.
 
+## Phase 2.4A orientation-family acceptance — REQUIRED use of this lab
+
+**2026-10-14 process correction:** The test lab already exists and must be the default in-game acceptance environment for every new placement/orientation family, rather than repeatedly asking for arbitrary ad-hoc world builds. The user called out the omission after manual 2.4A-4 TrapDoorBlock acceptance. Code-level JUnit/ASM remain separate; 'looks OK' in one tested location does not prove all six faces and edges.
+
+- Before asking for gameplay testing: point to this lab and give `/planetary test go pos_y` / `neg_y` / `pos_x` / `neg_x` / `pos_z` / `neg_z` (requires cheats and the dedicated Planet world); use `/planetary test legend` for current station layout.
+- For 2.4A-4 **trapdoors** (wood/iron/waxed/unwaxed copper) and the next **stairs** owner, the current 20 dedicated CYAN/LIME fixture pairs **do not have named reference stations**. The existing open floor may be used for provisional natural item placement, but do NOT pretend the 20 old stations are trapdoor/stair benchmarks or a complete test. New explicit placement-family reference + blank natural-placement stations are required in the lab before these new families can have repeatable per-family acceptance.
+- Future extension must be **non-destructive and versioned**, with independent reserved slots/markers/checks so a saved 41x33 face lab and player builds stay untouched. Do not change `STATIONS` count, occupied marker semantics, or silently invoke destructive `/planetary test rebuild <face>` on previously built worlds.
+- Use CYAN=direct canonical reference only for render/state contrast; LIME=empty natural BlockItem/useOn lane. Compare both plus original hit versus final target, local FACING/HALF and game behavior; log deviations, not repeated generic test instructions.
+- Existing pads cover the **six face interiors**, not all **12 actual gravity edges and eight corners**. Edge/corner acceptance needs separate non-destructive additional fixtures or navigation and must not be silently counted as PASSED from a face pad.
+- Keep loaded-mod inherited and independent owner coverage, classic Overworld no-Planet, vanilla item components/BlockItem state overrides, dispenser/no-player authors and dedicated server runtime as distinct acceptance gates.
+
+**For now:** actual 2.4A-4 gameplay user response 'всё ок' = **no reported trapdoor regressions in inspected play**, not 20-material × 6/12/8 or real-mod release acceptance. Next placement implementation packet must first make its lab usage explicit and add matching dedicated fixtures without deleting the existing six-face lab.
+
 ## Acceptance procedure
 
 Use one pass through the six pads, report only anomalies:
