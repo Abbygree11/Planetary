@@ -46,6 +46,8 @@ Only within the dedicated Planet world. The **automatic migration is confined to
 
 Available commands: `/planetary test build` safely migrates/builds missing scenes, `/planetary test go <face>` builds/migrates the destination face when needed, and `/planetary test rebuild <face>` explicitly forces a destructive reset of one face's active scene. Bump the current scene marker when changing active station content later (and recognize the previous marker); do not silently modify a current-marked scene in place.
 
+**Build verification (2026-10-14):** [GitHub Actions #38475081760](https://github.com/Abbygree11/Planetary/actions/runs/38475081760) SUCCESS on code SHA 35e8910: Java21 production/test compilation, complete JUnit and NeoForge 21.1.215 registry. Automatic V1-to-V2 migration in an actual running client and all six real natural-placement lanes **not yet verified**.
+
 ## Independent evidence gates
 
 - CI / JUnit / ASM checks: block-frame conversions, stair shape semantics, owner descriptors and test-lab coordinates/marker policy.
