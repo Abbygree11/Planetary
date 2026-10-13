@@ -362,19 +362,19 @@ public final class PlanetTestFixtures {
             }
             case "copper_stairs_inner_right" -> {
                 put(level, reference,
-                        Blocks.COPPER_STAIRS.defaultBlockState()
+                        Blocks.CUT_COPPER_STAIRS.defaultBlockState()
                                 .setValue(net.minecraft.world.level.block.StairBlock.FACING, Direction.NORTH)
                                 .setValue(net.minecraft.world.level.block.StairBlock.SHAPE,
                                         net.minecraft.world.level.block.state.properties.StairsShape.INNER_RIGHT));
                 put(level, physical(face, x, up, south + 1),
-                        Blocks.COPPER_STAIRS.defaultBlockState()
+                        Blocks.CUT_COPPER_STAIRS.defaultBlockState()
                                 .setValue(net.minecraft.world.level.block.StairBlock.FACING, Direction.EAST));
                 put(level, physical(face, station.east() + 1, up, south + 1),
-                        Blocks.COPPER_STAIRS.defaultBlockState()
+                        Blocks.CUT_COPPER_STAIRS.defaultBlockState()
                                 .setValue(net.minecraft.world.level.block.StairBlock.FACING, Direction.EAST));
             }
             case "waxed_copper_stairs_top" -> put(level, reference,
-                    Blocks.WAXED_COPPER_STAIRS.defaultBlockState()
+                    Blocks.WAXED_CUT_COPPER_STAIRS.defaultBlockState()
                             .setValue(net.minecraft.world.level.block.StairBlock.FACING, Direction.NORTH)
                             .setValue(net.minecraft.world.level.block.StairBlock.HALF,
                                     net.minecraft.world.level.block.state.properties.Half.TOP));
