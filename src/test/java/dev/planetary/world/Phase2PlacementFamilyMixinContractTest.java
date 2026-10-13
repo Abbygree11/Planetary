@@ -159,6 +159,75 @@ final class Phase2PlacementFamilyMixinContractTest {
         }
     }
 
+    @Test
+    void stairOwnerHasBothExactNeoForgeMethodsAndReturnOnlyHooks() throws IOException {
+        assertTrue(declares("StairBlock", "getStateForPlacement", PLACE_METHOD));
+        assertTrue(declares("StairBlock", "updateShape", UPDATE));
+        assertTrue(declares("StairBlock", "getStairsShape",
+                "(" + STATE + "Lnet/minecraft/world/level/BlockGetter;" + POS
+                        + ")Lnet/minecraft/world/level/block/state/properties/StairsShape;"));
+
+        Map<String, String> expected = Map.of(
+                "planetary$canonicalStairPlacement", "(" + PLACE + CI + ")V",
+                "planetary$canonicalStairNeighbor",
+                "(" + STATE + DIRECTION + STATE + ACCESSOR + POS + POS + CI + ")V"
+        );
+        Map<String, String> actual = new java.util.HashMap<>();
+        try (InputStream in = open(MIXINS + "StairBlockLocalPlacementMixin.class")) {
+            new ClassReader(in).accept(new ClassVisitor(Opcodes.ASM9) {
+                @Override
+                public MethodVisitor visitMethod(int access, String name, String desc,
+                        String sig, String[] exceptions) {
+                    if (!name.startsWith("planetary$canonicalStair")) {
+                        return null;
+                    }
+                    actual.put(name, desc);
+                    assertEquals(0, access & Opcodes.ACC_STATIC);
+                    return new MethodVisitor(Opcodes.ASM9) {
+                        @Override
+                        public AnnotationVisitor visitAnnotation(String annotation, boolean visible) {
+                            if (!"Lorg/spongepowered/asm/mixin/injection/Inject;".equals(annotation)) {
+                                return null;
+                            }
+                            return new AnnotationVisitor(Opcodes.ASM9) {
+                                @Override public void visit(String key, Object value) {
+                                    if ("cancellable".equals(key)) {
+                                        assertEquals(Boolean.TRUE, value);
+                                    }
+                                }
+                                @Override public AnnotationVisitor visitArray(String key) {
+                                    if ("method".equals(key)) return new AnnotationVisitor(Opcodes.ASM9) {
+                                        @Override public void visit(String unused, Object value) {
+                                            assertTrue(value.equals("getStateForPlacement" + PLACE_METHOD)
+                                                    || value.equals("updateShape" + UPDATE));
+                                        }
+                                    };
+                                    if ("at".equals(key)) return new AnnotationVisitor(Opcodes.ASM9) {
+                                        @Override public AnnotationVisitor visitAnnotation(String unused,
+                                                String desc) {
+                                            if (!"Lorg/spongepowered/asm/mixin/injection/At;".equals(desc)) return null;
+                                            return new AnnotationVisitor(Opcodes.ASM9) {
+                                                @Override public void visit(String k, Object value) {
+                                                    if ("value".equals(k)) assertEquals("RETURN", value);
+                                                }
+                                            };
+                                        }
+                                    };
+                                    return null;
+                                }
+                            };
+                        }
+                    };
+                }
+            }, ClassReader.SKIP_CODE | ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
+        }
+        assertEquals(expected, actual);
+        try (InputStream input = open("planetary.mixins.json")) {
+            String json = new String(input.readAllBytes(), StandardCharsets.UTF_8);
+            assertTrue(json.contains("\"StairBlockLocalPlacementMixin\""));
+        }
+    }
+
     private static boolean declares(String block, String method,
                                     String descriptor) throws IOException {
         boolean[] found = {false};
