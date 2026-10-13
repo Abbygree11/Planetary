@@ -113,7 +113,9 @@ The portal's ignition/shape is Phase 9, not a particle emitter fix.
 
 **For now:** actual 2.4A-4 gameplay user response 'всё ок' = **no reported trapdoor regressions in inspected play**, not 20-material × 6/12/8 or real-mod release acceptance. Next placement implementation packet must first make its lab usage explicit and add matching dedicated fixtures without deleting the existing six-face lab.
 
-## Independent placement wing — 2.4A-5 (gameplay pending)
+## Independent placement wing — 2.4A-5 (CI PASS; gameplay pending)
+
+[CI #38470793209](https://github.com/Abbygree11/Planetary/actions/runs/38470793209) COMPLETED SUCCESS on SHA 20451a5: Java21 compile, full JUnit (including test lab geometry, stairs shape, NeoForge selected ABI) and registry. Real client/loaded mod acceptance still OPEN.
 
 Created by `PlanetTestFixtures.buildPlacementWing` **only when the entire independent region is empty**. Same dev-only auto mode; `/planetary test build` also builds missing wings safely, and `/planetary test go <face>` builds/points to the wing on that face. The original 41x33 face-pad is **untouched**. A different LAPIS marker records successful construction. If any wing cell is occupied and there is no valid marker, the wing is skipped; existing player builds are preserved.
 
