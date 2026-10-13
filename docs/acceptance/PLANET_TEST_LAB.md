@@ -105,13 +105,30 @@ The portal's ignition/shape is Phase 9, not a particle emitter fix.
 **2026-10-14 process correction:** The test lab already exists and must be the default in-game acceptance environment for every new placement/orientation family, rather than repeatedly asking for arbitrary ad-hoc world builds. The user called out the omission after manual 2.4A-4 TrapDoorBlock acceptance. Code-level JUnit/ASM remain separate; 'looks OK' in one tested location does not prove all six faces and edges.
 
 - Before asking for gameplay testing: point to this lab and give `/planetary test go pos_y` / `neg_y` / `pos_x` / `neg_x` / `pos_z` / `neg_z` (requires cheats and the dedicated Planet world); use `/planetary test legend` for current station layout.
-- For 2.4A-4 **trapdoors** (wood/iron/waxed/unwaxed copper) and the next **stairs** owner, the current 20 dedicated CYAN/LIME fixture pairs **do not have named reference stations**. The existing open floor may be used for provisional natural item placement, but do NOT pretend the 20 old stations are trapdoor/stair benchmarks or a complete test. New explicit placement-family reference + blank natural-placement stations are required in the lab before these new families can have repeatable per-family acceptance.
+- The original 20 CYAN/LIME stations do not represent trapdoor/stair acceptance. **2.4A-5 adds a separately marked placement wing** on each face; use its eight named trapdoor/stair stations for these families without rebuilding the original pad. Both direct reference and empty natural-placement lanes are present. Code/CI and actual loaded-client acceptance are separate.
 - Future extension must be **non-destructive and versioned**, with independent reserved slots/markers/checks so a saved 41x33 face lab and player builds stay untouched. Do not change `STATIONS` count, occupied marker semantics, or silently invoke destructive `/planetary test rebuild <face>` on previously built worlds.
 - Use CYAN=direct canonical reference only for render/state contrast; LIME=empty natural BlockItem/useOn lane. Compare both plus original hit versus final target, local FACING/HALF and game behavior; log deviations, not repeated generic test instructions.
 - Existing pads cover the **six face interiors**, not all **12 actual gravity edges and eight corners**. Edge/corner acceptance needs separate non-destructive additional fixtures or navigation and must not be silently counted as PASSED from a face pad.
 - Keep loaded-mod inherited and independent owner coverage, classic Overworld no-Planet, vanilla item components/BlockItem state overrides, dispenser/no-player authors and dedicated server runtime as distinct acceptance gates.
 
 **For now:** actual 2.4A-4 gameplay user response 'всё ок' = **no reported trapdoor regressions in inspected play**, not 20-material × 6/12/8 or real-mod release acceptance. Next placement implementation packet must first make its lab usage explicit and add matching dedicated fixtures without deleting the existing six-face lab.
+
+## Independent placement wing — 2.4A-5 (gameplay pending)
+
+Created by `PlanetTestFixtures.buildPlacementWing` **only when the entire independent region is empty**. Same dev-only auto mode; `/planetary test build` also builds missing wings safely, and `/planetary test go <face>` builds/points to the wing on that face. The original 41x33 face-pad is **untouched**. A different LAPIS marker records successful construction. If any wing cell is occupied and there is no valid marker, the wing is skipped; existing player builds are preserved.
+
+**Geometry:** local EAST x=21..40 (connected to old pad at x=20), local SOUTH z=-12..12, floor radial distance 51, references radial 52. Stations have CYAN direct reference at local east center-1 and LIME floor below the empty player BlockItem/useOn slot at east center+1. The wing is outside the old pad footprint and has its own per-face non-overlap geometry tests.
+
+| local SOUTH | EAST 27: trapdoors | EAST 35: stairs |
+| --- | --- | --- |
+| -9 | Oak bottom | Oak straight |
+| -3 | Iron top | Quartz outer-left with supporting front neighbor |
+| 3 | Copper trapdoor | Cut-copper inner-right with supporting rear neighbor |
+| 9 | Waxed copper trapdoor | Waxed cut-copper top |
+
+**How to verify after green CI:** launch `run-client.ps1`, enter the dedicated Planet world, issue `/planetary test go pos_y`, look to the **east/right** of the existing lab, or use `/planetary test legend`. Repeat on `neg_y`, `pos_x`, `neg_x`, `pos_z`, `neg_z`. At each station compare preset CANONICAL reference with freshly placed same-material block on adjacent LIME floor cell; for quartz/cut copper stairs, preset neighboring stairs at both reference and natural lanes allow testing real `SHAPE`. Then test removal/addition of neighbor to trigger `updateShape`. Preserve material identity and WATERLOGGED state. Redstone, weathering, custom mod authors and actual fluids require additional distinct scenarios; the wing does not automatically claim coverage.
+
+**Critical:** Neither the original face-pad nor this wing reaches true 12 seams / 8 corners; separate *non-destructive* edge/corner fixtures and loaded mod tests remain PENDING. `/planetary test rebuild <face>` is destructive for the OLD lab only; it does not reset this wing. Never issue destructive rebuild to regenerate the wing. Real game acceptance is NOT proved by reference installation or JUnit alone.
 
 ## Acceptance procedure
 
