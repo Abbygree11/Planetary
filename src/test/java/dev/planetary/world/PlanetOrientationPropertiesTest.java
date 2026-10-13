@@ -245,7 +245,7 @@ final class PlanetOrientationPropertiesTest {
                                 direction -> Optional.empty()));
 
                 var blocker = new PlanetStairPlacement.StairNeighbor(
-                        Blocks.COPPER_STAIRS.defaultBlockState()
+                        Blocks.CUT_COPPER_STAIRS.defaultBlockState()
                                 .setValue(net.minecraft.world.level.block.StairBlock.HALF, half),
                         facing);
                 assertEquals(net.minecraft.world.level.block.state.properties.StairsShape.STRAIGHT,
