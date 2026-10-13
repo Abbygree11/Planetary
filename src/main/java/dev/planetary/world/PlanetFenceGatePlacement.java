@@ -107,6 +107,26 @@ public final class PlanetFenceGatePlacement {
     }
 
     /**
+     * Cross-face player-body-to-target-BlockState semantic heading.
+     * The result must remain horizontal in the gate's canonical frame.
+     * Reject ambiguous vertical projections instead of inventing yaw.
+     */
+    public static Optional<Direction> headingInGateFrame(
+            PlanetGravityFrame playerFrame,
+            PlanetGravityFrame targetFrame,
+            Direction playerBodyLocalHeading
+    ) {
+        Objects.requireNonNull(playerFrame, "playerFrame");
+        Objects.requireNonNull(targetFrame, "targetFrame");
+        Objects.requireNonNull(playerBodyLocalHeading, "playerBodyLocalHeading");
+        Direction physical = PlanetVanillaDirection.localToWorld(
+                playerFrame, playerBodyLocalHeading);
+        Direction local = PlanetVanillaDirection.worldToLocal(
+                targetFrame, physical);
+        return local.getAxis().isHorizontal() ? Optional.of(local) : Optional.empty();
+    }
+
+    /**
      * Called ONLY instead of the single Player#getDirection invocation
      * inside FenceGateBlock.useWithoutItem. Preserve vanilla mechanics,
      * sound/event dispatch and physical player direction outside Planet.
@@ -127,9 +147,8 @@ public final class PlanetFenceGatePlacement {
             return vanilla;
         }
         return PlanetBlockRuntime.stateFrameAt(level, gatePos)
-                .map(target -> target.worldToLocal(PlanetVanillaDirection.localToWorld(
-                        playerFrame.get(), vanilla)))
-                .filter(direction -> direction.getAxis().isHorizontal())
+                .flatMap(target -> headingInGateFrame(
+                        playerFrame.get(), new PlanetGravityFrame(target.face()), vanilla))
                 .orElse(vanilla);
     }
 }
