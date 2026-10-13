@@ -485,6 +485,14 @@ unavailable or not green, disclose that explicitly and do NOT
 pretend the change was build-tested.
 
 
+## 6A. Disposable current-mechanism Planet Test Lab (user-approved policy, 2026-10-14)
+
+The in-game six-face debug lab is a **replaceable scene for CURRENT functionality**, not a museum of all old mechanics. Regression belongs in Java JUnit/ASM tests, with added tests for bugs when required. Retire old reference samples as the implementation advances; do NOT accumulate extra permanent wings just to preserve earlier stations.
+
+For each new game-tested family, update the existing pad's current scenario manifest and bump its recognized layout/version marker. Automatic dev-client migration may remove player blocks **only within a recognized prior marker-owned test-lab footprint**; unknown/unmarked occupied regions, ordinary worlds and all coordinates outside that bounded lab must be preserved. Document the destructive dev-scene upgrade; never hide it as a "safe" non-destructive conversion. Build a real CYAN direct-reference and empty LIME natural-placement comparison for each active scenario, clearly separating forced BlockState reference from actual BlockItem/useOn acceptance. Six face interior fixtures do not imply the 12 physical edges/8 corners or loaded-mod acceptance passed.
+
+The canonical scene and commands are in `docs/acceptance/PLANET_TEST_LAB.md`; future agents must update that file, roadmap and acceptance tests together. This overrides any earlier instruction to indefinitely preserve old Phase4 emitter exhibits.
+
 ## 7. Manual acceptance is a hard gate
 
 Never claim runtime success merely because code compiles, unit tests pass, or a
