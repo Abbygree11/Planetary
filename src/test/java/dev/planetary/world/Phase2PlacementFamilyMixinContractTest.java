@@ -228,6 +228,106 @@ final class Phase2PlacementFamilyMixinContractTest {
         }
     }
 
+    @Test
+    void fenceGateFullOwnerAndInteractionCallsiteMatchCompiledNeoForgeAbi() throws IOException {
+        final String gateOwner = "FenceGateBlock";
+        assertTrue(declares(gateOwner, "getStateForPlacement", PLACE_METHOD));
+        assertTrue(declares(gateOwner, "updateShape", UPDATE));
+        String interact = "(" + STATE
+                + "Lnet/minecraft/world/level/Level;" + POS
+                + "Lnet/minecraft/world/entity/player/Player;"
+                + "Lnet/minecraft/world/phys/BlockHitResult;)"
+                + "Lnet/minecraft/world/InteractionResult;";
+        assertTrue(declares(gateOwner, "useWithoutItem", interact));
+
+        // The Java receiver is a Player, NOT the Entity defining its
+        // inherited getDirection; inspect the actual 1.21.1 invoke owner.
+        assertEquals(List.of(
+                "Lnet/minecraft/world/entity/player/Player;getDirection()" + DIRECTION),
+                invokes(gateOwner, "useWithoutItem", interact, "getDirection"));
+
+        Map<String, String> contract = Map.of(
+                "planetary$gatePlacement", "(" + PLACE + CI + ")V",
+                "planetary$gateWallUpdate",
+                "(" + STATE + DIRECTION + STATE + ACCESSOR + POS + POS + CI + ")V",
+                "planetary$gateInteractionHeading",
+                "(Lnet/minecraft/world/entity/player/Player;" + STATE
+                        + "Lnet/minecraft/world/level/Level;" + POS
+                        + "Lnet/minecraft/world/entity/player/Player;"
+                        + "Lnet/minecraft/world/phys/BlockHitResult;)" + DIRECTION
+        );
+        java.util.Map<String, String> actual = new java.util.HashMap<>();
+        try (InputStream stream = open(MIXINS + "FenceGateBlockLocalSemanticsMixin.class")) {
+            new ClassReader(stream).accept(new ClassVisitor(Opcodes.ASM9) {
+                @Override public MethodVisitor visitMethod(int access, String name,
+                        String desc, String signature, String[] exceptions) {
+                    if (!name.startsWith("planetary$gate")) return null;
+                    assertEquals(0, access & Opcodes.ACC_STATIC);
+                    actual.put(name, desc);
+                    return new MethodVisitor(Opcodes.ASM9) {
+                        @Override public AnnotationVisitor visitAnnotation(String ann, boolean visible) {
+                            if ("Lorg/spongepowered/asm/mixin/injection/Inject;".equals(ann)) {
+                                return new AnnotationVisitor(Opcodes.ASM9) {
+                                    @Override public void visit(String key, Object value) {
+                                        if ("cancellable".equals(key)) assertEquals(Boolean.TRUE, value);
+                                    }
+                                    @Override public AnnotationVisitor visitArray(String key) {
+                                        if ("at".equals(key)) return new AnnotationVisitor(Opcodes.ASM9) {
+                                            @Override public AnnotationVisitor visitAnnotation(String ignored, String type) {
+                                                if (!"Lorg/spongepowered/asm/mixin/injection/At;".equals(type)) return null;
+                                                return new AnnotationVisitor(Opcodes.ASM9) {
+                                                    @Override public void visit(String k, Object val) {
+                                                        if ("value".equals(k)) assertEquals("RETURN", val);
+                                                    }
+                                                };
+                                            }
+                                        };
+                                        if ("method".equals(key)) return new AnnotationVisitor(Opcodes.ASM9) {
+                                            @Override public void visit(String ignored, Object val) {
+                                                assertTrue(("getStateForPlacement" + PLACE_METHOD).equals(val)
+                                                        || ("updateShape" + UPDATE).equals(val));
+                                            }
+                                        };
+                                        return null;
+                                    }
+                                };
+                            }
+                            if ("Lorg/spongepowered/asm/mixin/injection/Redirect;".equals(ann)) {
+                                return new AnnotationVisitor(Opcodes.ASM9) {
+                                    @Override public AnnotationVisitor visitAnnotation(String key, String type) {
+                                        if (!"at".equals(key)) return null;
+                                        return new AnnotationVisitor(Opcodes.ASM9) {
+                                            @Override public void visit(String k, Object val) {
+                                                if ("value".equals(k)) assertEquals("INVOKE", val);
+                                                if ("target".equals(k)) assertEquals(
+                                                        "Lnet/minecraft/world/entity/player/Player;getDirection()"
+                                                                + DIRECTION, val);
+                                            }
+                                        };
+                                    }
+                                    @Override public AnnotationVisitor visitArray(String key) {
+                                        if (!"method".equals(key)) return null;
+                                        return new AnnotationVisitor(Opcodes.ASM9) {
+                                            @Override public void visit(String ignored,Object value) {
+                                                assertEquals("useWithoutItem" + interact,value);
+                                            }
+                                        };
+                                    }
+                                };
+                            }
+                            return null;
+                        }
+                    };
+                }
+            }, ClassReader.SKIP_CODE | ClassReader.SKIP_FRAMES | ClassReader.SKIP_DEBUG);
+        }
+        assertEquals(contract, actual);
+        try (InputStream stream = open("planetary.mixins.json")) {
+            assertTrue(new String(stream.readAllBytes(), StandardCharsets.UTF_8)
+                    .contains("\"FenceGateBlockLocalSemanticsMixin\""));
+        }
+    }
+
     private static boolean declares(String block, String method,
                                     String descriptor) throws IOException {
         boolean[] found = {false};
