@@ -50,6 +50,41 @@ public final class PlanetTestFixtures {
     public static final int FLOOR_MAX_Z = 16;
     private static final int MAX_UP_OFFSET = 6;
 
+    /**
+     * Independent version-1 placement wing attached at local EAST +21..40.
+     * It is OUTSIDE the original [-20,20] face-lab footprint, with its own
+     * marker/airspace guard. Never force-rebuild this area automatically.
+     */
+    public static final int PLACEMENT_WING_MIN_X = 21;
+    public static final int PLACEMENT_WING_MAX_X = 40;
+    public static final int PLACEMENT_WING_MIN_Z = -12;
+    public static final int PLACEMENT_WING_MAX_Z = 12;
+
+    public record PlacementStation(String name, int east, int south) {
+        public PlacementStation {
+            Objects.requireNonNull(name, "name");
+            if (east - 2 < PLACEMENT_WING_MIN_X
+                    || east + 2 > PLACEMENT_WING_MAX_X
+                    || south - 2 < PLACEMENT_WING_MIN_Z
+                    || south + 2 > PLACEMENT_WING_MAX_Z) {
+                throw new IllegalArgumentException("placement station outside wing");
+            }
+        }
+    }
+
+    public static final List<PlacementStation> PLACEMENT_STATIONS = List.of(
+            new PlacementStation("oak_trapdoor", 27, -9),
+            new PlacementStation("iron_trapdoor", 27, -3),
+            new PlacementStation("copper_trapdoor", 27, 3),
+            new PlacementStation("waxed_copper_trapdoor", 27, 9),
+            new PlacementStation("oak_stairs", 35, -9),
+            new PlacementStation("quartz_stairs_outer_left", 35, -3),
+            new PlacementStation("copper_stairs_inner_right", 35, 3),
+            new PlacementStation("waxed_copper_stairs_top", 35, 9)
+    );
+
+
+
     private static final int[] EAST_GRID = {-16, -8, 0, 8, 16};
     private static final int[] SOUTH_GRID = {-12, -4, 4, 12};
 
@@ -226,6 +261,132 @@ public final class PlanetTestFixtures {
         // proof of fixture correctness, only as a duplicate-install guard.
         put(level, marker(face), Blocks.GOLD_BLOCK.defaultBlockState());
         return new BuildStats(1, 0, 0);
+    }
+
+    public static BlockPos placementWingMarker(PlanetFace face) {
+        return physical(face, 23, FLOOR_RADIUS, -11);
+    }
+
+    public static BuildStats buildAllPlacementWings(ServerLevel level) {
+        requirePlanet(level);
+        BuildStats totals = new BuildStats(0, 0, 0);
+        for (PlanetFace face : PlanetFace.values()) {
+            totals = totals.plus(buildPlacementWing(level, face));
+        }
+        return totals;
+    }
+
+    /**
+     * Strictly non-destructive on existing worlds: a distinct lapis marker or
+     * ANY occupied cell inside wing airspace prevents construction. The
+     * original gold-marker fixture is never rebuilt or moved.
+     */
+    public static BuildStats buildPlacementWing(ServerLevel level, PlanetFace face) {
+        requirePlanet(level);
+        Objects.requireNonNull(face, "face");
+        if (level.getBlockState(placementWingMarker(face)).is(Blocks.LAPIS_BLOCK)) {
+            return new BuildStats(0, 1, 0);
+        }
+        for (int east = PLACEMENT_WING_MIN_X; east <= PLACEMENT_WING_MAX_X; east++) {
+            for (int south = PLACEMENT_WING_MIN_Z; south <= PLACEMENT_WING_MAX_Z; south++) {
+                for (int radial = FLOOR_RADIUS; radial <= FLOOR_RADIUS + MAX_UP_OFFSET; radial++) {
+                    if (!level.getBlockState(physical(face, east, radial, south)).isAir()) {
+                        return new BuildStats(0, 0, 1);
+                    }
+                }
+            }
+        }
+
+        // Bridge reaches the old x=20 floor without touching that floor.
+        for (int east = PLACEMENT_WING_MIN_X; east <= PLACEMENT_WING_MAX_X; east++) {
+            for (int south = PLACEMENT_WING_MIN_Z; south <= PLACEMENT_WING_MAX_Z; south++) {
+                put(level, physical(face, east, FLOOR_RADIUS, south),
+                        Blocks.POLISHED_ANDESITE.defaultBlockState());
+            }
+        }
+
+        for (PlacementStation station : PLACEMENT_STATIONS) {
+            int east = station.east();
+            int south = station.south();
+            put(level, physical(face, east - 1, FLOOR_RADIUS, south),
+                    Blocks.CYAN_CONCRETE.defaultBlockState());
+            put(level, physical(face, east + 1, FLOOR_RADIUS, south),
+                    Blocks.LIME_CONCRETE.defaultBlockState());
+            buildPlacementReference(level, face, station);
+        }
+
+        // Written last so interruptions cannot mark an incomplete wing ready.
+        put(level, placementWingMarker(face), Blocks.LAPIS_BLOCK.defaultBlockState());
+        return new BuildStats(1, 0, 0);
+    }
+
+    private static void buildPlacementReference(
+            ServerLevel level, PlanetFace face, PlacementStation station
+    ) {
+        int x = station.east() - 1;
+        int south = station.south();
+        int up = FLOOR_RADIUS + 1;
+        BlockPos reference = physical(face, x, up, south);
+        switch (station.name()) {
+            case "oak_trapdoor" -> put(level, reference,
+                    Blocks.OAK_TRAPDOOR.defaultBlockState()
+                            .setValue(net.minecraft.world.level.block.TrapDoorBlock.FACING, Direction.NORTH)
+                            .setValue(net.minecraft.world.level.block.TrapDoorBlock.HALF,
+                                    net.minecraft.world.level.block.state.properties.Half.BOTTOM));
+            case "iron_trapdoor" -> put(level, reference,
+                    Blocks.IRON_TRAPDOOR.defaultBlockState()
+                            .setValue(net.minecraft.world.level.block.TrapDoorBlock.FACING, Direction.EAST)
+                            .setValue(net.minecraft.world.level.block.TrapDoorBlock.HALF,
+                                    net.minecraft.world.level.block.state.properties.Half.TOP));
+            case "copper_trapdoor" -> put(level, reference,
+                    Blocks.COPPER_TRAPDOOR.defaultBlockState()
+                            .setValue(net.minecraft.world.level.block.TrapDoorBlock.FACING, Direction.SOUTH));
+            case "waxed_copper_trapdoor" -> put(level, reference,
+                    Blocks.WAXED_COPPER_TRAPDOOR.defaultBlockState()
+                            .setValue(net.minecraft.world.level.block.TrapDoorBlock.FACING, Direction.WEST));
+            case "oak_stairs" -> put(level, reference,
+                    Blocks.OAK_STAIRS.defaultBlockState()
+                            .setValue(net.minecraft.world.level.block.StairBlock.FACING, Direction.NORTH));
+            case "quartz_stairs_outer_left" -> {
+                put(level, reference,
+                        Blocks.QUARTZ_STAIRS.defaultBlockState()
+                                .setValue(net.minecraft.world.level.block.StairBlock.FACING, Direction.NORTH)
+                                .setValue(net.minecraft.world.level.block.StairBlock.SHAPE,
+                                        net.minecraft.world.level.block.state.properties.StairsShape.OUTER_LEFT));
+                put(level, physical(face, x, up, south - 1),
+                        Blocks.QUARTZ_STAIRS.defaultBlockState()
+                                .setValue(net.minecraft.world.level.block.StairBlock.FACING, Direction.WEST));
+                put(level, physical(face, station.east() + 1, up, south - 1),
+                        Blocks.QUARTZ_STAIRS.defaultBlockState()
+                                .setValue(net.minecraft.world.level.block.StairBlock.FACING, Direction.WEST));
+            }
+            case "copper_stairs_inner_right" -> {
+                put(level, reference,
+                        Blocks.COPPER_STAIRS.defaultBlockState()
+                                .setValue(net.minecraft.world.level.block.StairBlock.FACING, Direction.NORTH)
+                                .setValue(net.minecraft.world.level.block.StairBlock.SHAPE,
+                                        net.minecraft.world.level.block.state.properties.StairsShape.INNER_RIGHT));
+                put(level, physical(face, x, up, south + 1),
+                        Blocks.COPPER_STAIRS.defaultBlockState()
+                                .setValue(net.minecraft.world.level.block.StairBlock.FACING, Direction.EAST));
+                put(level, physical(face, station.east() + 1, up, south + 1),
+                        Blocks.COPPER_STAIRS.defaultBlockState()
+                                .setValue(net.minecraft.world.level.block.StairBlock.FACING, Direction.EAST));
+            }
+            case "waxed_copper_stairs_top" -> put(level, reference,
+                    Blocks.WAXED_COPPER_STAIRS.defaultBlockState()
+                            .setValue(net.minecraft.world.level.block.StairBlock.FACING, Direction.NORTH)
+                            .setValue(net.minecraft.world.level.block.StairBlock.HALF,
+                                    net.minecraft.world.level.block.state.properties.Half.TOP));
+            default -> throw new IllegalStateException("Unrecognized wing station " + station.name());
+        }
+    }
+
+    public static String placementWingLegend() {
+        return "PLACEMENT WING EAST: x=27 oak/iron/copper/waxed trapdoors "
+                + "and x=35 oak/quartz outer-left/copper inner-right/waxed-top stairs; "
+                + "CYAN is reference, LIME is natural placement. "
+                + "Wing has its own LAPIS marker; never auto-rebuild occupied space.";
     }
 
     public static boolean isReservedAirspaceEmpty(
