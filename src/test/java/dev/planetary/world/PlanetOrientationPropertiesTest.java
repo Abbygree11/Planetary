@@ -274,6 +274,50 @@ final class PlanetOrientationPropertiesTest {
         }
     }
 
+    @Test
+    void stairShapeAtTwelvePhysicalEdgesAndEightCornersIsTargetCanonical() {
+        Level level = mock(Level.class);
+        org.mockito.Mockito.when(level.getBlockState(
+                org.mockito.ArgumentMatchers.any(BlockPos.class)))
+                .thenReturn(Blocks.AIR.defaultBlockState());
+        dev.planetary.gravity.PlanetGravityRuntime.bind(level, FIELD);
+        try {
+            int edges = 0;
+            for (int i = 0; i < 3; i++) for (int j = i + 1; j < 3; j++) {
+                for (int a : new int[]{-20, 20}) for (int b : new int[]{-20, 20}) {
+                    int[] delta = new int[3];
+                    delta[i] = a;
+                    delta[j] = b;
+                    assertStairStraightAt(level, new BlockPos(
+                            CORE.x() + delta[0], CORE.y() + delta[1], CORE.z() + delta[2]));
+                    edges++;
+                }
+            }
+            assertEquals(12, edges);
+            int corners = 0;
+            for (int x : new int[]{-20, 20}) for (int y : new int[]{-20, 20})
+                for (int z : new int[]{-20, 20}) {
+                    assertStairStraightAt(level,
+                            new BlockPos(CORE.x() + x, CORE.y() + y, CORE.z() + z));
+                    corners++;
+                }
+            assertEquals(8, corners);
+        } finally {
+            dev.planetary.gravity.PlanetGravityRuntime.unbind(level, FIELD);
+        }
+    }
+
+    private static void assertStairStraightAt(Level level, BlockPos pos) {
+        assertTrue(PlanetBlockStateFrame.resolve(FIELD, pos).isPresent());
+        for (Direction facing : Direction.Plane.HORIZONTAL) {
+            BlockState stair = Blocks.OAK_STAIRS.defaultBlockState()
+                    .setValue(net.minecraft.world.level.block.StairBlock.FACING, facing);
+            assertEquals(net.minecraft.world.level.block.state.properties.StairsShape.STRAIGHT,
+                    PlanetStairPlacement.shapeAt(level, pos, stair).orElseThrow(),
+                    pos + " / " + facing);
+        }
+    }
+
     private static void checkBoundary(BlockPos target) {
         PlanetBlockStateFrame canonical = PlanetBlockStateFrame.resolve(FIELD, target).orElseThrow();
         var resolved = resolved(target, Direction.UP, Vec3.atCenterOf(target));
