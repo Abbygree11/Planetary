@@ -319,6 +319,35 @@ final class PlanetOrientationPropertiesTest {
     }
 
     @Test
+    void fenceGateInteractionHeadingUsesPlayerAndTargetFramesOnAllThirtySixPairs() {
+        int pairs = 0;
+        for (PlanetFace actorFace : PlanetFace.values()) {
+            for (PlanetFace targetFace : PlanetFace.values()) {
+                PlanetGravityFrame actor = new PlanetGravityFrame(actorFace);
+                PlanetGravityFrame target = new PlanetGravityFrame(targetFace);
+                for (Direction localActorHeading : Direction.Plane.HORIZONTAL) {
+                    Direction physical = PlanetVanillaDirection.localToWorld(
+                            actor, localActorHeading);
+                    Direction expected = PlanetVanillaDirection.worldToLocal(target, physical);
+                    var resolved = PlanetFenceGatePlacement.headingInGateFrame(
+                            actor, target, localActorHeading);
+                    if (expected.getAxis().isHorizontal()) {
+                        assertEquals(expected, resolved.orElseThrow());
+                    } else {
+                        assertTrue(resolved.isEmpty(),
+                                "Vertical target projection cannot become a guessed yaw");
+                    }
+                    if (actorFace == targetFace) {
+                        assertEquals(localActorHeading, resolved.orElseThrow());
+                    }
+                }
+                pairs++;
+            }
+        }
+        assertEquals(36, pairs);
+    }
+
+    @Test
     void allFourFenceGateHeadingsSelectOnlyTheirTwoLateralWallSides() {
         for (Direction facing : Direction.Plane.HORIZONTAL) {
             Direction lateral = facing.getClockWise();
