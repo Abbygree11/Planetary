@@ -32,6 +32,8 @@
 
 **2.4A-5 lab refresh implementation:** `PlanetTestFixtures.planBuild` distinguishes CURRENT/GOLD-LEGACY/EMPTY/UNKNOWN-OCCUPIED/EXPLICIT-RESET; current station list is the 8 new family cases, not 20 legacy museum entries; legacy wing removed if its owned LAPIS marker exists on upgrade. `PlanetTestCommands`, `PlanetDebugServerEvents`, `PlanetTestFixturesTest` adapted. **[CI #38475081760](https://github.com/Abbygree11/Planetary/actions/runs/38475081760) PASS** for this V2 lab refactor (Java21 compile, all JUnit/NeoForge registry); dev Minecraft upgrade and player placement still PENDING. The earlier green 2.4A-5 CI remains a separate code acceptance run.
 
+**V2 lab manual check (2026-10-14):** User reported «все ок» after the active-only lab refactor. Record lab smoke as accepted, with no reported regressions. Full six-face/edge/corner stair SHAPE, actual mods and item-author acceptance remain separate open gates.
+
 ### Checkpoint для следующего захода
 
 - Last research prerequisite: `2.3C-19` [CI38311748785](https://github.com/Abbygree11/Planetary/actions/runs/38311748785) COMPLETED SUCCESS plus [final 19/19 report/ASM/P01–P40 scope gate](../../research/PHASE2_STAGE3C_1_TO_19_FINAL_SELECTED_ABI_SCOPE_GATE_1_21_1.md). **2.4A-1 implementation committed in this stage; CI [CI #38313939066](https://github.com/Abbygree11/Planetary/actions/runs/38313939066) PASS; runtime remains separately gated.** First implementation checkbox covers semantic API only.
