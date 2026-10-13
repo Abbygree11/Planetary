@@ -89,7 +89,7 @@ final class PlanetTestFixturesTest {
         assertTrue(names.contains("oak_gate_plain"));
         assertTrue(names.contains("spruce_gate_one_wall"));
         assertTrue(names.contains("cherry_gate_two_walls"));
-        assertTrue(names.contains("waxed_cherry_gate_two_walls"));
+        assertTrue(names.contains("bamboo_gate_open"));
         assertTrue(names.contains("crimson_gate_wall"));
         assertTrue(names.contains("warped_gate_wall"));
         assertTrue(names.contains("mangrove_gate_plain"));
