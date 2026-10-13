@@ -111,6 +111,45 @@ final class PlanetTestFixturesTest {
     }
 
     @Test
+    void placementWingIsDisjointVersionedAndOffersEightNaturalPlacementStationsPerFace() {
+        assertEquals(8, PlanetTestFixtures.PLACEMENT_STATIONS.size());
+        Set<BlockPos> allWingFloor = new HashSet<>();
+        Set<BlockPos> allNatural = new HashSet<>();
+        for (PlanetFace face : PlanetFace.values()) {
+            BlockPos marker = PlanetTestFixtures.placementWingMarker(face);
+            assertNotEquals(PlanetTestFixtures.marker(face), marker);
+            for (int x = PlanetTestFixtures.PLACEMENT_WING_MIN_X;
+                    x <= PlanetTestFixtures.PLACEMENT_WING_MAX_X; x++) {
+                for (int z = PlanetTestFixtures.PLACEMENT_WING_MIN_Z;
+                        z <= PlanetTestFixtures.PLACEMENT_WING_MAX_Z; z++) {
+                    assertTrue(x > PlanetTestFixtures.FLOOR_MAX_X,
+                            "Wing must not overwrite old 41x33 pad");
+                    BlockPos floor = PlanetTestFixtures.physical(
+                            face, x, PlanetTestFixtures.FLOOR_RADIUS, z);
+                    assertTrue(allWingFloor.add(floor), "Overlapping wing face/footprint: " + floor);
+                }
+            }
+            assertTrue(allWingFloor.contains(marker));
+            for (PlanetTestFixtures.PlacementStation station :
+                    PlanetTestFixtures.PLACEMENT_STATIONS) {
+                BlockPos reference = PlanetTestFixtures.physical(
+                        face, station.east() - 1, PlanetTestFixtures.FLOOR_RADIUS + 1,
+                        station.south());
+                BlockPos natural = PlanetTestFixtures.physical(
+                        face, station.east() + 1, PlanetTestFixtures.FLOOR_RADIUS + 1,
+                        station.south());
+                assertNotEquals(reference, natural);
+                assertTrue(allNatural.add(natural));
+                assertTrue(station.east() - 2 >= PlanetTestFixtures.PLACEMENT_WING_MIN_X);
+                assertTrue(station.east() + 2 <= PlanetTestFixtures.PLACEMENT_WING_MAX_X);
+                assertTrue(station.south() - 2 >= PlanetTestFixtures.PLACEMENT_WING_MIN_Z);
+                assertTrue(station.south() + 2 <= PlanetTestFixtures.PLACEMENT_WING_MAX_Z);
+            }
+        }
+        assertEquals(8 * 6, allNatural.size());
+    }
+
+    @Test
     void allSixArrivalPositionsRemainWithinBuildHeightAndAboveFloor() {
         for (PlanetFace face : PlanetFace.values()) {
             BlockPos arrival = PlanetTestFixtures.arrival(face);
