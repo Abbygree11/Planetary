@@ -161,11 +161,20 @@ public final class PlanetDebugServerEvents {
             PlanetTestFixtures.BuildStats fixtures =
                     PlanetTestFixtures.buildAll(level, false);
 
+            // Separate non-destructive placement wing. A previously occupied
+            // wing is preserved, even if the old gold-marked lab already exists.
+            PlanetTestFixtures.BuildStats placementWings =
+                    PlanetTestFixtures.buildAllPlacementWings(level);
+
             player.sendSystemMessage(Component.literal(
                     "[Planetary Test] Six-face fixture lab: newly built "
                             + fixtures.built() + ", already present "
                             + fixtures.alreadyPresent() + ", occupied "
                             + fixtures.occupied() + " (left untouched). "
+                            + " Placement wings: new " + placementWings.built()
+                            + ", existing " + placementWings.alreadyPresent()
+                            + ", occupied/preserved " + placementWings.occupied()
+                            + ". "
                             + "/planetary test legend, /planetary test go pos_y"
             ));
 
