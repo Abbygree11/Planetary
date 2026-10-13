@@ -318,6 +318,118 @@ final class PlanetOrientationPropertiesTest {
         }
     }
 
+    @Test
+    void allFourFenceGateHeadingsSelectOnlyTheirTwoLateralWallSides() {
+        for (Direction facing : Direction.Plane.HORIZONTAL) {
+            Direction lateral = facing.getClockWise();
+            for (Direction wall : Direction.Plane.HORIZONTAL) {
+                assertEquals(wall == lateral || wall == lateral.getOpposite(),
+                        PlanetFenceGatePlacement.inWall(facing,
+                                side -> side == wall), facing + " / " + wall);
+            }
+            assertFalse(PlanetFenceGatePlacement.inWall(facing, side -> false));
+            assertTrue(PlanetFenceGatePlacement.inWall(facing,
+                    side -> side == lateral));
+            assertTrue(PlanetFenceGatePlacement.inWall(facing,
+                    side -> side == lateral.getOpposite()));
+            assertTrue(PlanetFenceGatePlacement.inWall(facing, side -> true));
+        }
+        assertThrows(IllegalArgumentException.class, () ->
+                PlanetFenceGatePlacement.inWall(Direction.UP, ignored -> false));
+    }
+
+    @Test
+    void fenceGateWallTopologyAndStateUpdatesAcrossAllFacesEdgesAndCorners() {
+        net.minecraft.world.level.Level level = mock(Level.class);
+        org.mockito.Mockito.when(level.getBlockState(
+                org.mockito.ArgumentMatchers.any(BlockPos.class)))
+                .thenReturn(Blocks.AIR.defaultBlockState());
+        dev.planetary.gravity.PlanetGravityRuntime.bind(level, FIELD);
+        try {
+            for (PlanetFace face : PlanetFace.values()) {
+                assertGateNeighborAt(level, faceCenter(face));
+            }
+            int edges = 0;
+            for (int i = 0; i < 3; i++) for (int j = i + 1; j < 3; j++) {
+                for (int a : new int[]{-20, 20}) for (int b : new int[]{-20, 20}) {
+                    int[] d = new int[3]; d[i] = a; d[j] = b;
+                    assertGateNeighborAt(level, new BlockPos(
+                            CORE.x() + d[0], CORE.y() + d[1], CORE.z() + d[2]));
+                    edges++;
+                }
+            }
+            assertEquals(12, edges);
+            int corners = 0;
+            for (int x : new int[]{-20, 20}) for (int y : new int[]{-20, 20})
+                for (int z : new int[]{-20, 20}) {
+                    assertGateNeighborAt(level,
+                            new BlockPos(CORE.x() + x, CORE.y() + y, CORE.z() + z));
+                    corners++;
+                }
+            assertEquals(8, corners);
+        } finally {
+            dev.planetary.gravity.PlanetGravityRuntime.unbind(level, FIELD);
+        }
+    }
+
+    private static void assertGateNeighborAt(Level level, BlockPos pos) {
+        for (Direction facing : Direction.Plane.HORIZONTAL) {
+            BlockState base = Blocks.OAK_FENCE_GATE.defaultBlockState()
+                    .setValue(net.minecraft.world.level.block.FenceGateBlock.FACING, facing)
+                    .setValue(net.minecraft.world.level.block.FenceGateBlock.POWERED, true)
+                    .setValue(net.minecraft.world.level.block.FenceGateBlock.OPEN, true)
+                    .setValue(net.minecraft.world.level.block.FenceGateBlock.IN_WALL, true);
+            BlockState actual = PlanetFenceGatePlacement.afterNeighborUpdate(
+                    level, pos, base).orElseThrow();
+            assertSame(base.getBlock(), actual.getBlock());
+            assertFalse(actual.getValue(net.minecraft.world.level.block.FenceGateBlock.IN_WALL));
+            assertTrue(actual.getValue(net.minecraft.world.level.block.FenceGateBlock.OPEN));
+            assertTrue(actual.getValue(net.minecraft.world.level.block.FenceGateBlock.POWERED));
+            assertEquals(facing, actual.getValue(net.minecraft.world.level.block.FenceGateBlock.FACING));
+        }
+    }
+
+    @Test
+    void fenceGateWallReadUsesPhysicalCanonicalPerpendicularNeighbor() {
+        Level level = mock(Level.class);
+        BlockPos target = faceCenter(PlanetFace.POS_X);
+        dev.planetary.gravity.PlanetGravityRuntime.bind(level, FIELD);
+        try {
+            Direction gate = Direction.NORTH;
+            Direction sideways = gate.getClockWise();
+            var neighbor = PlanetBlockRuntime.neighbor(level, target, sideways).orElseThrow();
+            org.mockito.Mockito.when(level.getBlockState(
+                    org.mockito.ArgumentMatchers.any(BlockPos.class)))
+                    .thenReturn(Blocks.AIR.defaultBlockState());
+            org.mockito.Mockito.when(level.getBlockState(neighbor.targetPos()))
+                    .thenReturn(Blocks.COBBLESTONE_WALL.defaultBlockState());
+            assertEquals(true, PlanetFenceGatePlacement.inWallAt(level, target, gate).orElseThrow());
+
+            org.mockito.Mockito.when(level.getBlockState(neighbor.targetPos()))
+                    .thenReturn(Blocks.OAK_FENCE.defaultBlockState());
+            assertEquals(false, PlanetFenceGatePlacement.inWallAt(level, target, gate).orElseThrow());
+
+            BlockState iron = Blocks.NETHER_BRICK_FENCE_GATE.defaultBlockState()
+                    .setValue(net.minecraft.world.level.block.FenceGateBlock.OPEN, true)
+                    .setValue(net.minecraft.world.level.block.FenceGateBlock.POWERED, true);
+            assertTrue(PlanetFenceGatePlacement.afterNeighborUpdate(level,target,iron)
+                    .orElseThrow().getValue(net.minecraft.world.level.block.FenceGateBlock.POWERED));
+        } finally {
+            dev.planetary.gravity.PlanetGravityRuntime.unbind(level, FIELD);
+        }
+    }
+
+    @Test
+    void gateNoPlanetAndForeignAccessorLeaveInputStateUnchanged() {
+        Level unbound = mock(Level.class);
+        BlockPos target = faceCenter(PlanetFace.POS_X);
+        BlockState state = Blocks.OAK_FENCE_GATE.defaultBlockState();
+        assertTrue(PlanetFenceGatePlacement.inWallAt(unbound, target, Direction.NORTH).isEmpty());
+        assertTrue(PlanetFenceGatePlacement.afterNeighborUpdate(unbound, target, state).isEmpty());
+        net.minecraft.world.level.LevelAccessor foreign = mock(net.minecraft.world.level.LevelAccessor.class);
+        assertTrue(PlanetFenceGatePlacement.afterNeighborUpdate(foreign, target, state).isEmpty());
+    }
+
     private static void checkBoundary(BlockPos target) {
         PlanetBlockStateFrame canonical = PlanetBlockStateFrame.resolve(FIELD, target).orElseThrow();
         var resolved = resolved(target, Direction.UP, Vec3.atCenterOf(target));
