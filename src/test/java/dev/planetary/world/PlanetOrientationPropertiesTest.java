@@ -401,8 +401,14 @@ final class PlanetOrientationPropertiesTest {
             org.mockito.Mockito.when(level.getBlockState(
                     org.mockito.ArgumentMatchers.any(BlockPos.class)))
                     .thenReturn(Blocks.AIR.defaultBlockState());
+            // Standalone classpath tests have no datapack-bound WALLS tag.
+            // Mock the actual tag contract rather than assuming the server
+            // has already populated the runtime registry tag membership.
+            BlockState taggedModWall = mock(BlockState.class);
+            org.mockito.Mockito.when(taggedModWall.is(net.minecraft.tags.BlockTags.WALLS))
+                    .thenReturn(true);
             org.mockito.Mockito.when(level.getBlockState(neighbor.targetPos()))
-                    .thenReturn(Blocks.COBBLESTONE_WALL.defaultBlockState());
+                    .thenReturn(taggedModWall);
             assertEquals(true, PlanetFenceGatePlacement.inWallAt(level, target, gate).orElseThrow());
 
             org.mockito.Mockito.when(level.getBlockState(neighbor.targetPos()))
