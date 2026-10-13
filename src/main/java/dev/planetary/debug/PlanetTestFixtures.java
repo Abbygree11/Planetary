@@ -8,19 +8,8 @@ import dev.planetary.worldgen.PlanetWorldSettings;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.block.AbstractFurnaceBlock;
-import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.CampfireBlock;
-import net.minecraft.world.level.block.CandleBlock;
-import net.minecraft.world.level.block.CandleCakeBlock;
-import net.minecraft.world.level.block.LeavesBlock;
-import net.minecraft.world.level.block.EndRodBlock;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.world.level.block.RespawnAnchorBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.List;
@@ -308,64 +297,8 @@ public final class PlanetTestFixtures {
                             .setValue(net.minecraft.world.level.block.StairBlock.FACING, Direction.NORTH)
                             .setValue(net.minecraft.world.level.block.StairBlock.HALF,
                                     net.minecraft.world.level.block.state.properties.Half.TOP));
-            default -> throw new IllegalStateException("Unrecognized wing station " + station.name());
+            default -> throw new IllegalStateException("Unknown active test station " + station.name());
         }
-    }
-
-    /**
-     * Keep furnace emitters active after the first server tick. A naked
-     * LIT=true block with no inputs would promptly extinguish and produce
-     * a misleading "particle broken" test result.
-     */
-    private static void primeFurnace(
-            ServerLevel level,
-            BlockPos pos,
-            net.minecraft.world.item.Item input
-    ) {
-        if (level.getBlockEntity(pos)
-                instanceof AbstractFurnaceBlockEntity furnace) {
-            furnace.setItem(0, new ItemStack(input, 64));
-            furnace.setItem(1, new ItemStack(Items.COAL, 64));
-            furnace.setChanged();
-        }
-    }
-
-    private static void buildBookshelves(
-            ServerLevel level,
-            PlanetFace face,
-            int x,
-            int z,
-            int radial
-    ) {
-        put(level, physical(face, x, radial, z),
-                Blocks.ENCHANTING_TABLE.defaultBlockState());
-        for (int dx : new int[]{-2, 2}) {
-            for (int dz : new int[]{-2, 2}) {
-                put(level, physical(face, x + dx, radial, z + dz),
-                        Blocks.BOOKSHELF.defaultBlockState());
-            }
-        }
-    }
-
-    private static void buildPortalFrame(
-            ServerLevel level,
-            PlanetFace face,
-            int x,
-            int z
-    ) {
-        // Build the ring in the SOUTH/UP plane, not EAST/UP:
-        // x + 2 is reserved as a free *natural placement* lane.
-        for (int dz = -2; dz <= 2; dz++) {
-            for (int up = 1; up <= 5; up++) {
-                if (Math.abs(dz) == 2 || up == 1 || up == 5) {
-                    put(level, physical(face, x,
-                            FLOOR_RADIUS + up, z + dz),
-                            Blocks.OBSIDIAN.defaultBlockState());
-                }
-            }
-        }
-        // Interior is deliberately NOT ignited. This station tests
-        // FlintAndSteelItem/useOn and Phase-9 portal creation itself.
     }
 
     private static void put(
