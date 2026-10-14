@@ -328,6 +328,92 @@ final class Phase2PlacementFamilyMixinContractTest {
         }
     }
 
+    @Test
+    void abstractFurnaceSharedPlacementOwnerAndThinReturnAdapterMatchNeoForge() throws IOException {
+        // One inherited owner, no duplicate patches for each material.
+        assertTrue(declares("AbstractFurnaceBlock", "getStateForPlacement", PLACE_METHOD));
+        for (String subclass : List.of("FurnaceBlock", "SmokerBlock", "BlastFurnaceBlock")) {
+            assertTrue(!declares(subclass, "getStateForPlacement", PLACE_METHOD),
+                    subclass + " must inherit common placement owner");
+        }
+
+        java.util.Map<String, String> actual = new java.util.HashMap<>();
+        boolean[] mixinTargetSeen = {false};
+        boolean[] injectReturn = {false};
+        boolean[] cancellable = {false};
+        try (InputStream stream = open(MIXINS + "AbstractFurnaceBlockLocalPlacementMixin.class")) {
+            new ClassReader(stream).accept(new ClassVisitor(Opcodes.ASM9) {
+                @Override public AnnotationVisitor visitAnnotation(String name, boolean visible) {
+                    if (!"Lorg/spongepowered/asm/mixin/Mixin;".equals(name)) return null;
+                    return new AnnotationVisitor(Opcodes.ASM9) {
+                        @Override public AnnotationVisitor visitArray(String key) {
+                            if (!"value".equals(key)) return null;
+                            return new AnnotationVisitor(Opcodes.ASM9) {
+                                @Override public void visit(String k, Object value) {
+                                    if (value instanceof org.objectweb.asm.Type t
+                                            && t.getInternalName().equals(VANILLA + "AbstractFurnaceBlock")) {
+                                        mixinTargetSeen[0] = true;
+                                    }
+                                }
+                            };
+                        }
+                    };
+                }
+                @Override public MethodVisitor visitMethod(
+                        int access, String name, String descriptor,
+                        String signature, String[] exceptions) {
+                    if (!name.equals("planetary$canonicalFurnacePlacement")) return null;
+                    assertEquals(0, access & Opcodes.ACC_STATIC);
+                    actual.put(name, descriptor);
+                    return new MethodVisitor(Opcodes.ASM9) {
+                        @Override public AnnotationVisitor visitAnnotation(String annotation, boolean visible) {
+                            if (!"Lorg/spongepowered/asm/mixin/injection/Inject;".equals(annotation)) {
+                                return null;
+                            }
+                            return new AnnotationVisitor(Opcodes.ASM9) {
+                                @Override public void visit(String key, Object value) {
+                                    if ("cancellable".equals(key)) {
+                                        assertEquals(Boolean.TRUE, value);
+                                        cancellable[0] = true;
+                                    }
+                                }
+                                @Override public AnnotationVisitor visitArray(String key) {
+                                    if ("method".equals(key)) return new AnnotationVisitor(Opcodes.ASM9) {
+                                        @Override public void visit(String k, Object value) {
+                                            assertEquals("getStateForPlacement" + PLACE_METHOD, value);
+                                        }
+                                    };
+                                    if ("at".equals(key)) return new AnnotationVisitor(Opcodes.ASM9) {
+                                        @Override public AnnotationVisitor visitAnnotation(String k, String type) {
+                                            if (!"Lorg/spongepowered/asm/mixin/injection/At;".equals(type)) return null;
+                                            return new AnnotationVisitor(Opcodes.ASM9) {
+                                                @Override public void visit(String k, Object value) {
+                                                    if ("value".equals(k)) {
+                                                        assertEquals("RETURN", value);
+                                                        injectReturn[0] = true;
+                                                    }
+                                                }
+                                            };
+                                        }
+                                    };
+                                    return null;
+                                }
+                            };
+                        }
+                    };
+                }
+            }, ClassReader.SKIP_CODE | ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
+        }
+        assertEquals(Map.of("planetary$canonicalFurnacePlacement", "(" + PLACE + CI + ")V"), actual);
+        assertTrue(mixinTargetSeen[0]);
+        assertTrue(injectReturn[0]);
+        assertTrue(cancellable[0]);
+        try (InputStream stream = open("planetary.mixins.json")) {
+            assertTrue(new String(stream.readAllBytes(), StandardCharsets.UTF_8)
+                    .contains("\"AbstractFurnaceBlockLocalPlacementMixin\""));
+        }
+    }
+
     private static boolean declares(String block, String method,
                                     String descriptor) throws IOException {
         boolean[] found = {false};
