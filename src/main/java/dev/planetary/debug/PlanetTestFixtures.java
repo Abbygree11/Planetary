@@ -38,10 +38,11 @@ public final class PlanetTestFixtures {
     public static final int FLOOR_MAX_Z = 16;
     private static final int MAX_UP_OFFSET = 6;
 
-    /** V3: active FenceGateBlock placement, wall graph and interaction. */
-    public static final BlockState CURRENT_MARKER = Blocks.EMERALD_BLOCK.defaultBlockState();
-    public static final BlockState LEGACY_MARKER = Blocks.DIAMOND_BLOCK.defaultBlockState();
-    public static final BlockState OLDEST_MARKER = Blocks.GOLD_BLOCK.defaultBlockState();
+    /** V4: active AbstractFurnaceBlock shared horizontal author placement. */
+    public static final BlockState CURRENT_MARKER = Blocks.NETHERITE_BLOCK.defaultBlockState();
+    public static final BlockState LEGACY_MARKER = Blocks.EMERALD_BLOCK.defaultBlockState();
+    public static final BlockState OLDEST_MARKER = Blocks.DIAMOND_BLOCK.defaultBlockState();
+    public static final BlockState FIRST_MARKER = Blocks.GOLD_BLOCK.defaultBlockState();
     private static final int LEGACY_WING_MIN_X = 21;
     private static final int LEGACY_WING_MAX_X = 40;
     private static final int LEGACY_WING_MIN_Z = -12;
@@ -77,14 +78,14 @@ public final class PlanetTestFixtures {
      * by JUnit/ASM; the dev pad is intentionally not a historical museum.
      */
     public static final List<Station> STATIONS = List.of(
-            new Station("oak_gate_plain", 1, 0),
-            new Station("spruce_gate_one_wall", 3, 0),
-            new Station("cherry_gate_two_walls", 1, 1),
-            new Station("bamboo_gate_open", 3, 1),
-            new Station("crimson_gate_wall", 1, 2),
-            new Station("warped_gate_wall", 3, 2),
-            new Station("mangrove_gate_plain", 1, 3),
-            new Station("dark_oak_gate_open", 3, 3)
+            new Station("furnace_north", 1, 0),
+            new Station("smoker_east", 3, 0),
+            new Station("blast_furnace_south", 1, 1),
+            new Station("furnace_west", 3, 1),
+            new Station("smoker_lit", 1, 2),
+            new Station("blast_furnace_lit", 3, 2),
+            new Station("furnace_lit", 1, 3),
+            new Station("smoker_north", 3, 3)
     );
 
     public record BuildStats(int built, int alreadyPresent, int occupied) {
@@ -147,7 +148,8 @@ public final class PlanetTestFixtures {
         if (explicitRebuild) return BuildAction.REBUILD;
         if (existingMarker.equals(CURRENT_MARKER)) return BuildAction.ALREADY_CURRENT;
         if (existingMarker.equals(LEGACY_MARKER)
-                || existingMarker.equals(OLDEST_MARKER)) return BuildAction.REBUILD;
+                || existingMarker.equals(OLDEST_MARKER)
+                || existingMarker.equals(FIRST_MARKER)) return BuildAction.REBUILD;
         return reservedAirspaceEmpty ? BuildAction.REBUILD : BuildAction.PRESERVE_OCCUPIED;
     }
 
@@ -170,6 +172,7 @@ public final class PlanetTestFixtures {
         boolean empty = force || previousMarker.equals(CURRENT_MARKER)
                 || previousMarker.equals(LEGACY_MARKER)
                 || previousMarker.equals(OLDEST_MARKER)
+                || previousMarker.equals(FIRST_MARKER)
                 || isReservedAirspaceEmpty(level, face);
         BuildAction action = planBuild(previousMarker, empty, force);
         if (action == BuildAction.ALREADY_CURRENT) return new BuildStats(0, 1, 0);
@@ -178,7 +181,8 @@ public final class PlanetTestFixtures {
         // Replace only a known owned pad or the user's explicit rebuild area;
         // NEVER reset unmarked occupied terrain during dev login.
         if (force || previousMarker.equals(LEGACY_MARKER)
-                || previousMarker.equals(OLDEST_MARKER)) {
+                || previousMarker.equals(OLDEST_MARKER)
+                || previousMarker.equals(FIRST_MARKER)) {
             clearVolume(level, face, FLOOR_MIN_X, FLOOR_MAX_X, FLOOR_MIN_Z, FLOOR_MAX_Z);
             // V1 had a second placement wing with its own lapis marker.
             // Retire it during migration rather than accumulating arenas.
@@ -250,46 +254,26 @@ public final class PlanetTestFixtures {
         int south = station.south();
         int up = FLOOR_RADIUS + 1;
         BlockPos reference = physical(face, x, up, south);
-        BlockState gate = switch (station.name()) {
-            case "oak_gate_plain" -> Blocks.OAK_FENCE_GATE.defaultBlockState()
-                    .setValue(net.minecraft.world.level.block.FenceGateBlock.FACING, Direction.NORTH);
-            case "spruce_gate_one_wall" -> Blocks.SPRUCE_FENCE_GATE.defaultBlockState()
-                    .setValue(net.minecraft.world.level.block.FenceGateBlock.FACING, Direction.NORTH)
-                    .setValue(net.minecraft.world.level.block.FenceGateBlock.IN_WALL, true);
-            case "cherry_gate_two_walls" -> Blocks.CHERRY_FENCE_GATE.defaultBlockState()
-                    .setValue(net.minecraft.world.level.block.FenceGateBlock.FACING, Direction.SOUTH)
-                    .setValue(net.minecraft.world.level.block.FenceGateBlock.IN_WALL, true);
-            case "bamboo_gate_open" -> Blocks.BAMBOO_FENCE_GATE.defaultBlockState()
-                    .setValue(net.minecraft.world.level.block.FenceGateBlock.FACING, Direction.EAST)
-                    .setValue(net.minecraft.world.level.block.FenceGateBlock.OPEN, true);
-            case "crimson_gate_wall" -> Blocks.CRIMSON_FENCE_GATE.defaultBlockState()
-                    .setValue(net.minecraft.world.level.block.FenceGateBlock.FACING, Direction.NORTH)
-                    .setValue(net.minecraft.world.level.block.FenceGateBlock.IN_WALL, true);
-            case "warped_gate_wall" -> Blocks.WARPED_FENCE_GATE.defaultBlockState()
-                    .setValue(net.minecraft.world.level.block.FenceGateBlock.FACING, Direction.NORTH)
-                    .setValue(net.minecraft.world.level.block.FenceGateBlock.IN_WALL, true);
-            case "mangrove_gate_plain" -> Blocks.MANGROVE_FENCE_GATE.defaultBlockState()
-                    .setValue(net.minecraft.world.level.block.FenceGateBlock.FACING, Direction.WEST);
-            case "dark_oak_gate_open" -> Blocks.DARK_OAK_FENCE_GATE.defaultBlockState()
-                    .setValue(net.minecraft.world.level.block.FenceGateBlock.FACING, Direction.WEST)
-                    .setValue(net.minecraft.world.level.block.FenceGateBlock.OPEN, true);
-            default -> throw new IllegalStateException("Unknown gate station " + station.name());
+        BlockState furnace = switch (station.name()) {
+            case "furnace_north" -> Blocks.FURNACE.defaultBlockState()
+                    .setValue(net.minecraft.world.level.block.AbstractFurnaceBlock.FACING, Direction.NORTH);
+            case "smoker_east" -> Blocks.SMOKER.defaultBlockState()
+                    .setValue(net.minecraft.world.level.block.AbstractFurnaceBlock.FACING, Direction.EAST);
+            case "blast_furnace_south" -> Blocks.BLAST_FURNACE.defaultBlockState()
+                    .setValue(net.minecraft.world.level.block.AbstractFurnaceBlock.FACING, Direction.SOUTH);
+            case "furnace_west" -> Blocks.FURNACE.defaultBlockState()
+                    .setValue(net.minecraft.world.level.block.AbstractFurnaceBlock.FACING, Direction.WEST);
+            case "smoker_lit" -> Blocks.SMOKER.defaultBlockState()
+                    .setValue(net.minecraft.world.level.block.AbstractFurnaceBlock.LIT, true);
+            case "blast_furnace_lit" -> Blocks.BLAST_FURNACE.defaultBlockState()
+                    .setValue(net.minecraft.world.level.block.AbstractFurnaceBlock.LIT, true);
+            case "furnace_lit" -> Blocks.FURNACE.defaultBlockState()
+                    .setValue(net.minecraft.world.level.block.AbstractFurnaceBlock.LIT, true);
+            case "smoker_north" -> Blocks.SMOKER.defaultBlockState();
+            default -> throw new IllegalStateException(
+                    "Unknown current furnace station " + station.name());
         };
-        // Wall scaffolding is PHYSICAL, placed in actual adjacent cells.
-        // For N/S gate heading it lies on the gate's local EAST/WEST sides.
-        // Center wall touches both reference and natural placement lanes.
-        boolean oneWall = station.name().contains("wall");
-        if (oneWall) {
-            put(level, physical(face, station.east(), up, south),
-                    Blocks.COBBLESTONE_WALL.defaultBlockState());
-        }
-        if (station.name().equals("cherry_gate_two_walls")) {
-            put(level, physical(face, station.east() - 2, up, south),
-                    Blocks.COBBLESTONE_WALL.defaultBlockState());
-            put(level, physical(face, station.east() + 2, up, south),
-                    Blocks.COBBLESTONE_WALL.defaultBlockState());
-        }
-        put(level, reference, gate);
+        put(level, reference, furnace);
     }
 
     private static void put(
@@ -313,7 +297,7 @@ public final class PlanetTestFixtures {
 
     public static String gridLegend() {
         StringBuilder result = new StringBuilder(
-                "ACTIVE V3 fence gate tests (CYAN = reference, LIME = player placement): ");
+                "ACTIVE V4 furnace-family tests (CYAN = reference, LIME = player placement): ");
         for (Station station : STATIONS) {
             result.append(station.name().replace('_', ' '))
                     .append("[row ").append(station.row() + 1)
