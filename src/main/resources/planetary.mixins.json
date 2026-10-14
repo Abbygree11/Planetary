@@ -74,6 +74,7 @@
     "RandomStrollGoalGravityMixin",
     "HopperBlockPlacementMixin",
     "RotatedPillarBlockPlacementMixin",
+    "InfestedRotatedPillarPlacementMixin",
     "SlabBlockPlacementMixin",
     "TrapDoorBlockLocalPlacementMixin",
     "StairBlockLocalPlacementMixin",
