@@ -526,6 +526,74 @@ final class PlanetOrientationPropertiesTest {
         assertTrue(PlanetFurnacePlacement.afterPlacement(context, null).isEmpty());
     }
 
+    @Test
+    void pillarAllSixFacesSixClickedSidesAndMaterialsPreserveExactReturnState() {
+        Level level = mock(Level.class);
+        net.minecraft.world.item.context.BlockPlaceContext context =
+                mock(net.minecraft.world.item.context.BlockPlaceContext.class);
+        org.mockito.Mockito.when(context.getLevel()).thenReturn(level);
+        dev.planetary.gravity.PlanetGravityRuntime.bind(level, FIELD);
+        try {
+            BlockState[] materialStates = {
+                    Blocks.OAK_LOG.defaultBlockState(),
+                    Blocks.STRIPPED_OAK_LOG.defaultBlockState(),
+                    Blocks.CRIMSON_STEM.defaultBlockState(),
+                    Blocks.BASALT.defaultBlockState(),
+                    Blocks.MUDDY_MANGROVE_ROOTS.defaultBlockState(),
+                    Blocks.HAY_BLOCK.defaultBlockState(),
+                    Blocks.INFESTED_DEEPSLATE.defaultBlockState(),
+                    Blocks.CHAIN.defaultBlockState()
+                            .setValue(net.minecraft.world.level.block.ChainBlock.WATERLOGGED, true)
+            };
+            for (PlanetFace face : PlanetFace.values()) {
+                BlockPos target = faceCenter(face);
+                var stateFrame = PlanetBlockStateFrame.resolve(FIELD, target).orElseThrow();
+                org.mockito.Mockito.when(context.getClickedPos()).thenReturn(target);
+                org.mockito.Mockito.when(context.getClickLocation())
+                        .thenReturn(Vec3.atCenterOf(target));
+                for (Direction localClick : Direction.values()) {
+                    Direction physicalClick = stateFrame.localToWorld(localClick);
+                    org.mockito.Mockito.when(context.getClickedFace()).thenReturn(physicalClick);
+                    assertEquals(localClick.getAxis(),
+                            PlanetPillarPlacement.canonicalAxis(context).orElseThrow());
+                    for (BlockState original : materialStates) {
+                        BlockState returned = PlanetPillarPlacement.afterPlacement(context, original)
+                                .orElseThrow();
+                        assertSame(original.getBlock(), returned.getBlock(),
+                                "Material identity must never change on " + face);
+                        assertEquals(localClick.getAxis(),
+                                returned.getValue(RotatedPillarBlock.AXIS));
+                        if (original.hasProperty(net.minecraft.world.level.block.ChainBlock.WATERLOGGED)) {
+                            assertEquals(original.getValue(
+                                            net.minecraft.world.level.block.ChainBlock.WATERLOGGED),
+                                    returned.getValue(
+                                            net.minecraft.world.level.block.ChainBlock.WATERLOGGED));
+                        }
+                    }
+                }
+            }
+        } finally {
+            dev.planetary.gravity.PlanetGravityRuntime.unbind(level, FIELD);
+        }
+    }
+
+    @Test
+    void pillarExistingOwnersRemainVanillaInNormalOrUnknownContexts() {
+        Level level = mock(Level.class);
+        var context = mock(net.minecraft.world.item.context.BlockPlaceContext.class);
+        org.mockito.Mockito.when(context.getLevel()).thenReturn(level);
+        org.mockito.Mockito.when(context.getClickedPos()).thenReturn(faceCenter(PlanetFace.POS_X));
+        org.mockito.Mockito.when(context.getClickedFace()).thenReturn(Direction.UP);
+        org.mockito.Mockito.when(context.getClickLocation())
+                .thenReturn(Vec3.atCenterOf(faceCenter(PlanetFace.POS_X)));
+        assertTrue(PlanetPillarPlacement.canonicalAxis(context).isEmpty());
+        assertTrue(PlanetPillarPlacement.afterPlacement(
+                context, Blocks.OAK_LOG.defaultBlockState()).isEmpty());
+        assertTrue(PlanetPillarPlacement.afterPlacement(
+                context, Blocks.STONE.defaultBlockState()).isEmpty());
+        assertTrue(PlanetPillarPlacement.afterPlacement(context, null).isEmpty());
+    }
+
     private static void checkBoundary(BlockPos target) {
         PlanetBlockStateFrame canonical = PlanetBlockStateFrame.resolve(FIELD, target).orElseThrow();
         var resolved = resolved(target, Direction.UP, Vec3.atCenterOf(target));

@@ -414,6 +414,96 @@ final class Phase2PlacementFamilyMixinContractTest {
         }
     }
 
+    @Test
+    void pillarAndIndependentInfestedOwnersUseExactReturnOnlyMixinContract()
+            throws IOException {
+        assertTrue(declares("RotatedPillarBlock", "getStateForPlacement", PLACE_METHOD));
+        assertTrue(declares("InfestedRotatedPillarBlock", "getStateForPlacement", PLACE_METHOD));
+        assertTrue(declares("ChainBlock", "getStateForPlacement", PLACE_METHOD));
+        assertTrue(!declares("HayBlock", "getStateForPlacement", PLACE_METHOD));
+
+        // Chain overrides and calls the shared owner as super before adding
+        // its physical WATERLOGGED state. A RETURN Mixin on the parent must
+        // not overwrite the concrete state's extra properties.
+        assertEquals(List.of(
+                        "Lnet/minecraft/world/level/block/RotatedPillarBlock;"
+                                + "getStateForPlacement" + PLACE_METHOD),
+                invokes("ChainBlock", "getStateForPlacement", PLACE_METHOD,
+                        "getStateForPlacement"));
+
+        java.util.Map<String,String> exact = java.util.Map.of(
+                "RotatedPillarBlockPlacementMixin", "planetary$localPlacementAxis",
+                "InfestedRotatedPillarPlacementMixin", "planetary$infestedCanonicalAxis"
+        );
+        for (var e : exact.entrySet()) {
+            String className = e.getKey();
+            String handlerName = e.getValue();
+            java.util.Set<String> methods = new java.util.HashSet<>();
+            java.util.Set<String> ats = new java.util.HashSet<>();
+            boolean[] cancel = {false};
+            boolean[] handlerFound = {false};
+            try (InputStream stream = open(MIXINS + className + ".class")) {
+                new ClassReader(stream).accept(new ClassVisitor(Opcodes.ASM9) {
+                    @Override public MethodVisitor visitMethod(int access, String name,
+                            String descriptor, String signature, String[] exceptions) {
+                        if (!handlerName.equals(name)) return null;
+                        handlerFound[0] = true;
+                        assertEquals("(" + PLACE + CI + ")V", descriptor);
+                        assertEquals(0, access & Opcodes.ACC_STATIC);
+                        return new MethodVisitor(Opcodes.ASM9) {
+                            @Override public AnnotationVisitor visitAnnotation(
+                                    String ann, boolean visible) {
+                                if (!"Lorg/spongepowered/asm/mixin/injection/Inject;".equals(ann)) {
+                                    return null;
+                                }
+                                return new AnnotationVisitor(Opcodes.ASM9) {
+                                    @Override public void visit(String key, Object val) {
+                                        if ("cancellable".equals(key)) {
+                                            cancel[0] = Boolean.TRUE.equals(val);
+                                        }
+                                    }
+                                    @Override public AnnotationVisitor visitArray(String key) {
+                                        if ("method".equals(key)) {
+                                            return new AnnotationVisitor(Opcodes.ASM9) {
+                                                @Override public void visit(String unused, Object val) {
+                                                    methods.add((String)val);
+                                                }
+                                            };
+                                        }
+                                        if ("at".equals(key)) {
+                                            return new AnnotationVisitor(Opcodes.ASM9) {
+                                                @Override public AnnotationVisitor visitAnnotation(
+                                                        String unused, String ann) {
+                                                    if (!"Lorg/spongepowered/asm/mixin/injection/At;".equals(ann))
+                                                        return null;
+                                                    return new AnnotationVisitor(Opcodes.ASM9) {
+                                                        @Override public void visit(String k,Object v) {
+                                                            if ("value".equals(k)) ats.add((String)v);
+                                                        }
+                                                    };
+                                                }
+                                            };
+                                        }
+                                        return null;
+                                    }
+                                };
+                            }
+                        };
+                    }
+                }, ClassReader.SKIP_CODE | ClassReader.SKIP_DEBUG
+                        | ClassReader.SKIP_FRAMES);
+            }
+            assertTrue(handlerFound[0], className);
+            assertTrue(cancel[0], className);
+            assertEquals(java.util.Set.of("getStateForPlacement" + PLACE_METHOD), methods);
+            assertEquals(java.util.Set.of("RETURN"), ats);
+            try (InputStream stream = open("planetary.mixins.json")) {
+                assertTrue(new String(stream.readAllBytes(), StandardCharsets.UTF_8)
+                        .contains("\"" + className + "\""));
+            }
+        }
+    }
+
     private static boolean declares(String block, String method,
                                     String descriptor) throws IOException {
         boolean[] found = {false};
