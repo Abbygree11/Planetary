@@ -28,6 +28,6 @@ The same game concept "furnace" is NOT a proof of Java inheritance: modded furna
 - Semantic: each of six canonical faces × four actor horizontal directions × three concrete furnace subclasses and LIT=true; unknown/vertical/non-Planet fall-through.
 - Exact NeoForge ABI/ASM: declaring base owner, no three subclass overrides, compiled RETURN handler, signature/staticness and Mixin config.
 - Lab V4: current-only 6 face pads, 8 furnace/smoker/blast stations, EMERALD V3 → NETHERITE V4 and older DIAMOND/GOLD recognized. CYAN reference vs LIME actual player BlockItem placement.
-- Independently OPEN until run/observed: green compile/full JUnit/registry; actual client apply, furnace GUI/cooking/LIT/particles, all six faces and seam/corner natural placement, ordinary no-Planet world, and real compatible loaded mod inheritor + independent override.
+- **CI [#38622053271](https://github.com/Abbygree11/Planetary/actions/runs/38622053271) SUCCESS** on a49daf0: compileJava, compileTestJava, all JUnit/ASM and NeoForge registry. Independently OPEN until observed: actual client apply, furnace GUI/cooking/LIT/particles, all six faces and seam/corner natural placement, ordinary no-Planet world, and real compatible loaded mod inheritor + independent override.
 
 The known generic side-quad/occlusion defect on cube face seams belongs to Phase 3B, not this stage.
