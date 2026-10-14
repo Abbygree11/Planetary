@@ -465,6 +465,67 @@ final class PlanetOrientationPropertiesTest {
         assertTrue(PlanetFenceGatePlacement.afterNeighborUpdate(foreign, target, state).isEmpty());
     }
 
+    @Test
+    void furnaceFamilyCanonicalFacingAndUnrelatedPropertiesOnEveryFace() {
+        for (PlanetFace face : PlanetFace.values()) {
+            Level level = mock(Level.class);
+            BlockPos target = faceCenter(face);
+            PlanetBlockStateFrame targetFrame = PlanetBlockStateFrame.resolve(
+                    FIELD, target).orElseThrow();
+            dev.planetary.gravity.PlanetGravityRuntime.bind(level, FIELD);
+            try {
+                for (Direction localHeading : Direction.Plane.HORIZONTAL) {
+                    Direction physicalHeading = targetFrame.localToWorld(localHeading);
+                    net.minecraft.world.item.context.DirectionalPlaceContext placement =
+                            mock(net.minecraft.world.item.context.DirectionalPlaceContext.class);
+                    org.mockito.Mockito.when(placement.getLevel()).thenReturn(level);
+                    org.mockito.Mockito.when(placement.getClickedPos()).thenReturn(target);
+                    org.mockito.Mockito.when(placement.getHorizontalDirection())
+                            .thenReturn(physicalHeading);
+
+                    for (BlockState original : new BlockState[]{
+                            Blocks.FURNACE.defaultBlockState(),
+                            Blocks.SMOKER.defaultBlockState(),
+                            Blocks.BLAST_FURNACE.defaultBlockState()
+                    }) {
+                        BlockState lit = original.setValue(
+                                net.minecraft.world.level.block.AbstractFurnaceBlock.LIT, true);
+                        BlockState actual = PlanetFurnacePlacement.afterPlacement(
+                                placement, lit).orElseThrow();
+                        assertSame(lit.getBlock(), actual.getBlock());
+                        assertTrue(actual.getValue(
+                                net.minecraft.world.level.block.AbstractFurnaceBlock.LIT));
+                        assertEquals(localHeading.getOpposite(), actual.getValue(
+                                net.minecraft.world.level.block.AbstractFurnaceBlock.FACING));
+                    }
+                }
+            } finally {
+                dev.planetary.gravity.PlanetGravityRuntime.unbind(level, FIELD);
+            }
+        }
+    }
+
+    @Test
+    void furnaceFamilyRejectsUnknownOrientationAndUnboundWorld() {
+        for (Direction horizontal : Direction.Plane.HORIZONTAL) {
+            assertEquals(horizontal.getOpposite(),
+                    PlanetFurnacePlacement.frontFromAuthor(Optional.of(horizontal)).orElseThrow());
+        }
+        assertTrue(PlanetFurnacePlacement.frontFromAuthor(Optional.empty()).isEmpty());
+        assertTrue(PlanetFurnacePlacement.frontFromAuthor(Optional.of(Direction.UP)).isEmpty());
+        assertTrue(PlanetFurnacePlacement.frontFromAuthor(Optional.of(Direction.DOWN)).isEmpty());
+
+        Level ordinaryWorld = mock(Level.class);
+        net.minecraft.world.item.context.BlockPlaceContext context =
+                mock(net.minecraft.world.item.context.BlockPlaceContext.class);
+        org.mockito.Mockito.when(context.getLevel()).thenReturn(ordinaryWorld);
+        org.mockito.Mockito.when(context.getClickedPos())
+                .thenReturn(faceCenter(PlanetFace.POS_Y));
+        assertTrue(PlanetFurnacePlacement.afterPlacement(
+                context, Blocks.FURNACE.defaultBlockState()).isEmpty());
+        assertTrue(PlanetFurnacePlacement.afterPlacement(context, null).isEmpty());
+    }
+
     private static void checkBoundary(BlockPos target) {
         PlanetBlockStateFrame canonical = PlanetBlockStateFrame.resolve(FIELD, target).orElseThrow();
         var resolved = resolved(target, Direction.UP, Vec3.atCenterOf(target));
