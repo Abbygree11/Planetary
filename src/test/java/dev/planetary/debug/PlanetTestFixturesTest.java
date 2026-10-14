@@ -19,13 +19,15 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 final class PlanetTestFixturesTest {
     @Test
-    void recognizedV1V2MigrationAndCurrentV3Idempotency() {
+    void recognizedV1ThroughV3MigrationAndCurrentV4Idempotency() {
         assertEquals(PlanetTestFixtures.BuildAction.REBUILD,
                 PlanetTestFixtures.planBuild(Blocks.GOLD_BLOCK.defaultBlockState(), false, false));
         assertEquals(PlanetTestFixtures.BuildAction.REBUILD,
                 PlanetTestFixtures.planBuild(Blocks.DIAMOND_BLOCK.defaultBlockState(), false, false));
-        assertEquals(PlanetTestFixtures.BuildAction.ALREADY_CURRENT,
+        assertEquals(PlanetTestFixtures.BuildAction.REBUILD,
                 PlanetTestFixtures.planBuild(Blocks.EMERALD_BLOCK.defaultBlockState(), false, false));
+        assertEquals(PlanetTestFixtures.BuildAction.ALREADY_CURRENT,
+                PlanetTestFixtures.planBuild(Blocks.NETHERITE_BLOCK.defaultBlockState(), false, false));
         assertEquals(PlanetTestFixtures.BuildAction.REBUILD,
                 PlanetTestFixtures.planBuild(Blocks.AIR.defaultBlockState(), true, false));
         assertEquals(PlanetTestFixtures.BuildAction.PRESERVE_OCCUPIED,
@@ -62,7 +64,7 @@ final class PlanetTestFixturesTest {
     }
 
     @Test
-    void onlyEightCurrentGateFamilyStationsHaveDistinctReferenceAndNaturalLanes() {
+    void onlyEightCurrentFurnaceFamilyStationsHaveDistinctReferenceAndNaturalLanes() {
         assertEquals(8, PlanetTestFixtures.STATIONS.size());
         Set<String> names = new HashSet<>();
         Set<BlockPos> lanes = new HashSet<>();
@@ -86,16 +88,16 @@ final class PlanetTestFixturesTest {
             }
         }
         assertEquals(48, lanes.size());
-        assertTrue(names.contains("oak_gate_plain"));
-        assertTrue(names.contains("spruce_gate_one_wall"));
-        assertTrue(names.contains("cherry_gate_two_walls"));
-        assertTrue(names.contains("bamboo_gate_open"));
-        assertTrue(names.contains("crimson_gate_wall"));
-        assertTrue(names.contains("warped_gate_wall"));
-        assertTrue(names.contains("mangrove_gate_plain"));
-        assertTrue(names.contains("dark_oak_gate_open"));
+        assertTrue(names.contains("furnace_north"));
+        assertTrue(names.contains("smoker_east"));
+        assertTrue(names.contains("blast_furnace_south"));
+        assertTrue(names.contains("furnace_west"));
+        assertTrue(names.contains("smoker_lit"));
+        assertTrue(names.contains("blast_furnace_lit"));
+        assertTrue(names.contains("furnace_lit"));
+        assertTrue(names.contains("smoker_north"));
         assertFalse(names.contains("end_rod"), "Retired museum scenarios belong to regression tests");
-        assertTrue(PlanetTestFixtures.gridLegend().contains("ACTIVE V3"));
+        assertTrue(PlanetTestFixtures.gridLegend().contains("ACTIVE V4"));
     }
 
     @Test
