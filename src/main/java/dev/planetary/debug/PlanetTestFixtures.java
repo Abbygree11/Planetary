@@ -38,10 +38,11 @@ public final class PlanetTestFixtures {
     public static final int FLOOR_MAX_Z = 16;
     private static final int MAX_UP_OFFSET = 6;
 
-    /** V4: active AbstractFurnaceBlock shared horizontal author placement. */
-    public static final BlockState CURRENT_MARKER = Blocks.NETHERITE_BLOCK.defaultBlockState();
-    public static final BlockState LEGACY_MARKER = Blocks.EMERALD_BLOCK.defaultBlockState();
-    public static final BlockState OLDEST_MARKER = Blocks.DIAMOND_BLOCK.defaultBlockState();
+    /** V5: AXIS placement across inherited and independent pillar owners. */
+    public static final BlockState CURRENT_MARKER = Blocks.AMETHYST_BLOCK.defaultBlockState();
+    public static final BlockState LEGACY_MARKER = Blocks.NETHERITE_BLOCK.defaultBlockState();
+    public static final BlockState OLDEST_MARKER = Blocks.EMERALD_BLOCK.defaultBlockState();
+    public static final BlockState PREVIOUS_MARKER = Blocks.DIAMOND_BLOCK.defaultBlockState();
     public static final BlockState FIRST_MARKER = Blocks.GOLD_BLOCK.defaultBlockState();
     private static final int LEGACY_WING_MIN_X = 21;
     private static final int LEGACY_WING_MAX_X = 40;
@@ -78,14 +79,14 @@ public final class PlanetTestFixtures {
      * by JUnit/ASM; the dev pad is intentionally not a historical museum.
      */
     public static final List<Station> STATIONS = List.of(
-            new Station("furnace_north", 1, 0),
-            new Station("smoker_east", 3, 0),
-            new Station("blast_furnace_south", 1, 1),
-            new Station("furnace_west", 3, 1),
-            new Station("smoker_lit", 1, 2),
-            new Station("blast_furnace_lit", 3, 2),
-            new Station("furnace_lit", 1, 3),
-            new Station("smoker_north", 3, 3)
+            new Station("oak_log_y", 1, 0),
+            new Station("oak_log_x", 3, 0),
+            new Station("stripped_oak_log_z", 1, 1),
+            new Station("chain_waterlogged", 3, 1),
+            new Station("basalt_x", 1, 2),
+            new Station("hay_block_y", 3, 2),
+            new Station("infested_deepslate_z", 1, 3),
+            new Station("crimson_stem_x", 3, 3)
     );
 
     public record BuildStats(int built, int alreadyPresent, int occupied) {
@@ -149,6 +150,7 @@ public final class PlanetTestFixtures {
         if (existingMarker.equals(CURRENT_MARKER)) return BuildAction.ALREADY_CURRENT;
         if (existingMarker.equals(LEGACY_MARKER)
                 || existingMarker.equals(OLDEST_MARKER)
+                || existingMarker.equals(PREVIOUS_MARKER)
                 || existingMarker.equals(FIRST_MARKER)) return BuildAction.REBUILD;
         return reservedAirspaceEmpty ? BuildAction.REBUILD : BuildAction.PRESERVE_OCCUPIED;
     }
@@ -172,6 +174,7 @@ public final class PlanetTestFixtures {
         boolean empty = force || previousMarker.equals(CURRENT_MARKER)
                 || previousMarker.equals(LEGACY_MARKER)
                 || previousMarker.equals(OLDEST_MARKER)
+                || previousMarker.equals(PREVIOUS_MARKER)
                 || previousMarker.equals(FIRST_MARKER)
                 || isReservedAirspaceEmpty(level, face);
         BuildAction action = planBuild(previousMarker, empty, force);
@@ -182,6 +185,7 @@ public final class PlanetTestFixtures {
         // NEVER reset unmarked occupied terrain during dev login.
         if (force || previousMarker.equals(LEGACY_MARKER)
                 || previousMarker.equals(OLDEST_MARKER)
+                || previousMarker.equals(PREVIOUS_MARKER)
                 || previousMarker.equals(FIRST_MARKER)) {
             clearVolume(level, face, FLOOR_MIN_X, FLOOR_MAX_X, FLOOR_MIN_Z, FLOOR_MAX_Z);
             // V1 had a second placement wing with its own lapis marker.
@@ -254,26 +258,37 @@ public final class PlanetTestFixtures {
         int south = station.south();
         int up = FLOOR_RADIUS + 1;
         BlockPos reference = physical(face, x, up, south);
-        BlockState furnace = switch (station.name()) {
-            case "furnace_north" -> Blocks.FURNACE.defaultBlockState()
-                    .setValue(net.minecraft.world.level.block.AbstractFurnaceBlock.FACING, Direction.NORTH);
-            case "smoker_east" -> Blocks.SMOKER.defaultBlockState()
-                    .setValue(net.minecraft.world.level.block.AbstractFurnaceBlock.FACING, Direction.EAST);
-            case "blast_furnace_south" -> Blocks.BLAST_FURNACE.defaultBlockState()
-                    .setValue(net.minecraft.world.level.block.AbstractFurnaceBlock.FACING, Direction.SOUTH);
-            case "furnace_west" -> Blocks.FURNACE.defaultBlockState()
-                    .setValue(net.minecraft.world.level.block.AbstractFurnaceBlock.FACING, Direction.WEST);
-            case "smoker_lit" -> Blocks.SMOKER.defaultBlockState()
-                    .setValue(net.minecraft.world.level.block.AbstractFurnaceBlock.LIT, true);
-            case "blast_furnace_lit" -> Blocks.BLAST_FURNACE.defaultBlockState()
-                    .setValue(net.minecraft.world.level.block.AbstractFurnaceBlock.LIT, true);
-            case "furnace_lit" -> Blocks.FURNACE.defaultBlockState()
-                    .setValue(net.minecraft.world.level.block.AbstractFurnaceBlock.LIT, true);
-            case "smoker_north" -> Blocks.SMOKER.defaultBlockState();
+        BlockState pillar = switch (station.name()) {
+            case "oak_log_y" -> Blocks.OAK_LOG.defaultBlockState();
+            case "oak_log_x" -> Blocks.OAK_LOG.defaultBlockState()
+                    .setValue(net.minecraft.world.level.block.RotatedPillarBlock.AXIS, Direction.Axis.X);
+            case "stripped_oak_log_z" -> Blocks.STRIPPED_OAK_LOG.defaultBlockState()
+                    .setValue(net.minecraft.world.level.block.RotatedPillarBlock.AXIS, Direction.Axis.Z);
+            case "chain_waterlogged" -> Blocks.CHAIN.defaultBlockState()
+                    .setValue(net.minecraft.world.level.block.ChainBlock.WATERLOGGED, true);
+            case "basalt_x" -> Blocks.BASALT.defaultBlockState()
+                    .setValue(net.minecraft.world.level.block.RotatedPillarBlock.AXIS, Direction.Axis.X);
+            case "hay_block_y" -> Blocks.HAY_BLOCK.defaultBlockState();
+            case "infested_deepslate_z" -> Blocks.INFESTED_DEEPSLATE.defaultBlockState()
+                    .setValue(net.minecraft.world.level.block.RotatedPillarBlock.AXIS, Direction.Axis.Z);
+            case "crimson_stem_x" -> Blocks.CRIMSON_STEM.defaultBlockState()
+                    .setValue(net.minecraft.world.level.block.RotatedPillarBlock.AXIS, Direction.Axis.X);
             default -> throw new IllegalStateException(
-                    "Unknown current furnace station " + station.name());
+                    "Unknown current axis-pillar station " + station.name());
         };
-        put(level, reference, furnace);
+        put(level, reference, pillar);
+
+        // For sideways test cases, offer REAL blocks to click. The natural
+        // LIME placement cell remains EMPTY, and all supports are inside
+        // the existing station's independent footprint.
+        if (station.name().endsWith("_x")) {
+            put(level, physical(face, station.east() + 2, up, south),
+                    Blocks.POLISHED_ANDESITE.defaultBlockState());
+        }
+        if (station.name().endsWith("_z")) {
+            put(level, physical(face, station.east() + 1, up, south + 1),
+                    Blocks.POLISHED_ANDESITE.defaultBlockState());
+        }
     }
 
     private static void put(
@@ -297,7 +312,7 @@ public final class PlanetTestFixtures {
 
     public static String gridLegend() {
         StringBuilder result = new StringBuilder(
-                "ACTIVE V4 furnace-family tests (CYAN = reference, LIME = player placement): ");
+                "ACTIVE V5 pillar/chain/infested AXIS tests (CYAN = reference, LIME = player placement): ");
         for (Station station : STATIONS) {
             result.append(station.name().replace('_', ' '))
                     .append("[row ").append(station.row() + 1)
