@@ -78,6 +78,7 @@
     "TrapDoorBlockLocalPlacementMixin",
     "StairBlockLocalPlacementMixin",
     "FenceGateBlockLocalSemanticsMixin",
+    "AbstractFurnaceBlockLocalPlacementMixin",
     "RedstoneWallTorchSupportMixin",
     "BaseTorchBlockSupportMixin",
     "FaceAttachedHorizontalDirectionalBlockSupportMixin",
