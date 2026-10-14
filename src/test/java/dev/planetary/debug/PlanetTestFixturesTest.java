@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 final class PlanetTestFixturesTest {
     @Test
-    void recognizedV1ThroughV4MigrationAndCurrentV5Idempotency() {
+    void recognizedV1ThroughV5MigrationAndCurrentV6Idempotency() {
         assertEquals(PlanetTestFixtures.BuildAction.REBUILD,
                 PlanetTestFixtures.planBuild(Blocks.GOLD_BLOCK.defaultBlockState(), false, false));
         assertEquals(PlanetTestFixtures.BuildAction.REBUILD,
@@ -28,8 +28,10 @@ final class PlanetTestFixturesTest {
                 PlanetTestFixtures.planBuild(Blocks.EMERALD_BLOCK.defaultBlockState(), false, false));
         assertEquals(PlanetTestFixtures.BuildAction.REBUILD,
                 PlanetTestFixtures.planBuild(Blocks.NETHERITE_BLOCK.defaultBlockState(), false, false));
-        assertEquals(PlanetTestFixtures.BuildAction.ALREADY_CURRENT,
+        assertEquals(PlanetTestFixtures.BuildAction.REBUILD,
                 PlanetTestFixtures.planBuild(Blocks.AMETHYST_BLOCK.defaultBlockState(), false, false));
+        assertEquals(PlanetTestFixtures.BuildAction.ALREADY_CURRENT,
+                PlanetTestFixtures.planBuild(Blocks.OBSIDIAN.defaultBlockState(), false, false));
         assertEquals(PlanetTestFixtures.BuildAction.REBUILD,
                 PlanetTestFixtures.planBuild(Blocks.AIR.defaultBlockState(), true, false));
         assertEquals(PlanetTestFixtures.BuildAction.PRESERVE_OCCUPIED,
@@ -66,10 +68,11 @@ final class PlanetTestFixturesTest {
     }
 
     @Test
-    void onlyEightCurrentPillarFamilyStationsHaveDistinctReferenceAndNaturalLanes() {
-        assertEquals(8, PlanetTestFixtures.STATIONS.size());
+    void catchUpTwentyFourStationsAcrossThreeFamiliesHaveDistinctReferenceAndNaturalLanes() {
+        assertEquals(24, PlanetTestFixtures.STATIONS.size());
         Set<String> names = new HashSet<>();
         Set<BlockPos> lanes = new HashSet<>();
+        Set<BlockPos> reservedSlots = new HashSet<>();
         for (PlanetFace face : PlanetFace.values()) {
             for (PlanetTestFixtures.Station station : PlanetTestFixtures.STATIONS) {
                 names.add(station.name());
@@ -85,11 +88,21 @@ final class PlanetTestFixturesTest {
                         station.south());
                 assertNotEquals(reference, natural);
                 assertTrue(lanes.add(natural));
+                // Every 5x5 station footprint must remain independent: support
+                // blocks may not overlap another station's player-placement lane.
+                for (int dx = -2; dx <= 2; dx++) {
+                    for (int dz = -2; dz <= 2; dz++) {
+                        assertTrue(reservedSlots.add(PlanetTestFixtures.physical(
+                                face, station.east() + dx,
+                                PlanetTestFixtures.FLOOR_RADIUS + 1,
+                                station.south() + dz)), "Overlapping station footprint");
+                    }
+                }
                 assertNotEquals(PlanetTestFixtures.marker(face), reference);
                 assertNotEquals(PlanetTestFixtures.marker(face), natural);
             }
         }
-        assertEquals(48, lanes.size());
+        assertEquals(144, lanes.size());
         assertTrue(names.contains("oak_log_y"));
         assertTrue(names.contains("oak_log_x"));
         assertTrue(names.contains("stripped_oak_log_z"));
@@ -98,8 +111,17 @@ final class PlanetTestFixturesTest {
         assertTrue(names.contains("hay_block_y"));
         assertTrue(names.contains("infested_deepslate_z"));
         assertTrue(names.contains("crimson_stem_x"));
-        assertFalse(names.contains("end_rod"), "Retired museum scenarios belong to regression tests");
-        assertTrue(PlanetTestFixtures.gridLegend().contains("ACTIVE V5"));
+        assertTrue(names.containsAll(Set.of(
+                "oak_gate_plain", "spruce_gate_one_wall", "cherry_gate_two_walls",
+                "bamboo_gate_open", "crimson_gate_wall", "warped_gate_wall",
+                "mangrove_gate_plain", "dark_oak_gate_open",
+                "furnace_north", "smoker_east", "blast_furnace_south",
+                "furnace_west", "smoker_lit", "blast_furnace_lit",
+                "furnace_lit", "smoker_north"
+        )));
+        assertEquals(24, names.size(), "All station names must be unique");
+        assertFalse(names.contains("end_rod"), "Only the three explicitly pending families");
+        assertTrue(PlanetTestFixtures.gridLegend().contains("ACTIVE V6"));
     }
 
     @Test

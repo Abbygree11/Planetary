@@ -1,55 +1,47 @@
-# Planet Test Lab — active, replaceable development acceptance
+# Planet Test Lab — V6 catch-up acceptance (2.4A-6, -7, -8)
 
 Minecraft 1.21.1 / NeoForge 21.1.215 / Java 21, branch `2.0`.
 
-## Purpose
+## Why V6 includes three families
 
-The six-face in-game lab is a **temporary, replaceable test scene for the current mechanism families**, NOT a museum or a persistent regression gallery. After successful Java/ASM/JUnit CI, use the scene for real BlockItem / player interactions and visual/movement observations. Older families remain covered by automated regression tests; failures not reproducible by those tests should result in new tests.
+Normally the lab is **replaceable and current-only**; JUnit/ASM preserve regression coverage and historical scenes are not retained. The game-client checks for `2.4A-6` and `2.4A-7` were accidentally skipped when previous long chats lost connection. **Temporary exception requested by the user:** restore these two whole-owner families beside current `2.4A-8`, then resume the usual active-only replacement policy after manual acceptance.
 
-**One pad per face; no expanding wings.** The V1 twenty-station particle/placement museum and the separate V1 trapdoor/stair wing are retired. V5 puts current AXIS pillars, chain and infested deepslate reference/real-placement stations into the ORIGINAL 41×33 pad. Future feature packets replace the active list and bump the scene marker; do not accumulate old exhibits.
+This is still ONE lab pad per face, within the original 41×33 floor; no expanding wings, no old unrelated museum. The lab is populated with reference **blocks** rather than dropping item entities. Natural item placement must be done by the player.
 
-## Start and travel
+## Commands and surface convention
 
-1. Confirm GitHub Actions passed for the code being tested; then `git pull` and `.\run-client.ps1` (PowerShell).
-2. Open the dedicated Planet world, with cheats / permission level 2. Only dev `runClient` sets `-Dplanetary.debug.fixtures.auto=true`; distributed jars do not auto-build this scene.
-3. Use `/planetary test go pos_y` / `neg_y` / `pos_x` / `neg_x` / `pos_z` / `neg_z` to teleport between six face interiors, or `/planetary test legend` to see the ACTIVE station list.
-4. CYAN beneath a preinstalled `BlockState` is **reference only**. Use the nearby LIME floor spot to place the actual item with the mouse. A preinstalled state never proves `BlockItem`, survival or overrides work.
+1. After green CI, pull `2.0` and run `.\run-client.ps1`. Only the dev client enables `planetary.debug.fixtures.auto`.
+2. Enter the dedicated Planet world with permission level 2. Use `/planetary test build`, `/planetary test legend`, then `/planetary test go pos_y` (or `neg_y`, `pos_x`, `neg_x`, `pos_z`, `neg_z`).
+3. **CYAN**: preinstalled target-canonical BlockState reference. **LIME**: adjacent empty natural-placement lane. Take a corresponding item from the creative inventory and place it via actual mouse click. Never interpret a reference fixture as a successful BlockItem test.
+4. Use `/planetary test rebuild <face>` only for a deliberate destructive reset of this one face's bounded development pad.
 
-## V5 current scenario: canonical AXIS placement (Pillar / Chain / Infested)
+Coordinates are in local EAST / SOUTH of each face; the compact V6 grid has four EAST columns (`-15, -5, +5, +15`) and six SOUTH rows (`-12, -7, -2, +3, +8, +13`). Each 5×5 reference/placement/support footprint is isolated.
 
-Current stage `2.4A-8` covers the original **55** pillar/axis IDs by shared semantic owner: `RotatedPillarBlock` materials, `HayBlock`, `ChainBlock` (`WATERLOGGED`), independently authored `InfestedRotatedPillarBlock`. **No old furnace museum**. One pad per face, eight CYAN direct `BlockState` references and LIME empty natural `BlockItem` lanes.
+## Active V6 station grid
 
-| SOUTH row | EAST -8 | EAST +8 |
-| --- | --- | --- |
-| -12 | Oak log local Y | Oak log local X (side click support) |
-| -4 | Stripped oak log local Z (side click support) | Waterlogged chain |
-| +4 | Basalt local X (side click support) | Hay block local Y |
-| +12 | Infested deepslate local Z (side click support) | Crimson stem local X (side click support) |
+| SOUTH | EAST -15 | EAST -5 | EAST +5 | EAST +15 |
+| --- | --- | --- | --- | --- |
+| -12 | Oak gate plain | Spruce gate + 1 wall | Cherry gate + 2 walls | Bamboo gate open |
+| -7 | Crimson gate wall | Warped gate wall | Mangrove gate plain | Dark oak gate open |
+| -2 | Furnace north | Smoker east | Blast furnace south | Furnace west |
+| +3 | Smoker LIT | Blast furnace LIT | Furnace LIT | Smoker north |
+| +8 | Oak log local Y | Oak log local X | Stripped oak log local Z | Waterlogged chain |
+| +13 | Basalt local X | Hay bale local Y | Infested deepslate local Z | Crimson stem local X |
 
-For X: place the item in empty LIME cell **by clicking the horizontal support at local EAST+2**; for Z click the supplied local-SOUTH+1 support. For Y click the LIME floor. Compare with CYAN preset using block-state debug info. The static waterlogged chain reference only shows the property; test real waterlogging separately after placing a chain. For mod compatibility test an actual installed and version-compatible **Biomes O' Plenty extra log** on an available LIME station: source inheritance is established, runtime is not. Check ordinary world no-Planet unchanged, and separate **12 physical edges / 8 corners** as independent gates.
+## Manual checklist — run independently on all six faces
 
-## Versioned replacement and safety boundary
+**`2.4A-6` FenceGateBlock (SOUTH rows -12, -7):** place actual gate items facing different player headings into LIME lanes; open/close from both sides, check FACING and OPEN; check IN_WALL with adjacent cobblestone wall, after adding/removing a wall, and with redstone (OPEN/POWERED). For cherry, walls flank both reference and natural lanes. Test vanilla materials plus a truly loaded version-compatible inheriting mod gate and, separately, an independently authored gate. Mod source inheritance alone != mod gameplay PASS.
 
-The original lab had a GOLD marker at local (0, floor, 0), and a historical wing used a LAPIS marker. **V5 has an AMETHYST marker at the original pad center.** Build decision:
+**`2.4A-7` AbstractFurnaceBlock (SOUTH rows -2, +3):** place furnace, smoker and blast furnace from all four actor headings; compare FACING and identity, interact with GUI/inventory, process appropriate fuel/recipes and observe LIT transitions and particle/sound orientation. Preinstalled LIT references are static state demonstrations, **not proof** that a recipe ran. Repeat in an ordinary no-Planet world. Independent mod machines/overrides are separate, not assumed fixed.
 
-| State | Automatic action |
-| --- | --- |
-| AMETHYST marker (current V5) | Leave as-is; no rebuilding on every login |
-| NETHERITE (V4), EMERALD (V3), DIAMOND (V2) or GOLD (V1) marker | Replace the owned pad with V5; if present, also retire the marker-owned old wing |
-| Completely empty original reserved volume | Build V5 |
-| Unmarked occupied volume | Refuse automatically; leave it untouched |
-| Explicit `/planetary test rebuild <face>` | Destroy and regenerate the bounded lab volume on that one face |
+**`2.4A-8` RotatedPillar/Chain/Infested (SOUTH rows +8, +13):** place actual X/Y/Z axis blocks. For X click the supplied support at station-local EAST+2; for Z click station-local SOUTH+1 support; for Y click the LIME floor. Confirm AXIS and Chain WATERLOGGED after actual water placement; verify infested deepslate and alternate materials. A mod log inheriting RotatedPillarBlock needs a real loaded compatible version for gameplay evidence; mod worldgen remains independent.
 
-Only within the dedicated Planet world. The **automatic migration is confined to former marker-owned dev-lab areas**: original pad EAST -20..20, SOUTH -16..16, radial layers 51..57; retired wing EAST 21..40, SOUTH -12..12, same radial layers, only if its old lapis marker exists. **Player-made blocks INSIDE a marker-owned dev scene can be lost on version upgrade**. Work outside those regions stays untouched. Take a backup if you deliberately build important structures inside this disposable lab.
+**Across all three:** also check the 12 physical cube edges, eight corners, and ordinary non-Planet Overworld. The lab is on face interiors, so edges/corners must be tested separately. Confirm client startup/Mixin application and dedicated-server use separately from JUnit. Generic missing side-quads on cube seams are tracked in Phase 3B, not resolved by this lab.
 
-Available commands: `/planetary test build` safely migrates/builds missing scenes, `/planetary test go <face>` builds/migrates the destination face when needed, and `/planetary test rebuild <face>` explicitly forces a destructive reset of one face's active scene. Bump the current scene marker when changing active station content later (and recognize the previous marker); do not silently modify a current-marked scene in place.
+## Automatic migration and protection
 
-**Previous V2** code CI [#38475081760](https://github.com/Abbygree11/Planetary/actions/runs/38475081760) SUCCESS and user smoke reported «все ок». **Previous V3 gate lab:** [CI #38478594846](https://github.com/Abbygree11/Planetary/actions/runs/38478594846) SUCCESS, real gate gameplay/mod JAR acceptance still OPEN. **Previous V4 furnace-family [CI #38622053271](https://github.com/Abbygree11/Planetary/actions/runs/38622053271) SUCCESS / Minecraft gameplay PENDING. Current V5 axis-family CI and game acceptance PENDING**.
+**V6 marker = OBSIDIAN**, located at local (0, floor, 0). All known predecessor markers auto-migrate: V5 AMETHYST; V4 NETHERITE; V3 EMERALD; V2 DIAMOND; V1 GOLD. An already-current V6 pad is untouched on login. An entirely empty reserved volume can be built. Any *unmarked* occupied volume is preserved, unless the player explicitly requests `rebuild <face>`.
 
-## Independent evidence gates
+Migration clears **only** the marker-owned existing lab inside EAST -20..+20, SOUTH -16..+16, radial floor `FLOOR_RADIUS` through `FLOOR_RADIUS+6`. The old V1 secondary wing (EAST 21..40, SOUTH -12..12) is cleared **only** if its historical LAPIS marker exists. Structures built inside a previously marker-owned dev pad may be replaced; outside that pad stay unchanged. Keep important builds elsewhere.
 
-- CI / JUnit / ASM checks: block-frame conversions, canonical AXIS placement and original Chain WATERLOGGED state, migration marker and lab coordinates.
-- Dev client: successful pillar+infested Mixin application, real X/Y/Z axis clicks and Chain waterlogging in LIME cells on all six face interiors.
-- Extra: 12 edges, eight corners, no-Planet Overworld bypass, material behavior, actual loaded third-party mods and dedicated server.
-
-Owner implementation status is in [Phase 2.4A card](../phases/phase-02/05-implementation-a.md); original historical fixture audit remains in [DEBUG_TEST_FIXTURES](../research/DEBUG_TEST_FIXTURES_1_21_1.md), not as a requirement to retain those exhibits in the game.
+CI PASS means compile/JUnit/ASM, not applied client Mixins or real gameplay. Prior relevant CI: gate V3 [#38478594846](https://github.com/Abbygree11/Planetary/actions/runs/38478594846), furnace V4 [#38622053271](https://github.com/Abbygree11/Planetary/actions/runs/38622053271), axis V5 [#38643250260](https://github.com/Abbygree11/Planetary/actions/runs/38643250260). The new V6 CI/game statuses must be tracked separately.
