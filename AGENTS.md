@@ -1,5 +1,7 @@
 # Planetary development protocol
 
+> **FAST BOOTSTRAP FOR NEW CHAT (2026-10-15):** Read [`START_HERE.md`](START_HERE.md) and [`docs/SESSION_HANDOFF.md`](docs/SESSION_HANDOFF.md) **first**, then this process file / relevant architecture sections. For a required uniform Russian stage-labelled progress/final reply use [`docs/CHAT_REPORT_TEMPLATE.md`](docs/CHAT_REPORT_TEMPLATE.md). The huge `docs/AI_CONTEXT.md` is an archive: consult its newest relevant entries or targeted headings, **not the entire file by default**. Always inspect live HEAD and CI on branch `2.0`; saved handoff state may be stale. Never write to `main`.
+
 This file is the mandatory working agreement for every AI/coding session on
 Planetary.
 
