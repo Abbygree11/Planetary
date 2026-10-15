@@ -190,6 +190,9 @@ public final class PlanetDebugServerEvents {
             }
         }
 
+        // Only runClient JVM profile enables the optional dev visual aid.
+        PlanetDevVisibility.setEnabled(player, true);
+
         if (player.getAbilities().flying) {
             player.getAbilities().flying = false;
             player.onUpdateAbilities();
