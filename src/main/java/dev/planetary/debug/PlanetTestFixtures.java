@@ -7,6 +7,8 @@ import dev.planetary.worldgen.PlanetChunkGenerator;
 import dev.planetary.worldgen.PlanetWorldSettings;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.FrontAndTop;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -38,8 +40,9 @@ public final class PlanetTestFixtures {
     public static final int FLOOR_MAX_Z = 16;
     private static final int MAX_UP_OFFSET = 6;
 
-    /** V6: exceptional catch-up lab for stages 2.4A-6, -7 and -8. */
-    public static final BlockState CURRENT_MARKER = Blocks.OBSIDIAN.defaultBlockState();
+    /** V7: 2.4A-9 plus retained 2.4A-6/7/8 catch-up stations. */
+    public static final BlockState CURRENT_MARKER = Blocks.CRYING_OBSIDIAN.defaultBlockState();
+    public static final BlockState V6_MARKER = Blocks.OBSIDIAN.defaultBlockState();
     public static final BlockState V5_MARKER = Blocks.AMETHYST_BLOCK.defaultBlockState();
     public static final BlockState LEGACY_MARKER = Blocks.NETHERITE_BLOCK.defaultBlockState();
     public static final BlockState OLDEST_MARKER = Blocks.EMERALD_BLOCK.defaultBlockState();
@@ -51,7 +54,8 @@ public final class PlanetTestFixtures {
     private static final int LEGACY_WING_MAX_Z = 12;
 
 
-    private static final int[] EAST_GRID = {-15, -5, 5, 15};
+    // V7 inserts three halfway columns; the original V6 column IDs remain stable.
+    private static final int[] EAST_GRID = {-15, -5, 5, 15, -10, 0, 10};
     private static final int[] SOUTH_GRID = {-12, -7, -2, 3, 8, 13};
 
     private static final int UPDATE_FLAGS =
@@ -106,7 +110,21 @@ public final class PlanetTestFixtures {
             new Station("basalt_x", 0, 5),
             new Station("hay_block_y", 1, 5),
             new Station("infested_deepslate_z", 2, 5),
-            new Station("crimson_stem_x", 3, 5)
+            new Station("crimson_stem_x", 3, 5),
+            // 2.4A-9: six distinct Crafter fronts and six Jigsaw clicked-face fronts.
+            // Interstitial columns use independent 5x5 test footprints.
+            new Station("crafter_front_north", 4, 0),
+            new Station("crafter_front_south", 5, 0),
+            new Station("crafter_front_east", 6, 0),
+            new Station("crafter_front_west", 4, 1),
+            new Station("crafter_front_up", 5, 1),
+            new Station("crafter_front_down", 6, 1),
+            new Station("jigsaw_front_north", 4, 2),
+            new Station("jigsaw_front_south", 5, 2),
+            new Station("jigsaw_front_east", 6, 2),
+            new Station("jigsaw_front_west", 4, 3),
+            new Station("jigsaw_front_up", 5, 3),
+            new Station("jigsaw_front_down", 6, 3)
     );
 
     public record BuildStats(int built, int alreadyPresent, int occupied) {
@@ -168,7 +186,8 @@ public final class PlanetTestFixtures {
         Objects.requireNonNull(existingMarker, "existingMarker");
         if (explicitRebuild) return BuildAction.REBUILD;
         if (existingMarker.equals(CURRENT_MARKER)) return BuildAction.ALREADY_CURRENT;
-        if (existingMarker.equals(V5_MARKER)
+        if (existingMarker.equals(V6_MARKER)
+                || existingMarker.equals(V5_MARKER)
                 || existingMarker.equals(LEGACY_MARKER)
                 || existingMarker.equals(OLDEST_MARKER)
                 || existingMarker.equals(PREVIOUS_MARKER)
@@ -193,6 +212,7 @@ public final class PlanetTestFixtures {
         // Avoid scanning 9,471 cells if this is already an owned/current pad
         // or an explicitly requested full reset.
         boolean empty = force || previousMarker.equals(CURRENT_MARKER)
+                || previousMarker.equals(V6_MARKER)
                 || previousMarker.equals(V5_MARKER)
                 || previousMarker.equals(LEGACY_MARKER)
                 || previousMarker.equals(OLDEST_MARKER)
@@ -205,7 +225,8 @@ public final class PlanetTestFixtures {
 
         // Replace only a known owned pad or the user's explicit rebuild area;
         // NEVER reset unmarked occupied terrain during dev login.
-        if (force || previousMarker.equals(V5_MARKER)
+        if (force || previousMarker.equals(V6_MARKER)
+                || previousMarker.equals(V5_MARKER)
                 || previousMarker.equals(LEGACY_MARKER)
                 || previousMarker.equals(OLDEST_MARKER)
                 || previousMarker.equals(PREVIOUS_MARKER)
@@ -336,7 +357,32 @@ public final class PlanetTestFixtures {
                     .setValue(net.minecraft.world.level.block.RotatedPillarBlock.AXIS, Direction.Axis.Z);
             case "crimson_stem_x" -> Blocks.CRIMSON_STEM.defaultBlockState()
                     .setValue(net.minecraft.world.level.block.RotatedPillarBlock.AXIS, Direction.Axis.X);
-            default -> throw new IllegalStateException("Unknown V6 station " + station.name());
+            // 2.4A-9: only reference states. True BlockItem placement is LIME.
+            case "crafter_front_north" -> Blocks.CRAFTER.defaultBlockState()
+                    .setValue(BlockStateProperties.ORIENTATION, FrontAndTop.NORTH_UP);
+            case "crafter_front_south" -> Blocks.CRAFTER.defaultBlockState()
+                    .setValue(BlockStateProperties.ORIENTATION, FrontAndTop.SOUTH_UP);
+            case "crafter_front_east" -> Blocks.CRAFTER.defaultBlockState()
+                    .setValue(BlockStateProperties.ORIENTATION, FrontAndTop.EAST_UP);
+            case "crafter_front_west" -> Blocks.CRAFTER.defaultBlockState()
+                    .setValue(BlockStateProperties.ORIENTATION, FrontAndTop.WEST_UP);
+            case "crafter_front_up" -> Blocks.CRAFTER.defaultBlockState()
+                    .setValue(BlockStateProperties.ORIENTATION, FrontAndTop.UP_NORTH);
+            case "crafter_front_down" -> Blocks.CRAFTER.defaultBlockState()
+                    .setValue(BlockStateProperties.ORIENTATION, FrontAndTop.DOWN_EAST);
+            case "jigsaw_front_north" -> Blocks.JIGSAW.defaultBlockState()
+                    .setValue(BlockStateProperties.ORIENTATION, FrontAndTop.NORTH_UP);
+            case "jigsaw_front_south" -> Blocks.JIGSAW.defaultBlockState()
+                    .setValue(BlockStateProperties.ORIENTATION, FrontAndTop.SOUTH_UP);
+            case "jigsaw_front_east" -> Blocks.JIGSAW.defaultBlockState()
+                    .setValue(BlockStateProperties.ORIENTATION, FrontAndTop.EAST_UP);
+            case "jigsaw_front_west" -> Blocks.JIGSAW.defaultBlockState()
+                    .setValue(BlockStateProperties.ORIENTATION, FrontAndTop.WEST_UP);
+            case "jigsaw_front_up" -> Blocks.JIGSAW.defaultBlockState()
+                    .setValue(BlockStateProperties.ORIENTATION, FrontAndTop.UP_SOUTH);
+            case "jigsaw_front_down" -> Blocks.JIGSAW.defaultBlockState()
+                    .setValue(BlockStateProperties.ORIENTATION, FrontAndTop.DOWN_WEST);
+            default -> throw new IllegalStateException("Unknown V7 station " + station.name());
         };
 
         // Gate wall graph: center wall touches both CYAN and LIME lanes.
@@ -359,6 +405,34 @@ public final class PlanetTestFixtures {
         }
         if (station.name().endsWith("_z")) {
             put(level, physical(face, station.east() + 1, up, south + 1),
+                    Blocks.POLISHED_ANDESITE.defaultBlockState());
+        }
+        // Jigsaw authors choose FRONT from the *clicked* physical face.
+        // Supply a real support face next to LIME without preplacing the item.
+        // For negative local UP normal, use an overhead underside support.
+        // Crafter DOWN front requires looking UP, so it gets the same support.
+        if (station.name().startsWith("jigsaw_front_")) {
+            switch (station.name()) {
+                case "jigsaw_front_north" ->
+                        put(level, physical(face, station.east() + 1, up, south + 1),
+                                Blocks.POLISHED_ANDESITE.defaultBlockState());
+                case "jigsaw_front_south" ->
+                        put(level, physical(face, station.east() + 1, up, south - 1),
+                                Blocks.POLISHED_ANDESITE.defaultBlockState());
+                case "jigsaw_front_east" ->
+                        put(level, physical(face, station.east(), up, south),
+                                Blocks.POLISHED_ANDESITE.defaultBlockState());
+                case "jigsaw_front_west" ->
+                        put(level, physical(face, station.east() + 2, up, south),
+                                Blocks.POLISHED_ANDESITE.defaultBlockState());
+                case "jigsaw_front_down" ->
+                        put(level, physical(face, station.east() + 1, up + 1, south),
+                                Blocks.POLISHED_ANDESITE.defaultBlockState());
+                default -> { /* UP uses the existing LIME floor. */ }
+            }
+        }
+        if (station.name().equals("crafter_front_down")) {
+            put(level, physical(face, station.east() + 1, up + 1, south),
                     Blocks.POLISHED_ANDESITE.defaultBlockState());
         }
         put(level, reference, state);
@@ -385,7 +459,7 @@ public final class PlanetTestFixtures {
 
     public static String gridLegend() {
         StringBuilder result = new StringBuilder(
-                "ACTIVE V6 catch-up: rows 1-2 gates (2.4A-6), 3-4 furnaces (2.4A-7), 5-6 AXIS (2.4A-8); CYAN = reference, LIME = actual item: ");
+                "ACTIVE V7: 24 preserved gates/furnaces/AXIS plus 6 Crafter and 6 Jigsaw FrontAndTop in intermediate EAST columns; CYAN = reference, LIME = actual item: ");
         for (Station station : STATIONS) {
             result.append(station.name().replace('_', ' '))
                     .append("[row ").append(station.row() + 1)
