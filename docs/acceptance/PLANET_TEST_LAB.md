@@ -8,6 +8,15 @@ Normally the lab is **replaceable and current-only**; JUnit/ASM preserve regress
 
 This is still ONE lab pad per face, within the original 41×33 floor; no expanding wings, no old unrelated museum. The lab is populated with reference **blocks** rather than dropping item entities. Natural item placement must be done by the player.
 
+## Temporary six-face developer visibility
+
+In the dev `runClient` only, `-Dplanetary.debug.visibility.nightVision=true` adds **vanilla night vision** to players in the dedicated Planet dimension on all six faces. This is deliberately NOT a physical skylight/AO/block-light solution, and the final lighting/shadow behavior will still require Phase 3B. It does not change light levels, spawning, crop behavior, or mod rendering pipelines. The visual result is **brighter**, not necessarily pixel-identical to the +Y sky and biome colors.
+
+- `/planetary test light off`: disable the visual helper for the issuing player and examine actual dark/underside lighting.
+- `/planetary test light on`: restore the helper for the issuing player while in the Planet world.
+- The effect is only granted in the dev JVM profile. Natural potion/mod night vision is intentionally left alone; the tracked dev effect is removed after leaving Planet / disconnecting.
+- Actual mod, shader, shadow, AO, cave and edge tests must also be repeated with the helper OFF. Green JUnit is not real applied client evidence.
+
 ## Commands and surface convention
 
 1. After green CI, pull `2.0` and run `.\run-client.ps1`. Only the dev client enables `planetary.debug.fixtures.auto`.
