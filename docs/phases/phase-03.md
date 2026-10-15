@@ -2,6 +2,8 @@
 
 **Статус из роадмапа:** PARTIAL. Это не отметка об игровой приёмке. [Индекс](README.md) · [Основной роадмап](../IMPLEMENTATION_PLAN.md) · [Правила](../../AGENTS.md).
 
+**Temporary visibility aid, not a renderer fix (2026-10-15):** In dev `runClient`, `PlanetDevVisibility` uses vanilla NIGHT_VISION on all six Planet faces; `/planetary test light off` reveals the underlying real lighting. This does **not** implement sky direction adaptation, local skylight, AO, shadow or mod shader pipelines. Real Phase 3B lighting acceptance must be tested with this helper OFF as well.
+
 ## Короткие самостоятельные пакеты
 
 - [ ] **3.1** 3A: аудит формы outline/collision/visual/interact и seam/occlusion caches; короткая отдельная матрица.
