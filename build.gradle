@@ -21,6 +21,8 @@ neoForge {
             // Dedicated test-world fixtures: ONLY for the local development
             // runClient profile. Normal distributed mod jars never auto-build.
             jvmArgument '-Dplanetary.debug.fixtures.auto=true'
+            // Temporary visual aid, NOT a local sky/block light implementation.
+            jvmArgument '-Dplanetary.debug.visibility.nightVision=true'
         }
     }
 
