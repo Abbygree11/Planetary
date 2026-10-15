@@ -1,10 +1,10 @@
-# Planet Test Lab — V6 catch-up acceptance (2.4A-6, -7, -8)
+# Planet Test Lab — V7 catch-up + FrontAndTop (2.4A-6 through 2.4A-9)
 
 Minecraft 1.21.1 / NeoForge 21.1.215 / Java 21, branch `2.0`.
 
-## Why V6 includes three families
+## Why V7 retains earlier families
 
-Normally the lab is **replaceable and current-only**; JUnit/ASM preserve regression coverage and historical scenes are not retained. The game-client checks for `2.4A-6` and `2.4A-7` were accidentally skipped when previous long chats lost connection. **Temporary exception requested by the user:** restore these two whole-owner families beside current `2.4A-8`, then resume the usual active-only replacement policy after manual acceptance.
+Normally the lab is **replaceable and current-only**; JUnit/ASM preserve regression coverage and historical scenes are not retained. The game-client checks for `2.4A-6` and `2.4A-7` were accidentally skipped when previous long chats lost connection. **Temporary exception requested by the user:** restore these two whole-owner families beside `2.4A-8`, then resume the usual active-only replacement policy after manual acceptance. **V7 retains all 24 V6 stations** and adds 12 new Crafter/Jigsaw stations for `2.4A-9`. The old items remain available for the delayed manual checks.
 
 This is still ONE lab pad per face, within the original 41×33 floor; no expanding wings, no old unrelated museum. The lab is populated with reference **blocks** rather than dropping item entities. Natural item placement must be done by the player.
 
@@ -24,9 +24,9 @@ In the dev `runClient` only, `-Dplanetary.debug.visibility.nightVision=true` add
 3. **CYAN**: preinstalled target-canonical BlockState reference. **LIME**: adjacent empty natural-placement lane. Take a corresponding item from the creative inventory and place it via actual mouse click. Never interpret a reference fixture as a successful BlockItem test.
 4. Use `/planetary test rebuild <face>` only for a deliberate destructive reset of this one face's bounded development pad.
 
-Coordinates are in local EAST / SOUTH of each face; the compact V6 grid has four EAST columns (`-15, -5, +5, +15`) and six SOUTH rows (`-12, -7, -2, +3, +8, +13`). Each 5×5 reference/placement/support footprint is isolated.
+Coordinates are in local EAST / SOUTH of each face; the retained V6 grid has four EAST columns (`-15, -5, +5, +15`) and the V7 FrontAndTop stations occupy three interstitial EAST columns (`-10, 0, +10`). Both share six SOUTH rows (`-12, -7, -2, +3, +8, +13`). Each 5×5 reference/placement/support footprint is isolated.
 
-## Active V6 station grid
+## Retained 24 V6 stations (unchanged positions)
 
 | SOUTH | EAST -15 | EAST -5 | EAST +5 | EAST +15 |
 | --- | --- | --- | --- | --- |
@@ -37,6 +37,19 @@ Coordinates are in local EAST / SOUTH of each face; the compact V6 grid has four
 | +8 | Oak log local Y | Oak log local X | Stripped oak log local Z | Waterlogged chain |
 | +13 | Basalt local X | Hay bale local Y | Infested deepslate local Z | Crimson stem local X |
 
+## Additional 12 V7 FrontAndTop stations
+
+The new six-front *Crafter* and six-front *Jigsaw* stations fit between the old columns on the same 41×33 pad. They are independent 5×5 footprints and preserve every V6 test case.
+
+| SOUTH | EAST -10 | EAST 0 | EAST +10 |
+| --- | --- | --- | --- |
+| -12 | Crafter NORTH_UP | Crafter SOUTH_UP | Crafter EAST_UP |
+| -7 | Crafter WEST_UP | Crafter UP_NORTH | Crafter DOWN_EAST |
+| -2 | Jigsaw NORTH_UP | Jigsaw SOUTH_UP | Jigsaw EAST_UP |
+| +3 | Jigsaw WEST_UP | Jigsaw UP_SOUTH | Jigsaw DOWN_WEST |
+
+**Natural placement rules:** use an actual Crafter or Jigsaw item in the **empty LIME** lane. Crafter's front is chosen from the player's viewing direction, not the clicked wall; for front UP look DOWN, for front DOWN look UP and click the supplied overhead support's underside. Jigsaw's front is taken from the clicked physical face: for local NORTH click the supplied SOUTH+1 support, for SOUTH the NORTH-1 support, for EAST the WEST/center support, for WEST the EAST+2 support, for DOWN the overhead underside, and for UP the LIME floor. Observe the resulting `orientation` state: the CYAN reference is **not** proof of a real click path. You may need operator permissions to obtain a Jigsaw block: `/give @s minecraft:jigsaw`. For vertical fronts, rotate player heading to exercise additional TOP choices; the 12 legal `FrontAndTop` states are covered by JUnit but not all represented as preset reference stations.
+
 ## Manual checklist — run independently on all six faces
 
 **`2.4A-6` FenceGateBlock (SOUTH rows -12, -7):** place actual gate items facing different player headings into LIME lanes; open/close from both sides, check FACING and OPEN; check IN_WALL with adjacent cobblestone wall, after adding/removing a wall, and with redstone (OPEN/POWERED). For cherry, walls flank both reference and natural lanes. Test vanilla materials plus a truly loaded version-compatible inheriting mod gate and, separately, an independently authored gate. Mod source inheritance alone != mod gameplay PASS.
@@ -45,12 +58,14 @@ Coordinates are in local EAST / SOUTH of each face; the compact V6 grid has four
 
 **`2.4A-8` RotatedPillar/Chain/Infested (SOUTH rows +8, +13):** place actual X/Y/Z axis blocks. For X click the supplied support at station-local EAST+2; for Z click station-local SOUTH+1 support; for Y click the LIME floor. Confirm AXIS and Chain WATERLOGGED after actual water placement; verify infested deepslate and alternate materials. A mod log inheriting RotatedPillarBlock needs a real loaded compatible version for gameplay evidence; mod worldgen remains independent.
 
-**Across all three:** also check the 12 physical cube edges, eight corners, and ordinary non-Planet Overworld. The lab is on face interiors, so edges/corners must be tested separately. Confirm client startup/Mixin application and dedicated-server use separately from JUnit. Generic missing side-quads on cube seams are tracked in Phase 3B, not resolved by this lab.
+**`2.4A-9` Crafter/Jigsaw:** place each case on +Y and the five rotated interiors and compare the state domain with CYAN. Verify actual Crafter opening/inventory and block identity; do **not** count physical item ejection direction as covered by placement—it belongs to Phase 7A. Jigsaw structure attachment / worldgen belongs to Phase 9 and is not proven by this lab. A true loaded mod inheritor or independent override needs separate testing. Recheck vanilla no-Planet placement.
+
+**Across all four stages:** also check the 12 physical cube edges, eight corners, and ordinary non-Planet Overworld. The lab is on face interiors, so edges/corners must be tested separately. Confirm client startup/Mixin application and dedicated-server use separately from JUnit. Generic missing side-quads on cube seams are tracked in Phase 3B, not resolved by this lab.
 
 ## Automatic migration and protection
 
-**V6 marker = OBSIDIAN**, located at local (0, floor, 0). All known predecessor markers auto-migrate: V5 AMETHYST; V4 NETHERITE; V3 EMERALD; V2 DIAMOND; V1 GOLD. An already-current V6 pad is untouched on login. An entirely empty reserved volume can be built. Any *unmarked* occupied volume is preserved, unless the player explicitly requests `rebuild <face>`.
+**V7 marker = CRYING_OBSIDIAN**, located at local (0, floor, 0). All known predecessor markers auto-migrate: V6 OBSIDIAN; V5 AMETHYST; V4 NETHERITE; V3 EMERALD; V2 DIAMOND; V1 GOLD. An already-current V7 pad is untouched on login. **A previously marker-owned V6 pad is cleared inside the reserved volume and rebuilt as V7** (all original test scenarios return at the same coordinates, but placed player test items inside the pad are lost). An entirely empty reserved volume can be built. Any *unmarked* occupied volume is preserved, unless the player explicitly requests `rebuild <face>`.
 
 Migration clears **only** the marker-owned existing lab inside EAST -20..+20, SOUTH -16..+16, radial floor `FLOOR_RADIUS` through `FLOOR_RADIUS+6`. The old V1 secondary wing (EAST 21..40, SOUTH -12..12) is cleared **only** if its historical LAPIS marker exists. Structures built inside a previously marker-owned dev pad may be replaced; outside that pad stay unchanged. Keep important builds elsewhere.
 
-CI PASS means compile/JUnit/ASM, not applied client Mixins or real gameplay. Prior relevant CI: gate V3 [#38478594846](https://github.com/Abbygree11/Planetary/actions/runs/38478594846), furnace V4 [#38622053271](https://github.com/Abbygree11/Planetary/actions/runs/38622053271), axis V5 [#38643250260](https://github.com/Abbygree11/Planetary/actions/runs/38643250260). The new V6 CI/game statuses must be tracked separately.
+CI PASS means compile/JUnit/ASM, not applied client Mixins or real gameplay. Prior relevant CI: gate V3 [#38478594846](https://github.com/Abbygree11/Planetary/actions/runs/38478594846), furnace V4 [#38622053271](https://github.com/Abbygree11/Planetary/actions/runs/38622053271), axis V5 [#38643250260](https://github.com/Abbygree11/Planetary/actions/runs/38643250260). V6 lab [CI #38644260176](https://github.com/Abbygree11/Planetary/actions/runs/38644260176) SUCCESS and selected FrontAndTop owner code [CI #38789046409](https://github.com/Abbygree11/Planetary/actions/runs/38789046409) SUCCESS. **The new V7 fixture/test commit needs its own CI** and actual gameplay acceptance remains PENDING.
