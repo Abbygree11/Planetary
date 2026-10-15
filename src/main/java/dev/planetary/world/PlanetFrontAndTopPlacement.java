@@ -8,7 +8,6 @@ import net.minecraft.world.item.context.DirectionalPlaceContext;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -93,7 +92,8 @@ public final class PlanetFrontAndTopPlacement {
                 }
             }
         }
-        return front.flatMap(dir -> crafterOrientation(dir, heading))
+        final Optional<Direction> resolvedHeading = heading;
+        return front.flatMap(dir -> crafterOrientation(dir, resolvedHeading))
                 .map(orientation -> original.setValue(
                         BlockStateProperties.ORIENTATION, orientation));
     }
@@ -112,12 +112,11 @@ public final class PlanetFrontAndTopPlacement {
                     if (context.getPlayer() != null) {
                         horizontal = PlanetFrameApi.localHorizontalDirection(context);
                     } else if (context instanceof DirectionalPlaceContext) {
-                        Direction candidate = frame.targetFace() == null
-                                ? null : PlanetBlockRuntime.stateFrameAt(
-                                        context.getLevel(), context.getClickedPos())
-                                        .map(target -> target.worldToLocal(
-                                                context.getHorizontalDirection()))
-                                        .orElse(null);
+                        Direction candidate = PlanetBlockRuntime.stateFrameAt(
+                                context.getLevel(), context.getClickedPos())
+                                .map(target -> target.worldToLocal(
+                                        context.getHorizontalDirection()))
+                                .orElse(null);
                         if (candidate != null && candidate.getAxis().isHorizontal()) {
                             horizontal = Optional.of(candidate);
                         }
