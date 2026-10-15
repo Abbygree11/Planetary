@@ -52,10 +52,29 @@ public final class PlanetTestCommands {
                     .executes(ctx -> rebuild(ctx.getSource(), face)));
         }
 
+        LiteralArgumentBuilder<CommandSourceStack> light = Commands.literal("light");
+        light.then(Commands.literal("on").executes(ctx -> visibility(ctx.getSource(), true)));
+        light.then(Commands.literal("off").executes(ctx -> visibility(ctx.getSource(), false)));
+        test.then(light);
         test.then(go);
         test.then(rebuild);
         root.then(test);
         event.getDispatcher().register(root);
+    }
+
+    private static int visibility(CommandSourceStack source, boolean enabled)
+            throws com.mojang.brigadier.exceptions.CommandSyntaxException {
+        ServerPlayer player = source.getPlayerOrException();
+        if (!PlanetDevVisibility.setEnabled(player, enabled)) {
+            source.sendFailure(Component.literal(
+                    "[Planetary Test] Dev lighting is disabled outside runClient."));
+            return 0;
+        }
+        source.sendSuccess(() -> Component.literal(
+                "[Planetary Test] Temporary night-vision visibility: "
+                        + (enabled ? "ON" : "OFF")
+                        + ". Physical light/AO/shadows are unchanged."), false);
+        return 1;
     }
 
     private static int buildAll(CommandSourceStack source) {
