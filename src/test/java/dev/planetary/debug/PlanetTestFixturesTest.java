@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 final class PlanetTestFixturesTest {
     @Test
-    void recognizedV1ThroughV5MigrationAndCurrentV6Idempotency() {
+    void recognizedV1ThroughV6MigrationAndCurrentV7Idempotency() {
         assertEquals(PlanetTestFixtures.BuildAction.REBUILD,
                 PlanetTestFixtures.planBuild(Blocks.GOLD_BLOCK.defaultBlockState(), false, false));
         assertEquals(PlanetTestFixtures.BuildAction.REBUILD,
@@ -30,8 +30,10 @@ final class PlanetTestFixturesTest {
                 PlanetTestFixtures.planBuild(Blocks.NETHERITE_BLOCK.defaultBlockState(), false, false));
         assertEquals(PlanetTestFixtures.BuildAction.REBUILD,
                 PlanetTestFixtures.planBuild(Blocks.AMETHYST_BLOCK.defaultBlockState(), false, false));
-        assertEquals(PlanetTestFixtures.BuildAction.ALREADY_CURRENT,
+        assertEquals(PlanetTestFixtures.BuildAction.REBUILD,
                 PlanetTestFixtures.planBuild(Blocks.OBSIDIAN.defaultBlockState(), false, false));
+        assertEquals(PlanetTestFixtures.BuildAction.ALREADY_CURRENT,
+                PlanetTestFixtures.planBuild(Blocks.CRYING_OBSIDIAN.defaultBlockState(), false, false));
         assertEquals(PlanetTestFixtures.BuildAction.REBUILD,
                 PlanetTestFixtures.planBuild(Blocks.AIR.defaultBlockState(), true, false));
         assertEquals(PlanetTestFixtures.BuildAction.PRESERVE_OCCUPIED,
@@ -68,8 +70,8 @@ final class PlanetTestFixturesTest {
     }
 
     @Test
-    void catchUpTwentyFourStationsAcrossThreeFamiliesHaveDistinctReferenceAndNaturalLanes() {
-        assertEquals(24, PlanetTestFixtures.STATIONS.size());
+    void v7ThirtySixStationsPreserveAllOldFamiliesAndAddIndependentFrontAndTopLanes() {
+        assertEquals(36, PlanetTestFixtures.STATIONS.size());
         Set<String> names = new HashSet<>();
         Set<BlockPos> lanes = new HashSet<>();
         Set<BlockPos> reservedSlots = new HashSet<>();
@@ -102,7 +104,10 @@ final class PlanetTestFixturesTest {
                 assertNotEquals(PlanetTestFixtures.marker(face), natural);
             }
         }
-        assertEquals(144, lanes.size());
+        assertEquals(216, lanes.size());
+        // V7 fits entirely within the same 41x33 pad: all interstitial
+        // 5x5 zones are disjoint from old references, player lanes and supports.
+        assertEquals(36 * 25 * 6, reservedSlots.size());
         assertTrue(names.contains("oak_log_y"));
         assertTrue(names.contains("oak_log_x"));
         assertTrue(names.contains("stripped_oak_log_z"));
@@ -119,9 +124,19 @@ final class PlanetTestFixturesTest {
                 "furnace_west", "smoker_lit", "blast_furnace_lit",
                 "furnace_lit", "smoker_north"
         )));
-        assertEquals(24, names.size(), "All station names must be unique");
-        assertFalse(names.contains("end_rod"), "Only the three explicitly pending families");
-        assertTrue(PlanetTestFixtures.gridLegend().contains("ACTIVE V6"));
+        assertTrue(names.containsAll(Set.of(
+                "crafter_front_north", "crafter_front_south",
+                "crafter_front_east", "crafter_front_west",
+                "crafter_front_up", "crafter_front_down",
+                "jigsaw_front_north", "jigsaw_front_south",
+                "jigsaw_front_east", "jigsaw_front_west",
+                "jigsaw_front_up", "jigsaw_front_down"
+        )));
+        assertEquals(6, names.stream().filter(n -> n.startsWith("crafter_front_")).count());
+        assertEquals(6, names.stream().filter(n -> n.startsWith("jigsaw_front_")).count());
+        assertEquals(36, names.size(), "All station names must be unique");
+        assertFalse(names.contains("end_rod"), "Only current placement families");
+        assertTrue(PlanetTestFixtures.gridLegend().contains("ACTIVE V7"));
     }
 
     @Test
