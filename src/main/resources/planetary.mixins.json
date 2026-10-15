@@ -80,6 +80,8 @@
     "StairBlockLocalPlacementMixin",
     "FenceGateBlockLocalSemanticsMixin",
     "AbstractFurnaceBlockLocalPlacementMixin",
+    "CrafterBlockLocalOrientationMixin",
+    "JigsawBlockLocalOrientationMixin",
     "RedstoneWallTorchSupportMixin",
     "BaseTorchBlockSupportMixin",
     "FaceAttachedHorizontalDirectionalBlockSupportMixin",
