@@ -72,6 +72,14 @@ public final class PlanetRotation16Placement {
         }
         double targetYaw = Math.toDegrees(Math.atan2(
                 -localTarget.x(), localTarget.z()));
+        // Direction.fromYRot rounds to one of the four cardinal headings.
+        // atan2(sin(yaw), cos(yaw)) can produce -45.00000000000001 at
+        // a vanilla exact boundary. Preserve Minecraft's exact half-way
+        // tie rule rather than arbitrarily selecting the prior quadrant.
+        double exactBoundary = Math.rint(targetYaw / 45.0D) * 45.0D;
+        if (Math.abs(targetYaw - exactBoundary) < 1.0E-9D) {
+            targetYaw = exactBoundary;
+        }
         Direction snappedActorHeading = Direction.fromYRot(targetYaw);
         int snapped = RotationSegment.convertToSegment(
                 snappedActorHeading.getOpposite());
