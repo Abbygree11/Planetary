@@ -40,8 +40,9 @@ public final class PlanetTestFixtures {
     public static final int FLOOR_MAX_Z = 16;
     private static final int MAX_UP_OFFSET = 6;
 
-    /** V7: 2.4A-9 plus retained 2.4A-6/7/8 catch-up stations. */
-    public static final BlockState CURRENT_MARKER = Blocks.CRYING_OBSIDIAN.defaultBlockState();
+    /** V8: 2.4A-10 P10 family with all V7 + V6 pending gameplay cases. */
+    public static final BlockState CURRENT_MARKER = Blocks.PURPUR_BLOCK.defaultBlockState();
+    public static final BlockState V7_MARKER = Blocks.CRYING_OBSIDIAN.defaultBlockState();
     public static final BlockState V6_MARKER = Blocks.OBSIDIAN.defaultBlockState();
     public static final BlockState V5_MARKER = Blocks.AMETHYST_BLOCK.defaultBlockState();
     public static final BlockState LEGACY_MARKER = Blocks.NETHERITE_BLOCK.defaultBlockState();
@@ -124,7 +125,14 @@ public final class PlanetTestFixtures {
             new Station("jigsaw_front_east", 6, 2),
             new Station("jigsaw_front_west", 4, 3),
             new Station("jigsaw_front_up", 5, 3),
-            new Station("jigsaw_front_down", 6, 3)
+            new Station("jigsaw_front_down", 6, 3),
+            // 2.4A-10: all four declaring ROTATION_16 authors, two sign types.
+            new Station("oak_sign_yaw_0", 4, 4),
+            new Station("spruce_sign_yaw_90", 5, 4),
+            new Station("white_banner_yaw_180", 6, 4),
+            new Station("player_head_yaw_270", 4, 5),
+            new Station("oak_ceiling_sign_attached", 5, 5),
+            new Station("cherry_ceiling_sign_rigid", 6, 5)
     );
 
     public record BuildStats(int built, int alreadyPresent, int occupied) {
@@ -186,7 +194,8 @@ public final class PlanetTestFixtures {
         Objects.requireNonNull(existingMarker, "existingMarker");
         if (explicitRebuild) return BuildAction.REBUILD;
         if (existingMarker.equals(CURRENT_MARKER)) return BuildAction.ALREADY_CURRENT;
-        if (existingMarker.equals(V6_MARKER)
+        if (existingMarker.equals(V7_MARKER)
+                || existingMarker.equals(V6_MARKER)
                 || existingMarker.equals(V5_MARKER)
                 || existingMarker.equals(LEGACY_MARKER)
                 || existingMarker.equals(OLDEST_MARKER)
@@ -212,6 +221,7 @@ public final class PlanetTestFixtures {
         // Avoid scanning 9,471 cells if this is already an owned/current pad
         // or an explicitly requested full reset.
         boolean empty = force || previousMarker.equals(CURRENT_MARKER)
+                || previousMarker.equals(V7_MARKER)
                 || previousMarker.equals(V6_MARKER)
                 || previousMarker.equals(V5_MARKER)
                 || previousMarker.equals(LEGACY_MARKER)
@@ -225,7 +235,8 @@ public final class PlanetTestFixtures {
 
         // Replace only a known owned pad or the user's explicit rebuild area;
         // NEVER reset unmarked occupied terrain during dev login.
-        if (force || previousMarker.equals(V6_MARKER)
+        if (force || previousMarker.equals(V7_MARKER)
+                || previousMarker.equals(V6_MARKER)
                 || previousMarker.equals(V5_MARKER)
                 || previousMarker.equals(LEGACY_MARKER)
                 || previousMarker.equals(OLDEST_MARKER)
@@ -382,7 +393,21 @@ public final class PlanetTestFixtures {
                     .setValue(BlockStateProperties.ORIENTATION, FrontAndTop.UP_SOUTH);
             case "jigsaw_front_down" -> Blocks.JIGSAW.defaultBlockState()
                     .setValue(BlockStateProperties.ORIENTATION, FrontAndTop.DOWN_WEST);
-            default -> throw new IllegalStateException("Unknown V7 station " + station.name());
+            case "oak_sign_yaw_0" -> Blocks.OAK_SIGN.defaultBlockState()
+                    .setValue(BlockStateProperties.ROTATION_16, 0);
+            case "spruce_sign_yaw_90" -> Blocks.SPRUCE_SIGN.defaultBlockState()
+                    .setValue(BlockStateProperties.ROTATION_16, 4);
+            case "white_banner_yaw_180" -> Blocks.WHITE_BANNER.defaultBlockState()
+                    .setValue(BlockStateProperties.ROTATION_16, 8);
+            case "player_head_yaw_270" -> Blocks.PLAYER_HEAD.defaultBlockState()
+                    .setValue(BlockStateProperties.ROTATION_16, 12);
+            case "oak_ceiling_sign_attached" -> Blocks.OAK_HANGING_SIGN.defaultBlockState()
+                    .setValue(BlockStateProperties.ROTATION_16, 8)
+                    .setValue(net.minecraft.world.level.block.CeilingHangingSignBlock.ATTACHED, true);
+            case "cherry_ceiling_sign_rigid" -> Blocks.CHERRY_HANGING_SIGN.defaultBlockState()
+                    .setValue(BlockStateProperties.ROTATION_16, 0)
+                    .setValue(net.minecraft.world.level.block.CeilingHangingSignBlock.ATTACHED, false);
+            default -> throw new IllegalStateException("Unknown V8 station " + station.name());
         };
 
         // Gate wall graph: center wall touches both CYAN and LIME lanes.
@@ -435,6 +460,16 @@ public final class PlanetTestFixtures {
             put(level, physical(face, station.east() + 1, up + 1, south),
                     Blocks.POLISHED_ANDESITE.defaultBlockState());
         }
+        // Ceiling-hanging signage needs a TRUE local ceiling directly above
+        // the reference and player LIME lane; these are separate owned cells.
+        // A full support produces rigid ATTACHED=false unless sneaking or
+        // the inherited sign/chain policy selects the flexible variant.
+        if (station.name().contains("_ceiling_sign_")) {
+            put(level, physical(face, station.east() - 1, up + 1, south),
+                    Blocks.POLISHED_ANDESITE.defaultBlockState());
+            put(level, physical(face, station.east() + 1, up + 1, south),
+                    Blocks.POLISHED_ANDESITE.defaultBlockState());
+        }
         put(level, reference, state);
     }
 
@@ -459,7 +494,7 @@ public final class PlanetTestFixtures {
 
     public static String gridLegend() {
         StringBuilder result = new StringBuilder(
-                "ACTIVE V7: 24 preserved gates/furnaces/AXIS plus 6 Crafter and 6 Jigsaw FrontAndTop in intermediate EAST columns; CYAN = reference, LIME = actual item: ");
+                "ACTIVE V8: 24 gate/furnace/AXIS +12 Crafter/Jigsaw +6 standing signs, banner, head, ceiling-hanging signs P10; CYAN = reference, LIME = actual item: ");
         for (Station station : STATIONS) {
             result.append(station.name().replace('_', ' '))
                     .append("[row ").append(station.row() + 1)
