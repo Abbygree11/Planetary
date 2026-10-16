@@ -33,15 +33,13 @@ final class PlanetRotation16PlacementTest {
     @Test
     void sourceToTargetChartTransportIsNotActorLocalIdentity() {
         var actor = new PlanetGravityFrame(PlanetFace.POS_Y);
-        var target = new PlanetGravityFrame(PlanetFace.POS_X);
+        var target = new PlanetGravityFrame(PlanetFace.NEG_Y);
         var rotation = PlanetRotation16Placement.rotation(
-                actor, target, -90f).orElseThrow();
+                actor, target, 0f).orElseThrow();
         assertNotEquals(PlanetRotation16Placement.rotation(
-                actor, actor, -90f).orElseThrow(), rotation);
-        // Actor +Y WEST/EAST vector remains physical, then target projection.
-        var localActor = new dev.planetary.topology.PlanetFrameVector(
-                -Math.sin(Math.toRadians(-90)), 0,
-                Math.cos(Math.toRadians(-90)));
+                actor, actor, 0f).orElseThrow(), rotation);
+        // Actor +Y SOUTH remains physical, and is inverted on -Y chart.
+        var localActor = new dev.planetary.topology.PlanetFrameVector(0, 0, 1);
         var localTarget = target.worldToLocal(actor.localToWorld(localActor));
         assertEquals(PlanetOrientationProperties.targetTangentRotation16(
                 localTarget,
