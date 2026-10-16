@@ -162,6 +162,99 @@ final class PlanetFrameApiTest {
     }
 
     @Test
+    void crafterSingularNearestLookingDoesNotTreatClickedFloorAsPlayerView() {
+        Level level = mock(Level.class);
+        PlanetGravityRuntime.bind(level, FIELD);
+
+        try {
+            for (PlanetFace face : PlanetFace.values()) {
+                PlanetGravityFrame frame = new PlanetGravityFrame(face);
+                var outward = frame.worldUp();
+                BlockPos target = new BlockPos(
+                        outward.x() * R,
+                        100 + outward.y() * R,
+                        outward.z() * R
+                );
+                Player player = mock(
+                        Player.class,
+                        withSettings().extraInterfaces(PlanetGravityEntity.class)
+                );
+                BlockPlaceContext context = mock(BlockPlaceContext.class);
+                when(context.getLevel()).thenReturn(level);
+                when(context.getClickedPos()).thenReturn(target);
+                when(context.getClickedFace()).thenReturn(
+                        dev.planetary.world.PlanetVanillaDirection.localToWorld(
+                                frame, Direction.UP));
+                when(context.getClickLocation()).thenReturn(Vec3.atCenterOf(target));
+                when(context.getPlayer()).thenReturn(player);
+                when(context.replacingClickedOnBlock()).thenReturn(false);
+                when(player.getViewXRot(1.0F)).thenReturn(0.0F);
+                when(player.getViewYRot(1.0F)).thenReturn(0.0F);
+                when(((PlanetGravityEntity) player).planetary$gravityFrame())
+                        .thenReturn(java.util.Optional.of(frame));
+
+                // Vanilla singular author: raw SOUTH look (yaw=0/pitch=0),
+                // so the Crafter FRONT is NORTH even when clicking a floor.
+                assertEquals(Direction.SOUTH,
+                        PlanetFrameApi.localRawNearestLookingDirection(context)
+                                .orElseThrow(), face.toString());
+                // Other owners deliberately use the PLURAL, support-biased
+                // order. Its first entry is DOWN on the same floor click.
+                assertEquals(Direction.DOWN,
+                        PlanetFrameApi.localNearestLookingDirections(context)
+                                .orElseThrow().get(0), face.toString());
+
+                when(context.getHorizontalDirection()).thenReturn(Direction.SOUTH);
+                var placed = dev.planetary.world.PlanetFrontAndTopPlacement
+                        .afterCrafterPlacement(context,
+                                net.minecraft.world.level.block.Blocks.CRAFTER
+                                        .defaultBlockState()).orElseThrow();
+                assertEquals(net.minecraft.core.FrontAndTop.NORTH_UP,
+                        placed.getValue(net.minecraft.world.level.block.state
+                                .properties.BlockStateProperties.ORIENTATION),
+                        face.toString());
+            }
+        } finally {
+            PlanetGravityRuntime.unbind(level, FIELD);
+        }
+    }
+
+    @Test
+    void singularCrafterLookTransportsBetweenActorAndTargetCharts() {
+        Level level = mock(Level.class);
+        PlanetGravityRuntime.bind(level, FIELD);
+        try {
+            BlockPos target = new BlockPos(R, 100, 0);
+            Player player = mock(Player.class,
+                    withSettings().extraInterfaces(PlanetGravityEntity.class));
+            BlockPlaceContext context = mock(BlockPlaceContext.class);
+            when(context.getLevel()).thenReturn(level);
+            when(context.getClickedPos()).thenReturn(target);
+            when(context.getClickedFace()).thenReturn(Direction.EAST);
+            when(context.getClickLocation()).thenReturn(Vec3.atCenterOf(target));
+            when(context.getPlayer()).thenReturn(player);
+            when(context.replacingClickedOnBlock()).thenReturn(false);
+            when(player.getViewXRot(1.0F)).thenReturn(-90.0F);
+            when(player.getViewYRot(1.0F)).thenReturn(0.0F);
+            when(((PlanetGravityEntity) player).planetary$gravityFrame())
+                    .thenReturn(java.util.Optional.of(
+                            new PlanetGravityFrame(PlanetFace.POS_Y)));
+
+            // Physical UP of actor +Y is canonical WEST on target +X.
+            assertEquals(Direction.WEST,
+                    PlanetFrameApi.localRawNearestLookingDirection(context)
+                            .orElseThrow());
+            // Unlike singular lookup, plural lookup prioritizes clicked face
+            // opposite (= target local DOWN).
+            assertEquals(Direction.DOWN,
+                    PlanetFrameApi.localNearestLookingDirections(context)
+                            .orElseThrow().get(0));
+        } finally {
+            PlanetGravityRuntime.unbind(level, FIELD);
+        }
+    }
+
+    @Test
     void nearestLookingDirectionsReframePlayerBodyToTargetCanonicalFrame() {
         Level level = mock(Level.class);
         Player player = mock(

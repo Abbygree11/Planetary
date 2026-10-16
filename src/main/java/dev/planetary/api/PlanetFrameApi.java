@@ -142,6 +142,46 @@ public final class PlanetFrameApi {
     }
 
     /**
+     * Planet-local counterpart of BlockPlaceContext.getNearestLookingDirection()
+     * (SINGULAR). The vanilla method takes Direction.orderedByNearest(player)[0]
+     * directly and does NOT reorder it according to the clicked block face.
+     *
+     * <p>Distinct from getNearestLookingDirections() (PLURAL), which prioritizes
+     * the opposite clicked face for non-replacing BlockPlaceContext. CrafterBlock
+     * consumes this singular author, whereas other owners legitimately consume
+     * the plural form. Keep both explicit to avoid regressing modded callers.</p>
+     *
+     * <p>The actor's raw nearest direction is body-local in Planet runtime,
+     * transported through physical space into the TARGET canonical chart,
+     * including transitions at a chart boundary. No-Planet, unknown player
+     * frame and player-less contexts opt out.</p>
+     */
+    public static Optional<Direction> localRawNearestLookingDirection(
+            BlockPlaceContext context
+    ) {
+        Objects.requireNonNull(context, "context");
+
+        Player player = context.getPlayer();
+        if (!(player instanceof PlanetGravityEntity gravityEntity)) {
+            return Optional.empty();
+        }
+        Optional<PlacementFrame> placement = placementFrame(context);
+        if (placement.isEmpty()) {
+            return Optional.empty();
+        }
+        return gravityEntity.planetary$gravityFrame().map(actorFrame -> {
+            Direction actorBodyNearest = Direction.orderedByNearest(player)[0];
+            Direction physical = PlanetVanillaDirection.localToWorld(
+                    actorFrame, actorBodyNearest
+            );
+            return PlanetVanillaDirection.worldToLocal(
+                    new PlanetGravityFrame(placement.get().targetFace()),
+                    physical
+            );
+        });
+    }
+
+    /**
      * Planet-local counterpart of BlockPlaceContext.getNearestLookingDirections
      * for interactive player placement.
      *

@@ -73,9 +73,12 @@ public final class PlanetFrontAndTopPlacement {
         Optional<Direction> front = Optional.empty();
         Optional<Direction> heading = Optional.empty();
         if (context.getPlayer() != null) {
-            front = PlanetFrameApi.localNearestLookingDirections(context)
-                    .filter(list -> !list.isEmpty())
-                    .map(list -> list.get(0).getOpposite());
+            // CrafterBlock.getStateForPlacement uses the vanilla SINGULAR
+            // getNearestLookingDirection(), which is actor-view-only.
+            // The PLURAL variant reorders against the clicked face and
+            // incorrectly makes floor-placed Crafter FRONT=UP.
+            front = PlanetFrameApi.localRawNearestLookingDirection(context)
+                    .map(Direction::getOpposite);
             heading = PlanetFrameApi.localHorizontalDirection(context);
         } else if (context instanceof DirectionalPlaceContext) {
             // Synthetic contexts have EXPLICIT physical directions, not
