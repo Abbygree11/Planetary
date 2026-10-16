@@ -125,9 +125,7 @@ public final class PlanetRotation16Placement {
     private static boolean attachedAtCanonicalSupport(
             BlockPlaceContext context, BlockState original, Rotation angles
     ) {
-        if (!(context.getLevel() instanceof Level level)) {
-            return original.getValue(CeilingHangingSignBlock.ATTACHED);
-        }
+        Level level = context.getLevel();
         BlockPos pos = context.getClickedPos();
         var support = PlanetBlockSupportRuntime.query(
                 level, pos, Direction.UP);
