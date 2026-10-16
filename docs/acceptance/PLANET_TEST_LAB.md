@@ -1,10 +1,10 @@
-# Planet Test Lab — V7 catch-up + FrontAndTop (2.4A-6 through 2.4A-9)
+# Planet Test Lab — V8 catch-up + ROTATION_16 (2.4A-6 through 2.4A-10)
 
 Minecraft 1.21.1 / NeoForge 21.1.215 / Java 21, branch `2.0`.
 
-## Why V7 retains earlier families
+## Why V8 retains earlier families
 
-Normally the lab is **replaceable and current-only**; JUnit/ASM preserve regression coverage and historical scenes are not retained. The game-client checks for `2.4A-6` and `2.4A-7` were accidentally skipped when previous long chats lost connection. **Temporary exception requested by the user:** restore these two whole-owner families beside `2.4A-8`, then resume the usual active-only replacement policy after manual acceptance. **V7 retains all 24 V6 stations** and adds 12 new Crafter/Jigsaw stations for `2.4A-9`. The old items remain available for the delayed manual checks.
+Normally the lab is **replaceable and current-only**; JUnit/ASM preserve regression coverage and historical scenes are not retained. The game-client checks for `2.4A-6` and `2.4A-7` were accidentally skipped when previous long chats lost connection. **Temporary exception requested by the user:** restore these two whole-owner families beside `2.4A-8`, then resume the usual active-only replacement policy after manual acceptance. **V8 retains all 36 V7 stations** (including 24 V6 stations) and adds six ROTATION_16 stations for `2.4A-10`. The old items remain available for the delayed manual checks.
 
 This is still ONE lab pad per face, within the original 41×33 floor; no expanding wings, no old unrelated museum. The lab is populated with reference **blocks** rather than dropping item entities. Natural item placement must be done by the player.
 
@@ -24,7 +24,7 @@ In the dev `runClient` only, `-Dplanetary.debug.visibility.nightVision=true` add
 3. **CYAN**: preinstalled target-canonical BlockState reference. **LIME**: adjacent empty natural-placement lane. Take a corresponding item from the creative inventory and place it via actual mouse click. Never interpret a reference fixture as a successful BlockItem test.
 4. Use `/planetary test rebuild <face>` only for a deliberate destructive reset of this one face's bounded development pad.
 
-Coordinates are in local EAST / SOUTH of each face; the retained V6 grid has four EAST columns (`-15, -5, +5, +15`) and the V7 FrontAndTop stations occupy three interstitial EAST columns (`-10, 0, +10`). Both share six SOUTH rows (`-12, -7, -2, +3, +8, +13`). Each 5×5 reference/placement/support footprint is isolated.
+Coordinates are in local EAST / SOUTH of each face; the retained V6 grid has four EAST columns (`-15, -5, +5, +15`) and the V7/V8 FrontAndTop + ROTATION_16 stations occupy three interstitial EAST columns (`-10, 0, +10`). Both share six SOUTH rows (`-12, -7, -2, +3, +8, +13`). Each 5×5 reference/placement/support footprint is isolated.
 
 ## Retained 24 V6 stations (unchanged positions)
 
@@ -37,7 +37,7 @@ Coordinates are in local EAST / SOUTH of each face; the retained V6 grid has fou
 | +8 | Oak log local Y | Oak log local X | Stripped oak log local Z | Waterlogged chain |
 | +13 | Basalt local X | Hay bale local Y | Infested deepslate local Z | Crimson stem local X |
 
-## Additional 12 V7 FrontAndTop stations
+## Preserved 12 V7 FrontAndTop stations
 
 The new six-front *Crafter* and six-front *Jigsaw* stations fit between the old columns on the same 41×33 pad. They are independent 5×5 footprints and preserve every V6 test case.
 
@@ -60,6 +60,19 @@ The new six-front *Crafter* and six-front *Jigsaw* stations fit between the old 
 
 The user reports exactly this center-vs-edge change, including on +Y. **Consistent with vanilla orientation, not by itself a new defect**, but no full six-face gameplay PASS: request a screenshot of F3 targeted `orientation` and view pitch if there is a mismatch against the same ordinary Overworld placement under the same yaw/pitch. Prior source bug (singular vs plural look) was fixed in [04a3535](https://github.com/Abbygree11/Planetary/commit/04a35357b2126e805a1313cf17eef1563336633b), [CI #38953937805](https://github.com/Abbygree11/Planetary/actions/runs/38953937805) SUCCESS. This note is docs-only; NO new runtime code or CI claimed.
 
+## Additional six V8 ROTATION_16 stations
+
+These six new cases fill the last free positions of the existing seven-column, six-row grid, leaving **42 independent 5×5 station footprints inside each existing 41×33 pad** (six pads total). Reference states are direct *CYAN* setBlock and **not successful placement**; *LIME* remains empty for actual item use. For hanging-sign stations, a separate solid **local-UP overhead support** is installed above each CYAN and LIME lane.
+
+| SOUTH | EAST -10 | EAST 0 | EAST +10 |
+| --- | --- | --- | --- |
+| +8 | Oak standing sign ROTATION=0 | Spruce standing sign ROTATION=4 | White standing banner ROTATION=8 |
+| +13 | Player head ROTATION=12 | Oak ceiling hanging sign ATTACHED=true | Cherry ceiling hanging sign ATTACHED=false |
+
+**`2.4A-10` owner acceptance:** from +Y and each rotated face, use actual sign/banner/player head/hanging sign **items** and vary actor yaw through all 16 segments (~22.5° steps). Verify the `rotation` number in F3 Targeted Block and that it describes the block's canonical **local tangent plane** (the sign/banner/player-head visual face may require independent Phase 3 BER corrections). Sign and banner yaw use `context.getRotation()+180`, SkullBlock uses original `context.getRotation()`. For the ceiling: clicking a real support underside produces hanging variant (item selects wall vs ceiling independently); ordinary rigid support gives four-quadrant `attached=false`, sneak or non-full support gives full 16-angle `attached=true`. Manually check ceiling support removal, non-Planet placement, changing sign text/wax, banner layers, powered skull variants, waterlogged sign, and a real loaded mod inheritor if available. Text, renderer and structure placement are not certified by placement orientation CI.
+
+**Temporary catch-up policy:** retain original 24 fence-gate/furnace/AXIS and 12 Crafter/Jigsaw stations until user's deferred manual acceptance is complete; do not drop tests simply because a new family was added. New V8 marker PURPUR_BLOCK automatically migrates only previously owned V7 and older markers; manually placed blocks *inside* the old pad will be cleared during migration, but previous test stations return at their old coordinates. No separate wing.
+
 ## Manual checklist — run independently on all six faces
 
 **`2.4A-6` FenceGateBlock (SOUTH rows -12, -7):** place actual gate items facing different player headings into LIME lanes; open/close from both sides, check FACING and OPEN; check IN_WALL with adjacent cobblestone wall, after adding/removing a wall, and with redstone (OPEN/POWERED). For cherry, walls flank both reference and natural lanes. Test vanilla materials plus a truly loaded version-compatible inheriting mod gate and, separately, an independently authored gate. Mod source inheritance alone != mod gameplay PASS.
@@ -70,12 +83,12 @@ The user reports exactly this center-vs-edge change, including on +Y. **Consiste
 
 **`2.4A-9` Crafter/Jigsaw:** place each case on +Y and the five rotated interiors and compare the state domain with CYAN. Verify actual Crafter opening/inventory and block identity; do **not** count physical item ejection direction as covered by placement—it belongs to Phase 7A. Jigsaw structure attachment / worldgen belongs to Phase 9 and is not proven by this lab. A true loaded mod inheritor or independent override needs separate testing. Recheck vanilla no-Planet placement.
 
-**Across all four stages:** also check the 12 physical cube edges, eight corners, and ordinary non-Planet Overworld. The lab is on face interiors, so edges/corners must be tested separately. Confirm client startup/Mixin application and dedicated-server use separately from JUnit. Generic missing side-quads on cube seams are tracked in Phase 3B, not resolved by this lab.
+**Across all five stages:** also check the 12 physical cube edges, eight corners, and ordinary non-Planet Overworld. The lab is on face interiors, so edges/corners must be tested separately. Confirm client startup/Mixin application and dedicated-server use separately from JUnit. Generic missing side-quads on cube seams are tracked in Phase 3B, not resolved by this lab.
 
 ## Automatic migration and protection
 
-**V7 marker = CRYING_OBSIDIAN**, located at local (0, floor, 0). All known predecessor markers auto-migrate: V6 OBSIDIAN; V5 AMETHYST; V4 NETHERITE; V3 EMERALD; V2 DIAMOND; V1 GOLD. An already-current V7 pad is untouched on login. **A previously marker-owned V6 pad is cleared inside the reserved volume and rebuilt as V7** (all original test scenarios return at the same coordinates, but placed player test items inside the pad are lost). An entirely empty reserved volume can be built. Any *unmarked* occupied volume is preserved, unless the player explicitly requests `rebuild <face>`.
+**V8 marker = PURPUR_BLOCK**, located at local (0, floor, 0). All known predecessor markers auto-migrate: V7 CRYING_OBSIDIAN; V6 OBSIDIAN; V5 AMETHYST; V4 NETHERITE; V3 EMERALD; V2 DIAMOND; V1 GOLD. An already-current V8 pad is untouched on login. **A previously marker-owned V7/V6 pad is cleared inside the reserved volume and rebuilt as V8** (all original test scenarios return at the same coordinates, but placed player test items inside the pad are lost). An entirely empty reserved volume can be built. Any *unmarked* occupied volume is preserved, unless the player explicitly requests `rebuild <face>`.
 
 Migration clears **only** the marker-owned existing lab inside EAST -20..+20, SOUTH -16..+16, radial floor `FLOOR_RADIUS` through `FLOOR_RADIUS+6`. The old V1 secondary wing (EAST 21..40, SOUTH -12..12) is cleared **only** if its historical LAPIS marker exists. Structures built inside a previously marker-owned dev pad may be replaced; outside that pad stay unchanged. Keep important builds elsewhere.
 
-CI PASS means compile/JUnit/ASM, not applied client Mixins or real gameplay. Prior relevant CI: gate V3 [#38478594846](https://github.com/Abbygree11/Planetary/actions/runs/38478594846), furnace V4 [#38622053271](https://github.com/Abbygree11/Planetary/actions/runs/38622053271), axis V5 [#38643250260](https://github.com/Abbygree11/Planetary/actions/runs/38643250260). V6 lab [CI #38644260176](https://github.com/Abbygree11/Planetary/actions/runs/38644260176) SUCCESS and selected FrontAndTop owner code [CI #38789046409](https://github.com/Abbygree11/Planetary/actions/runs/38789046409) SUCCESS. **The new V7 fixture/test commit needs its own CI** and actual gameplay acceptance remains PENDING.
+CI PASS means compile/JUnit/ASM, not applied client Mixins or real gameplay. Prior relevant CI: gate V3 [#38478594846](https://github.com/Abbygree11/Planetary/actions/runs/38478594846), furnace V4 [#38622053271](https://github.com/Abbygree11/Planetary/actions/runs/38622053271), axis V5 [#38643250260](https://github.com/Abbygree11/Planetary/actions/runs/38643250260). V6 lab [CI #38644260176](https://github.com/Abbygree11/Planetary/actions/runs/38644260176) SUCCESS and selected FrontAndTop owner code [CI #38789046409](https://github.com/Abbygree11/Planetary/actions/runs/38789046409) SUCCESS. V7 source/test [CI #38790258826](https://github.com/Abbygree11/Planetary/actions/runs/38790258826) SUCCESS; the new V8 Java owner/test/fixture [CI must be checked on latest source commit](https://github.com/Abbygree11/Planetary/actions/runs/38970910379) separately. Actual 2.4A-10/gameplay and loaded-mod acceptance PENDING.
