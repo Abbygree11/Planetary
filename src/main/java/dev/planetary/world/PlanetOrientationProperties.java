@@ -156,20 +156,33 @@ public final class PlanetOrientationProperties {
                     .worldToLocal(new PlanetFrameVector(
                             physicalHeading.x, physicalHeading.y, physicalHeading.z));
 
-            double tangentLen2 = local.x() * local.x() + local.z() * local.z();
-            if (!Double.isFinite(tangentLen2)
-                    || tangentLen2 <= MIN_TANGENT_LENGTH_SQUARED) {
-                return Optional.empty();
-            }
-
-            double yaw = switch (zero) {
-                case NORTH_CLOCKWISE -> Math.toDegrees(
-                        Math.atan2(local.x(), -local.z()));
-                case SOUTH_CLOCKWISE -> Math.toDegrees(
-                        Math.atan2(-local.x(), local.z()));
-            };
-            return Optional.of(RotationSegment.convertToSegment((float) yaw));
+            return targetTangentRotation16(local, zero);
         });
+    }
+
+    /**
+     * Shared stable semantic core for all opted-in 16-segment placement
+     * writers. Input is ALREADY expressed in the target block's local chart.
+     * Never call on a physical/worldgen/foreign heading without explicit
+     * actor->physical->target transport.
+     */
+    public static Optional<Integer> targetTangentRotation16(
+            PlanetFrameVector local, Rotation16Zero zero
+    ) {
+        Objects.requireNonNull(local, "local");
+        Objects.requireNonNull(zero, "zero");
+        double tangentLen2 = local.x() * local.x() + local.z() * local.z();
+        if (!Double.isFinite(tangentLen2)
+                || tangentLen2 <= MIN_TANGENT_LENGTH_SQUARED) {
+            return Optional.empty();
+        }
+        double yaw = switch (zero) {
+            case NORTH_CLOCKWISE -> Math.toDegrees(
+                    Math.atan2(local.x(), -local.z()));
+            case SOUTH_CLOCKWISE -> Math.toDegrees(
+                    Math.atan2(-local.x(), local.z()));
+        };
+        return Optional.of(RotationSegment.convertToSegment((float) yaw));
     }
 
     /**
