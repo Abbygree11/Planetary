@@ -1,6 +1,14 @@
 # Planetary — CURRENT SESSION HANDOFF (read before historical AI_CONTEXT)
 
-**As of 2026-10-15 (verify live GitHub):** repo `Abbygree11/Planetary`, branch **`2.0` only**, Minecraft 1.21.1 / NeoForge 21.1.215 / Java 21. The branch SHA and actions can change; always check live `2.0` before claiming status. **Never edit `main`.**
+**As of 2026-10-17 (verify live GitHub):** repo `Abbygree11/Planetary`, branch **`2.0` only**, Minecraft 1.21.1 / NeoForge 21.1.215 / Java 21. The branch SHA and actions can change; always check live `2.0` before claiming status. **Never edit `main`.**
+
+## 2026-10-17 — user acceptance + active 2.4A-10 checkpoint
+
+- **Actual game report accepted (scoped):** user compared Crafter placement in Planetary on ordinary `+Y` face against a vanilla/no-Planet simple world. **Same view/pitch-dependent placement behavior**; user confirmed «всё окей, можем дальше». Record **Crafter +Y vanilla-equivalence manual smoke PASS**. Do NOT relabel the entire `2.4A-9` family PASS on all six faces, Jigsaw, edges/corners, server or mod JARs.
+- **Active packet `2.4A-10`: ROTATION_16 placement**: four original declaring owners `StandingSignBlock`, `BannerBlock`, `SkullBlock` (includes PlayerHeadBlock), `CeilingHangingSignBlock`; typed yaw16 body frame → PHYSICAL → target canonical local; baseline yaw+180 for sign/banner/ceiling attached, yaw for Skull; ceiling rigid 4-way snapped author, local UP ceiling attachment/chain; support `canSurvive/updateShape` local DOWN or UP for standing sign/banner/ceiling, preserve original water/BE. Narrow 4 placement + 3 support Mixins. Wall variants remain distinct 4-way author/item paths.
+- **New V8 lab:** 42 scenarios *per face* within same 41×33 pads: original 36 V7 (including all 24 delayed V6) and six new standing sign/banner/head/ceiling sign cases in the remaining two SOUTH rows and three EAST interstitial columns. V8 marker PURPUR_BLOCK migrates V7 CRYING_OBSIDIAN and older marker-owned pads ONLY. 2.4A-10 applied client and loaded mods PENDING.
+- **Code/testing most recent HEAD/CI:** latest Java/test commit [`6b9b8e0`](https://github.com/Abbygree11/Planetary/commit/6b9b8e067cc518d7c77717033b274fd30e2a9dd8), [CI #38970910379](https://github.com/Abbygree11/Planetary/actions/runs/38970910379) **CHECK LIVE / current exact outcome required**. Includes 6-face×16-yaw, owner zero and ceiling snap, cross-chart/vertical/foreign, exact NeoForge owner+compiled Mixin contract, independent station geom/migration. Research [stage packet](research/PHASE2_STAGE4A10_ROTATION16_SIGN_BANNER_SKULL_HANGING_1_21_1.md), [V8 user manual](acceptance/PLANET_TEST_LAB.md), [phase card](phases/phase-02/05-implementation-a.md).
+- **NEXT `кк` if still CI running:** inspect [CI #38970910379](https://github.com/Abbygree11/Planetary/actions/runs/38970910379), fix exact code/test failure if any; after green ask for realistic V8 manual client checks on 6 faces and local ceiling support. Resume 2.4A continuation, no blanket claims about mod renderer or generic 4-way walls.
 
 ## 2026-10-17 latest user gameplay clarification — Crafter semantics
 
@@ -34,7 +42,7 @@ The user described V7 Crafter placement on ordinary +Y: aim at block edge -> RED
 5. `2.4A-6` entire inherited FenceGateBlock algorithm includes placement, wall-neighbor `IN_WALL`, opening actor direction. Mod same-owner inherited gates not tested with loaded mod; independent overrides not covered.
 6. `2.4A-7` inherited AbstractFurnaceBlock placement preserves concrete block state, GUI/BE/recipes. Those systems have separate behavior tests.
 7. `2.4A-8` RotatedPillar/Chain/Infested AXIS algorithm covers 55 original IDs via shared + independent owner. Modded logs with same owner may inherit; worldgen bypasses.
-8. Active dev lab **V7** marker CRYING_OBSIDIAN, one 41×33 per face with 36 stations (24 V6 retained + 12 Crafter/Jigsaw); CYAN is preinstalled reference, LIME is real player-placement lane. Prior V1–V6 markers auto-migrate. Never infer gameplay correctness from a preset BlockState.
+8. Active dev lab **V8** marker PURPUR_BLOCK, one 41×33 per face with 42 stations (24 V6 + 12 V7 retained + 6 ROTATION_16); CYAN is preinstalled reference, LIME is real player-placement lane. Prior V1–V7 markers auto-migrate. Never infer gameplay correctness from a preset BlockState.
 9. User wants mod compatibility by **deepest safe common owner**, not individual patches; all relevant items/materials including modded paths. 6 faces/12 edges/8 corners, no-Planet and dedicated server remain independent gates.
 10. `AGENTS.md` stage-labelled response and bounded microtasks, CI-before-user-test, existing `docs/CHAT_REPORT_TEMPLATE.md` are process hard gates. `2.4A-9` placement is NOT an end-to-end Crafter output/Jigsaw worldgen fix.
 
