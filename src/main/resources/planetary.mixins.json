@@ -49,6 +49,10 @@
     "ModelBlockRendererPlanetMixin",
     "BlockRenderCullingMixin",
     "BedRendererGravityMixin",
+    "SignRendererPlanetFrameMixin",
+    "HangingSignRendererPlanetFrameMixin",
+    "BannerRendererPlanetFrameMixin",
+    "SkullBlockRendererPlanetFrameMixin"
     "FallingBlockRendererGravityMixin"
   ],
   "mixins": [
