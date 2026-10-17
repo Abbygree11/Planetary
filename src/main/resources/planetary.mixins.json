@@ -52,7 +52,7 @@
     "SignRendererPlanetFrameMixin",
     "HangingSignRendererPlanetFrameMixin",
     "BannerRendererPlanetFrameMixin",
-    "SkullBlockRendererPlanetFrameMixin"
+    "SkullBlockRendererPlanetFrameMixin",
     "FallingBlockRendererGravityMixin"
   ],
   "mixins": [
