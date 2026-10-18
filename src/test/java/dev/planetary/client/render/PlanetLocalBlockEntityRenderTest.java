@@ -70,6 +70,50 @@ final class PlanetLocalBlockEntityRenderTest {
     }
 
     @Test
+    void selectionIsSnapshottedEvenIfOtherModChangesLevelDuringRender() {
+        Level level = mock(Level.class);
+        PlanetGravityRuntime.bind(level, FIELD);
+        try {
+            BlockEntity entity = mock(BlockEntity.class);
+            when(entity.getLevel()).thenReturn(level);
+            when(entity.getBlockPos()).thenReturn(new BlockPos(R, 0, 0));
+            PoseStack pose = new PoseStack();
+            Matrix4f baseline = new Matrix4f(pose.last().pose());
+            PlanetLocalBlockEntityRender.begin(entity, pose);
+
+            // Simulates an independent extension detaching the BE mid-render.
+            when(entity.getLevel()).thenReturn(null);
+            PlanetLocalBlockEntityRender.finish(entity, pose);
+            assertTrue(baseline.equals(pose.last().pose(), 1e-6f));
+        } finally {
+            PlanetGravityRuntime.unbind(level, FIELD);
+        }
+    }
+
+    @Test
+    void nestedCallsKeepBothPoseStacksInCorrectLifoOrder() {
+        Level level = mock(Level.class);
+        PlanetGravityRuntime.bind(level, FIELD);
+        try {
+            BlockEntity outer = mock(BlockEntity.class);
+            when(outer.getLevel()).thenReturn(level);
+            when(outer.getBlockPos()).thenReturn(new BlockPos(R, 0, 0));
+            BlockEntity inner = mock(BlockEntity.class); // item/no level
+            PoseStack pose = new PoseStack();
+            Matrix4f baseline = new Matrix4f(pose.last().pose());
+            PlanetLocalBlockEntityRender.begin(outer, pose);
+            Matrix4f rotated = new Matrix4f(pose.last().pose());
+            PlanetLocalBlockEntityRender.begin(inner, pose);
+            PlanetLocalBlockEntityRender.finish(inner, pose);
+            assertTrue(rotated.equals(pose.last().pose(), 1e-6f));
+            PlanetLocalBlockEntityRender.finish(outer, pose);
+            assertTrue(baseline.equals(pose.last().pose(), 1e-6f));
+        } finally {
+            PlanetGravityRuntime.unbind(level, FIELD);
+        }
+    }
+
+    @Test
     void noPlanetAndInventoryPreviewMustNotModifyThePose() {
         Level world = mock(Level.class);
         BlockEntity entity = mock(BlockEntity.class);
