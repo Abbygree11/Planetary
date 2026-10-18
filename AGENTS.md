@@ -114,6 +114,45 @@ Prefer this hierarchy:
 
 Do not call an object "done" because one of its mechanisms works.
 
+## 3A.0 Phase-wide research prerequisite before cross-phase runtime work
+
+**User-confirmed rule (2026-10-18):** temporarily jump from the active roadmap
+phase to fix a defect owned by a later phase **only when that destination
+phase has already received an exhaustive, whole-phase mechanism/owner audit
+comparable to Phase 2**, or finish that audit first. A correct *single-family*
+source analysis is necessary but **not sufficient** to call the later phase
+researched and to implement further cross-phase work.
+
+A phase-wide research gate must inventory and classify **all relevant vanilla
+and NeoForge subsystem owners and registered renderers**, their subclasses,
+direct call paths, alternate item/entity/renderer/data lifecycles, foreign
+worlds, version-exact compiled ABI, mod extension and independent bypass
+paths, PHYSICAL versus CANONICAL coordinates, dependencies, risks, and
+acceptance on six faces/twelve edges/eight corners. Write bounded research
+packets and a reconciled coverage matrix; research can take many chat turns.
+A checklist of candidate topics or a handful of selected owners cannot be
+marked FULLY RESEARCHED. Runtime patches follow the frozen *whole-phase*
+owner inventory, unless an existing researched phase owns the issue.
+
+**Phase 3 is NOT through this gate.** Its phase card is PARTIAL, with open
+3A (shapes), 3B (models/culling/light), 3C (full BER inventory), 3D
+(alternative/moving/shader pipelines), and resource/client lifecycle coverage.
+The existing Phase-2 C11–C15 render-related notes and targeted
+`3C-1` Sign/Banner/Skull BER research are **selected-mechanism evidence**,
+not a whole-Phase-3 audit. `3C-1` code was already committed and passed CI
+before the gate was clarified. Preserve it as **PROVISIONAL / CI PASS /
+GAMEPLAY PENDING**, not proof of phase-wide readiness or authorization to
+start the next BER family. Any more Phase-3 runtime work must await the
+research gate; alternatively continue already-researched Phase 2 without
+claiming Phase 3 complete.
+
+Cross-phase bug-fix flow: classify/record issue and phase owner -> check
+the destination phase-wide research gate -> if absent, do research-only
+bounded source/ABI/bypass/acceptance packets and freeze the full inventory ->
+implement the family-wide safe fix -> separate CI, client, six-face, seams and
+loaded-mod acceptance -> return to the suspended active phase. Do not force
+a renderer bug into BlockState placement merely to avoid a phase jump.
+
 ## 3A.1 Phase-2 orientation research COMPLETENESS hard gate
 
 If an orientation, attachment, natural placement, survival, neighbor,

@@ -2,7 +2,15 @@
 
 **As of 2026-10-18 (verify live GitHub):** repo `Abbygree11/Planetary`, branch **`2.0` only**, Minecraft 1.21.1 / NeoForge 21.1.215 / Java 21. The branch SHA and actions can change; always check live `2.0` before claiming status. **Never edit `main`.**
 
-## 2026-10-18 — ACTIVE Phase `3.3` / `3C-1` BER renderer owner checkpoint
+## 2026-10-18 — mandatory cross-phase gate clarified (LATEST DECISION)
+
+**User's method:** cross-phase jumps for fixes are allowed, **but only after the destination phase has been audited comprehensively at phase scope, as Phase 2 was**; targeted owner research is not equivalent. GitHub `docs/phases/phase-03.md` explicitly says **PARTIAL** and has unclosed 3A/3B/3C/3D and other clients. Phase-2 C11–C15 renderer notes and the local `3C-1` four-BER packet are NOT a full Phase-3 owner census.
+
+**Recorded in root `AGENTS.md` as a permanent hard gate.** See [Phase 3 whole-owner audit checklist](research/PHASE3_FULL_OWNER_AUDIT_GATE_1_21_1.md). Research in sizeable bounded 4/4 source/ABI/mod-bypass packets, inventory all owner families and gaps, freeze the phase-wide map before any further Phase-3 runtime changes. The already committed `3C-1` renderer patch stays **PROVISIONAL / CODE+CI SUCCESS / GAMEPLAY PENDING**, without implying Phase-3 ready or requesting the next Chest family.
+
+**Next action:** no automatic next Phase-3 BER implementation. Either start the **research-only full Phase 3 inventory** (separate bounded chunks) as a prerequisite to finishing the visual blocker, or continue already researched `2.4A` mechanisms while Phase-3 bug stays tracked. Preserve V8 lab and user screenshots, and keep source/CI/applied-client/game/mod statuses distinct. Current active implementation remains `2.4A-10` + tracked rendering dependency; Phase 3 is NOT an accepted active implementation lane.
+
+## 2026-10-18 — PROVISIONAL Phase `3.3` / `3C-1` BER renderer owner checkpoint
 
 **User's actual V8 screenshots:** CYAN reference states show expected property names/values (`rotation`, `attached`) on screenshots, but some sign/banner/skull/hanging models and chains appear to use wrong gravity frame, especially off +Y. **Do not claim all 2.4A-10 placement states PASS from forced CYAN preset!** Equal original placement context/player and same expected state are separate checks. Earlier screenshot-based conclusion “state PASS” was stronger than supported evidence. Full rotated client game acceptance still **OPEN**.
 

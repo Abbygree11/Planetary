@@ -6,6 +6,12 @@
 
 **3.3 / 3C-1 — BER sign/banner/skull rendering (2026-10-18): CODE+CI PASS / GAMEPLAY PENDING.** Implemented shared `PlanetLocalBlockEntityRender` block-center canonical->physical pose and four thin exact-owner Mixins for SignRenderer, HangingSignRenderer, BannerRenderer and SkullBlockRenderer (including standing/wall variants on their original renderer paths). Source/NeoForge/mod bypass 4/4: [stage packet](../research/PHASE3_STAGE3C1_BER_SIGN_BANNER_SKULL_1_21_1.md). [CI #39081259366](https://github.com/Abbygree11/Planetary/actions/runs/39081259366) **SUCCESS**, code [ea04238](https://github.com/Abbygree11/Planetary/commit/ea0423894e2c1e92a5d74e81c87543be48bd9453). Client applied Mixin, 6 faces/12 edges/8 corners and loaded mod JAR **PENDING**. V8 42-station lab remains unchanged; +Y rendering is identity and any defect there needs separate reproduction. Global BER dispatcher, BEWLR item, custom Flywheel/world/camera effects NOT rotated.
 
+## Mandatory Phase-3 whole-phase research gate — NOT YET PASSED (2026-10-18)
+
+**Process correction:** user explicitly permits jumping between roadmap phases to fix a blocker, but requires the **entire destination phase to have first been researched as completely as Phase 2**. An audit of four Sign/HangingSign/Banner/Skull BER declaring owners (`3C-1`) and Phase-2's selected C11–C15 renderer notes are **not** a full source/NeoForge/mod bypass inventory of Phase 3. Do not continue Phase-3 runtime implementation (Chest/EnderChest/etc) yet; instead finish Phase-3 **research-only** preparation following [whole-phase source coverage gate](../research/PHASE3_FULL_OWNER_AUDIT_GATE_1_21_1.md), or resume already-researched 2.4A work until that gate is met.
+
+The already written `3C-1` renderer change remains a **PROVISIONAL code checkpoint** [ea04238](https://github.com/Abbygree11/Planetary/commit/ea0423894e2c1e92a5d74e81c87543be48bd9453), [CI #39081259366](https://github.com/Abbygree11/Planetary/actions/runs/39081259366) SUCCESS, **actual client/Mixin/mod/visual acceptance PENDING**. Its green CI does not retrospectively authorize a jump, demonstrate all of Phase 3 is analyzed or close original `2.4A-10` gameplay. No automatic revert or additional fixes without evidence.
+
 ## Короткие самостоятельные пакеты
 
 - [ ] **3.1** 3A: аудит формы outline/collision/visual/interact и seam/occlusion caches; короткая отдельная матрица.
