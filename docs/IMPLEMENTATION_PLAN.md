@@ -1,5 +1,13 @@
 # Planetary 2.0 implementation roadmap
 
+## 2026-10-18 — CURRENT Phase 3C-1 BER-family render correction
+
+**Observed (not fully accepted):** user's V8 sign/banner/skull/hanging images show rotation/attached properties of mostly preset CYAN states and visual disorientation off `+Y`; some +Y chain variants might simply have different `ATTACHED` conditions. F3 state presence is **not** a universal player-placement PASS.
+
+**Shared safe source/code boundary:** [`PlanetLocalBlockEntityRender`](../src/main/java/dev/planetary/client/render/PlanetLocalBlockEntityRender.java) wraps only four original world-attached local-geometry BER renderers via thin @Mixin HEAD/RETURN hooks: `SignRenderer`, `HangingSignRenderer`, `BannerRenderer`, `SkullBlockRenderer`. Existing block-center `PlanetRenderTransform` and canonical target frame reused; nested LIFO entry-scoped push/pop; no effect on physical light, state/BlockEntity data, no-Planet, +Y, item preview or independent mods. **Do not globally wrap BER dispatcher** (camera/world-space physical effects). [Four-owner/source/NeoForge/mod-bypass matrix](research/PHASE3_STAGE3C1_BER_SIGN_BANNER_SKULL_1_21_1.md).
+
+**CODE+CI PASS:** [ea04238](https://github.com/Abbygree11/Planetary/commit/ea0423894e2c1e92a5d74e81c87543be48bd9453) [CI #39081259366](https://github.com/Abbygree11/Planetary/actions/runs/39081259366) SUCCESS; 6-face geometry pose, no-Level/non-Planet/entry-mutated callback, four exact owner ABI JUnit. **CLIENT/MODS/GAMEPLAY PENDING**. Retain V8 **42 stations** on all six faces; no rebuild. Follow [actual visual test guide](acceptance/PLANET_TEST_LAB.md), separate six-face/12-edge/8-corner + resource reload/BER custom loaded mod. Next packet conditional on user game result, otherwise complete remaining 3C BER families before claiming Phase3 completion.
+
 ## 2026-10-17 — Active `2.4A-10` P10 ROTATION_16, V8 acceptance pad
 
 **Prior manual acceptance:** user compared Crafter placement on Planet `+Y` with ordinary no-Planet Overworld and confirmed identical view-dependent behavior. Scope **Crafter +Y smoke PASS only**; no claims about other five faces, Jigsaw, modded world or server. Preserve screenshot regression fix singular vs plural author [04a3535](https://github.com/Abbygree11/Planetary/commit/04a35357b2126e805a1313cf17eef1563336633b), CI #38953937805 PASS.

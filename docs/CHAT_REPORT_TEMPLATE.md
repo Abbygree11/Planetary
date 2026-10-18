@@ -1,17 +1,17 @@
 # Planetary — obligatory concise chat report format
 
-Use in **every next chat**, including status updates while CI runs. All user-facing text in Russian. The current named stage appears in **every** update, e.g. `Planetary — 2.4A-9: <full mechanism owner>`. Do not hide the stage behind generic “проверил” or “код готов”. No token-heavy repetition.
+Use in **every next chat**, including status updates while CI runs. All user-facing text in Russian. The current named stage appears in **every** update, e.g. `Planetary — 2.4A-9: <owner>` or `Planetary — 3C-1: <BER mechanism>`. Do not hide the stage behind generic “проверил” or “код готов”. No token-heavy repetition.
 
 ## A. First brief progress message, when task is nontrivial
 ```text
-Planetary — 2.4A-N: <механизм>
+Planetary — <ID_ЭТАПА>: <механизм>
 Сначала сверю HEAD/CI и владельцев, затем внесу ограниченное изменение и проверю CI.
 <Одно-два важных ограничения и что не трогаем.>
 ```
 
 ## B. Finish (previously agreed user-facing style)
 ```markdown
-## Planetary — `2.4A-N`: <полное семейство механизма>
+## Planetary — `<ID_ЭТАПА>`: <полное семейство механизма>
 
 ### ✅ <что фактически сделано>
 2–4 содержательных предложения: исследованный общий владелец, реализация/лаборатория, что сохранено.
@@ -35,7 +35,7 @@ Planetary — 2.4A-N: <механизм>
 3. <все другие 5 граней; 12 рёбер/8 углов при необходимости>.
 4. <no-Planet, реальные моды, жизненный цикл / GUI / redstone по механике>.
 
-**Следующий этап:** `2.4A-(N+1)` — <одна конкретная задача и условие перехода>.
+**Следующий этап:** `<ID_СЛЕДУЮЩЕГО_ЭТАПА>` — <одна конкретная задача и условие перехода>.
 `main` не изменялась.
 ```
 

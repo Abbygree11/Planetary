@@ -2,6 +2,14 @@
 
 Minecraft 1.21.1 / NeoForge 21.1.215 / Java 21, branch `2.0`.
 
+## Phase 3C-1 — render-only V8 regression (2026-10-18)
+
+**No fixture change / no V9.** The 42 stations per face remain exactly where they were. The renderer code [ea04238](https://github.com/Abbygree11/Planetary/commit/ea0423894e2c1e92a5d74e81c87543be48bd9453) [CI #39081259366](https://github.com/Abbygree11/Planetary/actions/runs/39081259366) SUCCESS adds the four rigid block-local BER frame adapters to vanilla SignRenderer/HangingSignRenderer/BannerRenderer/SkullBlockRenderer. Static BakedModel and physical light are unaffected.
+
+**Real client comparison:** `git pull && .\\test.ps1 && .\\run-client.ps1`; enter Planet +Y and five rotated face labs. Compare actual F3 block IDs and full property state of CYAN and naturally placed LIME and deliberately reproduce the same `rotation` and `attached`. The CYAN preset is NOT placement acceptance. For hanging signs, `attached=true` vs `false` selects different chain models by design: don't infer defect only because a reference and a naturally placed item used different `attached`. Check (a) standing sign board AND front/back text both locally upright, (b) banner pole/cloth and pattern upright, (c) all skull/head variants and player skin locally upright, (d) hanging sign plank and all chains point toward the actual local ceiling and text is readable. Toggle `/planetary test light off` to distinguish real lighting/shadows from geometry. Also compare `+Y` with no-Planet Overworld (should be identical), ordinary item/GUI previews, modded custom BER only when actually loaded; edges and corners independently.
+
+**If still wrong on +Y**, the new renderer adapter cannot explain it, because it is identity on `POS_Y`. Report block ID, exact F3 `rotation`/`attached`, whether block is CYAN reference or LIME player item, local face, screenshots before/after same state. Do not change the placement algorithm based on a different preset state or rewrite the global BlockEntityRenderDispatcher.
+
 ## Why V8 retains earlier families
 
 Normally the lab is **replaceable and current-only**; JUnit/ASM preserve regression coverage and historical scenes are not retained. The game-client checks for `2.4A-6` and `2.4A-7` were accidentally skipped when previous long chats lost connection. **Temporary exception requested by the user:** restore these two whole-owner families beside `2.4A-8`, then resume the usual active-only replacement policy after manual acceptance. **V8 retains all 36 V7 stations** (including 24 V6 stations) and adds six ROTATION_16 stations for `2.4A-10`. The old items remain available for the delayed manual checks.

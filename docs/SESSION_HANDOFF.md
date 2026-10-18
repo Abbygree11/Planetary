@@ -1,6 +1,16 @@
 # Planetary — CURRENT SESSION HANDOFF (read before historical AI_CONTEXT)
 
-**As of 2026-10-17 (verify live GitHub):** repo `Abbygree11/Planetary`, branch **`2.0` only**, Minecraft 1.21.1 / NeoForge 21.1.215 / Java 21. The branch SHA and actions can change; always check live `2.0` before claiming status. **Never edit `main`.**
+**As of 2026-10-18 (verify live GitHub):** repo `Abbygree11/Planetary`, branch **`2.0` only**, Minecraft 1.21.1 / NeoForge 21.1.215 / Java 21. The branch SHA and actions can change; always check live `2.0` before claiming status. **Never edit `main`.**
+
+## 2026-10-18 — ACTIVE Phase `3.3` / `3C-1` BER renderer owner checkpoint
+
+**User's actual V8 screenshots:** CYAN reference states show expected property names/values (`rotation`, `attached`) on screenshots, but some sign/banner/skull/hanging models and chains appear to use wrong gravity frame, especially off +Y. **Do not claim all 2.4A-10 placement states PASS from forced CYAN preset!** Equal original placement context/player and same expected state are separate checks. Earlier screenshot-based conclusion “state PASS” was stronger than supported evidence. Full rotated client game acceptance still **OPEN**.
+
+**Implemented:** shared `PlanetLocalBlockEntityRender` opt-in world-attached block-center local->physical transform and four concrete renderer HEAD/RETURN Mixins (SignRenderer, HangingSignRenderer, BannerRenderer, SkullBlockRenderer). Uses existing `PlanetClientRenderFrame` + `PlanetRenderTransform`. `@Mixin` hooks concrete BER implementations only; does NOT touch global `BlockEntityRenderDispatcher`, sign text/pattern/skin, normal light, states or item preview. A nested LIFO caches initial transform decision to balance push/pop even when mod callback changes BE Level. Existing independent Bed BER untouched. `+Y`, non-Planet, item-preview/no-Level pass through untouched.
+
+**Verified code:** [`ea04238`](https://github.com/Abbygree11/Planetary/commit/ea0423894e2c1e92a5d74e81c87543be48bd9453) · [CI #39081259366](https://github.com/Abbygree11/Planetary/actions/runs/39081259366) **SUCCESS** on this exact code revision. 6-face physical pose-center/up and restore, nested+BE Level-change tests, selected four real classpath renderer declaring method ABI, callback/class registration; no applied client Mixin proof from CI. [Full 4/4 owner research](research/PHASE3_STAGE3C1_BER_SIGN_BANNER_SKULL_1_21_1.md).
+
+**Next `кк`:** first ask for user acceptance per [unchanged V8 lab](acceptance/PLANET_TEST_LAB.md): run client from branch `2.0`, compare actual world +Y and off-axis sign/banner/head/hanging (F3 matching state on CYAN vs LIME; `attached` distinct chain models) and check no-Planet; physical edges/corners and actual mod JAR separate. If acceptance fails, diagnose **whole underlying original renderer path** before another patch; source-dump applied Mixin/client crash if renderer unavailable. If user says tests pass, move to next independent 3C BER family (Chest/EnderChest/etc), without collapsing the broader Phase 3 work. **No new V8 geometry**; 42 cases/face persist.
 
 ## 2026-10-17 — user acceptance + active 2.4A-10 checkpoint
 

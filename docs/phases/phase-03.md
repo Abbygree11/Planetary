@@ -4,6 +4,8 @@
 
 **Temporary visibility aid, not a renderer fix (2026-10-15):** In dev `runClient`, `PlanetDevVisibility` uses vanilla NIGHT_VISION on all six Planet faces; `/planetary test light off` reveals the underlying real lighting. This does **not** implement sky direction adaptation, local skylight, AO, shadow or mod shader pipelines. Real Phase 3B lighting acceptance must be tested with this helper OFF as well.
 
+**3.3 / 3C-1 — BER sign/banner/skull rendering (2026-10-18): CODE+CI PASS / GAMEPLAY PENDING.** Implemented shared `PlanetLocalBlockEntityRender` block-center canonical->physical pose and four thin exact-owner Mixins for SignRenderer, HangingSignRenderer, BannerRenderer and SkullBlockRenderer (including standing/wall variants on their original renderer paths). Source/NeoForge/mod bypass 4/4: [stage packet](../research/PHASE3_STAGE3C1_BER_SIGN_BANNER_SKULL_1_21_1.md). [CI #39081259366](https://github.com/Abbygree11/Planetary/actions/runs/39081259366) **SUCCESS**, code [ea04238](https://github.com/Abbygree11/Planetary/commit/ea0423894e2c1e92a5d74e81c87543be48bd9453). Client applied Mixin, 6 faces/12 edges/8 corners and loaded mod JAR **PENDING**. V8 42-station lab remains unchanged; +Y rendering is identity and any defect there needs separate reproduction. Global BER dispatcher, BEWLR item, custom Flywheel/world/camera effects NOT rotated.
+
 ## Короткие самостоятельные пакеты
 
 - [ ] **3.1** 3A: аудит формы outline/collision/visual/interact и seam/occlusion caches; короткая отдельная матрица.
