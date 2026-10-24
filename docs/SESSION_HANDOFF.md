@@ -1,8 +1,10 @@
 # Planetary — CURRENT SESSION HANDOFF (read before historical AI_CONTEXT)
 
-**As of 2026-10-18 (verify live GitHub):** repo `Abbygree11/Planetary`, branch **`2.0` only**, Minecraft 1.21.1 / NeoForge 21.1.215 / Java 21. The branch SHA and actions can change; always check live `2.0` before claiming status. **Never edit `main`.**
+**As of 2026-10-24 (verify live GitHub):** repo `Abbygree11/Planetary`, branch **`2.0` only**, Minecraft 1.21.1 / NeoForge 21.1.215 / Java 21. The branch SHA and actions can change; always check live `2.0` before claiming status. **Never edit `main`.**
 
 ## 2026-10-24 — current ACTIVE research-only stage `3R-1` (read before R2 COMPLETE text)
+
+**Checkpoint commit:** [\`bc7170b\`](https://github.com/Abbygree11/Planetary/commit/bc7170bbdd438e009c05985a027a1be7b9183911) on `2.0` includes the stage research, 27-row phase-wide ledger, R2 scope reconciliation and roadmap. **Documentation-only; no new CI required.** Most recent previous *runtime-code* [CI #39081259366](https://github.com/Abbygree11/Planetary/actions/runs/39081259366) SUCCESS belongs to provisional `3C-1`; game/mod acceptance PENDING. Actual latest HEAD is checked live, not inferred from this line.
 
 The older R2 matrix's `COMPLETE` means **the old R2 architecture survey finished its own selected scope**, NOT that every Phase3 registered owner/override/mod bypass was researched. The user's whole-destination-phase prerequisite remains mandatory. **Do not start more Phase3 Java edits or assume the provisional 3C-1 implementation is gameplay accepted.**
 
