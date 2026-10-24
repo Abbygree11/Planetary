@@ -7,7 +7,10 @@ phase	id	owner_family	status	current_evidence	planned_packet	missing_for_phase_c
 3A	A06	BlockGetter.clip;ClipContext and fluid/interaction overrides	SOURCE_TRACE_SELECTED	BlockGetter/ClipContext comparator	R1-3A	Raycast owner from Phase7B and modded fake-world paths
 3A	A07	Block.shouldRenderFace;external face hiding;state-pair cache	SELECTED_SOURCE_PRIOR_ABI	Block comparator; prior C11 selected NeoForge	R1-3A	Complete 3B culling integration/adjacent mod hiding
 3A	A08	VoxelShape/Shapes boolean ops, full/empty, collision	SOURCE_TRACE_SELECTED	Shapes/VoxelShape comparator	R1-3A	Full registered shape API owner/override map
-3A	A09	All registered block classes and shape overrides	OPEN_CENSUS	Phase2 registered classes/IDs input	R2-3A	All registered class/ID override + inherited owner enumeration
+3A	A09	All registered block classes and shape overrides	REGISTRY_241_CROSSJOIN_DIRECT_SEARCH_ONLY	Phase2 registered classes/IDs input	R2-3A	All 241 original class keys and ID counts checked; full inherited precise declaring owners still OPEN
+3A	A10	Registered 241 per-signature direct shape declaration search	DIRECT_SOURCE_SIGNATURE_CANDIDATE_MATRIX	3R-2 241-row original source GitHub code-search, 1060 registry IDs	3R-2b	Resolve complete superclasses/overloads, exact NeoForge ABI; search nonmatch not absence
+3A	A11	Inherited CrossCollision/Multiface and dynamic BE/contextual shape owners	SELECTED_8_FULL_SOURCE_VERIFIED	3R-2 original Fence/IronBars/Pane/Multiface/GlowLichen/Shulker/Scaffolding source	3R-2b	All 241 effective nearest owner signatures and contextual branch maps
+3A	A12	Exact modded shape override registry and NeoForge dynamic culling hooks	PRIOR_SELECTED_ABI_MOD_COMPARATOR	C11 selected compiled NeoForge, Create/AE2 comparator only	3R-2b	All mod override categories, exact ABI, real loaded mods later
 3B	B01	BakedModel;quads;ModelData;RenderType;multipart/model variants	PRIOR_R2_ONLY	R2/C11, RENDERING_1_21_1	R3-3B	full baked model/NeoForge override/provider registry
 3B	B02	ModelBlockRenderer AO/light/flat and dynamic light	PRIOR_SELECTED_SOURCE	Phase2 C12, R2	R3-3B	all light/AO/shader owner and physical/world semantics
 3B	B03	Block.shouldRenderFace;skipRendering;NeoForge face hiding	PRIOR_SELECTED_SOURCE	Phase2 C11; R2	R3-3B	seam both sides, caches, dynamic model data, 6/12/8
