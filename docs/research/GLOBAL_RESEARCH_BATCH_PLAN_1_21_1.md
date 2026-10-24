@@ -60,6 +60,10 @@ Output:
 complete Phase-2 ownership map, family list, dependencies to render/redstone/
 entity/fluid phases, and a Phase-2 representative acceptance matrix.
 
+## 2026-10-25 Phase3 `3R-2b` exact owner checkpoint
+
+Original immutable NeoForge21.1.215 ZIP re-downloaded and SHA verified. [3R-2b stage](PHASE3_R2B_ORIGINAL_EFFECTIVE_SHAPE_OWNERS_1_21_1.md), [all 241 classes original nearest getShape/getCollisionShape owners](PHASE3_R2B_ORIGINAL_EFFECTIVE_SHAPE_OWNERS_1_21_1.tsv), [independent reproduce/verify script](../../scripts/research/phase3_shape_effective_owner_verify.py) are exact original JVM reflection evidence, unlike previous direct-source search. Four additional shape APIs and full Phase3 3A–3E still OPEN. Next `3R-2c` before any new Phase3 runtime implementation. No new CI required for research-only commit.
+
 ## Batch R2 — client geometry/render/particles [COMPLETE FOR ORIGINAL R2 SCOPE, NOT WHOLE PHASE 3]
 
 **2026-10-24 latest `3R-2` research-only checkpoint:** [241-class direct-geometry source-search matrix](PHASE3_R2_REGISTERED_DIRECT_SHAPE_DECLARATIONS_1_21_1.tsv) and [4/4 research](PHASE3_R2_REGISTERED_SHAPE_DECLARATIONS_1_21_1.md) now recorded, but true nearest effective superclass owners and complete NeoForge21.1.215 ABI are NOT audited. `3R-2b` is next, before `3R-3`. No runtime CI required.
