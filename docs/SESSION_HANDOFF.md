@@ -2,7 +2,13 @@
 
 **As of 2026-10-24 (verify live GitHub):** repo `Abbygree11/Planetary`, branch **`2.0` only**, Minecraft 1.21.1 / NeoForge 21.1.215 / Java 21. The branch SHA and actions can change; always check live `2.0` before claiming status. **Never edit `main`.**
 
-## 2026-10-24 — current ACTIVE research-only stage `3R-1` (read before R2 COMPLETE text)
+## 2026-10-24 — LATEST research-only `3R-2`: ALL 241 registry keys / direct geometry declaration candidates
+
+**Source/registry stage [6fb19f8](https://github.com/Abbygree11/Planetary/commit/6fb19f8eba381ccd9c79274df82c5b08e07ffc06)** recorded: [241-class/1060 BLOCK ID code-search declaration matrix](research/PHASE3_R2_REGISTERED_DIRECT_SHAPE_DECLARATIONS_1_21_1.tsv) and [3R-2 4/4 full methodology/status](research/PHASE3_R2_REGISTERED_SHAPE_DECLARATIONS_1_21_1.md). Six VoxelShape plus five independent light/render method *source search* columns, **not a finished effective superclass/overload/NeoForge ABI census**. Example `StainedGlassPaneBlock` inherits `IronBarsBlock → CrossCollisionBlock`; `GlowLichenBlock` inherits `MultifaceBlock`. Negative code search is `NOT_RETURNED_BY_CODE_SEARCH`, not proof no override. [Whole-phase 30-row coverage matrix](research/PHASE3_OWNER_COVERAGE_1_21_1.tsv) still OPEN for all 3A–3E.
+
+**NEXT EXACT `кк`: `3R-2b` RESEARCH ONLY** — resolve every registered class's *nearest effective* `VoxelShape` declaring superclass across unregistered intermediates, exact overload signature, dynamic `BlockGetter/CollisionContext` dispatch and selected original NeoForge21.1.215 ABI; reconcile any GitHub search-index false negatives and source-count mismatch; source/mod bypass matrix. Do not prematurely mark 3A fully audited or start `3R-3` AO/lighting. No runtime Java changes, no fresh CI. Latest prior **runtime** [3C-1 CI #39081259366](https://github.com/Abbygree11/Planetary/actions/runs/39081259366) SUCCESS remains PROVISIONAL/GAMEPLAY PENDING; existing V8 42-station lab untouched, 2.4A gameplay pending. Branch `2.0` ONLY. Handoff and roadside updated in stage documentation; verify live HEAD.
+
+## 2026-10-24 — previous research-only stage `3R-1` (historical)
 
 **Checkpoint commit:** [\`bc7170b\`](https://github.com/Abbygree11/Planetary/commit/bc7170bbdd438e009c05985a027a1be7b9183911) on `2.0` includes the stage research, 27-row phase-wide ledger, R2 scope reconciliation and roadmap. **Documentation-only; no new CI required.** Most recent previous *runtime-code* [CI #39081259366](https://github.com/Abbygree11/Planetary/actions/runs/39081259366) SUCCESS belongs to provisional `3C-1`; game/mod acceptance PENDING. Actual latest HEAD is checked live, not inferred from this line.
 

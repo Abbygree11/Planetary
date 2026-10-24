@@ -1,5 +1,11 @@
 # Planetary 2.0 implementation roadmap
 
+## 2026-10-24 — CURRENT research-only `3R-2`, source direct declarations classified; effective ownership OPEN
+
+**[3R-2 research file](research/PHASE3_R2_REGISTERED_SHAPE_DECLARATIONS_1_21_1.md)** and [241-class matrix](research/PHASE3_R2_REGISTERED_DIRECT_SHAPE_DECLARATIONS_1_21_1.tsv): original immutable NeoForge registry 241 concrete Java class keys/1060 IDs cross-joined to pinned original 1.21.1 method-definition GitHub code search for six VoxelShape and five light/render signatures. Matched declaration candidates: `getShape` 110 classes (509 IDs), `getCollisionShape` 20 (65), `getBlockSupportShape` 9 (62); classes/ID counts overlap. Verified concrete inherited examples `CrossCollisionBlock → FenceBlock / IronBarsBlock → StainedGlassPaneBlock`, `MultifaceBlock → GlowLichenBlock`, dynamic `ShulkerBoxBlock`/Scaffolding. GitHub code-search *nonmatch is NOT negative source-owner proof*; inheritance/method overload and NeoForge exact 21.1.215 per-class ABI remain OPEN. [30-row whole-Phase3 coverage ledger](research/PHASE3_OWNER_COVERAGE_1_21_1.tsv).
+
+**Next `3R-2b`** finish registered source+inherited *effective owner* reconciliation/selected target ABI and mod bypasses. Not `3R-3` yet. Code-only previous [3C-1 CI #39081259366](https://github.com/Abbygree11/Planetary/actions/runs/39081259366) still SUCCESS but gameplay/mod acceptance PENDING. No new runtime code/CI, V8 unchanged, whole Phase3 research gate OPEN. Every research batch saved to `2.0` and handoff. Never edit `main`.
+
 ## 2026-10-24 — CURRENT research-only `3R-1`, whole Phase3 gate still OPEN
 
 **Purpose:** user approved comprehensive Phase3 research first, to the same owner/source/ABI/mod-bypass depth as Phase2, before switching across phase boundaries for further runtime fixes. One bounded research packet per user `кк`, 4/4 mechanism/source/NeoForge/mod/acceptance evidence, commit to `2.0` and update handoff.

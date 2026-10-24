@@ -62,6 +62,8 @@ entity/fluid phases, and a Phase-2 representative acceptance matrix.
 
 ## Batch R2 — client geometry/render/particles [COMPLETE FOR ORIGINAL R2 SCOPE, NOT WHOLE PHASE 3]
 
+**2026-10-24 latest `3R-2` research-only checkpoint:** [241-class direct-geometry source-search matrix](PHASE3_R2_REGISTERED_DIRECT_SHAPE_DECLARATIONS_1_21_1.tsv) and [4/4 research](PHASE3_R2_REGISTERED_SHAPE_DECLARATIONS_1_21_1.md) now recorded, but true nearest effective superclass owners and complete NeoForge21.1.215 ABI are NOT audited. `3R-2b` is next, before `3R-3`. No runtime CI required.
+
 **2026-10-24 scope reconciliation:** R2 was a selected architectural family/particle inventory. It did not produce the later demanded exhaustive Phase3 registered owner/override census, NeoForge exact-version per-owner ABI inventory or full mod render bypass map. Phase3 research gate is **OPEN**. New research-only 3R-1 through 3R-7 use [phase-wide ledger](PHASE3_OWNER_COVERAGE_1_21_1.tsv), the [3R-1 source audit](PHASE3_R1_3A_SHAPE_CALLPATH_AND_COVERAGE_1_21_1.md), and [Phase3 gate](PHASE3_FULL_OWNER_AUDIT_GATE_1_21_1.md). No runtime changes until completion.
 
 Result:

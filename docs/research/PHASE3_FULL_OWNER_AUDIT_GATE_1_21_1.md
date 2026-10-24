@@ -7,6 +7,10 @@ Minecraft 1.21.1 · NeoForge 21.1.215 · Java 21 · `Abbygree11/Planetary` branc
 
 The user explicitly approves interrupting the active phase (currently 2.4A) to fix an issue in a later owning phase, **but only after the entire later phase has been comprehensively researched**. Phase 2's source/ABI owner atlas, block/item census, override/bypass classification and cross-mod matrix set the bar. The existing Phase 3 PARTIAL card, `RENDERING_1_21_1.md`, 28-BER selective R2 note and Phase-2 C11–C15 are preparatory/selected sources, NOT frozen full Phase-3 coverage. The earlier `3C-1` renderer code already exists (CI SUCCESS), but remains provisional and unaccepted in gameplay. Do not interpret its four-owner research as a full Phase 3 pass.
 
+## 3R-2 source-only registry census checkpoint (2026-10-24)
+
+[Stage research](PHASE3_R2_REGISTERED_SHAPE_DECLARATIONS_1_21_1.md) + [241 registered class/1060 block direct-declaration matrix](PHASE3_R2_REGISTERED_DIRECT_SHAPE_DECLARATIONS_1_21_1.tsv) are now committed, with recorded six VoxelShape and five related rendering/light API source-search candidate flags. Intermediate inherited owners **remain unresolved in 241 rows**; full exact NeoForge21.1.215 ABI and real mod comparisons are still OPEN. [30-row whole-phase ledger](PHASE3_OWNER_COVERAGE_1_21_1.tsv) now tracks this as a selected census, not phase completion. Next named packet `3R-2b` must finish effective superclass owner resolution before considering 3A or the whole phase researched.
+
 ## Research resumed 2026-10-24
 
 `3R-1` completed a **selected original source owner/call-flow subset** for 3A (shape/cache/raycast/collision/support/render occlusion), with [source evidence](PHASE3_R1_3A_SHAPE_CALLPATH_AND_COVERAGE_1_21_1.md) and [phase-wide owner coverage ledger](PHASE3_OWNER_COVERAGE_1_21_1.tsv). This is **NOT** a completed 3A registered-block override inventory and **NOT** the phase gate. `3R-2` must continue full concrete registered block/override census before any Phase3 implementation.
