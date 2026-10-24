@@ -2,7 +2,15 @@
 
 **As of 2026-10-18 (verify live GitHub):** repo `Abbygree11/Planetary`, branch **`2.0` only**, Minecraft 1.21.1 / NeoForge 21.1.215 / Java 21. The branch SHA and actions can change; always check live `2.0` before claiming status. **Never edit `main`.**
 
-## 2026-10-18 — mandatory cross-phase gate clarified (LATEST DECISION)
+## 2026-10-24 — current ACTIVE research-only stage `3R-1` (read before R2 COMPLETE text)
+
+The older R2 matrix's `COMPLETE` means **the old R2 architecture survey finished its own selected scope**, NOT that every Phase3 registered owner/override/mod bypass was researched. The user's whole-destination-phase prerequisite remains mandatory. **Do not start more Phase3 Java edits or assume the provisional 3C-1 implementation is gameplay accepted.**
+
+`3R-1` has now **source-traced selected 3A primary declaring API/call graphs** (BlockBehaviour/BlockStateBase/Cache, BlockGetter.clip and ClipContext, BlockCollisions, VoxelShape/Shapes, SupportType, render face occlusion) on a pinned 1.21.1 comparative source. It reconciles old R2/C11 evidence without claiming exact *full* NeoForge 21.1.215 override registry. [Research 4/4](research/PHASE3_R1_3A_SHAPE_CALLPATH_AND_COVERAGE_1_21_1.md) + [phase-wide TSV coverage ledger](research/PHASE3_OWNER_COVERAGE_1_21_1.tsv). All 3A/3B/3C/3D/3E research gate statuses remain **OPEN**.
+
+**Next `кк` = `3R-2` (RESEARCH ONLY):** enumerate all Phase2 registered block classes/IDs and full 3A VoxelShape API declaring overrides/inheritance, exact 21.1.215 NeoForge/selected mod bypasses and test/acceptance matrix; save independently committed evidence, then update this handoff. This does NOT require starting Minecraft client or new CI. Provisional 3C-1 runtime [CI #39081259366](https://github.com/Abbygree11/Planetary/actions/runs/39081259366) SUCCESS and V8 42-station gameplay pending unchanged. After complete Phase3 census/frozen map, return to the cross-phase rendering blocker and interrupted `2.4A` workflow.
+
+## 2026-10-18 — mandatory cross-phase gate clarified (historical decision)
 
 **User's method:** cross-phase jumps for fixes are allowed, **but only after the destination phase has been audited comprehensively at phase scope, as Phase 2 was**; targeted owner research is not equivalent. GitHub `docs/phases/phase-03.md` explicitly says **PARTIAL** and has unclosed 3A/3B/3C/3D and other clients. Phase-2 C11–C15 renderer notes and the local `3C-1` four-BER packet are NOT a full Phase-3 owner census.
 

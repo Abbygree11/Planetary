@@ -7,6 +7,10 @@ Minecraft 1.21.1 · NeoForge 21.1.215 · Java 21 · `Abbygree11/Planetary` branc
 
 The user explicitly approves interrupting the active phase (currently 2.4A) to fix an issue in a later owning phase, **but only after the entire later phase has been comprehensively researched**. Phase 2's source/ABI owner atlas, block/item census, override/bypass classification and cross-mod matrix set the bar. The existing Phase 3 PARTIAL card, `RENDERING_1_21_1.md`, 28-BER selective R2 note and Phase-2 C11–C15 are preparatory/selected sources, NOT frozen full Phase-3 coverage. The earlier `3C-1` renderer code already exists (CI SUCCESS), but remains provisional and unaccepted in gameplay. Do not interpret its four-owner research as a full Phase 3 pass.
 
+## Research resumed 2026-10-24
+
+`3R-1` completed a **selected original source owner/call-flow subset** for 3A (shape/cache/raycast/collision/support/render occlusion), with [source evidence](PHASE3_R1_3A_SHAPE_CALLPATH_AND_COVERAGE_1_21_1.md) and [phase-wide owner coverage ledger](PHASE3_OWNER_COVERAGE_1_21_1.tsv). This is **NOT** a completed 3A registered-block override inventory and **NOT** the phase gate. `3R-2` must continue full concrete registered block/override census before any Phase3 implementation.
+
 ## Research-only buckets (each separately bounded, source-first; NO implementation while auditing)
 
 | Bucket | Inventory + mechanism contracts to freeze | Coverage status |

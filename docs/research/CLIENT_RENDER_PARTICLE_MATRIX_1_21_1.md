@@ -1,6 +1,6 @@
 # Client geometry / rendering / particle matrix — Minecraft 1.21.1
 
-Status: R2 COMPLETE research result for Planetary 2.0.
+Status: R2 COMPLETE **for its original architecture-survey scope only**; Phase3 full owner/override/NeoForge/mod audit OPEN (see [3R-1](PHASE3_R1_3A_SHAPE_CALLPATH_AND_COVERAGE_1_21_1.md) and [phase-wide ledger](PHASE3_OWNER_COVERAGE_1_21_1.tsv)).
 Runtime target researched: Minecraft 1.21.1 / NeoForge 21.1.215.
 
 This document is the concrete Phase-3/Phase-4 family matrix produced by global

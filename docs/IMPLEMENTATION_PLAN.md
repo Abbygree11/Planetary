@@ -1,5 +1,13 @@
 # Planetary 2.0 implementation roadmap
 
+## 2026-10-24 — CURRENT research-only `3R-1`, whole Phase3 gate still OPEN
+
+**Purpose:** user approved comprehensive Phase3 research first, to the same owner/source/ABI/mod-bypass depth as Phase2, before switching across phase boundaries for further runtime fixes. One bounded research packet per user `кк`, 4/4 mechanism/source/NeoForge/mod/acceptance evidence, commit to `2.0` and update handoff.
+
+**3R-1 result:** selected 3A `BlockBehaviour.BlockStateBase/Cache`, `VoxelShape/Shapes`, `BlockGetter.clip/ClipContext`, `BlockCollisions`, `SupportType`, `Block.shouldRenderFace` declaring owners and PHYSICAL-vs-CANONICAL call chain source-traced against pinned Minecraft 1.21.1 comparative source. Prior Phase2 C11 ABI is **selected target 21.1.215 proof only**, no full subclass/override register. [Detailed 3R-1 file](research/PHASE3_R1_3A_SHAPE_CALLPATH_AND_COVERAGE_1_21_1.md); [Phase-wide coverage ledger](research/PHASE3_OWNER_COVERAGE_1_21_1.tsv). Old `R2 COMPLETE` means its original architecture overview, **not whole Phase3 ready**. **No code edited, no new CI or game acceptance**. Previously committed provisional `3C-1` [code CI #39081259366](https://github.com/Abbygree11/Planetary/actions/runs/39081259366) stays SUCCESS / GAMEPLAY PENDING. All phase-wide owner census 3A–3E OPEN.
+
+**NEXT `3R-2`:** inventory EVERY Phase2 registered block class/ID 3A shape author/override; selected exact 21.1.215 NeoForge and mod bypass evidence. Continue 3R-3 standard block pipeline, 3R-4 full BER, 3R-5 mod/shader/custom, 3R-6 resource/client/other, 3R-7 reconciliation and *only then* possible phase-gate completion. Do not implement Chest/other BER or patch 2.4A's renderer symptom during research.
+
 ## 2026-10-18 — CURRENT Phase 3C-1 BER-family render correction
 
 **Observed (not fully accepted):** user's V8 sign/banner/skull/hanging images show rotation/attached properties of mostly preset CYAN states and visual disorientation off `+Y`; some +Y chain variants might simply have different `ATTACHED` conditions. F3 state presence is **not** a universal player-placement PASS.

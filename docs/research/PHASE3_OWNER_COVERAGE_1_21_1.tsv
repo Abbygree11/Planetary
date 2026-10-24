@@ -1,0 +1,28 @@
+phase	id	owner_family	status	current_evidence	planned_packet	missing_for_phase_complete
+3A	A01	BlockStateBase#getShape/getVisualShape/getInteractionShape	SOURCE_TRACE_SELECTED	BlockBehaviour comparator 1.21.1	R1-3A	Block subclass override + registered ID census
+3A	A02	BlockStateBase#getCollisionShape;BlockCollisions;Shapes.block identity	SOURCE_TRACE_SELECTED	BlockBehaviour/BlockCollisions comparator	R1-3A	Contextual and dynamic subclass census; entity owner Phase7
+3A	A03	BlockStateBase.Cache;EmptyBlockGetter;shape/cache invalidation	SOURCE_TRACE_SELECTED	BlockBehaviour Cache comparator	R1-3A	Dynamic/noncache owner index; invalidation and mod bypass
+3A	A04	getBlockSupportShape;SupportType FULL/CENTER/RIGID	SOURCE_TRACE_SELECTED	SupportType/BlockBehaviour comparator	R1-3A	Override census and cross-chart support acceptance
+3A	A05	getOcclusionShape/getFaceOcclusionShape	SOURCE_TRACE_SELECTED	BlockBehaviour comparator + prior C11	R1-3A	Dynamic shape and source/target seam cache policy
+3A	A06	BlockGetter.clip;ClipContext and fluid/interaction overrides	SOURCE_TRACE_SELECTED	BlockGetter/ClipContext comparator	R1-3A	Raycast owner from Phase7B and modded fake-world paths
+3A	A07	Block.shouldRenderFace;external face hiding;state-pair cache	SELECTED_SOURCE_PRIOR_ABI	Block comparator; prior C11 selected NeoForge	R1-3A	Complete 3B culling integration/adjacent mod hiding
+3A	A08	VoxelShape/Shapes boolean ops, full/empty, collision	SOURCE_TRACE_SELECTED	Shapes/VoxelShape comparator	R1-3A	Full registered shape API owner/override map
+3A	A09	All registered block classes and shape overrides	OPEN_CENSUS	Phase2 registered classes/IDs input	R2-3A	All registered class/ID override + inherited owner enumeration
+3B	B01	BakedModel;quads;ModelData;RenderType;multipart/model variants	PRIOR_R2_ONLY	R2/C11, RENDERING_1_21_1	R3-3B	full baked model/NeoForge override/provider registry
+3B	B02	ModelBlockRenderer AO/light/flat and dynamic light	PRIOR_SELECTED_SOURCE	Phase2 C12, R2	R3-3B	all light/AO/shader owner and physical/world semantics
+3B	B03	Block.shouldRenderFace;skipRendering;NeoForge face hiding	PRIOR_SELECTED_SOURCE	Phase2 C11; R2	R3-3B	seam both sides, caches, dynamic model data, 6/12/8
+3B	B04	Chunk rebuild, random offset, breaking overlay, tint	PRIOR_R2_ONLY	RENDERING_1_21_1; R2; Phase2 C15	R3-3B	exact cache/reload/worker provenance and model lifecycle
+3B	B05	Liquid/transparent geometry and model bypass	OPEN_CENSUS	Phase2 C10/C13 pointers only	R3-3B	fluid owner + mod independent render path inventory
+3C	C01	All vanilla BER registrations and declaring renderer owners	PRIOR_R2_ONLY	R2 28-class source overview	R4-3C	actual registered BER types, overrides, runtime dispatcher
+3C	C02	Sign/HangingSign/Banner/Skull BER concrete owner paths	SELECTED_IMPL_CI_NOT_GAME	3C-1 4-owner research; CI 39081259366	R4-3C	whole BER registry and game/mod acceptance; provisional code
+3C	C03	Chest/EnderChest/Bell/Shulker/Pot/Brushable etc BER owners	PRIOR_R2_ONLY	R2 representative notes	R4-3C	all actual declaring methods and local-vs-world classification
+3C	C04	World/camera effects (beacon/conduit/portals/spawner)	PRIOR_R2_ONLY	R2/C13 pointers	R4-3C	physical-geometry and global dispatcher bypass proof
+3C	C05	BEWLR item, GUI, fake-world render, overrides	OPEN_CENSUS	R2/C13 selected sources	R4-3C	ItemRenderer/NeoForge registration/independent mods
+3D	D01	Custom/accelerated NeoForge section render geometry	PRIOR_SELECTED_SOURCE	Phase2 C13/C15	R5-3D	event/worker/original producer and real mod hooks
+3D	D02	Create Flywheel instancing, kinetic/moving meshes	PRIOR_SELECTED_SOURCE	Phase2 C13 comparator	R5-3D	exact supported mod artifact and bypass census
+3D	D03	Iris shaders/shadow maps/GBuffer/normal PBR	PRIOR_SELECTED_SOURCE	Phase2 C13/C15	R5-3D	exact render pass and version compatibility matrix
+3D	D04	Piston/FallingBlock/entity/item/frame/vehicles	PRIOR_SELECTED_SOURCE	R2/C14	R5-3D	all renderer subclasses, physical pose and actor-space split
+3E	E01	Model/texture reload and per-dimension lifecycle	PRIOR_SELECTED_SOURCE	Phase2 C15	R6-3E	exact callbacks and epoch invalidation owner census
+3E	E02	Chunk section worker/BlockAndTintGetter frame provenance	PRIOR_SELECTED_SOURCE	Phase2 C15	R6-3E	thread-safe position/fake world metadata and caches
+3E	E03	Resource pack/provider replacement and custom BER registration	OPEN_CENSUS	R2/C15 background	R6-3E	all registered reload callbacks and mod overrides
+3E	E04	Client/entity/render world effects and preview domains	PRIOR_SELECTED_SOURCE	Phase2 C14	R6-3E	overlap Phase7; no-Planet/GUI shader lifecycle matrix
