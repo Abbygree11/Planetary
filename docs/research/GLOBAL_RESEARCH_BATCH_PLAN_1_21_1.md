@@ -60,6 +60,10 @@ Output:
 complete Phase-2 ownership map, family list, dependencies to render/redstone/
 entity/fluid phases, and a Phase-2 representative acceptance matrix.
 
+## 2026-10-25 Phase3 `3R-2c` six original shape API JVM owner checkpoint
+
+[Full report](PHASE3_R2C_ORIGINAL_SIX_SHAPE_OWNERS_1_21_1.md), [six-shape registered class atlas](PHASE3_R2C_ORIGINAL_SIX_SHAPE_OWNERS_1_21_1.tsv), [dual-archive verified script](../../scripts/research/phase3_shape_six_owner_verify.py). Original NeoForge21.1.215 Java21 class reflection `getVisualShape/getInteractionShape/getOcclusionShape/getBlockSupportShape` from [CI #40136919659](https://github.com/Abbygree11/Planetary/actions/runs/40136919659) green (test-only code), all 241/1060 real registry items; original preceding two method owners from phase2 artifact. This resolves six **declaring-owner** APIs, NOT dynamic BlockStateBase.Cache, different overload/callers, mod bypass or 3B–3E. **Next `3R-2d` research-only**. Do not move to runtime implementation or claim full Phase3 acceptance.
+
 ## 2026-10-25 Phase3 `3R-2b` exact owner checkpoint
 
 Original immutable NeoForge21.1.215 ZIP re-downloaded and SHA verified. [3R-2b stage](PHASE3_R2B_ORIGINAL_EFFECTIVE_SHAPE_OWNERS_1_21_1.md), [all 241 classes original nearest getShape/getCollisionShape owners](PHASE3_R2B_ORIGINAL_EFFECTIVE_SHAPE_OWNERS_1_21_1.tsv), [independent reproduce/verify script](../../scripts/research/phase3_shape_effective_owner_verify.py) are exact original JVM reflection evidence, unlike previous direct-source search. Four additional shape APIs and full Phase3 3A–3E still OPEN. Next `3R-2c` before any new Phase3 runtime implementation. No new CI required for research-only commit.
