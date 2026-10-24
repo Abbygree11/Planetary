@@ -62,6 +62,10 @@ The original `BlockStateBase.Cache` is created with `EmptyBlockGetter/BlockPos.Z
 
 **NeoForge/Mod:** earlier selected comparator NeoForge patch `neoforged/NeoForge@3cae64530de368936d4c07497d3f0a25e2f9ffec` changes `Block.shouldRenderFace` to call `hidesNeighborFace` and `supportsExternalFaceHiding` (C11 already pins exact target ABI selected). Create ConnectedGlass and AE2 QuartzGlass own independent transparent culling; original pinned source comparisons in C11 are **NOT** loaded mod runtime. Flywheel/contraptions may bypass vanilla shape/BakedModel assumptions. **Not covered** by six vanilla declaring-owner class reflection and not automatically safe for every custom mod.
 
+## Second confirmed green CI and reproducibility distinction
+
+**Final 3R-2c source/test verification:** second full [CI #40137491107](https://github.com/Abbygree11/Planetary/actions/runs/40137491107) on [30937e1](https://github.com/Abbygree11/Planetary/commit/30937e1ea8309edc74ac80580f3c2e39ad11549a) **COMPLETED SUCCESS** after committing the 241-row atlas and dual-archive verifier. This second CI ran the existing research JUnit and normal Java21 test suite; the standalone Python verifier is committed and independently reproducible using both workflow ZIPs but is **not automatically executed by CI**. No production Java or V8 change; Phase3 research gate still OPEN. 
+
 ## 4/4 — strict acceptance, no implementation, next research gate
 
 | Gate | Verified | Still pending |
