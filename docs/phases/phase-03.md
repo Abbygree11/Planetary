@@ -1,5 +1,10 @@
 # Фаза 3 — Геометрия и рендеринг блоков
 
+## `3R-2g` — 2026-10-26, discoverable engine caller classpath & 1.21.1 Catnip/AE2 models
+
+[Four-part research](../research/PHASE3_R2G_ENGINE_GEOMETRY_CONSUMER_AND_COMPAT_1_21_1.md), [24-row owner/bypass matrix](../research/PHASE3_R2G_ENGINE_MOD_CALLER_AND_BYPASS_1_21_1.tsv), [ASM/JUnit from real NeoForge 21.1.215 class resources](../../src/test/java/dev/planetary/world/Phase3R2gEngineShapeCallerCensusTest.java). Selected JVM calls now inventoried from discovered class files beyond registered Block ancestors, explicitly distinguishing discovered classfile graph vs runtime-dynamic/loaded-mod graph. **CI #40242279888 in progress; no new count or PASS until artifact audit**. MC1.21.1 AE2 old renderer proven via pinned `GlassBakedModel` / `GlassModel`, `FacadeBlockAccess` and `CableBusBakedModel`; pinned Ponder Catnip `WrappedLevel extends Level`, Create contraption/virtual worlds. Exact released Catnip binary unresolved; do not conflate MC26.3 QuartzGlassModel with target. 3A OPEN, whole Phase3 OPEN; no production Java, Mixins, V8 or main changes. NEXT `3R-2h` research-only.
+
+
 **Статус из роадмапа:** PARTIAL. Это не отметка об игровой приёмке. [Индекс](README.md) · [Основной роадмап](../IMPLEMENTATION_PLAN.md) · [Правила](../../AGENTS.md).
 
 **Temporary visibility aid, not a renderer fix (2026-10-15):** In dev `runClient`, `PlanetDevVisibility` uses vanilla NIGHT_VISION on all six Planet faces; `/planetary test light off` reveals the underlying real lighting. This does **not** implement sky direction adaptation, local skylight, AO, shadow or mod shader pipelines. Real Phase 3B lighting acceptance must be tested with this helper OFF as well.
