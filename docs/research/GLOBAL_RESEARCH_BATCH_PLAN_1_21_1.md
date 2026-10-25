@@ -60,6 +60,10 @@ Output:
 complete Phase-2 ownership map, family list, dependencies to render/redstone/
 entity/fluid phases, and a Phase-2 representative acceptance matrix.
 
+## 2026-10-25 Phase3 `3R-2d`: static/dynamic cache/occlusion and foreign getter research
+
+[4/4 research](PHASE3_R2D_DYNAMIC_SHAPE_CACHE_OCCLUSION_SUPPORT_1_21_1.md), [28-row source/ABI/mod bypass matrix](PHASE3_R2D_DYNAMIC_SHAPE_CONTEXT_OWNER_MATRIX_1_21_1.tsv), selected target JVM ASM [CI #40145655409](https://github.com/Abbygree11/Planetary/actions/runs/40145655409) SUCCESS. `BlockStateBase.Cache` canonical global state, conditional `dynamicShape`, face/support and `CollisionContext` callers source-traced, selected exact target ABI captured. **3A STILL OPEN**: dynamic state registry census and mod/foreign world real JAR/source and invalidation, next `3R-2e` RESEARCH ONLY before 3R-3, no runtime code changes.
+
 ## 2026-10-25 Phase3 `3R-2c` six original shape API JVM owner checkpoint
 
 [Full report](PHASE3_R2C_ORIGINAL_SIX_SHAPE_OWNERS_1_21_1.md), [six-shape registered class atlas](PHASE3_R2C_ORIGINAL_SIX_SHAPE_OWNERS_1_21_1.tsv), [dual-archive verified script](../../scripts/research/phase3_shape_six_owner_verify.py). Original NeoForge21.1.215 Java21 class reflection `getVisualShape/getInteractionShape/getOcclusionShape/getBlockSupportShape` from [CI #40136919659](https://github.com/Abbygree11/Planetary/actions/runs/40136919659) green (test-only code), all 241/1060 real registry items; original preceding two method owners from phase2 artifact. This resolves six **declaring-owner** APIs, NOT dynamic BlockStateBase.Cache, different overload/callers, mod bypass or 3B–3E. **Next `3R-2d` research-only**. Do not move to runtime implementation or claim full Phase3 acceptance.
