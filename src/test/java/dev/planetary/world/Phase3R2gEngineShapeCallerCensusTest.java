@@ -93,6 +93,7 @@ final class Phase3R2gEngineShapeCallerCensusTest {
             for (int i = 0; i < resource.split("/").length; i++) {
                 root = root.getParent();
             }
+            final Path resolvedRoot = root;
             for (String namespace : List.of("net/minecraft", "net/neoforged/neoforge")) {
                 Path subtree = root.resolve(namespace);
                 if (!Files.isDirectory(subtree)) continue;
@@ -100,7 +101,7 @@ final class Phase3R2gEngineShapeCallerCensusTest {
                     files.filter(Files::isRegularFile)
                             .filter(p -> p.toString().endsWith(".class"))
                             .forEach(p -> {
-                                String name = root.relativize(p).toString().replace('\\', '/');
+                                String name = resolvedRoot.relativize(p).toString().replace('\\', '/');
                                 names.add(name.substring(0, name.length() - 6));
                             });
                 }
