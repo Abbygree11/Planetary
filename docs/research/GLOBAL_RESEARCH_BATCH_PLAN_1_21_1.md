@@ -60,6 +60,10 @@ Output:
 complete Phase-2 ownership map, family list, dependencies to render/redstone/
 entity/fluid phases, and a Phase-2 representative acceptance matrix.
 
+## 2026-10-25 Phase3 `3R-2e` — registered BlockState cache/dynamic owner census
+
+[4/4 report](PHASE3_R2E_REGISTERED_DYNAMIC_CACHE_MOD_PROVENANCE_1_21_1.md), [22 original dynamic block IDs](PHASE3_R2E_ORIGINAL_DYNAMIC_BLOCK_IDS_1_21_1.tsv), [Create/AE2 virtual and connected model source matrix](PHASE3_R2E_MOD_VIRTUAL_WORLD_AND_CULLING_OWNER_MATRIX_1_21_1.tsv). [Original Java 21 NeoForge CI #40206261371](https://github.com/Abbygree11/Planetary/actions/runs/40206261371) SUCCESS: all 26684 registered BlockState variants checked for cache presence; 26505 cached, 179 uncached in 22 IDs/6 classes. Modded extensions/source and rendering bypass still pending; `3R-2f` research-only next; 3A and full Phase3 not closed.
+
 ## 2026-10-25 Phase3 `3R-2d`: static/dynamic cache/occlusion and foreign getter research
 
 [4/4 research](PHASE3_R2D_DYNAMIC_SHAPE_CACHE_OCCLUSION_SUPPORT_1_21_1.md), [28-row source/ABI/mod bypass matrix](PHASE3_R2D_DYNAMIC_SHAPE_CONTEXT_OWNER_MATRIX_1_21_1.tsv), selected target JVM ASM [CI #40145655409](https://github.com/Abbygree11/Planetary/actions/runs/40145655409) SUCCESS. `BlockStateBase.Cache` canonical global state, conditional `dynamicShape`, face/support and `CollisionContext` callers source-traced, selected exact target ABI captured. **3A STILL OPEN**: dynamic state registry census and mod/foreign world real JAR/source and invalidation, next `3R-2e` RESEARCH ONLY before 3R-3, no runtime code changes.
