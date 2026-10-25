@@ -60,6 +60,10 @@ Output:
 complete Phase-2 ownership map, family list, dependencies to render/redstone/
 entity/fluid phases, and a Phase-2 representative acceptance matrix.
 
+## Phase3 `3R-2f` 2026-10-25 — all registered Block ancestry ASM consumers, mod versions checked
+
+[Four-part research](PHASE3_R2F_COMPILED_SHAPE_CONSUMER_AND_MOD_VERSION_AUDIT_1_21_1.md), [32 owner/extension rows](PHASE3_R2F_SHAPE_CONSUMER_OWNER_EVIDENCE_1_21_1.tsv), research-only [CI #40210234121](https://github.com/Abbygree11/Planetary/actions/runs/40210234121) SUCCESS, 281 original class roots and 276 filtered JVM invokes, 95 actual source owners; 104 generic getBlockEntity edges separate from true shape. Create MC1.21.1 Neo21.1.219, AE2 MC1.21.1 Neo21.1.169+; newer AE2 b141e91 MC26.3 incompatible model comparator explicitly excluded. `3R-2g` next to close non-block engine/fake-world and compatible mod APIs; 3A and whole Phase3 audit remain OPEN. No runtime fixes or gameplay claims.
+
 ## 2026-10-25 Phase3 `3R-2e` — registered BlockState cache/dynamic owner census
 
 [4/4 report](PHASE3_R2E_REGISTERED_DYNAMIC_CACHE_MOD_PROVENANCE_1_21_1.md), [22 original dynamic block IDs](PHASE3_R2E_ORIGINAL_DYNAMIC_BLOCK_IDS_1_21_1.tsv), [Create/AE2 virtual and connected model source matrix](PHASE3_R2E_MOD_VIRTUAL_WORLD_AND_CULLING_OWNER_MATRIX_1_21_1.tsv). [Original Java 21 NeoForge CI #40206261371](https://github.com/Abbygree11/Planetary/actions/runs/40206261371) SUCCESS: all 26684 registered BlockState variants checked for cache presence; 26505 cached, 179 uncached in 22 IDs/6 classes. Modded extensions/source and rendering bypass still pending; `3R-2f` research-only next; 3A and full Phase3 not closed.

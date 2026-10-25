@@ -1,0 +1,33 @@
+id	declaring_owner_or_mechanism	classification	evidence	owner_behavior	version_scope	missing_for_full_gate
+01	BlockStateBase.getFaceOcclusionShape	cache-or-live	SOURCE+SELECTED_TARGET_ASM	State cache ordinal; dynamic occlusion->getFaceShape	ORIGINAL_NEOFORGE_21_1_215	World-dependent shapes and invalidation
+02	Block.shouldRenderFace	vanilla+neoforge-client	ASM_CI_40210234121	2 getFaceOcclusionShape calls; skipRendering/hidesNeighborFace	ORIGINAL_NEOFORGE_21_1_215	Custom mod override and chart edge
+03	PlanetBlockRenderCulling.shouldRenderFace	planet-client	ASM_CI_40210234121	2 getFaceOcclusionShape calls; source/neighbor separate frames; ThreadLocal cache	PLANET_SOURCE_AND_COMPILED	Cache ignores world/position/dynamic BE
+04	BlockStateBase.isFaceSturdy	cache-or-SupportType	SOURCE+SELECTED_TARGET_ASM	Cached support flags vs SupportType.isSupporting	ORIGINAL_NEOFORGE_21_1_215	Custom mod direct override and support edge
+05	BlockStateBase$Cache.<init>	static-canonical-cache	SOURCE+SELECTED_TARGET_ASM	EmptyBlockGetter, BlockPos.ZERO, 6 face masks and FULL/CENTER/RIGID	ORIGINAL_NEOFORGE_21_1_215	Mod incorrect dynamic flag and stale client cache
+06	MultifaceBlock.canAttachTo	collision+support	ASM_CI_40210234121	Calls getBlockSupportShape and getCollisionShape	ORIGINAL_NEOFORGE_21_1_215	Canonical-vs-physical side mismatch at charts
+07	Block.getFaceFull	shape-full-support	ORIGINAL_SOURCE_SELECTED_TARGET	isShapeFullBlock/isFaceFull checks geometry	ORIGINAL_NEOFORGE_21_1_215	Do not rewrite singleton Shapes.block
+08	Block.canSupportCenter/RigidBlock	support-predicates	ASM_CI_40210234121	Delegates isFaceSturdy through SupportType	ORIGINAL_NEOFORGE_21_1_215	Per-local-side source and target positions
+09	BellBlock.getStateForPlacement	support-placements	ASM_CI_40210234121	5 isFaceSturdy calls at selected source entry	ORIGINAL_NEOFORGE_21_1_215	Prove all hanging and wall cases on 6 faces
+10	FenceBlock.getStateForPlacement/updateShape	support-connection	ASM_CI_40210234121	Original isFaceSturdy paths in placement/neighbor update	ORIGINAL_NEOFORGE_21_1_215	Mod connectivity and 12 seam edges
+11	DoorBlock.canSurvive	support-survival	ASM_CI_40210234121	isFaceSturdy original caller	ORIGINAL_NEOFORGE_21_1_215	Other paired/two-block placement owners
+12	CeilingHangingSignBlock.getStateForPlacement/canSurvive	collision-support	ASM_CI_40210234121	getCollisionShape and isFaceSturdy direct delegates	ORIGINAL_NEOFORGE_21_1_215	Stable placement vs independent render chain
+13	WallBlock.updateShape	above-neighbor collision	ASM_CI_40210234121	Uses neighbor getCollisionShape; physical UP/DOWN expectations	ORIGINAL_NEOFORGE_21_1_215	Source/target mixed frame at cross-edge
+14	BlockCollisions.computeNext	physical-collision	ASM_CI_40210234121	Direct getCollisionShape with CollisionContext	ORIGINAL_NEOFORGE_21_1_215	Entity local gravity Phase7 independent
+15	BlockGetter.getBlockFloorHeight	physical-y	ASM_CI_40210234121	getCollisionShape and axis Y; recursive default path	ORIGINAL_NEOFORGE_21_1_215	Local floor is Phase7 not global BlockGetter rewrite
+16	BlockGetter.clipWithInteractionOverride	physical-ray-interaction	ASM_CI_40210234121	getInteractionShape direct override	ORIGINAL_NEOFORGE_21_1_215	Actor orientation, ray hit and fluid shapes
+17	BlockBehaviour.getOcclusionShape	default-nested	ASM_CI_40210234121	getShape invocation nested in occlusion	ORIGINAL_NEOFORGE_21_1_215	No double outer shape transform
+18	BlockBehaviour.getBlockSupportShape	default-nested	ASM_CI_40210234121	getCollisionShape invocation nested in support	ORIGINAL_NEOFORGE_21_1_215	No accidental conversion of canonical support
+19	ScaffoldingBlock.getCollisionShape	entity-context	ASM_CI_40210234121	isAbove, isDescending entity-Y logic	ORIGINAL_NEOFORGE_21_1_215	Local Y Phase7 body gravity
+20	ShulkerBoxBlock.getShape/getBlockSupportShape	live-block-entity	ORIGINAL_REFLECTION_AND_SOURCE	BlockEntity-driven shape and support; generic getBlockEntity calls not all geometry	ORIGINAL_NEOFORGE_21_1_215	Animate and check stale state-pair cache
+21	MovingPistonBlock.getCollisionShape	moving-piston	ASM_CI_40210234121	PistonMovingBlockEntity collision path	ORIGINAL_NEOFORGE_21_1_215	Motion path/fast movement real game
+22	Create ConnectedGlassBlock	custom-face-hiding	PINNED_CREATE_SOURCE	extends TransparentBlock; skipRendering inherited/overridden	CREATE_6_0_11_MC1_21_1_NEO21_1_219_SOURCE	Loaded Create JAR on Planet target 21.1.215 unverified
+23	Create WindowBlock	custom-subclass-hiding	PINNED_CREATE_SOURCE	extends ConnectedGlassBlock, own skipRendering	CREATE_6_0_11_MC1_21_1_NEO21_1_219_SOURCE	Sibling mod override/contraption render test
+24	Create VirtualRenderWorld	virtual-Level	PINNED_CREATE_SOURCE	extends Level, holds independent states/entities/model data	CREATE_6_0_11_MC1_21_1_NEO21_1_219_SOURCE	Wrong Planet provenance if mistakenly bound
+25	Create ContraptionWorld	wrapped-Level	PINNED_CREATE_SOURCE	extends Catnip WrappedLevel, getBlockState reads contraption blocks	CREATE_6_0_11_MC1_21_1_NEO21_1_219_SOURCE	Need Catnip exact hierarchy/local-to-world transform
+26	AE2 QuartzGlassBlock	custom-face-hiding	PINNED_AE2_SOURCE	extends TransparentBlock; own skipRendering	AE2_MC1_21_1_NEO21_1_169_RANGE_21_1_169_PLUS	No actual loaded mod, visual cache and model need 1.21.1 source
+27	AE2 QuartzGlassModel	version-incompatible-comparator	PINNED_AE2_NEWER_SOURCE_ONLY	DynamicBlockStateModel.collectParts from MC26.3; not original 1.21.1 proof	AE2_MC26_3_JAVA25_VERSION_MISMATCH	Exclude from 1.21.1 compatibility validation
+28	PlanetGravityRuntime	world-identity	PLANET_SOURCE	IdentityHashMap<Level,Binding> and activation	PLANET_CODE_CURRENT	Not any Level subclass gets automatic binding
+29	PlanetBlockShapeRuntime	shape-space-boundary	PLANET_SOURCE	finishPhysical Level-only; outermost query transform	PLANET_CODE_CURRENT	Foreign non-Level BlockGetter excluded; virtual Level not automatically bound
+30	PlanetClientRenderFrame	client-region-fallback	PLANET_SOURCE	Non-Level BlockGetter -> current Minecraft ClientLevel frame	PLANET_CODE_CURRENT	May conflate unrelated fake region with current real Planet
+31	PlanetBlockRenderCulling.CacheKey	state-only-culling-cache	PLANET_SOURCE	Key two BlockState and local sides; excludes world/pos/BE	PLANET_CODE_CURRENT	Possible time/position-dependent mod occlusion stale cache; no game repro
+32	Full vanilla block ancestry ASM scan	research-census	CI_40210234121	281 class owners scanned; 276 matched calls (104 generic getBlockEntity)	ORIGINAL_NEOFORGE_21_1_215	Whole engine non-block callers, mods and dynamic dispatch beyond scope
