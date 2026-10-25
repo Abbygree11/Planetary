@@ -1,7 +1,7 @@
 # Planetary — `3R-2g`: engine-wide discoverable JVM caller census and version-compatible virtual/model owners
 
 **2026-10-26 · Minecraft 1.21.1 · NeoForge 21.1.215 · Java 21 · `2.0`**
-**Research-only**. No production Java, Mixins, generated world, V8 or gameplay modifications. Full 3A and all Phase3 **OPEN**.
+**Research 4/4 — target ASM/JUnit CI SUCCESS and original artifact independently reconciled.** No production Java, Mixins, generated world, V8 or gameplay modifications. Full 3A and all Phase3 **OPEN**.
 
 ## 1/4 — New original NeoForge runtime census outside registered block ancestry
 
@@ -11,7 +11,16 @@ The generated `build/reports/planetary/phase3-neo1211-engine-shape-consumer-edge
 
 **Important coverage semantics:** this is an exhaustive *discovered class-file/name-matched INVOKE* census within the listed resource roots, **not** a proof of all Minecraft runtime callsites, bytecode from arbitrary loaded mods, method-handle/invokedynamic/reflection, dynamic virtual dispatch, applied Mixin transformation or client gameplay. Different NeoForge classpath layouts may expose different roots; the report lists which roots were found. `getBlockEntity` is deliberately broad and must never be counted as proof that all such calls consume shape.
 
-**CI result:** pending verification; do not present code commit alone as ASM PASS. Do not hardcode newly measured counts before the output is inspected.
+**Original CI target:** [#40242279888](https://github.com/Abbygree11/Planetary/actions/runs/40242279888) **COMPLETED SUCCESS** on JUnit source commit [5cc9314](https://github.com/Abbygree11/Planetary/commit/5cc9314f7aa8972df221c1aff1396f5a44fb6494). Original upload artifact **12617341652** ZIP SHA-256 `c5f05ef03ba914f93338c40bb986ff42c53478922df38ea8689e8b96e9372eed`. Independently downloaded full 14-file archive, read raw TSV and confirmed exact original edge file SHA-256 `94aa7f868f428400b9f5539fba9af8107d69ba0aea9dcc56f9a8cd0eaf4bf161`. [Reproducible independent comparison/filter verifier](../../scripts/research/phase3_engine_caller_verify.py) is committed **after this CI** and was checked against this archive; running that separate Python script is **not a GitHub Actions test step**.
+
+**Exact compiled discovered evidence:**
+- **9,430** Minecraft/NeoForge discoverable classfiles; actual resource anchors all three available (`Block.class`, `IBlockExtension.class`, `IDynamicBakedModel.class`).
+- **543** name-filtered method JVM invocation edges, **218** generic `getBlockEntity` uses that are *not* all geometry.
+- Scope: **230** invocations in 269 registered block ancestor classes and **313** outside that ancestry; **160** non-ancestry source owners have name matches, **198** non-ancestry calls excluding generic `getBlockEntity`. These 198 still include name collisions unrelated to geometry.
+- Exact seven-field deduplication against original **276** edges of `3R-2f`: **247 overlapping, 273 newly discovered, 6 absent**. All six absent calls originate from `dev/planetary/client/render/PlanetBlockRenderCulling`, intentionally excluded because this scanner discovers original Minecraft/NeoForge class files rather than Planetary itself.
+- Of 273 newly discovered, **114** are generic `getBlockEntity`, **15** are unrelated `getOffset` name collisions (tooltip/layout, IO, Bee, etc.). **144 additional name-qualified candidates remain** including 1 actual `BlockState.getOffset(BlockGetter,BlockPos):Vec3` call. Candidate means a method dispatch matching our selector, *not* proof that every result is shape/culling-related.
+
+**New exact original target method owners beyond previous selected roots:** `LightEngine.getOcclusionShape` directly invokes `BlockState.getFaceOcclusionShape` (1 edge); NeoForge `SmoothQuadLighter.computeLightingAt` invokes it twice (2 edges). `LightEngine.getLightBlockInto` invokes `BlockState.getOcclusionShape` twice and `Shapes.mergedFaceOccludes` once. `FlatQuadLighter.computeLightingAt` reads `getCollisionShape`; `LiquidBlockRenderer.isFaceOccludedByState` calls `getOcclusionShape`. `SectionCompiler.compile` and `BlockRenderDispatcher.renderBreakingTexture` get `BakedModel.getModelData`. `ModelBlockRenderer.tesselateBlock` uses spatial `BlockState.getOffset`. `Entity.isColliding`, `WalkNodeEvaluator.getFloorLevel`, `LevelRenderer` and worldgen/particle owners consume shapes through independent paths. Exact JVM descriptors are in CI TSV; count each JVM INVOKE, not semantic call-path equivalence. This makes **lighting/AO and model-data authors unavoidable in final 3B**, without falsely closing 3A or migrating ownership across phases.
 
 ## 2/4 — Exact geometry boundaries and newly discoverable owner families
 
@@ -32,12 +41,11 @@ Audit categories deliberately span `world.level` (collision/block access/chunk),
 
 The old [`FacadeBlockAccess`](https://github.com/AppliedEnergistics/Applied-Energistics-2/blob/db17504a86128fdf3dae31f5fb7a112a646e0b93/src/main/java/appeng/client/render/cablebus/FacadeBlockAccess.java) is a non-`Level` `BlockAndTintGetter` wrapper with substituted facade state, while [`CableBusBakedModel`](https://github.com/AppliedEnergistics/Applied-Energistics-2/blob/db17504a86128fdf3dae31f5fb7a112a646e0b93/src/main/java/appeng/client/render/cablebus/CableBusBakedModel.java) owns a `ModelData`-dependent quad/cache path. [`CertusQuartzClusterBlock`](https://github.com/AppliedEnergistics/Applied-Energistics-2/blob/db17504a86128fdf3dae31f5fb7a112a646e0b93/src/main/java/appeng/decorative/solid/CertusQuartzClusterBlock.java) is also confirmed from this correct 1.21.1 version: directional shapes and support-facing `isFaceSturdy`. None of this establishes that these mod classes were loaded into a Planetary client or reproduced a rendering defect.
 
-## 4/4 — Scope, reproducibility and non-passing 3A gate
+## 4/4 — Verified original target artifact, source reconciliation and non-passing 3A gate
 
-[Companion matrix](PHASE3_R2G_ENGINE_MOD_CALLER_AND_BYPASS_1_21_1.tsv) specifies 24 individually classified routes, source provenance, context contracts, and remaining acceptance. This stage adds a reproducible **broader JVM audit** and restores correctly versioned AE2 1.21.1 glass model owners and pinned Ponder/Catnip source comparator. It **does not** claim finished whole-engine dynamic call graph or full mod compatibility.
+[Companion matrix](PHASE3_R2G_ENGINE_MOD_CALLER_AND_BYPASS_1_21_1.tsv) specifies 24 individually classified routes, source provenance, context contracts, and remaining acceptance. This stage adds a CI-verified reproducible **broader JVM audit** and restores correctly versioned AE2 1.21.1 glass model owners and pinned Ponder/Catnip source comparator. It **does not** claim finished whole-engine dynamic call graph or full mod compatibility.
 
 **Still missing before freezing 3A:**
-- CI evidence from the new full classpath scanner with actual scanned namespace/class/edge counts, resolved any scanner failures, and independently checked TSV summary.
 - Release-equivalent Catnip/Create/AE2 compiled artifacts and genuine loaded 1.21.1 runtime paths; virtual-world and facade-origin delegation/side mapping.
 - Qualified dispatch closures for context-dependent custom `VoxelShape`, `BlockEntity`, NeoForge extensions, raycast and shape cache invalidation; choose non-stale culling cache contract before implementation.
 - Actual applied client, six faces + 12 chart edges + 8 corners, +Y/no-Planet baseline, resource reload and moving contraptions; 3B–3E remain independently OPEN.
