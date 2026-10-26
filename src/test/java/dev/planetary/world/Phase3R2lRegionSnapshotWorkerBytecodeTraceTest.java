@@ -39,6 +39,7 @@ final class Phase3R2lRegionSnapshotWorkerBytecodeTraceTest {
 
     private static final List<String> OWNERS = List.of(
             CACHE, REGION, SECTION,
+            MC + "client/renderer/chunk/RenderRegionCache$ChunkInfo",
             MC + "client/renderer/chunk/RenderChunk",
             DISPATCHER,
             DISPATCHER + "$RenderSection",
@@ -59,7 +60,10 @@ final class Phase3R2lRegionSnapshotWorkerBytecodeTraceTest {
             "scheduleRebuild", "createCompileTask", "doTask", "getRegion",
             "setDirty", "isDirty", "setNotDirty", "releaseBuffers",
             "getAt", "snapshot", "getSnapshot", "getModelDataSnapshot",
-            "getSection", "getChunk", "getRenderChunk", "getOrCreate",
+            "snapshotSectionRegion", "refreshAt", "requestRefresh",
+            "requestModelDataUpdate", "getSection", "getChunk",
+            "getRenderChunk", "getOrCreate", "schedule", "cancelTasks",
+            "getChunkInfo",
             "run", "lambda$createRegion$0", "lambda$createRegion$1",
             "lambda$compile$0", "lambda$compile$1"
     );
@@ -233,6 +237,31 @@ final class Phase3R2lRegionSnapshotWorkerBytecodeTraceTest {
         assertTrue(instructions.stream().anyMatch(i ->
                 i.owner().equals(REGION) && i.method().equals("getModelData")),
                 "Region must expose original getModelData body");
+        assertTrue(instructions.stream().anyMatch(i ->
+                i.owner().equals(CACHE) && i.method().equals("createRegion")
+                && i.kind().equals("CALL")
+                && i.operand().contains("ModelDataManager.snapshotSectionRegion")),
+                "RegionCache must request the original ModelDataManager region snapshot");
+        assertTrue(signatures.stream().anyMatch(x ->
+                x.owner().equals(MANAGER) && x.name().equals("snapshotSectionRegion")),
+                "Capture the actual snapshot body, not only the callsite");
+        assertTrue(instructions.stream().anyMatch(i ->
+                i.owner().equals(REGION) && i.method().equals("getModelData")
+                && i.kind().equals("FIELD")
+                && i.operand().contains("RenderChunkRegion.modelDataSnapshot")),
+                "Region.getModelData must directly read its own snapshot field");
+        assertTrue(instructions.stream().anyMatch(i ->
+                i.owner().equals(DISPATCHER + "$RenderSection")
+                && i.method().equals("createCompileTask")
+                && i.kind().equals("CALL")
+                && i.operand().contains("RenderRegionCache.createRegion")),
+                "Compile task must originate its RenderChunkRegion from a region cache");
+        assertTrue(instructions.stream().anyMatch(i ->
+                i.owner().equals(DISPATCHER + "$RenderSection$RebuildTask")
+                && i.method().equals("doTask")
+                && i.kind().equals("CALL")
+                && i.operand().contains("SectionCompiler.compile")),
+                "The rebuild worker must dispatch to SectionCompiler");
 
         classes.sort(Comparator.comparing(ClassInfo::owner));
         signatures.sort(Comparator.comparing(Signature::owner)
