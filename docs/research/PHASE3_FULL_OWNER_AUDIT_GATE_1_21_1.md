@@ -1,5 +1,12 @@
 # Phase 3 — Whole-phase original-source / NeoForge / mod-compatibility audit gate
 
+## 3R-2h released binary ABI / original 144 selected-call ownership (2026-10-26)
+
+[Full 4/4 evidence](PHASE3_R2H_RELEASE_BINARY_ABI_AND_ENGINE_CALLPATH_DISPOSITION_1_21_1.md), [25 owner/bypass routes](PHASE3_R2H_RELEASE_BINARY_AND_DISPATCH_OWNER_MATRIX_1_21_1.tsv), [deterministic original ZIP verifier & official mod JAR javap](../../scripts/research/phase3_r2h_release_binary_and_callpath_audit.py), [CI #40315164089](https://github.com/Abbygree11/Planetary/actions/runs/40315164089) **SUCCESS**. Artifact 12646527522 independently re-downloaded SHA256 f9b3edc4a42b1cd8eb7bcc7c941f09826228f091b9fd3bcf02be9c3268286c97; 144 exact candidate callsites in permanent reproducible generator/CI TSV, 3 authentic released/release-equivalent mod JAR SHA256 and 8 Java21 javap class declarations. Create correct release 6.0.10/Ponder 1.0.82, not newer development Create 6.0.11/Ponder 1.0.85; AE2 pinned official 19.2.18. Original 144 name-selected JVM callsites provisionally mapped: 3A 25, 3B 26, 3E 17, Phase7 43, Phase9 18, Phase2 10, other 5; method names do not prove runtime dynamic dispatch, game, mod loaded or owner completeness.
+
+**3A OPEN:** `SupportType$1/$2/$3` subclass support and piston BE moving collision/CollisionGetter/NeoForge extension virtual dispatch, custom BE/time/position shape cache and fake world original location, NeoForge 21.1.215 real installed mod load and 6/12/8 acceptance pending. **Whole Phase3 3B–3E OPEN**. Do not start production fix. Next research-only `3R-2i`.
+
+
 **Date:** 2026-10-18. **Status: NOT RESEARCHED TO PHASE-2 COMPLETENESS.**
 Minecraft 1.21.1 · NeoForge 21.1.215 · Java 21 · `Abbygree11/Planetary` branch `2.0`.
 
