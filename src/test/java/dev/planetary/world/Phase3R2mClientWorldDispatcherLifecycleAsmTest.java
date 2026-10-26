@@ -39,6 +39,8 @@ final class Phase3R2mClientWorldDispatcherLifecycleAsmTest {
     private static final List<String> ORIGINAL_CLASSES = List.of(
         MINECRAFT, RENDERER, DISPATCHER, SECTION, REBUILD,
         SECTION + "$ResortTransparencyTask",
+        SECTION + "$CompileTask",
+        NEO + "event/level/LevelEvent$Unload",
         MC + "client/renderer/ViewArea",
         MC + "client/renderer/SectionOcclusionGraph",
         CLIENT_LEVEL, MC + "client/multiplayer/ClientPacketListener",
@@ -59,6 +61,8 @@ final class Phase3R2mClientWorldDispatcherLifecycleAsmTest {
         "snapshotSectionRegion", "updateRenderChunks",
         "getLevel", "getChunk", "reload", "createRegion",
         "setChunkSource", "getChunkSource", "getRenderSection",
+        "updateLevelInEngines", "dropAllTasks", "uploadAllPendingUploads",
+        "pollTask", "cancel", "clearTintCaches", "onChunkUnloaded",
         "setStorage", "setViewDistance", "getViewDistance",
         "lambda$setLevel$0", "lambda$setLevel$1", "lambda$allChanged$0",
         "lambda$doTask$0", "lambda$doTask$1"
@@ -198,6 +202,34 @@ final class Phase3R2mClientWorldDispatcherLifecycleAsmTest {
                 && x.name().equals("doTask") && x.kind().equals("CALL")
                 && x.operand().contains("SectionCompiler.compile")),
                 "RebuildTask must call SectionCompiler");
+        assertTrue(ins.stream().anyMatch(x -> x.owner().equals(MINECRAFT)
+                && x.name().equals("setLevel") && x.kind().equals("CALL")
+                && x.operand().contains("LevelEvent$Unload.<init>")),
+                "Minecraft.setLevel must construct old-Level unload hook");
+        assertTrue(ins.stream().anyMatch(x -> x.owner().equals(MINECRAFT)
+                && x.name().equals("setLevel") && x.kind().equals("CALL")
+                && x.operand().contains("Minecraft.updateLevelInEngines")),
+                "World switch must delegate renderer state transition");
+        assertTrue(ins.stream().anyMatch(x -> x.owner().equals(MINECRAFT)
+                && x.name().equals("updateLevelInEngines") && x.kind().equals("CALL")
+                && x.operand().contains("LevelRenderer.setLevel")),
+                "Actual original Minecraft.updateLevelInEngines must call renderer.setLevel");
+        assertTrue(ins.stream().anyMatch(x -> x.owner().equals(RENDERER)
+                && x.name().equals("setLevel") && x.kind().equals("CALL")
+                && x.operand().contains("SectionRenderDispatcher.dispose")),
+                "LevelRenderer world switch must invoke dispatcher.dispose");
+        assertTrue(ins.stream().anyMatch(x -> x.owner().equals(DISPATCHER)
+                && x.name().equals("dispose") && x.kind().equals("CALL")
+                && x.operand().contains("SectionRenderDispatcher.clearBatchQueue")),
+                "Dispatcher dispose must cancel pending queued compile tasks");
+        assertTrue(ins.stream().anyMatch(x -> x.owner().equals(DISPATCHER)
+                && x.name().equals("runTask") && x.kind().equals("CALL")
+                && x.operand().contains("CompletableFuture.supplyAsync")),
+                "Worker dispatch must prove it can schedule async work");
+        assertTrue(ins.stream().anyMatch(x -> x.owner().equals(DISPATCHER)
+                && x.name().equals("dispose") && x.kind().equals("FIELD")
+                && x.operand().contains("SectionRenderDispatcher.closed")),
+                "Dispatcher disposal must mark closed state");
 
         owners.sort(Comparator.comparing(Owner::name));
         methods.sort(Comparator.comparing(Decl::owner).thenComparing(Decl::name)
