@@ -1,0 +1,54 @@
+# Planetary — PHASE2_VISUAL_READINESS_GATE: достаточный фундамент рендеринга для полного завершения фазы 2
+
+**2026-10-27 · branch `2.0` · Minecraft 1.21.1 · NeoForge 21.1.215 · Java 21.**
+**Status: OPEN — agreement recorded, no newly accepted gameplay.** This is an explicit cross-phase *dependency gate*, not a declaration that all Phase 3 features must be implemented before finishing Phase 2.
+
+## Goal and two independent gates
+
+**Goal:** finish all Phase-2 orientation/placement/support/neighbor/temporal families without repeatedly suspending the work for an unresearched Phase-3 rendering mechanism. Prevent the sign/chain failure pattern: a correct or apparently-correct `BlockState` still rendered with invalid model/BER/source frame, and a forced CYAN fixture mistaken for natural LIME placement acceptance.
+
+**Gate R — mandatory Phase-3 destination-phase research**, per the existing user agreement. Before NEW Phase-3 production rendering code, complete the full destination Phase-3 original owner/inheritance/NeoForge/mod-bypass census (`3R-3`, `3R-4`, `3R-5`, `3R-6` and `3R-7`), to Phase-2-quality evidence. Reuse `3R-2a…2m`; don't indefinitely enumerate irrelevant original method instructions. A registered block/BER/class/consumer with no owner/coverage evidence is an OPEN row, not invisible. R is independent of manual game testing.
+
+**Gate V — minimum Phase-2 visual runtime readiness**, entered only after Gate R. Fix/verify generic shared Phase-3 mechanics **needed by existing/planned Phase-2 block families** (3A shapes/support; 3B baked/culling/AO/light; 3C local rigid BER sign/banner/skull and other Phase-2 BER families; 3D selected alternate mod/fake-world bypasses; 3E source-authorized client region/rebuild/model-data/cache lifecycle). Real-game acceptance is required; green JUnit/ASM CI does not close V. Advanced independent shaderpacks/custom Flywheel backends/general entity effects *outside* the Phase-2 dependency matrix may be explicitly deferred with verified, documented fallback/no-support behavior; no sweeping mod compatibility claim.
+
+Both **R=OPEN**, **V=OPEN** today. A new `2.4A` item unrelated to an open rendering blocker may be worked under its existing Phase-2 owner contracts; to resume the *uninterrupted* Phase-2 sequence, V must pass for defined families and new family-agnostic visual regressions.
+
+## Phase-2 visual risk matrix (owner, complete family, evidence)
+
+| Phase-2 behavior / witness | State semantics owner (Phase 2) | Visual/geometry owner (Phase 3) | Acceptance necessary to retire its blocker |
+| --- | --- | --- | --- |
+| `2.4A-8` Chain/rotated pillars, player placed vs natural/worldgen | AXIS, WATERLOGGED, writer context, structure state | 3A shape orientation, 3B BakedModel quad direction/normal/UV/cull, 3E chunk rebuild; mod subclass own writer | Same state and actual visible physical orientation per face/edge; generated and LIME player placement compared to no-Planet `+Y`; mod versions only loaded if claimed |
+| `2.4A-10` standing/wall/ceiling/wall-hanging signs, banners, heads/skulls | `ROTATION_16` / `FACING` / `ATTACHED`, wall/ceiling supports, waterlogging | 3B static support/attachment geometry; 3C Sign/HangingSign/Banner/Skull **BER frame** and nested text, chain, patterns, skins | CYAN reference **separate from** LIME actual natural yaw/attach/drop; model/BER visually aligned, text GUI/BE unchanged; six faces and seams/corners |
+| `2.4A-1…9` stair/slab/fence/door/trapdoor/fence gate/crafter/jigsaw/furnace/pillars | `FACING`/`HALF`/`AXIS`/`FRONT_AND_TOP`, neighbors, survival | 3A support/collision; 3B model quads, side-cull, AO/light and connected texture/model variants; 3C BER where present | Real player placement + update/water/neighbor/GUI vs visual reference, not only forced preset |
+| All vanilla/modded adjacent blocks at planet seams | Phase-2 physical neighbor and per-block canonical side | 3B source/neighbor **independent frames**, skipRendering/external hiding, face occlusion, quad generation, AO | Both visible side boundaries for **arbitrary** full/partial/transparent/asymmetric blocks; no GrassBlock-only hack |
+| BE/context-dependent/rendered blocks, animated/moving variants | Original state/BE and physical position/time | 3A dynamic shape policy; 3B model data; 3C/3D BER/special instanced renderer; 3E epoch | Correct mod/vanilla owner dispatch; no state-only cache reuse of position/BE/time-varying rendered results |
+| Connected mod models/fake worlds | Inherited vs independent override authors, no blanket Mixin promise | 3B NeoForge BakedModel/ModelData/RenderType, 3D Create/Ponder/AE2 wrappers, 3E provenance | Test exact loader-compatible 1.21.1 releases or explicitly mark NOT LOADED/NOT COVERED; Create6.0.10 currently build targets NeoForge 21.1.219 vs project 21.1.215 |
+| Client world/chunk/resource transitions | Unchanged physical world ownership | 3E originating Level+BlockPos/region epoch, BER/model cache invalidation and chunk worker recompile | No stale wrong-world frame after rejoin/dimension switch, resource reload, in-flight tasks; tested rather than inferred from code |
+
+This mapping is intentionally **not** a claim that all future Phase-2 item IDs are already enumerated. Before a new family is implemented, its actual source author, position/face carrier, shape consumer, model/BER renderer and mod override bypass must match existing vetted owner contracts or V reopens for the new mechanism.
+
+## Non-negotiable automated and manual checks
+
+**A. Author/runtime semantics:** collect *actual* `BlockState` from naturally placed LIME and worldgen, not only preset CYAN, with matching player yaw, hit face, `BlockPlaceContext`, water/support/neighbor state and physically correct position. Compare values to canonical expected local properties. Separate failures: (1) state writer (2), (2) shape/support/physics Phase2/3A, (3) BakedModel+quad/culling Phase3B, (4) BER Phase3C, (5) mod/preview/custom renderer Phase3D, (6) model-data/epoch lifecycle Phase3E. Do not change `getStateForPlacement` for a purely visual failure.
+
+**B. Geometry and visual owner matrix:** verify six face interiors; each of 12 seam edges on both sides; all 8 corners when family touches a corner; source and target gravity frames independently; adjacent identical/different blocks; opaque/partial/transparent/multitextured/asymmetric; light/AO/tint/normal/texture/UV, outline/interact/collision/support vs baked and BER representation. No-Planet and ordinary `+Y` world must remain vanilla-equivalent.
+
+**C. Real models/BER:** standing/wall signs, attached/nonattached hanging chains, banners with patterns, skull/player heads with skins, bed, representative chest/shulker/bell/lectern and other *actual* Phase-2-linked BER class families. For `2.4A-10` V8 (42 stations per face, CYAN vs LIME) compare original physical +Y no-Planet and non-+Y. Confirm applied Mixins at client startup; JUnit compile/ASM only is insufficient. Optional mod overlay GUI/item preview must remain unrotated unless specific owner requires it.
+
+**D. Compatibility:** test original vanilla/NeoForge hooks and at least representative loader-compatible versions of actual reused generic mod mechanics (e.g. AE2 and Create/Ponder when loadable), with inherited vs independent model/BER/writer mechanism classification. If mod cannot load under target NeoForge version, document as blocked (not PASS); no fabrication of a modded acceptance result. No blanket promises for Flywheel/Iris shader pipeline absent a loaded pass.
+
+**E. Regression safety:** commit source/ABI/owner/coverage matrix, narrowly scoped JVM/contract tests + Java21 CI; *separately* manual/applicable client checks; no new global BlockPos/Direction/BlockGetter rewrite, no double-rotation, no disabling vanilla NeoForge hooks or unrelated +Y rendering. Performance/cache memory and offscreen/async epoch smoke tests. Preserve/extend existing V8 pad rather than build a historical museum; regression JUnit retains retired scenarios.
+
+## Research/implementation execution sequence and stop conditions
+
+1. **`P2VR-0` (now):** freeze this readiness gate and cross-phase owner matrix, establish baseline; no Phase3 production edits. SOURCE plan only.
+2. **`3R-3 / 3B` (next):** complete original BakedModel/ModelBlockRenderer/NeoForge getQuads/ModelData/RenderType; culling/face hiding/AO/lighting; existing Planet rotation, culling, cache and seam exception audit. Exact original target-source evidence & mod model bypasses, not every unrelated instruction. Split bounded 4/4 owner batches.
+3. **`3R-4 / 3C`:** all source registered vanilla BER renderer families + shared render frames, inherited/independent class owners, nested matrices, Sign/HangingSign/Banner/Skull and remaining Phase2-linked families. Assess provisional `3C-1` from actual author and applied model data; no newly selected arbitrary BER code yet.
+4. **`3R-5 / 3D`:** Create/Ponder/AE2 fake/accelerated/custom model/BER bypasses with pinned source+release ABI, explicit loader compatibility gaps; classify unrelated shader integration separately rather than blocking all Phase2.
+5. **`3R-6 / 3E`:** consolidate existing `3R-2k…2m` original source Level/thread/ModelData snapshot lifecycle, async chunk rebuild/reload/occlusion graph and invalidation. Finish remaining *relevant* late-result source ownership and scene acceptance contracts (instead of continuing indefinite `3R-2n/o/...` before starting 3B).
+6. **`3R-7`:** whole-Phase3 *research* gate review with owner coverage, exact target version, chosen loaded mod ABI, bypass disposition. If truly sufficient and no hidden classes, **R PASS**. Explicit independent optional backends left as named integration gates, not universal supported claims.
+7. **`P2VR-1…` (only after R PASS):** implement necessary shared rendering improvements at the deepest owner and regression CI, and obtain manual 6/12/8/+Y/noPlanet/client/Mixins+selected mod acceptance. On **V PASS**, resume the complete `2.4A` workflow without repeated Phase3 prerequisite detours for covered mechanisms.
+
+If a visual issue appears during `2.4A` after passing V: triage state vs rendering using the same matrix. If owner is covered and this is a regression, repair under the established shared boundary with tests; if it is a previously unknown renderer owner or dynamic mod route, record the new gap and **reopen just the relevant gate** rather than start all of Phase3 again.
+
+**Current existing evidence:** original 241/1060 vanilla blocks + 26684 BlockStates, original relevant source/ASM `3R-2a…2m`, and provisional `3C-1` four BER-family Mixins compiled green. Original screenshot findings: chains differ generated vs naturally placed and off-+Y visual frames; signs off-+Y visually wrong; seam partial side borders; none of these are marked gameplay-correct merely because `2.4A-10` CI passed. No new game run in `P2VR-0`.
