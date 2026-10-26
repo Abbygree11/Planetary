@@ -24,7 +24,7 @@ The successful test creates only ordinary **`PistonMovingBlockEntity` instances*
 
 ## 2/4 — Original cache scope and direct consequence for generalized state-only shape caches
 
-The prior original [3R-2e](PHASE3_R2E_DYNAMIC_SHAPE_CACHE_AND_FOREIGN_GETTER_1_21_1.md) full registry reflection artifact is included with this successful JUnit. It records **1060** vanilla block IDs, **241** distinct concrete block Java classes, **26684** concrete original state values, **26505** eligible cached states, **179** uncached, and **22** block IDs with `hasDynamicShape=true`. Rechecked original per-ID TSV: *all* 179 uncached states belong to those 22 dynamic IDs across exactly **six Java implementation classes**:
+The prior original [3R-2e](PHASE3_R2E_REGISTERED_DYNAMIC_CACHE_MOD_PROVENANCE_1_21_1.md) full registry reflection artifact is included with this successful JUnit. It records **1060** vanilla block IDs, **241** distinct concrete block Java classes, **26684** concrete original state values, **26505** eligible cached states, **179** uncached, and **22** block IDs with `hasDynamicShape=true`. Rechecked original per-ID TSV: *all* 179 uncached states belong to those 22 dynamic IDs across exactly **six Java implementation classes**:
 
 - 17 `ShulkerBoxBlock` IDs including plain shulker box and 16 dye variants;
 - `BambooStalkBlock`, `MovingPistonBlock`, `PointedDripstoneBlock`, `PowderSnowBlock`, `ScaffoldingBlock` — one block ID each.
