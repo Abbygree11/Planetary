@@ -1,6 +1,6 @@
 # Planetary — `3R-2i`: support strategy, moving-piston collision, CollisionGetter and NeoForge face hooks
 
-**2026-10-26 · Minecraft 1.21.1 · NeoForge 21.1.215 · Java 21 · branch `2.0`. RESEARCH ONLY.** No production Java, Mixins, world data, V8 lab or `main` changes. **3A and full Phase3 3A–3E research gates remain OPEN.**
+**2026-10-26 · Minecraft 1.21.1 · NeoForge 21.1.215 · Java 21 · branch `2.0`. RESEARCH ONLY — complete bounded packet 4/4, original ASM CI SUCCESS.** No production Java, Mixins, world data, V8 lab or `main` changes. **3A and full Phase3 3A–3E research gates remain OPEN.**
 
 ## 1/4 — Original NeoForge 21.1.215 compiled owner and method-invocation proofs
 
@@ -24,6 +24,11 @@ These were the previously identified **original version source bytecode** signat
 
 **Scope limitation:** static caller → invoked declared receiver owner is not necessarily the concrete runtime receiver or mod subclass. `INVOKEVIRTUAL` and `INVOKEINTERFACE` need object type and level-context provenance; the new test does not instrument applied Mixins, active gameplay, all mods, general reflection or classloading.
 
+
+**Original JVM CI verified (two independent research tests):** [#40321142149](https://github.com/Abbygree11/Planetary/actions/runs/40321142149) **SUCCESS** on [`9d00814`](https://github.com/Abbygree11/Planetary/commit/9d00814ca81007d71bb1582117da3c9759de9bf1). GitHub artifact **12648888735**, re-downloaded ZIP SHA256 `169f7df3fe731365c1f7eff78d33b5bda03e849bb1a52887c8a083938db231ae`. Exact **18 classfiles / 432 declared methods / 90 selected method INVOKEs**, including **8 support strategy invokes** and **4 PistonMovingBlockEntity shape invokes**. Raw selected call edge TSV SHA256 `7291983b75dfd0a7080969a10f60a1c274cf40a5d748038fa706c35518862b00`; all methods, parent classes and signature/opcodes in archive.
+
+**New deeper method-body ASM:** [`Phase3R2iOriginalContextMethodBodyInstructionTraceTest`](../../src/test/java/dev/planetary/world/Phase3R2iOriginalContextMethodBodyInstructionTraceTest.java), [CI #40321810530](https://github.com/Abbygree11/Planetary/actions/runs/40321810530) **SUCCESS** on [`381248e`](https://github.com/Abbygree11/Planetary/commit/381248ef64de9c2f8c175a6741c63aeee872ecb6). Re-downloaded 21-file artifact **12648604323**, ZIP SHA256 `989bfdc633975a9f83edad9a81d8e6de256475a5c5dd0d8db72fe0676aac8369`; **10 selected original method bodies / 6 classfiles / 498 ordered bytecode instructions**. The detailed method-body TSV SHA256 `8d6c50f518d1f59da9e5afe7515c7139bb199fd1ef82d008af5e100346e15ff1` and six-class hash TSV SHA256 `f0eccf936c7eca69b77ef53fa8f99039e6ff9bb078f3a744a98ae27f0fb91802`. Files are reproducible from committed JUnit. Method-body proof still **not** proof of runtime mod dispatch.
+
 ## 2/4 — Semantic and coordinates disposition: FULL, CENTER, RIGID are not one generic rule
 
 The original FULL strategy queries support geometry then performs whole-face fullness; CENTER and RIGID call shape-face projection and overlap with their own support templates. Their *different chosen shape masks* and semantically distinct predicate expectations need exact constant/body checks before proclaiming equivalent transformations. The strategy evaluation is downstream of the original `BlockStateBase.isFaceSturdy` cache/dynamic branch. The static shape-support cache is built in a canonical `EmptyBlockGetter.INSTANCE, BlockPos.ZERO` world context and is **not** an automatically valid cache for position-dependent mod shapes.
@@ -46,7 +51,7 @@ Accept only separately verified cases: six planet faces, 12 chart edges, 8 corne
 
 ## 4/4 — CI / evidence gate / handoff
 
-The [target original compiled JUnit](../../src/test/java/dev/planetary/world/Phase3R2iContextualSupportPistonAndExtensionAsmTest.java) is included in the existing Java21 `gradle test` and existing `phase2-neo1211-registry-census` artifact. Exact CI status and raw TSV counts MUST be updated after job completion; a committed test **is not** proof of PASS.
+The [target original compiled JUnit](../../src/test/java/dev/planetary/world/Phase3R2iContextualSupportPistonAndExtensionAsmTest.java) and [method-body instruction trace JUnit](../../src/test/java/dev/planetary/world/Phase3R2iOriginalContextMethodBodyInstructionTraceTest.java) are included in Java21 `gradle test` and the existing `phase2-neo1211-registry-census` artifact. **Both independent CI runs completed SUCCESS**, and their exact original ZIPs were re-downloaded and inspected. Both tests are research-only; the successful bytecode-level gate is not mod-loaded/client/visual acceptance.
 
 **3A gate remains OPEN** even after a green selected-owner JUnit: further exact dynamic dispatch and position-context checks for original support and moving piston branches; a rigorous per-BlockGetter world/frame provenance policy; modded cache-time/BE invalidation; real loaded NeoForge-compatible Create/AE2 version tests; applied Mixins, six-face/seam/corner and no-Planet game acceptance all outstanding. This does not substitute for 3B/3C/3D/3E complete deep source/ABI audits.
 
