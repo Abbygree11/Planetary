@@ -1,0 +1,64 @@
+name: Planetary Phase3R2h research-only released ABI and caller triage
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - "2.0"
+    paths:
+      - "scripts/research/phase3_r2h_release_binary_and_callpath_audit.py"
+      - ".github/workflows/phase3-r2h.yml"
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  source-and-compiled-research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout research source
+        uses: actions/checkout@v4
+      - name: Install Java 21 for javap signatures
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - name: Obtain immutable previous original NeoForge21.1.215 artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p build/reports/planetary/phase3r2h/input
+          gh run download 40242279888 -n phase2-neo1211-registry-census \
+            -D build/reports/planetary/phase3r2h/input
+          python - <<'PY'
+          from pathlib import Path
+          import zipfile
+          path = Path("build/reports/planetary/phase3r2h/neo-original.zip")
+          source = Path("build/reports/planetary/phase3r2h/input")
+          with zipfile.ZipFile(path, "w", zipfile.ZIP_DEFLATED) as archive:
+              for file in sorted(source.iterdir()):
+                  if file.is_file():
+                      archive.write(file, file.name)
+          print("Repack original 3R-2g member bytes")
+          PY
+      - name: Reconcile all original new callsites
+        run: |
+          python scripts/research/phase3_r2h_release_binary_and_callpath_audit.py \
+            calls build/reports/planetary/phase3r2h/neo-original.zip \
+            build/reports/planetary/phase3r2h
+      - name: Download pinned released mod binaries and inspect javap
+        run: |
+          python scripts/research/phase3_r2h_release_binary_and_callpath_audit.py \
+            binaries build/reports/planetary/phase3r2h
+      - name: Publish research tables without third-party JAR redistribution
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase3-r2h-research-evidence
+          path: |
+            build/reports/planetary/phase3r2h/*.tsv
+            build/reports/planetary/phase3r2h/*.json
+            build/reports/planetary/phase3r2h/*.javap.txt
+          if-no-files-found: warn
