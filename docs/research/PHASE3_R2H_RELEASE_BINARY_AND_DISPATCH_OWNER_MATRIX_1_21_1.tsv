@@ -1,0 +1,26 @@
+id	owner	version	evidence	coordinate_contract	remaining
+01	Create release	6.0.10 mc1.21.1 @ac0c444	SOURCE_TAG_PINNED	Ponder 1.0.82 (not 1.0.85 from dev 6.0.11) and NeoForge compile 21.1.219	Check loader with NeoForge21.1.215
+02	Create release-equivalent Maven slim	6.0.10-280 sha256 f0652bee27460f2d26a748f537cb5d687981441378d3a526d17ffaab5a1072bb	JAVAP_CI_40315164089	Same compiled class declarations as selected release source	Not equivalent proof for installed user's binary or Mixins
+03	Ponder/Catnip release Maven	1.0.82+mc1.21.1 sha256 0cf4611ad853042b689ac386184c5bbe02950efcffddb49e5f604e82baddb0dc	JAVAP_CI_40315164089	WrappedLevel extends Level and delegates getLevel/getBlockState	Not automatically Planet-gravity authorized
+04	AE2 NeoForge release	v19.2.18@db17504 sha256 df15a07f86ca1ca93aa66373f9d5d84dd3d4586631fceb38f4fbc85dad591e39	RELEASE_SHA256_JAVAP_CI_40315164089	Real MC1.21.1 release source + exact asset	Still no loaded client
+05	Create ContraptionWorld	6.0.10-280	COMPILED_JAVAP_CI_40315164089	Extends Catnip WrappedLevel; getBlockState uses contraption own block storage per pinned source	Moving contraption local-to-physical origin
+06	Create VirtualRenderWorld	6.0.10-280	COMPILED_JAVAP_CI_40315164089	Extends Level; own block/light/chunk data per pinned source	Separate world identity
+07	Ponder WrappedLevel	1.0.82	COMPILED_JAVAP_CI_40315164089	Extends Level; delegates getters	Wrapper Level not automatically physical Planet
+08	AE2 GlassBakedModel	19.2.18	COMPILED_JAVAP_CI_40315164089	IDynamicBakedModel getModelData/getQuads; position-dependent connected appearance	3B ModelData and quads
+09	AE2 FacadeBlockAccess	19.2.18	COMPILED_JAVAP_CI_40315164089	BlockAndTintGetter, not Level; substitutes facade state at its position	Source context/frame provenance
+10	AE2 CableBusBakedModel	19.2.18	COMPILED_JAVAP_CI_40315164089	Independent ModelData/quad cache path	3B/3D cross-mod pipeline
+11	AE2 QuartzGlassBlock	19.2.18	COMPILED_JAVAP_CI_40315164089	skipRendering custom face hide	Neighbor chart side conversion
+12	AE2 CertusQuartzClusterBlock	19.2.18	COMPILED_JAVAP_CI_40315164089	getShape and canSurvive	3A shapes and support direction
+13	Original SupportType anonymous 1 2 3	NeoForge21.1.215	ORIGINAL_COMPILED_JVM_3R2G	Effective isSupporting strategies call support shape/face comparisons	3A virtual method dispatch before gate
+14	PistonMovingBlockEntity	NeoForge21.1.215	ORIGINAL_COMPILED_JVM_3R2G	Moving collision shape and stuck/collided entities	3A dynamic shape and Phase7 actor contract
+15	LightEngine and ChunkSkyLightSources	NeoForge21.1.215	ORIGINAL_COMPILED_JVM_3R2G	getFaceOcclusionShape and occlusion static/dynamic	3B physical lighting owner
+16	NeoForge SmoothQuadLighter FlatQuadLighter	NeoForge21.1.215	ORIGINAL_COMPILED_JVM_3R2G	AO face occlusion and collision sampling	3B AO contract
+17	SectionCompiler and ModelData	NeoForge21.1.215	ORIGINAL_COMPILED_JVM_3R2G	BakedModel getModelData in chunk compile	3B worker context
+18	LiquidBlockRenderer	NeoForge21.1.215	ORIGINAL_COMPILED_JVM_3R2G	Custom fluid face visibility	3B visual not global fluid flow
+19	CollisionGetter and WorldBorder	NeoForge21.1.215	ORIGINAL_COMPILED_JVM_3R2G	Physical geometry/collision predicates	3A and Phase7 split
+20	Entity and WalkNodeEvaluator	NeoForge21.1.215	ORIGINAL_COMPILED_JVM_3R2G	Movement/collision floor and entity context	Phase7 not renderer rewrite
+21	Worldgen Jigsaw and Mineshaft	NeoForge21.1.215	ORIGINAL_COMPILED_JVM_3R2G	Generation support/collision ownership	Phase9 not renderer rewrite
+22	Client particles/debug/shadows	NeoForge21.1.215	ORIGINAL_COMPILED_JVM_3R2G	Alternative shape consumers	Phase3E separate
+23	NeoForge IBlockStateExtension	NeoForge21.1.215	ORIGINAL_COMPILED_JVM_3R2G	Custom hidesNeighborFace/supportsExternalFaceHiding hooks	3A/3B dispatch and mod overrides
+24	Planet cache and foreign getter	Planetary 2.0	SOURCE_VERIFIED_NOT_GAME	Position/world/time/BE absent cache; fallback client Level for foreign getter	Need dynamic key and provenance contracts
+25	Phase3 gate	3A-3E	OPEN_AFTER_3R2H	3 jars/8 declarations and 144 method candidates are NOT runtime dynamic dispatch	3R-2i research only
