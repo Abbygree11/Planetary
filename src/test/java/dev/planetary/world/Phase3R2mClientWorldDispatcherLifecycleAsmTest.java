@@ -62,7 +62,7 @@ final class Phase3R2mClientWorldDispatcherLifecycleAsmTest {
         "getLevel", "getChunk", "reload", "createRegion",
         "setChunkSource", "getChunkSource", "getRenderSection",
         "updateLevelInEngines", "dropAllTasks", "uploadAllPendingUploads",
-        "pollTask", "cancel", "clearTintCaches", "onChunkUnloaded",
+        "pollTask", "cancel", "clearTintCaches",
         "setStorage", "setViewDistance", "getViewDistance",
         "lambda$setLevel$0", "lambda$setLevel$1", "lambda$allChanged$0",
         "lambda$doTask$0", "lambda$doTask$1"
