@@ -109,8 +109,8 @@ final class Phase3R2jDynamicShapeAndForeignGetterDispatchTest {
         }
 
         @Override
-        public boolean hidesNeighborFace(BlockState state, BlockGetter getter,
-                                         BlockPos pos, BlockState neighborState,
+        public boolean hidesNeighborFace(BlockGetter getter, BlockPos pos,
+                                         BlockState state, BlockState neighborState,
                                          Direction direction) {
             hideCalls.incrementAndGet();
             return full(getter, pos);
