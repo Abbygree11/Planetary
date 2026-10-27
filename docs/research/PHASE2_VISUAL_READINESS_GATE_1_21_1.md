@@ -1,5 +1,10 @@
 # Planetary — PHASE2_VISUAL_READINESS_GATE: достаточный фундамент рендеринга для полного завершения фазы 2
 
+## 2026-10-27 — `3R-4C` original other 18 vanilla BER owners, research 4/4 complete (R/V OPEN)
+
+[Original 18 renderer nested source method report](PHASE3_R4C_REMAINING_BER_ORIGINAL_NESTED_SPACE_AND_MOD_1_21_1.md), [33 owner, mod, GUI, source and acceptance routes](PHASE3_R4C_REMAINING_BER_OWNER_AND_SPACE_MATRIX_1_21_1.tsv), corrected [**CI #40521564157 SUCCESS**](https://github.com/Abbygree11/Planetary/actions/runs/40521564157), original archive12741618270 ZIP SHA256 f655f4d74b16accd2f0ac230a4837b3f20562137d09addceaa0f4cb39d142633, original **18/18 classfiles, 133 method declarations, 899 direct JVM calls and 2620 traced opcodes**, 16 exact callsite invariants checked independently. Previous test false assumption Bed.render directly PoseStack (actual renderPiece) corrected; not an engine regression. With 3R-4A 24 types/22 factories and 3R-4B four specific original nested classes, **vanilla 22 distinct renderer owner paths are now bounded-researched**. Source shows mixed scene/physical/camera ownership (Piston, Conduit, Gateway/beam, Brushable physical light, Vault nested item), so no indiscriminate global BER dispatcher gravity transform. **R remains OPEN** for NeoForge/mod BER replacements `3R-4D`, independent mod renderers 3R-5, lifecycle 3R-6, overall audit 3R-7. **V remains OPEN** for real natural LIME/CYAN, generated/placed chains, applied client Mixins, 6 faces/12 edges/8 corners, +Y/noPlanet and actually loaded compatible mods. No production/Mixin/V8/main edits.
+
+
 **2026-10-27 · branch `2.0` · Minecraft 1.21.1 · NeoForge 21.1.215 · Java 21.**
 **Status: OPEN — agreement recorded, no newly accepted gameplay.** This is an explicit cross-phase *dependency gate*, not a declaration that all Phase 3 features must be implemented before finishing Phase 2.
 
