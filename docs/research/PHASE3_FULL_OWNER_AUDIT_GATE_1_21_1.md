@@ -1,5 +1,10 @@
 # Phase 3 — Whole-phase original-source / NeoForge / mod-compatibility audit gate
 
+## `3R-4C` — 2026-10-27: all 18 remaining original vanilla BER method owners, static research 4/4 PASS
+
+[18-owner original JVM research](PHASE3_R4C_REMAINING_BER_ORIGINAL_NESTED_SPACE_AND_MOD_1_21_1.md), [33-route nested-physical/world/camera/mod acceptance matrix](PHASE3_R4C_REMAINING_BER_OWNER_AND_SPACE_MATRIX_1_21_1.tsv), [compiled test](../../src/test/java/dev/planetary/world/Phase3R4CRemainingBerOriginalMethodOwnerAsmTest.java), [16-path SHA256 archive verifier](../../scripts/research/phase3_r4c_original_ber_verify.py). Initial [CI #40520342802](https://github.com/Abbygree11/Planetary/actions/runs/40520342802) failed ONE research-only false assertion Bed.render -> PoseStack; actual nested owner Bed.render -> renderPiece -> PoseStack, corrected in `1df8c1d`; **[CI #40521564157 SUCCESS](https://github.com/Abbygree11/Planetary/actions/runs/40521564157)**. Downloaded archive12741618270 ZIP SHA256 `f655f4d74b16accd2f0ac230a4837b3f20562137d09addceaa0f4cb39d142633`, five member SHA independently checked: **18/18 original classfiles /133 methods/899 direct invokes/2620 selected JVM instructions; 16 nested callsite invariants**. Concrete owners prove mixed source domains: Bed nested rigid pose, Chest pose, Piston moving state, Gateway portal+beacon beam, Conduit camera-facing eye, Brushable physical LevelRenderer light + item, Vault child ItemEntityRenderer, decorated pot side pattern, etc. This completes **all 22/22 registered vanilla BER method-family selected research across 3R-4B/4C**, not installed mod providers, full method semantics, runtime client render/pass. **Phase3 R OPEN:** next `3R-4D` NeoForge RegisterRenderers/live provider replacement and selected compatible mod overrides, then 3R-5/6/7. **Phase2 V OPEN**: real six faces/12 seams/8 corners/+Y/noPlanet, chain natural-generated vs placed LIME vs CYAN signs, applied Mixins and loaded mods. No production/Mixin/V8/main edits.
+
+
 
 
 ## `3R-4B` — 2026-10-27: exact four rigid vanilla BER nested method-body owners, source gate R still OPEN
