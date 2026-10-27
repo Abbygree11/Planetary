@@ -1,5 +1,9 @@
 # START HERE — Planetary (AI / developer quick entry)
 
+## Возврат к Phase 3 без истории чата
+
+После чтения SESSION_HANDOFF и живого HEAD открыть **[индекс итогов Phase 3](docs/phases/phase-03/results/README.md)** и конкретную [карточку 3A–3E](docs/phases/phase-03/results/README.md), затем [план](docs/phases/phase-03.md), [полный gate](docs/research/PHASE3_FULL_OWNER_AUDIT_GATE_1_21_1.md) и соответствующие `docs/research/PHASE3_R*.md`/TSV/Java tests. По мере следующих research-пакетов обновлять и **план, и файл результатов**, чтобы уже изученные original NeoForge/моды/решения/риски не исчезли при позднем переходе к разработке третьей фазы. В файлах результатов SOURCE/CI/game/mod-gates строго различаются.
+
 > **MANDATORY for a new chat:** first read this short index and [SESSION_HANDOFF](docs/SESSION_HANDOFF.md). The authoritative runtime state is **current GitHub branch `2.0`**; never infer HEAD/CI from a previously saved markdown snapshot.
 
 ## 60-second bootstrap
