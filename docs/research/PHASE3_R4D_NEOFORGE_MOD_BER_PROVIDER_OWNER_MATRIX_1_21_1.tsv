@@ -1,14 +1,14 @@
 id	scope	declaring_owner_or_route	source_method_or_operation	coordinate_or_factory_domain	source_evidence_level	missing_gate
-01	ORIGINAL	NeoForge EntityRenderersEvent$RegisterRenderers.registerBlockEntityRenderer	register/type factory -> BlockEntityRenderers.register	REGISTRY_MAP_WRITE	target original JVM ASM CI pending	Not proof that any specific mod overrides vanilla
-02	ORIGINAL	BlockEntityRenderers.register	Map.put(type, factory)	PROVIDER_REPLACEMENT_POSSIBLE	comparator and exact original target test pending	Map key equality/type overwrite order only, no mod supplied factory seen
+01	ORIGINAL	NeoForge EntityRenderersEvent$RegisterRenderers.registerBlockEntityRenderer	register/type factory -> BlockEntityRenderers.register	REGISTRY_MAP_WRITE	ORIGINAL_STATIC_JVM_CI_40553809343_PASS_NOT_LIVE	Not proof that any specific mod overrides vanilla
+02	ORIGINAL	BlockEntityRenderers.register	Map.put(type, factory)	PROVIDER_REPLACEMENT_POSSIBLE	ORIGINAL_STATIC_JVM_CI_40553809343_PASS_NOT_LIVE	Map key equality/type overwrite order only, no mod supplied factory seen
 03	ORIGINAL	BlockEntityRenderers.<clinit>	24 vanilla type registrations ->22 owners	VANILLA_FACTORY_SET	3R-4A CI PASS	Only original initial providers not final mod map
-04	ORIGINAL	BlockEntityRenderers.createEntityRenderers	provider Context create and immutable map build	PROVIDER_INSTANTIATION	comparator and original target test pending	class may be mod independent; resource reload recreates
-05	ORIGINAL	BlockEntityRenderDispatcher.onResourceManagerReload	createEntityRenderers -> install renderer map	RESOURCE_RELOAD_INSTANCE_REFRESH	comparator and exact original test pending	factory registration/reload ordering must be verified independently
-06	ORIGINAL	BlockEntityRenderDispatcher.getRenderer	BlockEntity.getType -> map.get	TYPE_BASED_DISPATCH	comparator and exact original test pending	derived BlockEntityType may use unrelated renderer
-07	ORIGINAL	BlockEntityRenderDispatcher.render	getRenderer -> shouldRender/culling -> render	LIVE_WORLD	comparator source, exact method inventory pending	shader beam and camera/actor subpasses not all local
+04	ORIGINAL	BlockEntityRenderers.createEntityRenderers	provider Context create and immutable map build	PROVIDER_INSTANTIATION	ORIGINAL_STATIC_JVM_CI_40553809343_PASS_NOT_LIVE	class may be mod independent; resource reload recreates
+05	ORIGINAL	BlockEntityRenderDispatcher.onResourceManagerReload	createEntityRenderers -> install renderer map	RESOURCE_RELOAD_INSTANCE_REFRESH	ORIGINAL_STATIC_JVM_CI_40553809343_PASS_NOT_LIVE	factory registration/reload ordering must be verified independently
+06	ORIGINAL	BlockEntityRenderDispatcher.getRenderer	BlockEntity.getType -> map.get	TYPE_BASED_DISPATCH	ORIGINAL_STATIC_JVM_CI_40553809343_PASS_NOT_LIVE	derived BlockEntityType may use unrelated renderer
+07	ORIGINAL	BlockEntityRenderDispatcher.render	getRenderer -> shouldRender/culling -> render	LIVE_WORLD	ORIGINAL_METHOD_INVENTORY_CI_40553809343_PASS_NOT_GAME	shader beam and camera/actor subpasses not all local
 08	ORIGINAL	BlockEntityRenderDispatcher.renderItem	getRenderer -> render or error guard	ITEM_CONTEXT	comparator original-like source	BEWLR and GUI may lack world Level
 09	NEOFORGE	IBlockEntityRendererExtension	BER extension getRenderBoundingBox	MOD_EXTENSION	3R-4A target original interface proof	foreign world/pos and culling bounds need scope owner
-10	NEOFORGE	Client registration event mod bus	RegisterRenderers event client mod lifecycle	FACTORY_PROVIDER	NeoForge 1.21.1 branch source plus target original 21.1.215 CI pending	exact posting method/event ordering and mod load untested
+10	NEOFORGE	Client registration event mod bus	RegisterRenderers event client mod lifecycle	FACTORY_PROVIDER	NEOFORGE_1_21_1_COMPARATOR_AND_ORIGINAL_EVENT_BYTECODE_CI_40553809343_PASS	exact posting method/event ordering and mod load untested
 11	AE2_19.2.18	AppEngClient.registerEntityRenderers CRANK	CrankRenderer::new	INDEPENDENT_MOD_BER	pinned db17504 source	not vanilla cradle; real mod loader test pending
 12	AE2_19.2.18	AppEngClient.registerEntityRenderers INSCRIBER	InscriberTESR::new	INDEPENDENT_MOD_BER	pinned db17504 source	custom GUI/item/world origin
 13	AE2_19.2.18	AppEngClient.registerEntityRenderers SKY_CHEST	SkyChestTESR::new	INDEPENDENT_MOD_BER	pinned db17504 source	custom chest does not mean vanilla ChestRenderer
