@@ -47,8 +47,8 @@ final class Phase3R4BOriginalSignBannerSkullMethodBodyAsmTest {
             BE + "SkullBlockEntity",
             BLOCK + "StandingSignBlock", BLOCK + "WallSignBlock",
             BLOCK + "CeilingHangingSignBlock", BLOCK + "WallHangingSignBlock",
-            BLOCK + "BannerBlock", BLOCK + "StandingBannerBlock",
-            BLOCK + "WallBannerBlock", BLOCK + "SkullBlock",
+            BLOCK + "BannerBlock", BLOCK + "WallBannerBlock",
+            BLOCK + "SkullBlock",
             BLOCK + "WallSkullBlock",
             MC + "client/model/SkullModelBase",
             MC + "client/model/SkullModel",
@@ -191,6 +191,8 @@ final class Phase3R4BOriginalSignBannerSkullMethodBodyAsmTest {
             },ClassReader.SKIP_DEBUG|ClassReader.SKIP_FRAMES);
         }
 
+        assertTrue(owners.stream().allMatch(Owner::present),
+                "Exact target BER owner census must not include guessed absent classes");
         for(String required:List.of(SIGN,HANGING,BANNER,SKULL,HANGING_MODEL,
                 BE+"SignBlockEntity",BE+"BannerBlockEntity",BE+"SkullBlockEntity")) {
             assertTrue(owners.stream().anyMatch(x ->
