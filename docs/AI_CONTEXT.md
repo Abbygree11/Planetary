@@ -10,6 +10,13 @@ Minecraft 1.21.1, NeoForge 21.1.215, Java 21, Gradle 8.12.
 User local check: git pull && .\test.ps1 && .\run-client.ps1
 Never claim build/runtime success before user confirms it.
 
+## 2026-10-27 — 3R-4C all remaining original vanilla BER owners (4/4 selected source, original CI PASS, game/mod PENDING)
+
+**Branch `2.0`.** [Original target 18-owner source/JVM report](research/PHASE3_R4C_REMAINING_BER_ORIGINAL_NESTED_SPACE_AND_MOD_1_21_1.md), [33 owner/source-space/game routes](research/PHASE3_R4C_REMAINING_BER_OWNER_AND_SPACE_MATRIX_1_21_1.tsv), [exact selected ASM test](../src/test/java/dev/planetary/world/Phase3R4CRemainingBerOriginalMethodOwnerAsmTest.java) and [independent fixed SHA+16 call-path verification script](../scripts/research/phase3_r4c_original_ber_verify.py). First #40520342802 FAILED one research test because BedRenderer.render delegates PoseStack operations through renderPiece, not directly; fixed in `1df8c1d`. Authoritative [CI #40521564157](https://github.com/Abbygree11/Planetary/actions/runs/40521564157) **SUCCESS**, downloaded artifact12741618270 ZIP SHA256 **f655f4d74b16accd2f0ac230a4837b3f20562137d09addceaa0f4cb39d142633**; original 18/18 classfiles /133 original methods/899 JVM calls/2620 traced instructions, five SHA256 members and 16 exact call paths independently checked. Bed nested renderPiece; piston dynamic moved state; gateway beam + inherited portal; conduit Camera yaw/pitch eye; brushable physical LevelRenderer.getLightColor + ItemRenderer; Vault item child; pot patterned sides; shulker lid progress, etc. With 3R-4A original 24 registration/22 owners and 3R-4B four rigid families, original vanilla **all registered 22** factory class families now bounded audited.
+
+**R research OPEN** for 3R-4D NeoForge live renderer factory/provider bypass, 3R-5 mod accelerated/independent pipelines, 3R-6 client reload/worker/fake-world provenance, 3R-7 final whole Phase3 audit. **V game OPEN**: user LIME vs forced CYAN, naturally placed vs generated chains, sign/hanging/skin/banner, 6 faces/12 seams/8 corners, +Y/noPlanet, applied Mixins and actually loaded compatible Create/AE2 all pending. No production Java, Mixins, V8 or main edits. NEXT `3R-4D` 4/4 exact NeoForge registered replaceable providers, mod BER inheritance and dispatch, phase2 readiness owner matrix. Reviewer/script CI caveat: verifier committed after original successful source JUnit run; no claim it ran inside that CI.
+
+
 
 
 ## 2026-10-27 — 3R-4B original target rigid Sign/HangingSign/Banner/Skull BER method owners (4/4 RESEARCH CI PASS)
