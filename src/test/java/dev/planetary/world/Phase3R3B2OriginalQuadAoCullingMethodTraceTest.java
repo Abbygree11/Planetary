@@ -34,6 +34,7 @@ final class Phase3R3B2OriginalQuadAoCullingMethodTraceTest {
     private static final String COMPILER = MC + "client/renderer/chunk/SectionCompiler";
     private static final String BLOCK = MC + "world/level/block/Block";
     private static final String BAKED = MC + "client/resources/model/BakedModel";
+    private static final String ALTERNATE = NF + "client/model/lighting/LightPipelineAwareModelBlockRenderer";
     private static final String SMOOTH = NF + "client/model/lighting/SmoothQuadLighter";
     private static final String FLAT = NF + "client/model/lighting/FlatQuadLighter";
     private static final List<String> CLASSES = List.of(
@@ -50,10 +51,11 @@ final class Phase3R3B2OriginalQuadAoCullingMethodTraceTest {
             NF + "client/extensions/IBakedModelExtension",
             NF + "client/model/IDynamicBakedModel",
             NF + "client/model/lighting/QuadLighter",
-            SMOOTH, FLAT,
+            ALTERNATE, SMOOTH, FLAT,
             NF + "client/model/BakedModelWrapper"
     );
     private static final Set<String> NAMES = Set.of(
+            "compile", "getQuadLighter", "calculateFaceWithoutAO",
             "tesselateBlock", "tesselateWithAO", "tesselateWithoutAO",
             "renderQuad", "renderQuadList", "renderModel", "putQuadData",
             "renderBatched", "renderSingleBlock", "renderBreakingTexture",
@@ -194,7 +196,7 @@ final class Phase3R3B2OriginalQuadAoCullingMethodTraceTest {
         }
 
         for (String required : List.of(RENDERER, DISPATCHER, COMPILER, BAKED,
-                BLOCK, SMOOTH, FLAT)) {
+                BLOCK, ALTERNATE, SMOOTH, FLAT)) {
             assertTrue(owners.stream().anyMatch(o ->
                             o.owner().equals(required) && o.present()),
                     "Required original NeoForge owner absent: " + required);
@@ -219,9 +221,17 @@ final class Phase3R3B2OriginalQuadAoCullingMethodTraceTest {
                         && x.target().contains("getFaceOcclusionShape")),
                 "Original Block.shouldRenderFace must call occlusion shape");
         assertTrue(ops.stream().anyMatch(x ->
-                x.owner().equals(COMPILER) && x.kind().equals("CALL")
+                x.owner().equals(COMPILER) && x.name().equals("compile")
+                        && x.kind().equals("CALL")
                         && x.target().contains("getModelData")),
-                "Compiler must carry ModelData through actual original method");
+                "Compiler compile body must carry ModelData through original method");
+        assertTrue(methods.stream().anyMatch(x ->
+                x.owner().equals(ALTERNATE) && x.name().equals("getQuadLighter")),
+                "Exact NeoForge alternate renderer declares a factory for quad lighting");
+        assertTrue(methods.stream().anyMatch(x ->
+                x.owner().equals(SMOOTH)) &&
+                methods.stream().anyMatch(x -> x.owner().equals(FLAT)),
+                "Original NeoForge independent smooth and flat lighting paths must be traced");
 
         owners.sort(Comparator.comparing(Owner::owner));
         methods.sort(Comparator.comparing(Method::owner).thenComparing(Method::name)
