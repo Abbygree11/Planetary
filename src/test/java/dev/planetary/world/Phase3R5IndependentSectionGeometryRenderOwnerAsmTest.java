@@ -110,7 +110,7 @@ final class Phase3R5IndependentSectionGeometryRenderOwnerAsmTest {
             .thenComparing(Call::called).thenComparing(Call::calledDesc));
         instructions.sort(Comparator.comparing(Op::owner).thenComparing(Op::method)
             .thenComparing(Op::descriptor).thenComparingInt(Op::index));
-        Path dir=Path.of("build/reports/planetary");Files.createDirectories(dir);
+        Path dir=Path.of(System.getProperty("planetary.phase2.censusReportDir", "build/reports/planetary"));Files.createDirectories(dir);
         save(dir,"owners","owner\tsha256\tsuperclass\tinterfaces",owners.stream().map(Owner::row).toList());
         save(dir,"methods","owner\tmethod\tdescriptor\taccess",methods.stream().map(Method::row).toList());
         save(dir,"calls","owner\tmethod\tdescriptor\ttarget\tcalled\tcalledDescriptor\topcode",calls.stream().map(Call::row).toList());
