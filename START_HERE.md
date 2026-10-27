@@ -1,5 +1,9 @@
 # START HERE — Planetary (AI / developer quick entry)
 
+## Архив результатов этапов 1–3
+
+Для возврата к ранее изученной фазе помимо плана читать **[Phase1 results](docs/phases/phase-01/results/README.md)**, **[Phase2 results](docs/phases/phase-02/results/README.md)** и **[Phase3 results](docs/phases/phase-03/results/README.md)**. Данные отдельно от исследовательских планов: выводы по владельцам механизмов, accepted/failed alternatives, original target NeoForge ABI/CI, mod paths и всё незакрытое. После каждого 4/4 пакета обновлять задействованную итоговую карточку, original source/TSV и SESSION_HANDOFF. Phase1 PARTIAL, Phase2 2.4/2.5 OPEN, Phase3 R OPEN, Phase2 visual V OPEN.
+
 ## Возврат к Phase 3 без истории чата
 
 После чтения SESSION_HANDOFF и живого HEAD открыть **[индекс итогов Phase 3](docs/phases/phase-03/results/README.md)** и конкретную [карточку 3A–3E](docs/phases/phase-03/results/README.md), затем [план](docs/phases/phase-03.md), [полный gate](docs/research/PHASE3_FULL_OWNER_AUDIT_GATE_1_21_1.md) и соответствующие `docs/research/PHASE3_R*.md`/TSV/Java tests. По мере следующих research-пакетов обновлять и **план, и файл результатов**, чтобы уже изученные original NeoForge/моды/решения/риски не исчезли при позднем переходе к разработке третьей фазы. В файлах результатов SOURCE/CI/game/mod-gates строго различаются.
