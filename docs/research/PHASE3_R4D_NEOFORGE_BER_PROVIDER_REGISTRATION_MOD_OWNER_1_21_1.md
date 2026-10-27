@@ -45,6 +45,18 @@ All gameplay acceptance OPEN: generated vs player-placed chains, natural LIME si
 
 ## 4/4 — Actual CI, original evidence and next handoff
 
-**At creation:** original class research commit `441203bc` initiated [CI #40553809343](https://github.com/Abbygree11/Planetary/actions/runs/40553809343), outcome **PENDING**. Close bounded `3R-4D` 4/4 only when corrected Java21 compile/JUnit and original archive SHA/checker are pinned, coverage ledger and handoff updated. A false assumption in selected ASM test must be corrected from actual source, never waved away. None of the above means the actual mod client ran.
+**`3R-4D` bounded source/ABI 4/4 COMPLETE; whole Phase3 R and visual game V still OPEN.** Original [CI #40553809343 SUCCESS](https://github.com/Abbygree11/Planetary/actions/runs/40553809343), test commit [`441203bc`](https://github.com/Abbygree11/Planetary/commit/441203bc3a58b8cc5ef0f9e5a78ddbe1c34741ab): Java21 production and test compilation, full JUnit including new exact-class NeoForge ASM and registry census. Downloaded original artifact **12756840569** ZIP SHA256 **`7d1d239e800dca80119870c5fd99955ffb9485e33b2ebb717d264ec7a8b5e444`**. All eight actual compiled target classes present; **160 method declarations / 616 direct INVOKEs / 213 selected ordered JVM instructions**. Independently unpacked, checked five member hashes and nine original direct declaring-owner↔target JVM call paths with [pinned archive checker](../../scripts/research/phase3_r4d_original_ber_provider_verify.py) (script committed **after** test success, not falsely claimed as invoked in original CI).
+
+| Original archive member | SHA256 |
+| --- | --- |
+| `phase3-r4d-original-ber-provider-owners.tsv` | `fa5c4bdc60c97e9775129060dd6e799d3682ea1a99c777d3ad38017e16aa0e20` |
+| `phase3-r4d-original-ber-provider-methods.tsv` | `24e870e49f58b405b7a375a4c4159473a47867022644a2a9c81a73f80a3260a0` |
+| `phase3-r4d-original-ber-provider-invokes.tsv` | `d5f1491aaf4c72951194253240bc39778ba88ca3d47365d58293d38a58d56c3f` |
+| `phase3-r4d-original-ber-provider-instructions.tsv` | `fbd6d0c1ae8855b15be0033b444c94deadc00e8a105cdd6f236224b5727bb1c5` |
+| `phase3-r4d-original-ber-provider-summary.txt` | `2f39642d76724aba06584f650909420bed954812e035aad2addf87afdde295b9` |
+
+**Verified exact original edges:** `RegisterRenderers.registerBlockEntityRenderer → BlockEntityRenderers.register` (1); `BlockEntityRenderers.register → Map.put` (1); `createEntityRenderers → Map.forEach` (1); `lambda$createEntityRenderers$0 → BlockEntityRendererProvider.create` (1); `BlockEntityRenderDispatcher.onResourceManagerReload → BlockEntityRenderers.createEntityRenderers` (1); `getRenderer → Map.get` (1); `render → getRenderer` (1); `renderItem → getRenderer` (1); `render → BlockEntityRenderer.shouldRender` (1). Original renderer interface extends NeoForge `IBlockEntityRendererExtension`. These facts validate the static API path, **not the active factory ordering or live mod client**. Exact source callback origin for `RegisterRenderers` posting remains distinct from target method trace and will be reconciled in the phase-wide lifecycle audit.
+
+No initial test failures in this packet. **Selected 8-class target/10-AE2/104-Create source census has a precise evidence boundary:** it does not prove that all possible modded BERs are handled, and no actual third-party renderer was installed or swapped under Planet during this packet.
 
 **Next `3R-5`:** independent non-vanilla/Flywheel accelerated renderer + custom model/virtual-world and shaders, original 3D owner and class/library evidence, precise fallback/unsupported scope; after `3R-6` client resource/worker epoch lifecycle, `3R-7` entire Phase3 source R gate. Only after R PASS return to minimal shared Phase2 visual runtime fixes and real game V, then resume `2.4A` without repeated unresearched jumps. `main` untouched.
