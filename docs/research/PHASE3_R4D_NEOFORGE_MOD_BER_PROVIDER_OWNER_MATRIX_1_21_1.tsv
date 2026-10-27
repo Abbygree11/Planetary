@@ -1,0 +1,41 @@
+id	scope	declaring_owner_or_route	source_method_or_operation	coordinate_or_factory_domain	source_evidence_level	missing_gate
+01	ORIGINAL	NeoForge EntityRenderersEvent$RegisterRenderers.registerBlockEntityRenderer	register/type factory -> BlockEntityRenderers.register	REGISTRY_MAP_WRITE	target original JVM ASM CI pending	Not proof that any specific mod overrides vanilla
+02	ORIGINAL	BlockEntityRenderers.register	Map.put(type, factory)	PROVIDER_REPLACEMENT_POSSIBLE	comparator and exact original target test pending	Map key equality/type overwrite order only, no mod supplied factory seen
+03	ORIGINAL	BlockEntityRenderers.<clinit>	24 vanilla type registrations ->22 owners	VANILLA_FACTORY_SET	3R-4A CI PASS	Only original initial providers not final mod map
+04	ORIGINAL	BlockEntityRenderers.createEntityRenderers	provider Context create and immutable map build	PROVIDER_INSTANTIATION	comparator and original target test pending	class may be mod independent; resource reload recreates
+05	ORIGINAL	BlockEntityRenderDispatcher.onResourceManagerReload	createEntityRenderers -> install renderer map	RESOURCE_RELOAD_INSTANCE_REFRESH	comparator and exact original test pending	factory registration/reload ordering must be verified independently
+06	ORIGINAL	BlockEntityRenderDispatcher.getRenderer	BlockEntity.getType -> map.get	TYPE_BASED_DISPATCH	comparator and exact original test pending	derived BlockEntityType may use unrelated renderer
+07	ORIGINAL	BlockEntityRenderDispatcher.render	getRenderer -> shouldRender/culling -> render	LIVE_WORLD	comparator source, exact method inventory pending	shader beam and camera/actor subpasses not all local
+08	ORIGINAL	BlockEntityRenderDispatcher.renderItem	getRenderer -> render or error guard	ITEM_CONTEXT	comparator original-like source	BEWLR and GUI may lack world Level
+09	NEOFORGE	IBlockEntityRendererExtension	BER extension getRenderBoundingBox	MOD_EXTENSION	3R-4A target original interface proof	foreign world/pos and culling bounds need scope owner
+10	NEOFORGE	Client registration event mod bus	RegisterRenderers event client mod lifecycle	FACTORY_PROVIDER	NeoForge 1.21.1 branch source plus target original 21.1.215 CI pending	exact posting method/event ordering and mod load untested
+11	AE2_19.2.18	AppEngClient.registerEntityRenderers CRANK	CrankRenderer::new	INDEPENDENT_MOD_BER	pinned db17504 source	not vanilla cradle; real mod loader test pending
+12	AE2_19.2.18	AppEngClient.registerEntityRenderers INSCRIBER	InscriberTESR::new	INDEPENDENT_MOD_BER	pinned db17504 source	custom GUI/item/world origin
+13	AE2_19.2.18	AppEngClient.registerEntityRenderers SKY_CHEST	SkyChestTESR::new	INDEPENDENT_MOD_BER	pinned db17504 source	custom chest does not mean vanilla ChestRenderer
+14	AE2_19.2.18	AppEngClient.registerEntityRenderers CHARGER	ChargerBlockEntityRenderer.FACTORY -> ModularTESR	MOD_COMPOSITION	pinned db17504 source	ModularTESR delegates ItemRenderable
+15	AE2_19.2.18	AppEngClient.registerEntityRenderers DRIVE	DriveLedBlockEntityRenderer::new	MOD_INDEPENDENT_BER	pinned db17504 source	LED colors/lights world face
+16	AE2_19.2.18	AppEngClient.registerEntityRenderers ME_CHEST	ChestBlockEntityRenderer::new	MOD_CUSTOM_MODEL_TESSELLATION	pinned db17504 source	own PoseStack + BlockRenderer.tesselateBlock + LED, not vanilla ChestRenderer
+17	AE2_19.2.18	AppEngClient.registerEntityRenderers CRAFTING_MONITOR	CraftingMonitorRenderer::new	MOD_CUSTOM_BER	pinned db17504 source	multi-display overlays and rendering font pass
+18	AE2_19.2.18	AppEngClient.registerEntityRenderers MOLECULAR_ASSEMBLER	MolecularAssemblerRenderer::new	MOD_CUSTOM_BER	pinned db17504 source	nested animation and assembly geometry
+19	AE2_19.2.18	AppEngClient.registerEntityRenderers CABLE_BUS	CableBusTESR::new	MOD_CUSTOM_BER	pinned db17504 source	mod BakedModel/ModelData/cable paths; no vanilla BER assumption
+20	AE2_19.2.18	AppEngClient.registerEntityRenderers SKY_STONE_TANK	SkyStoneTankBlockEntityRenderer::new	MOD_CUSTOM_BER	pinned db17504 source	fluid geometry world Y vs local
+21	AE2_19.2.18	appeng.client.render.tesr.ModularTESR	BlockEntityRenderer<T> render -> configurable sub renderable	MOD_COMPOSITION_BER	pinned db17504 source	no common vanilla Mixin automatic
+22	AE2_19.2.18	appeng.client.render.tesr.ChestBlockEntityRenderer	PoseStack quaternion + block renderer tessellate + CellLedRenderer	LOCAL_AND_BAKED_CHILD	pinned db17504 source	mixed per-face ModelData/lighting reload tests
+23	CREATE_6.0.10	AllBlockEntityTypes Registrate	104 source .renderer( declarations	REGISTRATE_BER_FACTORIES	pinned ac0c444 source	count of textual registrations, not loaded runtime types
+24	CREATE_6.0.10	AllBlockEntityTypes Registrate visual	69 source .visual( declarations	FLYWHEEL_VISUAL_PROVIDER	pinned ac0c444 source	visual path may bypass BER; compatibility versions pending
+25	CREATE_6.0.10	SafeBlockEntityRenderer.render	final render -> renderSafe	SHARED_CREATE_BASE_BER	pinned ac0c444 source	vanilla renderer class Mixin not inherited
+26	CREATE_6.0.10	KineticBlockEntityRenderer.renderSafe	VisualizationManager.supportsVisualization(Level) early return	FLYWHEEL_FALLBACK_SPLIT	pinned ac0c444 source	when visualized no geometry through BER
+27	CREATE_6.0.10	KineticBlockEntityRenderer normal fallback	CachedBuffers block BakedModel and renderRotatingBuffer	MIXED_MODEL_BUFFER	pinned ac0c444 source	model render caching + local rotate unknown seam safety
+28	CREATE_6.0.10	Create backend dependency version	compiled NeoForge 21.1.219 vs target 21.1.215	LOADER_VERSION_GATE	previous version-pinned research	do not count Create loaded/compatible until proven
+29	MOD_ALT	Mod subclass of vanilla BER	override render without super OR delegate	SUBCLASS_DISPATCH	hypothesis from Java inheritance	class mixin only if target callpath reached
+30	MOD_ALT	mod renderer for existing vanilla BE type	RegisterRenderers.registerBlockEntityRenderer vanilla key	FACTORY_OVERRIDE	NeoForge event permits, no inspected release overriding vanilla	test actual final loaded dispatcher selection if claimed
+31	ALT_ITEM	ItemRenderer / BlockEntityWithoutLevelRenderer	item GUI and icon preview	NO_WORLD_FRAME	1.21.1 item render source comparator pending exact ABI	avoid block/world local matrix in inventory
+32	ALT_WORLD	Ponder fake/virtual level	external Level/BlockGetter poses	FOREIGN_CONTEXT	Create selected source only	no fallback to unrelated ClientLevel
+33	ALT_RENDER	Flywheel renderer visuals	independent instancing backend	INDEPENDENT_GPU_PIPELINE	Create source fallback fact only	3R-5 original mod visual/render graph research
+34	ALT_RENDER	Shaders / alternate render type	offscreen, normal, shader/portal passes	WORLD_CAMERA_SPACE	3R-4C mixed vanilla source	do not global BER transform
+35	STATE	Natural LIME vs forced CYAN	real State FACING/ATTACHED ROTATION_16	PHASE2_GATE_V	existing visual readiness contracts	sign/chain generated and placed not accepted
+36	STATE	+Y / noPlanet	baseline vanilla worlds	PHASE2_GATE_V	existing acceptance contracts	must remain identical
+37	STATE	Six faces / 12 seams / 8 corners	world physical and local frame per side	PHASE2_GATE_V	existing acceptance contracts	actual client loaded mod/render passes pending
+38	STATE	Mod load/reload/exception path	actual chosen provider, exception scope and resource reload	LIFECYCLE	original NeoForge class static research only	3R-6 client lifecycle/epoch and 3R-4D mod sample
+39	GATE	Phase3 R	original 3A-3E whole owner/mod census	OPEN	3R-4D source selected expected	3R-5/6/7 after selected CI
+40	GATE	Phase2 visual V	rendering and actual client visual acceptance	OPEN	no loaded mods/actual game in this research	minimum Phase2 visual fixes after R PASS
