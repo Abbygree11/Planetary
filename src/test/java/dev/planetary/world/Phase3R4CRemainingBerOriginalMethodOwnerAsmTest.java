@@ -85,8 +85,15 @@ final class Phase3R4CRemainingBerOriginalMethodOwnerAsmTest {
         assertEquals(18,owners.size());
         for(String name:OWNERS) assertTrue(methods.stream().anyMatch(x->x.owner().equals(ROOT+name)
             && x.name().equals("render")),name+" must declare a renderer method");
+        // The bed's entry render delegates to renderPiece; only renderPiece mutates PoseStack.
+        // Enforce the actual original nested method owner instead of a false direct render->PoseStack assumption.
         assertTrue(calls.stream().anyMatch(x->x.owner().equals(ROOT+"BedRenderer")
-            && x.method().equals("render") && x.target().contains("PoseStack")));
+            && x.method().equals("render") && x.targetMethod().equals("renderPiece")),
+            "BedRenderer.render must delegate to renderPiece");
+        assertTrue(calls.stream().anyMatch(x->x.owner().equals(ROOT+"BedRenderer")
+            && x.method().equals("renderPiece")
+            && x.target().equals("com/mojang/blaze3d/vertex/PoseStack")),
+            "BedRenderer.renderPiece must own the nested pose operations");
         assertTrue(calls.stream().anyMatch(x->x.owner().equals(ROOT+"PistonHeadRenderer")
             && x.method().equals("render") && x.targetMethod().equals("getMovedState")));
         assertTrue(calls.stream().anyMatch(x->x.owner().equals(ROOT+"TheEndGatewayRenderer")
