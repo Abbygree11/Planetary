@@ -25,7 +25,7 @@ The pinned but *non-authoritative comparator* 1.21.1 `BlockEntityRenderers.java`
 | CAMPFIRE, BRUSHABLE_BLOCK, DECORATED_POT | `CampfireRenderer`, `BrushableBlockRenderer`, `DecoratedPotRenderer` |
 | TRIAL_SPAWNER, VAULT | `TrialSpawnerRenderer`, `VaultRenderer` |
 
-Canonical [full 24-registration / 32-route family-owner matrix](PHASE3_R4A_VANILLA_BER_REGISTRY_OWNER_MATRIX_1_21_1.tsv) distinguishes **preliminary space policy** from established runtime semantics. Count/route inventory is not a claim that all 22 have an identical local frame requirement.
+Canonical [full 24-registration / 35-route family-owner matrix](PHASE3_R4A_VANILLA_BER_REGISTRY_OWNER_MATRIX_1_21_1.tsv) distinguishes **preliminary space policy** from established runtime semantics. Count/route inventory is not a claim that all 22 have an identical local frame requirement.
 
 **Authoritative original CI and artifact:** first [CI #40435855541](https://github.com/Abbygree11/Planetary/actions/runs/40435855541) failed during `compileTestJava` because this research test incorrectly used `Invoke.name()` instead of `Invoke.method()` (not an engine failure); fixed in test source [`e2c1ac5`](https://github.com/Abbygree11/Planetary/commit/e2c1ac50ecb92bdeabd7edfc1966c65962924b54). Corrected [**CI #40436274761 SUCCESS**](https://github.com/Abbygree11/Planetary/actions/runs/40436274761) completed Java21 compile and JUnit including all exact original registrations. Downloaded original artifact **12704327795** ZIP SHA256 **`74a3836cb84be9ef42e2a22bede6fa7c7f5afde96478f1ef290ba37f4ae0c40b`**. Exact original classfile outputs:
 
@@ -65,7 +65,7 @@ The full 32-row family matrix separately records inherited owners, client dispat
 
 ## 4/4 — bounded completion criterion, CI provenance and next packet
 
-**§3R-4A§ bounded vanilla registry census 4/4 COMPLETE.** Corrected CI #40436274761 **SUCCESS** and original registry/renderer reports/ZIP/representative method-call paths independently verified. 32 cross-phase owner/bypass/visual acceptance routes cataloged. This does **not** mark whole §3C§, all subclass render method bodies, actual NeoForge-loaded replacements, or game visual PASS.
+**§3R-4A§ bounded vanilla registry census 4/4 COMPLETE.** Corrected CI #40436274761 **SUCCESS** and original registry/renderer reports/ZIP/representative method-call paths independently verified. 35 cross-phase owner/bypass/visual acceptance routes cataloged. This does **not** mark whole §3C§, all subclass render method bodies, actual NeoForge-loaded replacements, or game visual PASS.
 
 Remaining 3C:
 1. **`3R-4B`** original exact `SignRenderer`, `HangingSignRenderer`, `BannerRenderer`, `SkullBlockRenderer` nested text/chain/pattern/player-skin and renderer superclass/virtual dispatch method-body + relevant mod override owners. All 4 selected compiled class methods, not just outer render signature.
