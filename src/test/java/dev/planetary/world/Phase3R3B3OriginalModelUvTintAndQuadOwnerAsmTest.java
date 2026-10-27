@@ -74,11 +74,11 @@ final class Phase3R3B3OriginalModelUvTintAndQuadOwnerAsmTest {
             "getAppearance", "getU", "getV", "uvShrink", "getUVs",
             "getTexture", "getParticleIcon", "getAtlasLocation",
             "getModel", "getBlockModel", "getBlockRenderer",
-            "getVertex", "getSprite", "getTintIndex", "getFaceShape",
+            "getVertex", "getFaceShape",
             "getFaceOcclusionShape", "getBlockState", "compile",
             "renderBatched", "tesselateBlock", "render", "apply",
             "transform", "rotate", "getTransformation", "getRotation",
-            "getRenderPasses", "getRenderTypes", "getBlockRenderTypes",
+            "getRenderPasses", "getBlockRenderTypes",
             "useAmbientOcclusion", "getShade", "getLightColor",
             "getLightEmission", "getOffset", "getRenderShape",
             "getMissingModel", "getModelDataManager"
