@@ -2,7 +2,7 @@
 
 ## 2026-10-28 — 3R-6 post-CI closure checkpoint
 
-**FINAL VERIFIED 3R-6 ORIGINAL JVM:** [CI #40596882360 SUCCESS](https://github.com/Abbygree11/Planetary/actions/runs/40596882360) on source `12a6502`, **15 exact NeoForge21.1.215 classes, 656 declared methods, 5126 direct JVM INVOKEs, 1533 selected method opcodes**; downloaded original artifact **12776083135**, ZIP SHA256 **`48a2b2574b044795d7d6630654929a3ba9dbef3383882461a4000a3dcc18a46e`**, **5 stage member hashes / 4 exact original call paths independently verified**. [Repeatable original ZIP checker](../scripts/research/phase3_r6_original_reload_worker_verify.py) committed after source CI, not executed in that original run. Static original test only; Flywheel/Iris compiled shader and loaded mod/client runtime unverified. **Phase3 R OPEN, Phase2 V OPEN; NEXT 3R-7 whole-phase research review.**
+**FINAL VERIFIED 3R-6 ORIGINAL JVM:** [CI #40596882360 SUCCESS](https://github.com/Abbygree11/Planetary/actions/runs/40596882360) on source `12a6502`, **15 exact NeoForge21.1.215 classes, 656 declared methods, 5126 direct JVM INVOKEs, 1533 selected method opcodes**; downloaded original artifact **12776083135**, ZIP SHA256 **`48a2b2574b044795d7d6630654929a3ba9dbef3383882461a4000a3dcc18a46e`**, **5 stage member hashes / 4 exact original call paths independently verified**. [Repeatable original ZIP checker](../../scripts/research/phase3_r6_original_reload_worker_verify.py) committed after source CI, not executed in that original run. Static original test only; Flywheel/Iris compiled shader and loaded mod/client runtime unverified. **Phase3 R OPEN, Phase2 V OPEN; NEXT 3R-7 whole-phase research review.**
 
 ## `3R-6` — resource reload, client world epoch and worker callback source research (3E)
 
