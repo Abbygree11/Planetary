@@ -19,7 +19,7 @@ id	owner_or_family	original_path_or_override	verified_source_route	space_or_fram
 18	SKULL_PROFILE	SkullBlockEntity.getOwnerProfile	profile resolved before rendering	BE_DATA_AND_SHADER	player head skins	No runtime client nor skin fetch/MC loaded proof	COMPARATOR_SOURCE_ONLY
 19	STANDING_SIGN_STATE	StandingSignBlock / StandingSignRenderer	ROTATION_16 yaw property authored by Phase2 placement	STATE_WRITER_NOT_BER	generated vs player placed yaw	Use actual original BlockState values not CYAN preset	PHASE2_SOURCE_PRIOR
 20	WALL_SIGN_STATE	WallSignBlock	FACING and wall support is canonical physical neighbor	STATE_WRITER_NOT_BER	on all non+Y faces	Collision/selection and art must agree	PHASE2_SOURCE_PRIOR
-21	STANDING_BANNER_STATE	StandingBannerBlock	standing yaw state separate renderer	STATE_WRITER_NOT_BER	banners patterns	Six face + 12 edges natural place and update	PHASE2_SOURCE_PRIOR
+21	STANDING_BANNER_STATE	BannerBlock (standing; no separate StandingBannerBlock class in target)	standing yaw state separate renderer	STATE_WRITER_NOT_BER	banners patterns	Six face + 12 edges natural place and update	PHASE2_SOURCE_PRIOR
 22	WALL_BANNER_STATE	WallBannerBlock	wall-facing source state separate renderer	STATE_WRITER_NOT_BER	wall banners	Natural wall support drop and orientation	PHASE2_SOURCE_PRIOR
 23	SKULL_BLOCK_STATE	SkullBlock / WallSkullBlock	rotation/facing state and entity profile	STATE_WRITER_NOT_BER	mob and player skulls	BlockState and model local/nested frame on all faces	PHASE2_SOURCE_PRIOR
 24	PLANET_PROVISIONAL_SIGN	SignRendererPlanetFrameMixin	HEAD and RETURN scope around render	PROVISIONAL_LOCAL_ROOT	standing and wall signs	Applied Mixin, exceptional early exit, nesting, real game	PLANET_SOURCE_ONLY
