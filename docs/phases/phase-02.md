@@ -1,5 +1,9 @@
 # Фаза 2 — семантика блоков: ориентация, установка, опоры, обновления
 
+## Результаты исследования и реализации — отдельно от планов
+
+[Постоянный архив итогов Phase2](phase-02/results/README.md), разделы: [2.3A original block owners](phase-02/results/2-3a-registered-block-owners.md), [2.3B item & alternate authors](phase-02/results/2-3b-item-and-alternate-writers.md), [2.3C exact selected NeoForge ABI](phase-02/results/2-3c-neoforge-abi-lifecycle.md), [2.4 implementation and visual blocker](phase-02/results/2-4-implementation-and-visual-blocker.md), [2.5 gameplay acceptance](phase-02/results/2-5-gameplay-acceptance.md). В карточках сохраняются доказанные результаты каждой части, original source/CI и ограничения — *не* автоматический GAME PASS. Подробные текущие исследования, механизмы P01–P40 и семейные планы ниже остаются авторитетными; после каждого нового пакета **обновлять отдельно и план, и результаты**, плюс handoff. `2.3A/B/C` bounded research завершён; реализация `2.4A` остановлена на визуальном gate R/V, `2.5` ещё TODO. [Общий шаблон](RESEARCH_RESULTS_TEMPLATE.md).
+
 **Статус: PARTIAL / ACTIVE. Нельзя считать законченным на основании отдельных рабочих блоков.** Основной источник: [глобальный роадмап](../IMPLEMENTATION_PLAN.md), Phase 2. Протокол: [README.md](README.md).
 
 ## Что уже есть (не повторять исследование)
