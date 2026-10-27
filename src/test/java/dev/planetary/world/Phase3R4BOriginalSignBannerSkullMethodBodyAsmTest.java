@@ -274,6 +274,6 @@ final class Phase3R4BOriginalSignBannerSkullMethodBodyAsmTest {
         return ins.stream().anyMatch(x ->
                 x.owner().equals(owner)&&x.name().equals(method)
                         &&x.kind().equals("CALL")
-                        &&x.operand().contains("."+callee+"("));
+                        &&x.target().contains("."+callee+"("));
     }
 }
