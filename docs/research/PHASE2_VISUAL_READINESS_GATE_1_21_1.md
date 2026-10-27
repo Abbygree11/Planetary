@@ -3,6 +3,11 @@
 **2026-10-27 · branch `2.0` · Minecraft 1.21.1 · NeoForge 21.1.215 · Java 21.**
 **Status: OPEN — agreement recorded, no newly accepted gameplay.** This is an explicit cross-phase *dependency gate*, not a declaration that all Phase 3 features must be implemented before finishing Phase 2.
 
+## 2026-10-27 — research evidence delta `3R-3B-2` (R/V remain OPEN)
+
+[3B original target Java21 AO/flat research](PHASE3_R3B2_ORIGINAL_AO_QUAD_SEAM_MOD_OWNER_1_21_1.md), [35 source/NeoForge/AE2/Create bypass routes](PHASE3_R3B2_QUAD_AO_CULLING_LIGHT_MOD_OWNER_MATRIX_1_21_1.tsv), [CI #40424951985 SUCCESS](https://github.com/Abbygree11/Planetary/actions/runs/40424951985): original 21/21 classfiles, 90 selected method bodies, 5484 instructions, 519 direct JVM calls, 369 field events. Standard ModelBlockRenderer TriState AO/ModelData/RenderType and alternate NeoForge render 2 getQuads /1 shouldRenderFace /4 QuadLighter.process pinned. SmoothQuadLighter dynamically queries two face occlusion shapes and physical world light, FlatQuadLighter uses collision/full-cube plus physical light; AE2 19.2.18 connected-glass model can omit face quads through its own ModelData and bidirectional getAppearance. Thus the generic seam solution must distinguish missing quads vs culling vs lighting/UV/BER and preserve mod-owned geometry generation, no universal grass-top-quad hack. **No actual loaded Minecraft game acceptance, no newly accepted `2.4A` visual families; both R and V remain OPEN.** Next scoped `3R-3B-3` model/UV/tint/mod BakedModel ownership, then `3R-4` BER owners. Full optional Phase3 gameplay still not a prerequisite.
+
+
 ## Goal and two independent gates
 
 **Goal:** finish all Phase-2 orientation/placement/support/neighbor/temporal families without repeatedly suspending the work for an unresearched Phase-3 rendering mechanism. Prevent the sign/chain failure pattern: a correct or apparently-correct `BlockState` still rendered with invalid model/BER/source frame, and a forced CYAN fixture mistaken for natural LIME placement acceptance.
