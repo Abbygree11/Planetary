@@ -57,7 +57,9 @@ final class Phase3R3B2OriginalQuadAoCullingMethodTraceTest {
     private static final Set<String> NAMES = Set.of(
             "compile", "getQuadLighter", "calculateFaceWithoutAO",
             "tesselateBlock", "tesselateWithAO", "tesselateWithoutAO",
-            "renderQuad", "renderQuadList", "renderModel", "putQuadData",
+            "render", "renderQuad", "renderQuadList", "renderModel",
+            "renderModelFaceAO", "renderModelFaceFlat", "putQuadData",
+            "process", "computeLightingForQuad", "getColorFast", "calculateShade",
             "renderBatched", "renderSingleBlock", "renderBreakingTexture",
             "getQuads", "getModelData", "getRenderTypes", "getRenderType",
             "shouldRenderFace", "skipRendering", "hidesNeighborFace",
@@ -234,6 +236,26 @@ final class Phase3R3B2OriginalQuadAoCullingMethodTraceTest {
                 x.owner().equals(SMOOTH)) &&
                 methods.stream().anyMatch(x -> x.owner().equals(FLAT)),
                 "Original NeoForge independent smooth and flat lighting paths must be traced");
+        assertTrue(ops.stream().anyMatch(x ->
+                x.owner().equals(ALTERNATE) && x.name().equals("render")
+                        && x.kind().equals("CALL")
+                        && x.target().contains(BAKED + ".getQuads")),
+                "Experimental light renderer must dispatch through original BakedModel");
+        assertTrue(ops.stream().anyMatch(x ->
+                x.owner().equals(ALTERNATE) && x.name().equals("render")
+                        && x.kind().equals("CALL")
+                        && x.target().contains(BLOCK + ".shouldRenderFace")),
+                "Experimental light renderer must keep physical neighbor culling");
+        assertTrue(ops.stream().anyMatch(x ->
+                x.owner().equals(SMOOTH) && x.name().equals("computeLightingAt")
+                        && x.kind().equals("CALL")
+                        && x.target().contains("getFaceOcclusionShape")),
+                "NeoForge smooth lighter must account for face occlusion");
+        assertTrue(ops.stream().anyMatch(x ->
+                x.owner().equals(FLAT) && x.name().equals("computeLightingAt")
+                        && x.kind().equals("CALL")
+                        && x.target().contains("getLightColor")),
+                "NeoForge flat lighter must query physical world light");
 
         owners.sort(Comparator.comparing(Owner::owner));
         methods.sort(Comparator.comparing(Method::owner).thenComparing(Method::name)
