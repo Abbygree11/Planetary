@@ -68,6 +68,8 @@ final class Phase3R3B2OriginalQuadAoCullingMethodTraceTest {
             "getVertices", "getDirection", "hasAmbientOcclusion", "isShade",
             "useAmbientOcclusion", "getBlockState", "getBlockEntity",
             "getLightmap", "calculate", "calculateShape",
+            "computeLightingAt", "calculateBrightness",
+            "calculateLightmap", "calcLightmap",
             "calculateLighting", "getLightMap", "getLightmapCoordinates",
             "getRenderShape", "processQuad", "lightQuad", "shade",
             "computeLighting", "setup", "reset", "getModel", "getBlockModel",
