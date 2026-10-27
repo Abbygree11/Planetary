@@ -1,5 +1,11 @@
 # Planetary continuity
 
+## 2026-10-27 — 3R-4D NeoForge BER provider/dispatcher and released mod renderers (bounded research 4/4 CI PASS)
+
+[Original 8-class ABI audit](research/PHASE3_R4D_NEOFORGE_BER_PROVIDER_REGISTRATION_MOD_OWNER_1_21_1.md), [40 owner/mod/client gate routes](research/PHASE3_R4D_NEOFORGE_MOD_BER_PROVIDER_OWNER_MATRIX_1_21_1.tsv), [original test](../src/test/java/dev/planetary/world/Phase3R4DNeoForgeBerProviderDispatchAsmTest.java), [archive checker](../scripts/research/phase3_r4d_original_ber_provider_verify.py), authoritative [CI #40553809343](https://github.com/Abbygree11/Planetary/actions/runs/40553809343) **SUCCESS** on original test commit 441203bc. Archive12756840569 ZIP SHA256 7d1d239e800dca80119870c5fd99955ffb9485e33b2ebb717d264ec7a8b5e444 independently unpacked: five SHA files, eight original classes, 160 method declarations, 616 calls, 213 selected JVM instructions, 9 confirmed owner/target method calls. NeoForge RegisterRenderers event -> original factory register/Map.put, create providers on resource reload, dispatcher type-to-renderer Map.get and separate world/item render. Original BlockEntityRenderer implements IBlockEntityRendererExtension. Pinned AE2 19.2.18 (db17504) 10 independent BER registrations including ME chest and charger; pinned Create 6.0.10 (ac0c444) 104 source renderer and 69 source visual registrations through Registrate, final SafeBlockEntityRenderer.render, Flywheel visualization bypass in KineticRenderer. Neither was loaded; Create compiled NeoForge21.1.219 vs Planet21.1.215. No proof of actual vanilla renderer factory replacement by those mods.
+
+**Research R OPEN:** next 3R-5 alternate custom/Flywheel/shader/virtual world geometry, 3R-6 resource worker/cache/client lifecycle, 3R-7 phasewide R. **Visual V OPEN:** generated versus placed chains, natural LIME/CYAN sign, +Y/noPlanet, 6 face/12 seam/8 corner, applied Minecraft Mixin and actually loaded mod client pending. 2.4A-10 suspended. No production Java, Mixins, V8, or main changed. Original static archive checker committed after source test CI and not run by the original workflow. Next user кк => 3R-5 4/4.
+
 > **MANDATORY FIRST READ:** `/AGENTS.md` is the canonical development process.
 > Every new AI/coding session must read it before using this continuity log,
 > researching or changing code.
