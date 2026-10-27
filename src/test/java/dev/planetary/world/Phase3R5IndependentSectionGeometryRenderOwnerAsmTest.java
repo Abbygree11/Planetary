@@ -93,13 +93,15 @@ final class Phase3R5IndependentSectionGeometryRenderOwnerAsmTest {
             "Scheduling stage must gather renderer callbacks for actual section level");
         assertTrue(has(calls,EV,"addRenderer","java/util/List","add"),
             "Event must own callback list");
-        assertTrue(has(calls,EV+"$SectionRenderingContext","getRegion",null,null) == false
-            || methods.stream().anyMatch(m->m.owner().equals(EV+"$SectionRenderingContext")
-                && m.method().equals("getRegion")), "Context must expose its origin region");
+        assertTrue(methods.stream().anyMatch(m->m.owner().equals(EV+"$SectionRenderingContext")
+            && m.method().equals("getRegion")), "Section callback must expose original region");
         assertTrue(methods.stream().anyMatch(m->m.owner().equals(EV+"$SectionRenderingContext")
             && m.method().equals("getPoseStack")));
         assertTrue(methods.stream().anyMatch(m->m.owner().equals(EV)
             && m.method().equals("getLevel")));
+        assertTrue(methods.stream().anyMatch(m->m.owner().equals(EV+"$SectionRenderingContext")
+            && m.method().equals("getOrCreateChunkBuffer")),
+            "Callback must expose a chunk RenderType buffer writer");
         owners.sort(Comparator.comparing(Owner::owner));
         methods.sort(Comparator.comparing(Method::owner).thenComparing(Method::method)
             .thenComparing(Method::descriptor));
