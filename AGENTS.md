@@ -33,6 +33,11 @@ discovered, or a bug is reassigned to another subsystem/phase, update the
 roadmap in the relevant place. Do not leave plan changes only in chat or only in
 `AI_CONTEXT.md`.
 
+## Per-phase research findings: persistent RESULTS, not just plans (3R-H1, 2026-10-27)
+
+The user requires phase research conclusions to survive across chats and especially when later implementing a phase. **For every researched phase/sub-phase, maintain both a plan and a permanent results file**: the plan lists intended work; results record proven source owners, actual code/ABI/release/method findings, accepted architecture invariants, unknowns and exact pending gates. **Phase 3 is indexed at [docs/phases/phase-03/results/README.md](docs/phases/phase-03/results/README.md)**, with separate results for 3A, 3B, 3C, 3D, 3E. Future-phase pattern: [docs/phases/RESEARCH_RESULTS_TEMPLATE.md](docs/phases/RESEARCH_RESULTS_TEMPLATE.md). Detailed evidence remains in docs/research, original test sources, published Actions artifacts and stage-specific matrices; never delete or merely paraphrase it away. For new research and corrections link results to authoritative source/CI/commit, and preserve confidence boundaries (SOURCE, exact target-JVM CI, game, installed mod).
+
+**Before concluding every bounded 4/4 research or implementation packet:** update (a) relevant phase plan, (b) affected per-phase results summary, (c) detailed original research and TSV coverage, (d) SESSION_HANDOFF with next stage and gates, and (e) actual code/test CI only if code changed. If new findings contradict an older summary, correct or explicitly supersede it; do not leave stale claims. When a new session returns to a phase, read its results index **before designing runtime changes**. Current **Phase3 research R OPEN / Phase2 visual V OPEN**; next **3R-5**, then 3R-6 and 3R-7. Updating documentation does not mean game or CI coverage advanced.
 ## 2. Mandatory start-of-session procedure
 
 At the beginning of every new chat/session:
