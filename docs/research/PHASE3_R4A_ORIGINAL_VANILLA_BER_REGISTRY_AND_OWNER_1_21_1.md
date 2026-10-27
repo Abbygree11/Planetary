@@ -27,7 +27,18 @@ The pinned but *non-authoritative comparator* 1.21.1 `BlockEntityRenderers.java`
 
 Canonical [full 24-registration / 32-route family-owner matrix](PHASE3_R4A_VANILLA_BER_REGISTRY_OWNER_MATRIX_1_21_1.tsv) distinguishes **preliminary space policy** from established runtime semantics. Count/route inventory is not a claim that all 22 have an identical local frame requirement.
 
-**CI status after test correction:** the first [CI #40435855541](https://github.com/Abbygree11/Planetary/actions/runs/40435855541) failed during `compileTestJava` from two *test-only* wrong record accessors (`Invoke.name()` was typed instead of `Invoke.method()`), NOT Minecraft or mod failure; fixed in [`e2c1ac5`](https://github.com/Abbygree11/Planetary/commit/e2c1ac50ecb92bdeabd7edfc1966c65962924b54). Corrected [CI #40436274761](https://github.com/Abbygree11/Planetary/actions/runs/40436274761) **PENDING VERIFICATION**. Original report artifact SHA/counts will be appended only after actual CI success and independent verification.
+**Authoritative original CI and artifact:** first [CI #40435855541](https://github.com/Abbygree11/Planetary/actions/runs/40435855541) failed during `compileTestJava` because this research test incorrectly used `Invoke.name()` instead of `Invoke.method()` (not an engine failure); fixed in test source [`e2c1ac5`](https://github.com/Abbygree11/Planetary/commit/e2c1ac50ecb92bdeabd7edfc1966c65962924b54). Corrected [**CI #40436274761 SUCCESS**](https://github.com/Abbygree11/Planetary/actions/runs/40436274761) completed Java21 compile and JUnit including all exact original registrations. Downloaded original artifact **12704327795** ZIP SHA256 **`74a3836cb84be9ef42e2a22bede6fa7c7f5afde96478f1ef290ba37f4ae0c40b`**. Exact original classfile outputs:
+
+| Original extracted file | SHA-256 |
+| --- | --- |
+| `phase3-r4a-original-ber-registrations.tsv` | `7eba226aadf512af921ac266024f9845b238c7b5d0f37607461a3910dc10ee42` |
+| `phase3-r4a-original-ber-owners.tsv` | `3fe8c0fe5c7688bbec7df56012e6efe4e7336daf5e80042102ea65d9094fccac` |
+| `phase3-r4a-original-ber-methods.tsv` | `bf876aec2f7bcfa25a2f7a385a257fc2cbd7f319001a1595bfa5e4f0ceeb81d0` |
+| `phase3-r4a-original-ber-fields.tsv` | `ca803f6a52046156a58606321ac98e995f290024843a0a911ab2f7747899a4c6` |
+| `phase3-r4a-original-ber-invokes.tsv` | `b7d5f4d7152db033750b7eecee4f12d3936a465c8d4ba550ff2bd755d5beb608` |
+| `phase3-r4a-original-ber-summary.txt` | `cccb6ae8881d117a41fa5c8f44a024e9ac560657aba947c0e7e6162e47eb217d` |
+
+**Exactly 24 vanilla factory registrations / 22 distinct renderer constructors / 28 original compiled owner-classfiles / 219 declared methods / 109 fields / 1320 direct JVM INVOKE sites**. Each factory uses target original `LambdaMetafactory.metafactory` and constructor descriptor `(BlockEntityRendererProvider$Context)V`. The original owner map proves `HangingSignRenderer extends SignRenderer` and `TheEndGatewayRenderer extends TheEndPortalRenderer`; compiled `BlockEntityRenderer` interfaces include NeoForge `IBlockEntityRendererExtension`. Direct JVM edges checked: Sign/Hanging both call `renderSignWithText`; gateway calls super `TheEndPortalRenderer.render` **and** `BeaconRenderer.renderBeaconBeam`; skull calls `renderSkull`, banner calls `renderPatterns`. [Independent ZIP SHA/24 constructor/6 call-path verifier](../../scripts/research/phase3_r4a_original_ber_registry_verify.py) was committed **after** source test CI, so is not claimed as a CI workflow step. The extracted reports and relevant direct calls were independently inspected.
 
 ## 2/4 — actual inherited algorithm owners, local and world-space producers
 
@@ -54,7 +65,7 @@ The full 32-row family matrix separately records inherited owners, client dispat
 
 ## 4/4 — bounded completion criterion, CI provenance and next packet
 
-`3R-4A` will be **COMPLETE in vanilla *registry census* scope only when corrected CI #40436274761 is SUCCESS and original registry/renderer TSV artifact is independently validated**. It must not mark whole `3C`, all subclass render methods, mod overrides or game visual PASS.
+**§3R-4A§ bounded vanilla registry census 4/4 COMPLETE.** Corrected CI #40436274761 **SUCCESS** and original registry/renderer reports/ZIP/representative method-call paths independently verified. 32 cross-phase owner/bypass/visual acceptance routes cataloged. This does **not** mark whole §3C§, all subclass render method bodies, actual NeoForge-loaded replacements, or game visual PASS.
 
 Remaining 3C:
 1. **`3R-4B`** original exact `SignRenderer`, `HangingSignRenderer`, `BannerRenderer`, `SkullBlockRenderer` nested text/chain/pattern/player-skin and renderer superclass/virtual dispatch method-body + relevant mod override owners. All 4 selected compiled class methods, not just outer render signature.
