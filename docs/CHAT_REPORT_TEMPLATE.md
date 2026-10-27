@@ -11,7 +11,7 @@ Planetary — <ID_ЭТАПА>: <механизм>
 
 ## Research outcomes archive at packet end (mandatory)
 
-Alongside exact stage name and truthful CI/game gates, record which **per-phase results file** was updated. For Phase 3: [3A–3E outcomes index](phases/phase-03/results/README.md); do not stop at AI_CONTEXT or implementation plan alone. Each completed bounded 4/4 research packet must leave detailed original evidence + matrix + phase-plan status + affected results summary + SESSION_HANDOFF. If only docs changed, report **DOCS ONLY / NO NEW CODE CI**, cite repo commit and do not claim a fresh Java21 CI run. Subsequent research 3R-5, 3R-6, 3R-7 each maintain their own outcome without falsely closing entire Phase3 R or Phase2 V.
+Alongside exact stage name and truthful CI/game gates, record which **per-phase results file** was updated. Use [Phase1 outcomes](phases/phase-01/results/README.md), [Phase2 outcomes](phases/phase-02/results/README.md), and [Phase3 3A–3E outcomes](phases/phase-03/results/README.md) according to touched stage; do not stop at AI_CONTEXT or implementation plan alone. Each completed bounded 4/4 research packet must leave detailed original evidence + matrix + phase-plan status + affected results summary + SESSION_HANDOFF. If only docs changed, report **DOCS ONLY / NO NEW CODE CI**, cite repo commit and do not claim a fresh Java21 CI run. Subsequent research 3R-5, 3R-6, 3R-7 each maintain their own outcome without falsely closing entire Phase3 R or Phase2 V.
 ## B. Finish (previously agreed user-facing style)
 ```markdown
 ## Planetary — `<ID_ЭТАПА>`: <полное семейство механизма>
