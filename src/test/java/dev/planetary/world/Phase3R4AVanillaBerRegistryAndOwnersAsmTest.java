@@ -213,13 +213,13 @@ final class Phase3R4AVanillaBerRegistryAndOwnersAsmTest {
         assertTrue(invokes.stream().anyMatch(x ->
                         x.owner().equals(BASE + "SignRenderer")
                         && x.name().equals("render")
-                        && x.targetName().equals("renderSignText")),
-                "Original sign render must own a separate text rendering path");
+                        && x.targetName().equals("renderSignWithText")),
+                "Original sign render must dispatch shared sign + text renderer");
         assertTrue(invokes.stream().anyMatch(x ->
                         x.owner().equals(BASE + "HangingSignRenderer")
                         && x.name().equals("render")
-                        && x.targetName().equals("renderSign")),
-                "Original hanging-sign render must delegate sign geometry");
+                        && x.targetName().equals("renderSignWithText")),
+                "Original hanging-sign render must delegate inherited shared sign + text path");
 
         owners.sort(Comparator.comparing(Owner::classfile));
         fields.sort(Comparator.comparing(Field::owner).thenComparing(Field::name));
