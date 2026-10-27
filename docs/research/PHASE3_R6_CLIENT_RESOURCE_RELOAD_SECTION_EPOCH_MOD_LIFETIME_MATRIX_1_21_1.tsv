@@ -1,0 +1,45 @@
+id	source	owner_or_callback	source_chain	lifetime_or_frame	evidence_level	remaining_acceptance
+01	ORIGINAL	Minecraft.setLevel	old LevelEvent.Unload -> assign new Level -> updateLevelInEngines	world_identity_epoch	3R-2m CI40407267093 exact original	mod observers old level and new world dynamic callbacks not run
+02	ORIGINAL	Minecraft.updateLevelInEngines	LevelRenderer.setLevel + other client engines	world_identity_epoch	3R-2m original 16-class method trace	client resource/render caches survive? dynamic method branches
+03	ORIGINAL	LevelRenderer.setLevel	release views/dispose dispatcher/reset graph/clear global BE/visibleSections	chunk_and_global_be_lifetime	3R-2m original exact JVM	in-flight shader GPU backend and old references not proven dead
+04	ORIGINAL	LevelRenderer.allChanged	new dispatcher/view layout and tint cache clearing	render_distance_dimension_reset	3R-2m exact JVM	reload event ordering vs world transition
+05	ORIGINAL	SectionRenderDispatcher.dispose	closed=true -> clearBatchQueue -> uploadAllPendingUploads	dispose_is_not_drop_pending_upload	3R-2m original JVM CI	late in-flight completions GPU stale results
+06	ORIGINAL	SectionRenderDispatcher.clearBatchQueue	high/low pending compile queue -> CompileTask.cancel	pending_not_running_task	3R-2m original JVM	do not assume Future.cancel interrupts
+07	ORIGINAL	SectionRenderDispatcher.blockUntilClear	invokes clearBatchQueue only	not_full_worker_join	3R-2m original JVM	must not claim worker barrier
+08	ORIGINAL	SectionRenderDispatcher.uploadAllPendingUploads	queued Runnable.run during disposal	late_gpu_upload	3R-2m original JVM	possibly stale GPU after epoch switch
+09	ORIGINAL	RenderSection.cancelTasks	RebuildTask.cancel + ResortTransparencyTask.cancel	cooperative_cancellation	3R-2m original method trace	running task may finish
+10	ORIGINAL	RebuildTask.cancel	AtomicBoolean.compareAndSet + dirty marking	no_thread_interrupt	3R-2m original method trace	late outcome must check live epoch
+11	ORIGINAL	SectionOcclusionGraph.waitAndReset	reset/graph and outstanding state	occlusion_lifetime	3R-2m original selected source	actual in-flight graph tasks and sync policy
+12	ORIGINAL	ModelDataManager.<init>	captures Level and owningThread	level_owned_model_data	3R-2l CI40356263029	foreign level/worker disallowed to fake owner
+13	ORIGINAL	ModelDataManager.snapshotSectionRegion	owner thread check + section snapshot map	snapshot_not_deep_immutable	3R-2l original JVM	mutable custom ModelData deep safety unknown
+14	ORIGINAL	ModelDataManager.requestRefresh/refreshAt	request/refresh model data per BE section	lifecycle_invalidation	3R-2l original target	epoch and chunk unload cancellation
+15	ORIGINAL	RenderRegionCache.createRegion	captures source Level, section and chunk snapshot	region_origin_world	3R-2k/2l target original	must not use global Minecraft.level
+16	ORIGINAL	SectionCompiler.compile	region reads BlockState BE ModelData + getRenderTypes	chunk_worker_physical_region	3R-2l/3R-5 CI40594978070	dynamic changes after capture and shader resources
+17	NEOFORGE	ClientHooks.gatherAdditionalRenderers	main client event sectionOrigin+Level -> callback list	captured_client_level	3R-5 original CI40594978070	event callbacks may close over mutable/stale ClientLevel
+18	NEOFORGE	ClientHooks.addAdditionalGeometry	worker new SectionRenderingContext -> renderer.render(context)	foreign_BlockAndTintGetter_region	3R-5 original CI40594978070	callback must not call event.getLevel off-thread
+19	NEOFORGE	AddSectionGeometryEvent.getLevel	main-thread asserted source Level may be guidebook	event_thread_only	NeoForge pinned 1.21.1 source comparator, exact target method from 3R-5	live guidebook/mod callback not tested
+20	NEOFORGE	AdditionalSectionRenderer.render	deferred section mesh callback owns capture	worker_epoch	3R-5 selected original JVM	live source provenance and cancellation unsafe unproven
+21	ORIGINAL	BlockEntityRenderDispatcher.onResourceManagerReload	BlockEntityRenderers.createEntityRenderers registered map -> instances	BER_resource_reload_instance	3R-4D CI40553809343 exact owner	old BER provider instance references in mods unknown
+22	ORIGINAL	BlockEntityRenderDispatcher.getRenderer	current map keyed BlockEntityType	BE_type_binding	3R-4D original JVM	dynamic mod overwrite runtime unproven
+23	ORIGINAL	EntityRenderDispatcher	renderer instance/dispatched entity state	camera_entity_frame	3R-2m/3R-5 selected original target	entity renderer resource reload/old instance exact method inventory
+24	ORIGINAL	ModelManager.reload	PreparableReloadListener async model atlas/model states	model_bake_epoch	1.21.1 comparator, 3R-6 original test pending	exact original asynchronous chain and old resource lifetime
+25	ORIGINAL	ModelManager.apply/close	swap baked model manager state and atlas resource	gpu_model_epoch	1.21.1 comparator, 3R-6 original test pending	exact original compiled boundary and live reload
+26	ORIGINAL	TextureManager.reload	PreparableReloadListener resource async	texture_atlas_epoch	1.21.1 comparator, 3R-6 original test pending	old texture paths and shader compatible reload
+27	ORIGINAL	TextureManager.close	clear texture registry and reference	texture_gpu_dispose	1.21.1 comparator, 3R-6 original test pending	no GPU fence/flush game proof
+28	ORIGINAL	ReloadableResourceManager.registerReloadListener	listener registry and reload scheduling	resource_listener_order	1.21.1 comparator, 3R-6 original test pending	mod listener registration order may change
+29	ORIGINAL	PreparableReloadListener.reload	prepare/apply resource update asynchronous	prepare_apply_barrier	1.21.1 comparator, 3R-6 original test pending	cross-mod lifecycle resource generation
+30	CREATE_6.0.10	SingleAxisRotatingVisual.updateLight	relight(instanced rotatingModel)	instanced_light_epoch	pinned Create ac0c444 source	Flywheel1.0.6 compiled GPU backend not downloaded
+31	CREATE_6.0.10	SingleAxisRotatingVisual._delete	rotatingModel.delete	gpu_instance_lifetime	pinned Create ac0c444 source	deletion during unload/model reload not client tested
+32	CREATE_6.0.10	FlywheelVisual._delete	shaft.delete;wheel.delete	two_gpu_instances_lifetime	pinned Create ac0c444 source	resource lifetime shader update pending
+33	CREATE_6.0.10	ContraptionVisual.setupChildren	delete old children and actor visuals, instantiate from foreign Level	embedded_child_visual_rebuild	pinned Create ac0c444 source	moving world identity and nested orientation not tested
+34	CREATE_6.0.10	ContraptionVisual._delete	children/actors/structure/embedding delete	embedded_gpu_resource_cleanup	pinned Create ac0c444 source	underlying Flywheel release draw jobs unknown
+35	CREATE_6.0.10	ClientContraption.renderLevel	new VirtualRenderWorld(level,origin,...) and BE.setLevel virtual	foreign_level_provenance	pinned Create ac0c444 source	must not fall back to main ClientLevel
+36	CREATE_6.0.10	ClientContraption render data invalidation	renderLevel.clear;recreate block entities/runLightEngine	world_local_render_cache_epoch	pinned Create ac0c444 source	compat loader Create NeoForge21.1.219 vs Planet21.1.215
+37	CREATE_6.0.10	Ponder world/virtual source	WrappedLevel/Ponder renderer worker	guidebook_world_epoch	3R-2h release binary selected ABI; Create source	real Ponder reload/game not loaded
+38	AE2_19.2.18	ME_CHEST/CHARGER/ModularTESR	custom BER source/type registration/reload	third_party_renderer_instances	3R-4D pinned AE2 source	mod lifecycle listener owner not exhaustively sampled
+39	IRIS	Shaderpack resource reload	GBuffer/shadow world normals/material and atlas	shader_generation_epoch	Iris release metadata only	source/JAR/loaded shader exact ABI not inspected
+40	FLYWHEEL	Flywheel1.0.6 GPU backend	instancer model/normal matrix upload/dispose	gpu_backend_epoch	official Maven JAR/sources listing only	binary download/sha and method tracing missing
+41	GATE	3R-6 selected target original lifecycle JUnit	15 owner classfiles/inventory and selected known edges	STATIC_JVM_NOT_CLIENT	test commit CI pending	ZIP original hashes and successful workflow mandatory
+42	GATE	World switch/dimension/reload/worker race	world epoch must bind source Level/region/model manager	R_OPEN	selected previous static original only	running mod client and acceptance no
+43	GATE	Phase3 R	phase-wide 3A-3E source/NeoForge/mod bypass	R_OPEN	3R-6 selected and 3R-7 whole review pending	Flywheel/Iris missing source may demand further packet
+44	GATE	Phase2 visual V	6 faces 12 edges 8 corners +Y/noPlanet + mods	V_OPEN	no Minecraft game this research	must not resume 2.4A early
