@@ -22,12 +22,12 @@ id	source	owner_or_callback	source_chain	lifetime_or_frame	evidence_level	remain
 21	ORIGINAL	BlockEntityRenderDispatcher.onResourceManagerReload	BlockEntityRenderers.createEntityRenderers registered map -> instances	BER_resource_reload_instance	3R-4D CI40553809343 exact owner	old BER provider instance references in mods unknown
 22	ORIGINAL	BlockEntityRenderDispatcher.getRenderer	current map keyed BlockEntityType	BE_type_binding	3R-4D original JVM	dynamic mod overwrite runtime unproven
 23	ORIGINAL	EntityRenderDispatcher	renderer instance/dispatched entity state	camera_entity_frame	3R-2m/3R-5 selected original target	entity renderer resource reload/old instance exact method inventory
-24	ORIGINAL	ModelManager.reload	PreparableReloadListener async model atlas/model states	model_bake_epoch	1.21.1 comparator, 3R-6 original test pending	exact original asynchronous chain and old resource lifetime
-25	ORIGINAL	ModelManager.apply/close	swap baked model manager state and atlas resource	gpu_model_epoch	1.21.1 comparator, 3R-6 original test pending	exact original compiled boundary and live reload
-26	ORIGINAL	TextureManager.reload	PreparableReloadListener resource async	texture_atlas_epoch	1.21.1 comparator, 3R-6 original test pending	old texture paths and shader compatible reload
-27	ORIGINAL	TextureManager.close	clear texture registry and reference	texture_gpu_dispose	1.21.1 comparator, 3R-6 original test pending	no GPU fence/flush game proof
-28	ORIGINAL	ReloadableResourceManager.registerReloadListener	listener registry and reload scheduling	resource_listener_order	1.21.1 comparator, 3R-6 original test pending	mod listener registration order may change
-29	ORIGINAL	PreparableReloadListener.reload	prepare/apply resource update asynchronous	prepare_apply_barrier	1.21.1 comparator, 3R-6 original test pending	cross-mod lifecycle resource generation
+24	ORIGINAL	ModelManager.reload	PreparableReloadListener async model atlas/model states	model_bake_epoch	1.21.1 comparator, 3R-6 original test CI40596882360 SUCCESS, 15 classes/656 methods	exact original asynchronous chain and old resource lifetime
+25	ORIGINAL	ModelManager.apply/close	swap baked model manager state and atlas resource	gpu_model_epoch	1.21.1 comparator, 3R-6 original test CI40596882360 SUCCESS, 15 classes/656 methods	exact original compiled boundary and live reload
+26	ORIGINAL	TextureManager.reload	PreparableReloadListener resource async	texture_atlas_epoch	1.21.1 comparator, 3R-6 original test CI40596882360 SUCCESS, 15 classes/656 methods	old texture paths and shader compatible reload
+27	ORIGINAL	TextureManager.close	clear texture registry and reference	texture_gpu_dispose	1.21.1 comparator, 3R-6 original test CI40596882360 SUCCESS, 15 classes/656 methods	no GPU fence/flush game proof
+28	ORIGINAL	ReloadableResourceManager.registerReloadListener	listener registry and reload scheduling	resource_listener_order	1.21.1 comparator, 3R-6 original test CI40596882360 SUCCESS, 15 classes/656 methods	mod listener registration order may change
+29	ORIGINAL	PreparableReloadListener.reload	prepare/apply resource update asynchronous	prepare_apply_barrier	1.21.1 comparator, 3R-6 original test CI40596882360 SUCCESS, 15 classes/656 methods	cross-mod lifecycle resource generation
 30	CREATE_6.0.10	SingleAxisRotatingVisual.updateLight	relight(instanced rotatingModel)	instanced_light_epoch	pinned Create ac0c444 source	Flywheel1.0.6 compiled GPU backend not downloaded
 31	CREATE_6.0.10	SingleAxisRotatingVisual._delete	rotatingModel.delete	gpu_instance_lifetime	pinned Create ac0c444 source	deletion during unload/model reload not client tested
 32	CREATE_6.0.10	FlywheelVisual._delete	shaft.delete;wheel.delete	two_gpu_instances_lifetime	pinned Create ac0c444 source	resource lifetime shader update pending
@@ -39,7 +39,7 @@ id	source	owner_or_callback	source_chain	lifetime_or_frame	evidence_level	remain
 38	AE2_19.2.18	ME_CHEST/CHARGER/ModularTESR	custom BER source/type registration/reload	third_party_renderer_instances	3R-4D pinned AE2 source	mod lifecycle listener owner not exhaustively sampled
 39	IRIS	Shaderpack resource reload	GBuffer/shadow world normals/material and atlas	shader_generation_epoch	Iris release metadata only	source/JAR/loaded shader exact ABI not inspected
 40	FLYWHEEL	Flywheel1.0.6 GPU backend	instancer model/normal matrix upload/dispose	gpu_backend_epoch	official Maven JAR/sources listing only	binary download/sha and method tracing missing
-41	GATE	3R-6 selected target original lifecycle JUnit	15 owner classfiles/inventory and selected known edges	STATIC_JVM_NOT_CLIENT	test commit CI pending	ZIP original hashes and successful workflow mandatory
+41	GATE	3R-6 selected target original lifecycle JUnit	15 owner classfiles/inventory and selected known edges	STATIC_JVM_NOT_CLIENT	original CI40596882360 SUCCESS, artifact12776083135 ZIP SHA 48a2b2574b044795d7d6630654929a3ba9dbef3383882461a4000a3dcc18a46e	original CI40596882360 SUCCESS / 5 report SHA verified / 4 exact JVM calls
 42	GATE	World switch/dimension/reload/worker race	world epoch must bind source Level/region/model manager	R_OPEN	selected previous static original only	running mod client and acceptance no
 43	GATE	Phase3 R	phase-wide 3A-3E source/NeoForge/mod bypass	R_OPEN	3R-6 selected and 3R-7 whole review pending	Flywheel/Iris missing source may demand further packet
 44	GATE	Phase2 visual V	6 faces 12 edges 8 corners +Y/noPlanet + mods	V_OPEN	no Minecraft game this research	must not resume 2.4A early
