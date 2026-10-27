@@ -1,7 +1,7 @@
 package dev.planetary.client.render;
 
-import dev.planetary.world.PlanetFace;
-import dev.planetary.world.PlanetGravityFrame;
+import dev.planetary.topology.PlanetFace;
+import dev.planetary.topology.PlanetGravityFrame;
 import dev.planetary.world.PlanetVanillaDirection;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
