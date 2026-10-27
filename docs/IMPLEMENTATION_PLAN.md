@@ -1,5 +1,10 @@
 # Planetary 2.0 implementation roadmap
 
+## 2026-10-27 — `3R-4C`: all remaining 18 original vanilla BlockEntityRenderer families researched 4/4; destination Phase3 R and Phase2 V still OPEN
+
+[Exact original JVM BER nested source owners](research/PHASE3_R4C_REMAINING_BER_ORIGINAL_NESTED_SPACE_AND_MOD_1_21_1.md), [33 family/NeoForge/mod/coordinate/game owner paths](research/PHASE3_R4C_REMAINING_BER_OWNER_AND_SPACE_MATRIX_1_21_1.tsv), corrected source test [CI #40521564157 SUCCESS](https://github.com/Abbygree11/Planetary/actions/runs/40521564157) (initial one-test false owner assumption Bed.render -> PoseStack, actual renderPiece, [CI #40520342802 FAILURE](https://github.com/Abbygree11/Planetary/actions/runs/40520342802)). Original archive12741618270 independently SHA256 `f655f4d74b16accd2f0ac230a4837b3f20562137d09addceaa0f4cb39d142633` verified with five member hashes, **18 classfiles,133 original methods,899 direct calls,2620 selected JVM opcodes** and 16 original callsite checks. Prior 3R-4A original registry 24 types/22 factories and 3R-4B four original rigid families + this 18 class family audit completes **bounded original registered vanilla method-owner coverage, not actual NeoForge mod renderer override**. Original sources mix camera/physical/BER local context, so DO NOT globally wrap BER dispatcher or refactor world Y yet. Crossphase **R=OPEN, V=OPEN**. **Next 3R-4D** exact NeoForge render registration/provider override + mod BER and fake world source routes, then **3R-5 accelerated renderers, 3R-6 reload/worker/client lifecycle, 3R-7 full phase owner gate**, then only minimum common Phase2-blocking runtime mechanism & real six face/12 seam/8 corner/+Y/noPlanet/loaded mod **V** before uninterrupted `2.4A`. Source-only; no production/Mixin/V8/main edits.
+
+
 
 
 ## 2026-10-27 — `3R-4B`: 4 registered rigid BER families, inherited text, chains, banner layers, skull skin (4/4 research CI PASS)
