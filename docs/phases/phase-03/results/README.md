@@ -1,8 +1,12 @@
 # Planetary — результаты исследования Phase 3 (3A–3E)
 
-**Рабочая ветка:** 2.0. **Цель:** Minecraft 1.21.1 / NeoForge 21.1.215 / Java 21. **Состояние на 2026-10-28:** исходное исследование всей Phase 3 **R = OPEN**, игровая визуальная приёмка Phase 2 **V = OPEN**. **Следующий полный пакет: 3R-7**.
+## 2026-10-29 — `3R-7` whole research gate decision: R OPEN, no fake pass
 
-Это **долговременный архив выводов**, дополняющий [план Phase 3](../../phase-03.md), а не замена подробных технических исследований. Когда 3R-7 закроет исследовательский gate, будущая реализация должна начинаться отсюда, затем следовать в оригинальные отчёты, таблицы и исходники тестов. Не восстанавливать результаты только по истории чата.
+[Full cross-phase 151-owner audit](../../../research/PHASE3_R7_WHOLE_PHASE_OWNER_SOURCE_GATE_RECONCILIATION_1_21_1.md) and [strict per-owner disposition matrix](../../../research/PHASE3_R7_ALL_151_OWNER_SOURCE_GATE_DISPOSITION_1_21_1.tsv) reconcile **41 3A, 25 3B, 48 3C, 15 3D and 22 3E**: 11 named blocking research-source owner rows in six precisely scoped clusters (G01 fluid, G02 BEWLR/GUI item, G03 dynamic culling, G04 non-block original virtual callers, G05 exact Flywheel1.0.6 backend, G06 reload/SectionOcclusionGraph late worker), 2 conditional Iris shader ABI claims, 18 historical/stale rows needing evidence supersession, 74 existing bounded source rows with **game/runtime acceptance still open** and 46 needing final per-ID source guard review. Total 151, no unexamined/removed records. None of these numbers means a loaded-mod GAME PASS. Whole-phase research **R remains OPEN** until G01–G06 source research and 46 guards are individually reconciled in `3R-7G`; real Phase2 visual **V remains OPEN**. **Next full bounded packet `3R-7F-1`** (fluids/transparent geometry and item GUI/BEWLR), then remaining G0x focused source packets. No production changes or return to `2.4A` yet.
+
+**Рабочая ветка:** 2.0. **Цель:** Minecraft 1.21.1 / NeoForge 21.1.215 / Java 21. **Состояние на 2026-10-28:** исходное исследование всей Phase 3 **R = OPEN**, игровая визуальная приёмка Phase 2 **V = OPEN**. **Следующий полный пакет: 3R-7F-1**.
+
+Это **долговременный архив выводов**, дополняющий [план Phase 3](../../phase-03.md), а не замена подробных технических исследований. Когда последующие 3R-7F и 3R-7G действительно закроют исследовательский gate, будущая реализация должна начинаться отсюда, затем следовать в оригинальные отчёты, таблицы и исходники тестов. Не восстанавливать результаты только по истории чата.
 
 ## Одна карточка результатов на каждую часть фазы
 
