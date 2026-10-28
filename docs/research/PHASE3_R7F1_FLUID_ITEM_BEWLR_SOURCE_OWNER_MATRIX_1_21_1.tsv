@@ -1,0 +1,33 @@
+id	domain	owner	entry_path_and_frame	source_grade	unverified_boundary
+F01	FLUID	BlockRenderDispatcher.renderLiquid	IClientFluidTypeExtensions.renderFluid OR LiquidBlockRenderer.tesselate; original physical pos/region	ORIGINAL_C13_AND_NEW_R7F1_JVM_PENDING	real loaded override and face seams
+F02	FLUID	LiquidBlockRenderer.tesselate	fluid height, faces, culling, UV, sprite, tint, physical light	ORIGINAL_C13_AND_NEW_R7F1_JVM_PENDING	client visuals 6/12/8
+F03	FLUID	LiquidBlockRenderer.shouldRenderFace	neighbor/getter fluid comparison and physical Direction	ORIGINAL_C13_API	mod neighbor and seam outcomes
+F04	FLUID	IClientFluidTypeExtensions.renderFluid	custom fluid VertexConsumer bypass default tessellator	ORIGINAL_C13_API_AND_NEW_R7F1_JVM_PENDING	mod implementation dynamic dispatch
+F05	FLUID	IClientFluidTypeExtensions.getStillTexture	state+BlockAndTintGetter+BlockPos overload	PINNED_NEOFORGE_COMPARATOR	source-dependent texture and atlas
+F06	FLUID	IClientFluidTypeExtensions.getFlowingTexture	fluid-specific UV texture selection	PINNED_NEOFORGE_COMPARATOR	world-physical vs local UV in client
+F07	FLUID	IClientFluidTypeExtensions.getTintColor	ARGB context and FluidStack overload	PINNED_NEOFORGE_COMPARATOR	mod tint at edges
+F08	FLUID	IClientFluidTypeExtensions.renderOverlay	screen-space effect, not section-local fluid	PINNED_NEOFORGE_COMPARATOR	GUI/camera source gate
+F09	FLUID	RegisterClientExtensionsEvent.registerFluidType	mod client extension keyed by NeoForge FluidType	PINNED_NEOFORGE_COMPARATOR	original runtime registration order
+F10	FLUID	SectionCompiler.compile	chunk region creates fluid mesh separate from BakedModel quads	ORIGINAL_R2L_R5	deferred worker, resource epoch
+F11	FLUID	FluidState and FlowingFluid	fluid simulation/world tick is separate Phase5, not section renderer	EARLIER_FLUIDS_SOURCE	no inferred render frame from flow direction
+F12	FLUID_MOD	Create FluidRenderer.renderFluidStream	direct directional kinetic fluid stream via PoseStack and VertexConsumer	CREATE_6_0_10_RELEASE_SOURCE	not subclass of LiquidBlockRenderer
+F13	FLUID_MOD	Create FluidRenderHelper	flowing/still tiled faces and custom sprite/tint/light	CREATE_6_0_10_RELEASE_SOURCE	loaded NeoForge21.1.215 compatibility
+F14	FLUID_MOD	AE2 FacadeBlockAccess/GlassBakedModel	foreign BlockAndTintGetter model and transparent neighbor	AE2_19_2_18_RELEASE_SOURCE	real loaded fluid adjacency V
+I01	ITEM	ItemRenderer.render	BakedModel.isCustomRenderer selects mod BEWLR vs model item passes	ORIGINAL_C13_C14_NEW_R7F1_PENDING	item GUI no Level
+I02	ITEM	IClientItemExtensions.of	ItemStack identity to custom renderer provider	PINNED_NEOFORGE_PATCH_COMPARATOR	concrete mod extension runtime
+I03	ITEM	IClientItemExtensions.getCustomRenderer	returns BlockEntityWithoutLevelRenderer	ORIGINAL_C13_AND_NEW_R7F1_PENDING	not keyed by block entity type
+I04	ITEM	BlockEntityWithoutLevelRenderer.renderByItem	ItemStack display context pose buffers light overlay	ORIGINAL_C13_AND_NEW_R7F1_PENDING	GUI context may have no source Level
+I05	ITEM	BlockRenderDispatcher.renderSingleBlock	custom block-state item delegated to BEWLR	ORIGINAL_C13_SELECTED	not general world BER transform
+I06	ITEM	BlockRenderDispatcher getCustomRenderer dispatch	client item extension and built-in renderer	ORIGINAL_C13_SELECTED	mod custom subclass runtime
+I07	ITEM	ItemInHandRenderer	first person hands camera/player frame	ORIGINAL_C14_SELECTED	Phase7 actor/view scope
+I08	ITEM	ItemEntityRenderer	world dropped item entity camera/motion frame	ORIGINAL_C14_SELECTED	not source BlockPos canonical block
+I09	ITEM	GuiGraphics and ItemRenderer	inventory hotbar overlay and screen-space item transforms	SOURCE_COMPARATOR	real GUI/noLevel acceptance
+I10	ITEM	BlockEntityRenderDispatcher	world BE by type versus separate item BEWLR	ORIGINAL_R4D	do not globally rotate both
+I11	ITEM	RegisterClientExtensionsEvent.registerItem	mod client item extension registration keyed by Item	PINNED_NEOFORGE_COMPARATOR	actual loaded mod instances
+I12	ITEM	ItemRenderer NeoForge getRenderPasses/getRenderTypes	item BakedModel per-pass rendering and custom fallback	PINNED_NEOFORGE_PATCH_COMPARATOR	exact selected original body
+I13	ITEM_MOD	Create CustomRenderedItemModelRenderer	subclass BEWLR, renderByItem delegates nested partial item model	CREATE_6_0_10_RELEASE_SOURCE	actual client not loaded
+I14	ITEM_MOD	Create WrenchItemRenderer	custom nested gear partial models independent world BER	CREATE_6_0_10_RELEASE_SOURCE	GUI and in-hand separate
+I15	ITEM_MOD	Create ZapperItemRenderer	ItemDisplayContext.GUI and nested stack rendering	CREATE_6_0_10_RELEASE_SOURCE	nested transforms and camera context
+I16	ITEM_MOD	Create CustomRenderedItems	custom renderer lookup and model registration	CREATE_6_0_10_RELEASE_SOURCE	mod compatibility
+G01	GATE	B05 liquid and transparent producer	research original source and independent mod owner, not Phase5 simulation	R7F1_SOURCE_SCOPE	source bounded closure pending CI
+G02	GATE	C05 item/GUI BEWLR	research original source and client extension provider distinct BER	R7F1_SOURCE_SCOPE	bounded closure pending CI, live V OPEN
