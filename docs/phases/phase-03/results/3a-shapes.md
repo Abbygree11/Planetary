@@ -1,5 +1,9 @@
 # Phase 3A — итог исследований: VoxelShape, контекст BlockGetter и кеши
 
+## 2026-10-29 — `3R-7` whole-phase owner audit: 3A source disposition
+
+The [151-owner audited matrix](../../../research/PHASE3_R7_ALL_151_OWNER_SOURCE_GATE_DISPOSITION_1_21_1.tsv) contains **41 Phase3A rows**. [Full 3R-7 decision and evidence hierarchy](../../../research/PHASE3_R7_WHOLE_PHASE_OWNER_SOURCE_GATE_RECONCILIATION_1_21_1.md) establishes **G03 A17/A35** (Planet pair-key dynamic face culling: the previously reproduced moving-piston *collision* is not proof of occlusion cache staleness), **G04 A25** (finite classification of remaining original non-block/virtual geometry consumer roots after 9430 compiled classes/543 discovered edges) as source gate blockers. Earlier `A24 OPEN_FULL_ENGINE_CALLER_CENSUS` is partly superseded by later A25 original scan; do **not** rerun the complete 9430-class census blindly, nor declare virtual/modded dispatch complete. Do not expand physical XYZ globally; retain world/section source/foreign fake Level provenance. Reconcile 41 original rows individually before full R PASS. Loaded mods and 6/12/8 +Y/noPlanet remain **V pending**, not evidence that exact original source research failed. **R OPEN/V OPEN**; next focused source packet `3R-7F-1` for B05/C05, then G03/G04 `3R-7F-3`.
+
 **Состояние:** выбранные оригинальные контракты и большой реестр 3R-1/2B…2M собраны; **целостная Phase 3A source/mod/gate ещё не принята**, вся Phase3 R = OPEN. Исследование ≠ реализация ≠ игровая приёмка.
 
 ## Установленные результаты
