@@ -1,5 +1,9 @@
 # Phase 3C — итог исследований: BlockEntityRenderer, наследование, NeoForge-провайдеры
 
+## 2026-10-29 — `3R-7` whole-phase owner audit: 3C source disposition
+
+The [all-owner audit](../../../research/PHASE3_R7_ALL_151_OWNER_SOURCE_GATE_DISPOSITION_1_21_1.tsv) contains **48 Phase3C rows**. Vanilla **24 registered BE types / 22 BER factory class owners**, Sign/HangingSign/Banner/Skull original nested owners and 18 remaining vanilla BER plus NeoForge provider/reload were covered in 3R-4A–D selected original CI. Earlier `C01/C03/C04` `PRIOR` source status is historical, not a reason to repeat those entire methods; **C05 independent `BlockEntityWithoutLevelRenderer`/ItemRenderer GUI/noLevel and mod BE item render provider** remains source gate blocker **G02**. Existing Create/AE2 independent BER source and loaded mod compatibility are separate; Mixin actually applied and natural LIME vs forced CYAN signs/chains are **V OPEN**. Do **not** rotate global BER dispatcher/camera/shader or presume a mod's renderer inherits vanilla classes. [Full 3R-7 decision](../../../research/PHASE3_R7_WHOLE_PHASE_OWNER_SOURCE_GATE_RECONCILIATION_1_21_1.md) schedules `3R-7F-1` for G02.
+
 **Статус:** все четыре ограниченных пакета **3R-4A/4B/4C/4D — RESEARCH 4/4, original JVM CI PASS**. Это **не подтверждение** правильного рендера в Minecraft, работы загруженного Create/AE2, фактической подмены vanilla BER модом или закрытия Phase3 R.
 
 ## Оригинальные ванильные регистрации и метод-владельцы
