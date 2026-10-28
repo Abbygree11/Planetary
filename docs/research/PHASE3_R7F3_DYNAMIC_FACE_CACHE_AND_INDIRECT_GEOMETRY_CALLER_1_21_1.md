@@ -1,5 +1,35 @@
 # Planetary — 3R-7F-3: dynamic face occlusion and indirect geometry caller roots
 
+## 2026-10-29 — Verified original research CI #40778087503 and independently checked artifact
+
+**Final bounded research unit 3R-7F-3: 4/4 source/ABI PASS, NOT gameplay.** [Test source commit ecf81e3](https://github.com/Abbygree11/Planetary/commit/ecf81e3d9f56e4624064c3ecfc6820702fb67b30) was checked by [CI #40778087503 SUCCESS](https://github.com/Abbygree11/Planetary/actions/runs/40778087503) on Java 21. Original artifact **12854974327** was independently downloaded; complete ZIP SHA256 **da08d03b27b55cf877932116a0d98665ed8b7257eda5ff8c94f9b9f680289de1**; 95 files in the combined workflow archive, six new 3R-7F-3 files independently hashed.
+
+| New original artifact entry | SHA256 |
+| --- | --- |
+| phase3-r7f3-original-owner-sha.tsv | 46ab9e5dfc1a1bc42a25c86702f38db7e3a836ea147cfa20981f1e8f8daabfc2 |
+| phase3-r7f3-dynamic-face-stale-cache.tsv | e27f623e29b16833716c865b74aaa4e76061de394a0c2de6a578105c7d568d8e |
+| phase3-r7f3-original-543-root-classification.tsv | 23437531af0c160677e3f1a1ed2b36b29cb1c033198ccb66a1bc364b5cbd1de8 |
+| phase3-r7f3-all-9430-invokedynamic-handles.tsv | 02808e6e7f91c51e446484c9e62b9851e97e6ffe8eb6c57ded2ead6acc0d5fda |
+| phase3-r7f3-all-9430-potential-reflection-literals.tsv | 8c19404488038bde937cffdbf7dddd7a5d696908dba0aa91561d5a0b48fb6cdc |
+| phase3-r7f3-summary.txt | 465079a1125944fd23caf8f9704c79c8c288d338429091d8df4dd7207ed70729 |
+
+### G03 original dynamic face source versus the currently mocked Planet cache
+
+The actual original Block.shouldRenderFace calls two contextual BlockState.getFaceOcclusionShape paths, and Planet currently memoizes a contextual Boolean by only the two BlockStates and source/target local sides. In a controlled state-changing mock, its first actual output is false/hidden (full faces), while after the face owner changes to empty its second actual cached output remains false even though a direct fresh query is empty and the correct answer would be true. This **does reproduce current Planet cache staleness on mocked dynamic face geometry**; unlike earlier piston tests, the mocked method here is getFaceOcclusionShape itself. No particular loaded vanilla/third-party mod has been proven to trigger it.
+
+Source-owned safe future correction **resolved at research/design level**: avoid applying the Planet ThreadLocal pair-key cache to contextual faces; conservative first implementation removes it entirely in Planet mode and recomputes each original source/neighbor occlusion query using the true getter, positions, local frame sides and physical contact. Do not globally rewrite vanilla BlockStateBase.Cache, Level/getBlockState or Direction. When the getter provenance is a foreign/virtual/worker region, fail safe without inferring a Planet frame from an unrelated current ClientLevel; add validated producer-specific adapters only for proved source worlds. Mod-loaded visual acceptance and actual production correction remain separate future stages.
+
+### G04 exact original root closure scope
+
+Original complete *discovered static* **9430 classfile** scan: **543 selected direct named method calls from 247 calling source classes**, 1:1 classification into provenance/phase/ambiguous-name buckets, plus a new **whole-9430 invokedynamic and literal sweep**. **Four exact method handles** appeared in invokedynamic: 3 ClipContext$Block static initialization references to BlockStateBase.getShape/getCollisionShape/getVisualShape (Phase3A query/collision/raycast owner, should not blanket-map physical actor world), and one StructureBlockEntity.getRelatedCorners handle to Level.getBlockEntity (Phase9 structure BE lookup, not a direct geometry transform). **Zero selected exact suspicious reflection string literals** were present across all 9430 classfiles. This is a bounded original source census: dynamic computed strings, arbitrary polymorphic dispatch, transform-generated code and installed mod JARs remain outside proof; they cannot be interpreted as loaded mod success.
+
+The 543 exact named calls were not all real shape consumers: 218 getBlockEntity context-only name hits, 23 getOffset ambiguous-descriptor name hits, plus 164 block geometry, 43 cross-phase JVM review, 26 rendering, 11 client/effects, 37 actor, 18 worldgen/chunk and 3 item authors. This classification is an ownership/phase routing inventory, **not** proof that every grouped call has the same physical/local coordinate semantics.
+
+### Gate disposition following verified evidence
+
+Historical 3R-7, 3R-7F-1 and 3R-7F-2 151-row matrices **remain immutable**. The new [3R-7F-3 151-row effective source gate](PHASE3_R7F3_EFFECTIVE_151_OWNER_SOURCE_GATE_1_21_1.tsv) and [four-row audited delta](PHASE3_R7F3_SOURCE_GATE_DELTA_1_21_1.tsv) promote **G03 A17/A35/B11 and G04 A25** only to **BOUNDED_R_SOURCE_PASS_V_OPEN** (with explicit practical fallback design), NOT fixed-code/game/client/mod proof. Remaining source blockers **6 → 2**: G06 **E03, E10** client resource reload and late-work. All **46 final source-guard** rows still need 3R-7G per-ID review; Iris G07 optional claims remain unproved. **Whole source gate R OPEN; visual gate V OPEN.** NEXT **3R-7F-4** original G06 full research, then possible 7F-5 shader scope, 7G final 151, minimal Phase3-aware patch and real game V, only then 2.4A continuation.
+
+
 **2026-10-29 · branch 2.0 · Minecraft 1.21.1 · NeoForge 21.1.215 · Java 21 · RESEARCH ONLY.**
 **Evidence at creation:** research test commit [ecf81e3](https://github.com/Abbygree11/Planetary/commit/ecf81e3d9f56e4624064c3ecfc6820702fb67b30), [CI #40778087503](https://github.com/Abbygree11/Planetary/actions/runs/40778087503) **IN PROGRESS at report creation**. Full research gate R and visual gate V remain OPEN. No production Java/Mixins/lab/main changes.
 

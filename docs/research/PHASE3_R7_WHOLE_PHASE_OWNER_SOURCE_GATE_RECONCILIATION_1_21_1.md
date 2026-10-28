@@ -1,5 +1,10 @@
 # Planetary — `3R-7`: полнофазный аудит результатов 3A–3E и решение по source gate R
 
+## 2026-10-29 — 3R-7F-3 G03/G04 original research source 4/4 PASS, 6 -> 2 R blockers
+
+[Original source and controlled Planet cache report](PHASE3_R7F3_DYNAMIC_FACE_CACHE_AND_INDIRECT_GEOMETRY_CALLER_1_21_1.md) · [effective 151-row source gate](PHASE3_R7F3_EFFECTIVE_151_OWNER_SOURCE_GATE_1_21_1.tsv) · [four-row delta](PHASE3_R7F3_SOURCE_GATE_DELTA_1_21_1.tsv) · [Java21 CI #40778087503 SUCCESS](https://github.com/Abbygree11/Planetary/actions/runs/40778087503), 9430 original classfiles, 543 direct calls/247 owners, 4 invokedynamic handles (3 ClipContext$Block shape method references + 1 StructureBlockEntity.getBlockEntity handle), zero selected exact reflection name literals. Actual Planet state-only face cache returns stale false on a **mocked** context-changing getFaceOcclusionShape; future conservative no-context-Boolean-cache policy documented, **not implemented**. A17/A35/B11/A25 are BOUNDED_R_SOURCE_PASS_V_OPEN only, not gameplay/mod-loaded PASS. Remaining **2 R source blockers E03/E10 in G06**, 46 source guard rows and optional shader claims; V OPEN for dynamic mod blocks and 6/12/8 +Y/noPlanet. **NEXT 3R-7F-4**. Historical 151-row gate snapshots unchanged.
+
+
 ## 2026-10-29 — Subsequent 3R-7F-2 Flywheel release supersession
 
 The historical 3R-7 and 3R-7F-1 matrices remain immutable. [Exact official Flywheel 1.0.6 released compiled/source/shader audit](PHASE3_R7F2_FLYWHEEL_106_RELEASE_GPU_NORMAL_LIGHT_LIFECYCLE_1_21_1.md) with [CI #40776433970 SUCCESS](https://github.com/Abbygree11/Planetary/actions/runs/40776433970) and [effective 151-row gate](PHASE3_R7F2_EFFECTIVE_151_OWNER_SOURCE_GATE_1_21_1.tsv) changes only D10/D11/E20 in G05 to **BOUNDED_R_SOURCE_PASS_V_OPEN**. Current total **6 R blockers (G03/G04/G06)**; 46 guard rows and V still OPEN. Next 3R-7F-3.

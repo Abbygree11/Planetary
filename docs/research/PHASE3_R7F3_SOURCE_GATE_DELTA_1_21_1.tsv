@@ -1,0 +1,5 @@
+id	previous_status	new_status	evidence_ci	remaining_gate
+A17	BLOCKS_R_SOURCE_GATE	BOUNDED_R_SOURCE_PASS_V_OPEN	40778087503: original 9430/543 graph + selected original owner; conditional Planet mock cache repro	V_GAME_OR_MOD_LOADED
+A25	BLOCKS_R_SOURCE_GATE	BOUNDED_R_SOURCE_PASS_V_OPEN	40778087503: original 9430/543 graph + selected original owner; conditional Planet mock cache repro	V_GAME_OR_MOD_LOADED
+A35	BLOCKS_R_SOURCE_GATE	BOUNDED_R_SOURCE_PASS_V_OPEN	40778087503: original 9430/543 graph + selected original owner; conditional Planet mock cache repro	V_GAME_OR_MOD_LOADED
+B11	BLOCKS_R_SOURCE_GATE	BOUNDED_R_SOURCE_PASS_V_OPEN	40778087503: original 9430/543 graph + selected original owner; conditional Planet mock cache repro	V_GAME_OR_MOD_LOADED
