@@ -31,10 +31,38 @@
 
 **Independent [32-route owner/evidence matrix](PHASE3_R7F1_FLUID_ITEM_BEWLR_SOURCE_OWNER_MATRIX_1_21_1.tsv)** enumerates standard vs mod custom fluid renderer, fluid extensions/registration/overlay, 2 separate item rendering entry points and item extension, noLevel GUI/camera vs world BE, Create custom sources and acceptance gaps. It must be reused when Phase2 fixes shared visual seams to avoid drawing unsupported conclusions from a single rendered vanilla block.
 
-## 4/4 — exact CI evidence, gate decision, handoff
+## 4/4 — Target original JVM CI SUCCESS, archive SHA and exact gate delta
 
-**At research creation:** Java21 exact target 12-class selected original ASM/JUnit test added in [`c650de5`](https://github.com/Abbygree11/Planetary/commit/c650de5eb16a16b7ec1bf2fdb1532d282a0d9728), [CI #40774469160](https://github.com/Abbygree11/Planetary/actions/runs/40774469160) initially IN PROGRESS. Original ZIP files and hash/row counts must be checked after full workflow success before claiming 4/4 selected ABI PASS. Previously completed 2.3C13/14 original tests are **not** a substitute for the new source test outcome, but their verified target method signatures were used for test selection.
+**Bounded source-owner research G01/B05 and G02/C05: 4/4 PASS at original selected NeoForge 21.1.215 static JVM + official NeoForge source comparator/pinned Create release source.** Whole **R OPEN** (remaining 9 source blocker rows + 46 source guard rows) and real game **V OPEN**; no actual running mod/world/GUI or GPU shader tested. **The original static CI is not a claim that all custom third-party fluid/item renderers inherit the tested JVM owner classes.**
 
-**Source gate verdict:** After successful exact target source/ABI checks, G01 `B05` and G02 `C05` can be marked `SOURCE_OWNER_RESEARCH_BOUNDED_PASS` **only if** producer-vs-extension-vs-mod entry and GUI/noLevel limits remain explicit in the final matrix and Phase3 full R gate. They should be removed from **R source blockers**, not from all visual/loader/runtime acceptance records. If the original JUnit or mod-source reconciliation fails, keep both G01/G02 OPEN until corrected.
+**Authoritative original Java 21 [CI #40774469160 SUCCESS](https://github.com/Abbygree11/Planetary/actions/runs/40774469160)** on test source [commit `c650de5`](https://github.com/Abbygree11/Planetary/commit/c650de5eb16a16b7ec1bf2fdb1532d282a0d9728): production/test compilation and entire JUnit suite completed. Actual 12/12 original Minecraft1.21.1/NeoForge21.1.215 classfiles, **191 declared methods, 1040 direct JVM invokes and 2240 selected ordered JVM instructions**. The test writes original class SHA256, method inventory, direct call list, ordered selected bytecodes and summary to five reports in the canonical absolute `planetary.phase2.censusReportDir` published by Actions.
 
-**Remaining:** Original dynamic 3A culling + non-block caller roots G03/G04, exact Flywheel1.0.6 G05, NeoForge reload/late worker G06, optional Iris shader claims G07, and per-owner guards 3R-7G. Whole Phase3 research **R OPEN**, actual loaded-mod and Minecraft render **V OPEN**. **NEXT user `кк` = `3R-7F-2`** exact Flywheel 1.0.6 engine source/compiled shader/instances, *only after* 3R-7F-1 selected source 4/4 and artifacts are confirmed. Never return to `2.4A` before full source R and client V; no production Java/Mixins/V8/main edits in this packet.
+**Independent archive verification:** Downloaded original GitHub Actions artifact **ID `12855090062`**, ZIP **SHA256 `7b7981ebadc46f6cb26571ac499e99eb70fd13cdec96dee2de792a5f04ba0325`**, extracted *five actual stage members* and verified their SHA256, row counts and exact owners/method dispatch. This evidence is from the original artifact, not fabricated by source guesses.
+
+| Original JUnit report | SHA256 | Data rows |
+| --- | --- | ---: |
+| `phase3-r7f1-original-fluid-item-gui-owners.tsv` | `b1966d2b4f142973b69abd4ab4c39cbe8c29ad7bc9c0ee2c9e5404c9114ab9ac` | 12 |
+| `phase3-r7f1-original-fluid-item-gui-methods.tsv` | `39bcefb97927adc6d0022f9fafc6d02887a9b2a095b70d6f1764aaa1145100ac` | 191 |
+| `phase3-r7f1-original-fluid-item-gui-calls.tsv` | `e67a08737b16cbb23a5b88910dde5b075af242d463a6fb7786e988690cb607de` | 1040 |
+| `phase3-r7f1-original-fluid-item-gui-instructions.tsv` | `5b48d6a1feadd1df470d4c70a41c40b37998885f2e476968ee1fb50010fc9682` | 2240 |
+| `phase3-r7f1-original-fluid-item-gui-summary.txt` | `f513d3ab838b374e41fc36728b41a655781c81f920e05a65b176bcce9b1f27f9` | exact counts |
+
+**Nine exact declared source method → destination owner and method original direct JVM callsites independently checked (one occurrence each):**
+
+1. `BlockRenderDispatcher.renderLiquid → IClientFluidTypeExtensions.renderFluid`
+2. `BlockRenderDispatcher.renderLiquid → LiquidBlockRenderer.tesselate`
+3. `ItemRenderer.render → IClientItemExtensions.getCustomRenderer`
+4. `ItemRenderer.render → BlockEntityWithoutLevelRenderer.renderByItem`
+5. `ItemRenderer.render → BakedModel.getRenderPasses`
+6. `ItemRenderer.render → BakedModel.getRenderTypes`
+7. `ItemRenderer.render → IClientItemExtensions.of`
+8. `BlockRenderDispatcher.renderSingleBlock → IClientItemExtensions.getCustomRenderer`
+9. `BlockRenderDispatcher.renderSingleBlock → BlockEntityWithoutLevelRenderer.renderByItem`
+
+Also original `LiquidBlockRenderer.tesselate` direct calls include `FluidSpriteCache.getFluidSprites` and `IClientFluidTypeExtensions.getTintColor`; the 17 declaration methods reveal `LiquidBlockRenderer.isFaceOccludedByNeighbor`, `isFaceOccludedBySelf`, `shouldRenderFace`, `getHeight` and `calculateAverageHeight`. This confirms the independent source/consumer for fluid geometry with physical neighbors/tint, **not acceptance of new Planet seam adaptation**.
+
+The independently created [archive and nine original call-path verifier](../../scripts/research/phase3_r7f1_original_fluid_item_gui_verify.py) was committed **after** the original source test CI, in [commit `1ebac45`](https://github.com/Abbygree11/Planetary/commit/1ebac457873238bc373e09a9915b6cd42795e177). The exact artifact hash/member/rows/nine paths were independently checked on the downloaded archive; **do not assert this standalone script ran within original CI**. Any follow-up docs/script CI is a different run and must be reported separately.
+
+**Reconciliation without rewriting history:** immutable [3R-7 original 151-entry R audit](PHASE3_R7_ALL_151_OWNER_SOURCE_GATE_DISPOSITION_1_21_1.tsv) remains historical (**11** originally open source rows). The new [3R-7F-1 exact two-row delta](PHASE3_R7F1_SOURCE_GATE_DELTA_1_21_1.tsv) and [effective current 151-owner gate matrix](PHASE3_R7F1_EFFECTIVE_151_OWNER_SOURCE_GATE_1_21_1.tsv) replace only B05/G01 and C05/G02 with `BOUNDED_R_SOURCE_PASS_V_OPEN`; all other original row identities, old ledger status and unverified claims are retained. **Effective source blockers: 9 rows in 4 groups** G03 (A17/A35/B11 dynamic culling), G04 (A25 unresolved virtual/indirect non-block geometry calls), G05 (D10/D11/E20 pinned exact Flywheel1.0.6 GPU backend), G06 (E03/E10 registered resource reload/SectionOcclusionGraph async). **46** source-guard rows still individually require 3R-7G evidence checks, **2** conditional Iris shader support claims remain separate and **74** source-bounded runtime/game gaps still await actual V. `B05` fluids and `C05` BEWLR item GUI remain GAME V OPEN: source original contracts do not guarantee correct visual placement across 6 faces, all seams/corners, +Y/noPlanet or loaded Create/AE2.
+
+**NEXT user `кк` = `3R-7F-2` whole 4/4 exact published Flywheel 1.0.6 engine/instance shader+GPU resource/visualization source**, matching pinned Create6.0.10 vs its NeoForge21.1.219 release dependencies. Then `3R-7F-3` dynamic culling/non-block roots, `3R-7F-4` resource/late graph, `3R-7G` final source R decision; `3R-7F-5` Iris shader source if official shader support claimed. Only after full R genuinely passes can common Phase2 visual implementation and actual client V begin, and suspended `2.4A-10` resume. No production Java, Mixins, V8 lab, user Minecraft worlds or `main` modified.
