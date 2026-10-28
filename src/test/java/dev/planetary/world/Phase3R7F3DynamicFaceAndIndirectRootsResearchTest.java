@@ -18,6 +18,9 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
 import java.io.InputStream;
+import java.net.JarURLConnection;
+import java.net.URL;
+import java.util.jar.JarFile;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -162,6 +165,57 @@ final class Phase3R7F3DynamicFaceAndIndirectRootsResearchTest {
         return "PHASE3A_CROSS_PHASE_JVM_REVIEW";
     }
 
+    /**
+     * Re-discover all original Minecraft/NeoForge classfiles, not merely
+     * selected 543 caller owners; this mirrors the prior 3R-2g discovery.
+     * Bounded to actual class resources supplied by this JUnit runtime.
+     */
+    private static Set<String> originalOwners() throws Exception {
+        Set<String> names = new TreeSet<>();
+        for (String root : List.of(
+                "net/minecraft/world/level/block/Block.class",
+                "net/neoforged/neoforge/common/extensions/IBlockExtension.class",
+                "net/neoforged/neoforge/client/model/IDynamicBakedModel.class")) {
+            URL resource = Thread.currentThread().getContextClassLoader().getResource(root);
+            if (resource == null) continue;
+            if (resource.getProtocol().equals("jar")) {
+                JarURLConnection conn = (JarURLConnection) resource.openConnection();
+                try (JarFile jar = new JarFile(Path.of(conn.getJarFileURL().toURI()).toFile())) {
+                    var entries = jar.entries();
+                    while (entries.hasMoreElements()) {
+                        var e = entries.nextElement();
+                        String name = e.getName();
+                        if (!e.isDirectory() && name.endsWith(".class") &&
+                                (name.startsWith("net/minecraft/") ||
+                                name.startsWith("net/neoforged/neoforge/"))) {
+                            names.add(name.substring(0, name.length() - 6));
+                        }
+                    }
+                }
+            } else if (resource.getProtocol().equals("file")) {
+                Path rootDir = Path.of(resource.toURI());
+                for (int i = 0; i < root.split("/").length; i++) rootDir = rootDir.getParent();
+                final Path prefix = rootDir;
+                for (String packageName : List.of("net/minecraft", "net/neoforged/neoforge")) {
+                    Path dir = prefix.resolve(packageName);
+                    if (!Files.isDirectory(dir)) continue;
+                    try (var files = Files.walk(dir)) {
+                        files.filter(Files::isRegularFile)
+                                .filter(f -> f.toString().endsWith(".class"))
+                                .forEach(f -> {
+                                    String relative = prefix.relativize(f).toString().replace('\\', '/');
+                                    names.add(relative.substring(0, relative.length() - 6));
+                                });
+                    }
+                }
+            } else {
+                fail("Unsupported original resource protocol " + resource.getProtocol());
+            }
+        }
+        assertEquals(9430, names.size(), "Original 21.1.215 3R-2g full classpath census");
+        return names;
+    }
+
     @Test
     void originalSourceOwnersFaceOcclusionPlusAll543DiscoveredCallsitesClassified()
             throws Exception {
@@ -207,13 +261,20 @@ final class Phase3R7F3DynamicFaceAndIndirectRootsResearchTest {
         assertEquals(543, result.size() - 1);
         Files.write(dir, result, StandardCharsets.UTF_8);
 
-        // In the 543 original discovered calling classes, find method handles
-        // inside invokedynamic bootstrap arguments: the legacy direct-invoke
-        // census could not see these. This is a *bounded subset*, not all
-        // 9430 classfiles or arbitrary mod reflection.
+        // Independently check all 9430 original classes for invokedynamic
+        // method handles and suspicious string constants that the legacy
+        // direct-invoke scan cannot observe. A name literal is *not* proof
+        // of a reflective call. Virtual dispatch and external mods still OPEN.
+        Set<String> allOriginal = originalOwners();
         List<String> indirect = new ArrayList<>();
-        indirect.add("caller\tmethod\tdescriptor\tbootstrapOrHandleOwner\tmethodName\ttargetDescriptor");
-        for (String owner : sources) {
+        List<String> literals = new ArrayList<>();
+        indirect.add("caller\tmethod\tdescriptor\thandleOwner\thandleName\ttargetDescriptor");
+        literals.add("caller\tmethod\tdescriptor\tstringLiteral\tevidenceLevel");
+        Set<String> relevantLiterals = Set.of(
+                "getFaceOcclusionShape", "getOcclusionShape", "getShape",
+                "getCollisionShape", "getBlockSupportShape", "skipRendering",
+                "hidesNeighborFace", "getModelData");
+        for (String owner : allOriginal) {
             byte[] b = read(owner);
             new ClassReader(b).accept(new ClassVisitor(Opcodes.ASM9) {
                 @Override
@@ -230,12 +291,21 @@ final class Phase3R7F3DynamicFaceAndIndirectRootsResearchTest {
                                 }
                             }
                         }
+                        @Override
+                        public void visitLdcInsn(Object constant) {
+                            if (constant instanceof String s && relevantLiterals.contains(s)) {
+                                literals.add(owner + "\t" + method + "\t" + desc + "\t"
+                                        + s + "\tLDC_STRING_ONLY_NOT_REFLECTION_PROOF");
+                            }
+                        }
                     };
                 }
             }, ClassReader.SKIP_FRAMES | ClassReader.SKIP_DEBUG);
         }
         indirect.sort(Comparator.naturalOrder());
-        Files.write(out("selected-invokedynamic-handles.tsv"), indirect, StandardCharsets.UTF_8);
+        literals.sort(Comparator.naturalOrder());
+        Files.write(out("all-9430-invokedynamic-handles.tsv"), indirect, StandardCharsets.UTF_8);
+        Files.write(out("all-9430-potential-reflection-literals.tsv"), literals, StandardCharsets.UTF_8);
         List<String> original = new ArrayList<>();
         original.add("owner\tsha256\toriginalDirectFaceCalls\tselectionLimit");
         original.add(BLOCK + "\t" + HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(block))
@@ -250,10 +320,12 @@ final class Phase3R7F3DynamicFaceAndIndirectRootsResearchTest {
                 "target=Minecraft1.21.1-NeoForge21.1.215",
                 "originalMatchedDirectEdges=" + (result.size() - 1),
                 "selectedCallingOwners=" + sources.size(),
+                "originalClassfilesRescanned=" + allOriginal.size(),
                 "originalBlockFaceCalls=" + faceCalls,
-                "selectedInvokeDynamicGeometryHandles=" + (indirect.size() - 1),
-                "scope=original_direct_543_and_invokedynamic_in_543_calling_classes_ONLY",
-                "notProof=complete_virtual_dispatch,reflection,other_9430_indy,mod_jars,visual_game"));
+                "originalInvokeDynamicGeometryHandles=" + (indirect.size() - 1),
+                "originalSuspiciousNameLiterals=" + (literals.size() - 1),
+                "scope=original_direct_543_and_invokedynamic_name_literals_in_ALL_9430_classfiles",
+                "notProof=complete_virtual_dispatch,actual_reflective_invocation,mod_jars,visual_game"));
         totals.entrySet().stream().sorted(Map.Entry.comparingByKey())
                 .forEach(e -> summary.add("bucket." + e.getKey() + "=" + e.getValue()));
         Files.write(out("summary.txt"), summary, StandardCharsets.UTF_8);
