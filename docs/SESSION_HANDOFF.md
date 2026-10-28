@@ -1,3 +1,9 @@
+## 2026-10-29 — 3R-7F-2 completed (4/4), original released Flywheel 1.0.6 source/binary/GLSL CI SUCCESS
+
+[Research details](research/PHASE3_R7F2_FLYWHEEL_106_RELEASE_GPU_NORMAL_LIGHT_LIFECYCLE_1_21_1.md) · [effective 151 owner rows](research/PHASE3_R7F2_EFFECTIVE_151_OWNER_SOURCE_GATE_1_21_1.tsv) · [three-row delta](research/PHASE3_R7F2_SOURCE_GATE_DELTA_1_21_1.tsv) · [CI #40776433970 SUCCESS](https://github.com/Abbygree11/Planetary/actions/runs/40776433970) on code [97453d8](https://github.com/Abbygree11/Planetary/commit/97453d8aa1cc41688bb7f45d9c13cb30c0ecaa98).
+
+Official Flywheel NeoForge1.21.1 **1.0.6** JAR and sources original SHA256 independently checked; 726 binary ZIP entries/606 source entries, 11 selected source+compiled class owners, three released GLSL vertex programs, 11 original javap traces, archive ZIP #12854533682 SHA256 15604005ca9dc7bfe72de3802020a4cf619621c2048d66d42af8942119c3dded. The released shaders separately implement TRANSFORMED inverse-transpose normals, POSED explicit normal matrix, and ORIENTED quaternion rotations; GPU lifetime, light updates and managers were traced. **D10/D11/E20 G05 bounded R source PASS/V OPEN.** Historical matrices unchanged; new effective 151 IDs remain 1:1, active blockers **9 -> 6** (G03 A17/A35/B11, G04 A25, G06 E03/E10). **R OPEN, V OPEN.** No loaded Create or target 21.1.215 compatibility proof; no six-face/game claims; no production code. **NEXT 3R-7F-3 full bounded 4/4 G03/G04**, then 7F-4 G06, optional shader 7F-5, final 7G. Do NOT return to 2.4A yet.
+
 # Planetary — CURRENT SESSION HANDOFF (read before historical AI_CONTEXT)
 
 **As of 2026-10-29 (verify live GitHub):** repo `Abbygree11/Planetary`, branch **`2.0` only**, Minecraft 1.21.1 / NeoForge 21.1.215 / Java 21. The branch SHA and actions can change; always check live `2.0` before claiming status. **Never edit `main`.**

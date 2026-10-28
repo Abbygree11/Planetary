@@ -1,5 +1,10 @@
 # Planetary — `3R-7`: полнофазный аудит результатов 3A–3E и решение по source gate R
 
+## 2026-10-29 — Subsequent 3R-7F-2 Flywheel release supersession
+
+The historical 3R-7 and 3R-7F-1 matrices remain immutable. [Exact official Flywheel 1.0.6 released compiled/source/shader audit](PHASE3_R7F2_FLYWHEEL_106_RELEASE_GPU_NORMAL_LIGHT_LIFECYCLE_1_21_1.md) with [CI #40776433970 SUCCESS](https://github.com/Abbygree11/Planetary/actions/runs/40776433970) and [effective 151-row gate](PHASE3_R7F2_EFFECTIVE_151_OWNER_SOURCE_GATE_1_21_1.tsv) changes only D10/D11/E20 in G05 to **BOUNDED_R_SOURCE_PASS_V_OPEN**. Current total **6 R blockers (G03/G04/G06)**; 46 guard rows and V still OPEN. Next 3R-7F-3.
+
+
 ## 2026-10-29 — Subsequent 3R-7F-1 evidence supersedes two SOURCE blocker decisions
 
 **This report remains the immutable 3R-7 historical stage verdict (11 blockers at that time), not the latest gate.** [Original selected 12-class G01/G02 NeoForge JVM CI #40774469160 SUCCESS](https://github.com/Abbygree11/Planetary/actions/runs/40774469160) plus [new original/mod fluid+BEWLR report](PHASE3_R7F1_ORIGINAL_FLUID_TESSELLATION_ITEM_BEWLR_MOD_RENDER_OWNER_1_21_1.md) resolve **B05/G01** and **C05/G02** as bounded source owner research, real mod/GUI/world/game V still OPEN. The latest [151-row effective source gate](PHASE3_R7F1_EFFECTIVE_151_OWNER_SOURCE_GATE_1_21_1.tsv) has **9 R-blocking rows across G03–G06**; [two-row evidence delta](PHASE3_R7F1_SOURCE_GATE_DELTA_1_21_1.tsv) proves what changed, original `3R-7` 151-row matrix and its 151-owner integrity CI remain valid historical snapshot. 46 source guard rows and Iris optional claims await explicit research/disposition. Next `3R-7F-2` exact Flywheel1.0.6 released GPU source/ABI; **R OPEN/V OPEN**.
