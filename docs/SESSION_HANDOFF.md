@@ -4,7 +4,7 @@
 
 ## 2026-10-29 — LATEST `3R-7`: full 151 owner R gate reconciliation completed, R OPEN/V OPEN, NEXT `3R-7F-1`
 
-**3R-7 packet 4/4 verified, whole R remains OPEN, V OPEN.** The script-based repeatable archive verifier was committed *after* authoritative test CI as [1161279](https://github.com/Abbygree11/Planetary/commit/11612798d4614cca3e34bfcbb3e44b17813013d7); do not falsely claim it ran as part of source test CI. Follow-up script-commit CI #40771849175 separate (check live result). Next user кк is still 3R-7F-1.
+**3R-7 packet 4/4 verified, whole R remains OPEN, V OPEN.** The script-based repeatable archive verifier was committed *after* authoritative test CI as [1161279](https://github.com/Abbygree11/Planetary/commit/11612798d4614cca3e34bfcbb3e44b17813013d7); do not falsely claim it ran as part of source test CI. Follow-up script-commit [CI #40771849175 SUCCESS](https://github.com/Abbygree11/Planetary/actions/runs/40771849175), Java21 compile and full JUnit; this CI does not claim the standalone Python archive script was executed by Actions. Next user кк is still 3R-7F-1.
 
 **Repository** [Abbygree11/Planetary](https://github.com/Abbygree11/Planetary), **branch `2.0` ONLY**, target Minecraft1.21.1 / NeoForge21.1.215 / Java21; never modify `main` and do not create Phase3 production runtime code while whole original-source gate R is OPEN. User shorthand `кк` = execute entire NEXT four-part bounded research packet, not merely propose it; commit exact tests/CI, docs, report, matrix and handoff. Maintain **both phase plans AND separate phase results** (existing [Phase1](phases/phase-01/results/README.md), [Phase2](phases/phase-02/results/README.md), [Phase3](phases/phase-03/results/README.md) archives).
 
