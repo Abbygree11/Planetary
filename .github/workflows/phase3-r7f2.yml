@@ -1,0 +1,29 @@
+name: Phase 3R-7F-2 official Flywheel release audit
+on:
+  push:
+    branches: ["2.0"]
+    paths:
+      - "scripts/phase3_r7f2_flywheel_release_probe.py"
+      - ".github/workflows/phase3-r7f2.yml"
+  workflow_dispatch:
+jobs:
+  release-owner:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - name: Verify Maven SHA256, exact JVM owners, source and shader byte streams
+        run: python3 scripts/phase3_r7f2_flywheel_release_probe.py
+      - name: Save original Flywheel 1.0.6 research report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase3-r7f2-flywheel-1-0-6-original
+          path: build/reports/planetary/phase3-r7f2/
+          if-no-files-found: warn
