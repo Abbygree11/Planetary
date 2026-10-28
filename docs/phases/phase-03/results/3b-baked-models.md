@@ -1,5 +1,9 @@
 # Phase 3B — итог исследований: модели, квады, AO/освещение и грани
 
+## 2026-10-29 — `3R-7` whole-phase owner audit: 3B source disposition
+
+The [151-owner audit](../../../research/PHASE3_R7_ALL_151_OWNER_SOURCE_GATE_DISPOSITION_1_21_1.tsv) covers **25 Phase3B owner rows**. Core BakedModel/ModelData/culling/UV/tint/AO source families have bounded original 3R-3B-1/2/3 JVM evidence, but **G01 `B05` independent fluid/transparent renderer producer remains unclassified**; NeoForge liquid extensions and chunk vs camera-space emissions must be source-audited before Phase2 returns. **G03 `B11`** separately requires safe state-vs-pos/BE/world dynamic face-cache and source-vs-neighbor canonical-side contract. An older `B01`/`B02`/`B03`/`B04` `PRIOR` ledger entry should be reconciled to later original JVM tests, not repeated automatically. Actual seam texture errors, 6 faces/12 seams/8 corners and loaded AE2 transparent facade remain the distinct **V OPEN** gate; CI does not imply visual pass. [Full source blockers and packets](../../../research/PHASE3_R7_WHOLE_PHASE_OWNER_SOURCE_GATE_RECONCILIATION_1_21_1.md) give `3R-7F-1` and `3R-7F-3`.
+
 **Статус:** ограниченные исходные пакеты **3R-3B-1, 3R-3B-2, 3R-3B-3** завершены по выбранному original ABI и CI; **вся Phase3 R = OPEN, реальные визуальные тесты V = OPEN**. Пакеты 3B не доказывают устранение дефекта, увиденного в игре.
 
 ## Доказанные механизмы
