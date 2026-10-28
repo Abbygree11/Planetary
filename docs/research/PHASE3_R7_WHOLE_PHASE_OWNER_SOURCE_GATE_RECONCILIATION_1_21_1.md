@@ -1,5 +1,9 @@
 # Planetary — `3R-7`: полнофазный аудит результатов 3A–3E и решение по source gate R
 
+## 2026-10-29 — Subsequent 3R-7F-1 evidence supersedes two SOURCE blocker decisions
+
+**This report remains the immutable 3R-7 historical stage verdict (11 blockers at that time), not the latest gate.** [Original selected 12-class G01/G02 NeoForge JVM CI #40774469160 SUCCESS](https://github.com/Abbygree11/Planetary/actions/runs/40774469160) plus [new original/mod fluid+BEWLR report](PHASE3_R7F1_ORIGINAL_FLUID_TESSELLATION_ITEM_BEWLR_MOD_RENDER_OWNER_1_21_1.md) resolve **B05/G01** and **C05/G02** as bounded source owner research, real mod/GUI/world/game V still OPEN. The latest [151-row effective source gate](PHASE3_R7F1_EFFECTIVE_151_OWNER_SOURCE_GATE_1_21_1.tsv) has **9 R-blocking rows across G03–G06**; [two-row evidence delta](PHASE3_R7F1_SOURCE_GATE_DELTA_1_21_1.tsv) proves what changed, original `3R-7` 151-row matrix and its 151-owner integrity CI remain valid historical snapshot. 46 source guard rows and Iris optional claims await explicit research/disposition. Next `3R-7F-2` exact Flywheel1.0.6 released GPU source/ABI; **R OPEN/V OPEN**.
+
 **Дата:** 2026-10-29 · **ветка:** `2.0` · **цель:** Minecraft 1.21.1 / NeoForge 21.1.215 / Java 21. **Это не реализация.** Цель пакета — проверить, достаточно ли исходных исследований для безопасного возвращения к Phase 2, **не объявляя новые source/game PASS без оригинального подтверждения**.
 
 **Решение:** `3R-7` может завершить **аудит R**, но **full Phase3 research gate R = OPEN** из-за недоисследованных независимых путей рендеринга, точного Flywheel backend, динамической геометрии и очередей reload. **Phase2 visual gate V = OPEN. Возврат в `2.4A` пока запрещён.** Это отличает «исследовательская перепроверка завершена» от «весь этап 3 исследован полностью».
