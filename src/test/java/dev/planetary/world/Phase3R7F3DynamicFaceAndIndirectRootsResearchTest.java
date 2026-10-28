@@ -53,7 +53,7 @@ final class Phase3R7F3DynamicFaceAndIndirectRootsResearchTest {
             "isShapeFullBlock", "mergedFaceOccludes", "skipRendering",
             "hidesNeighborFace", "supportsExternalFaceHiding", "getBlockFloorHeight",
             "getBlockShape", "joinIsNotEmpty", "hasDynamicShape", "getOffset",
-            "hasOffsetFunction", "getBlockEntity", "getModelData");
+            "hasOffsetFunction", "isAbove", "isDescending", "getBlockEntity", "getModelData");
 
     private static Path out(String name) throws Exception {
         Path dir = Path.of(System.getProperty("planetary.phase2.censusReportDir",
