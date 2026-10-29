@@ -1,0 +1,32 @@
+name: Phase 3R-7F-5 published Iris Sodium shader ABI audit
+
+on:
+  push:
+    branches: ["2.0"]
+    paths:
+      - "scripts/research/phase3_r7f5_published_iris_sodium_probe.py"
+      - ".github/workflows/phase3-r7f5.yml"
+  workflow_dispatch:
+
+jobs:
+  original-published-jar-research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Java 21 for original JVM javap
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - name: Verify official Modrinth Iris 1.8.12 and Sodium 0.6.13 binary and inspect shader owners
+        run: python3 scripts/research/phase3_r7f5_published_iris_sodium_probe.py
+      - name: Upload audited original release metadata, JVM evidence, and shaders
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase3-r7f5-published-iris-sodium-evidence
+          path: build/reports/planetary/phase3-r7f5/
+          if-no-files-found: error
