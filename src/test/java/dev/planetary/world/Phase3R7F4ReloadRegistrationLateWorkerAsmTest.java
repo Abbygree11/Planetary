@@ -49,10 +49,10 @@ final class Phase3R7F4ReloadRegistrationLateWorkerAsmTest {
         S, SECTION, SECTION + "$CompileTask", SECTION + "$RebuildTask",
         SECTION + "$ResortTransparencyTask", R + "chunk/SectionCompiler",
         R + "chunk/RenderRegionCache", R + "chunk/RenderChunkRegion",
-        NF + "client/ClientHooks", NF + "client/model/data/ModelDataManager"
+        NF + "client/ClientHooks", NF + "client/model/data/ModelDataManager",
+        NF + "client/event/RegisterClientReloadListenersEvent"
     );
     private static final List<String> OPTIONAL = List.of(
-        NF + "client/event/RegisterClientReloadListenersEvent",
         NF + "client/event/RegisterReloadListenersEvent",
         NF + "event/AddReloadListenerEvent",
         NF + "client/event/ModelEvent$RegisterAdditional",
@@ -185,6 +185,19 @@ final class Phase3R7F4ReloadRegistrationLateWorkerAsmTest {
         member(methods,SECTION+"$RebuildTask","doTask");
         member(methods,S,"uploadAllPendingUploads");
         invoke(calls,LEVEL,"setLevel",GRAPH,"waitAndReset");
+        // Exact direct owners checked against source CI #40953298959
+        // (never infer the *runtime* set of arbitrary mod listeners).
+        invoke(calls,MINECRAFT,"<init>",NF+"client/ClientHooks","initClientHooks");
+        invoke(calls,NF+"client/ClientHooks","initClientHooks",
+                NF+"client/event/RegisterClientReloadListenersEvent","<init>");
+        invoke(calls,NF+"client/event/RegisterClientReloadListenersEvent",
+                "registerReloadListener",RELOADABLE,"registerReloadListener");
+        invoke(calls,GRAPH,"scheduleFullUpdate","java/util/concurrent/ExecutorService","submit");
+        invoke(calls,GRAPH,"waitAndReset","java/util/concurrent/Future","get");
+        invoke(calls,S,"runTask","java/util/concurrent/CompletableFuture","thenCompose");
+        invoke(calls,S,"runTask","java/util/concurrent/CompletableFuture","whenComplete");
+        invoke(calls,SECTION+"$RebuildTask","doTask","java/util/concurrent/CompletableFuture","handle");
+        invoke(calls,S,"uploadAllPendingUploads","java/lang/Runnable","run");
         invoke(calls,BER,"onResourceManagerReload",R+"blockentity/BlockEntityRenderers","createEntityRenderers");
         invoke(calls,S,"dispose",S,"uploadAllPendingUploads");
         invoke(calls,SECTION+"$RebuildTask","doTask",R+"chunk/SectionCompiler","compile");
