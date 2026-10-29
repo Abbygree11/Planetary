@@ -1,0 +1,26 @@
+owner_id	producer_or_path	evidence_grade	contract_or_call	not_yet_proven
+E03	Minecraft client constructor registration	original JVM targeted	ResourceManager registerReloadListener	Current CI original selected JVM; mod callbacks dynamic
+E03	NeoForge client mod registration	branch 1.21.1 source comparator	ClientHooks.initClientHooks -> RegisterClientReloadListenersEvent -> ReloadableResourceManager	Confirm original target JVM after CI
+E03	NeoForge server-only reload registration	branch 1.21.1 source comparator	AddReloadListenerEvent on server reload	Not equivalent to client resources
+E03	Vanilla ModelManager listener	original 3R-6 JVM	ModelManager.reload	actual pack/atlas game V
+E03	Vanilla TextureManager listener	original 3R-6 JVM	TextureManager.reload	actual texture generation V
+E03	BER provider instances recreated	original 3R-4D JVM	BlockEntityRenderDispatcher.onResourceManagerReload -> BlockEntityRenderers.createEntityRenderers	not mod-loaded
+E03	ResourceManager listener register	original 3R-6 JVM	ReloadableResourceManager.registerReloadListener	full set depends on extension registration
+E03	ClientModLoader resource listener	NeoForge branch source comparator	ClientModLoader.begin -> resourceManager registrations	no loaded mods
+E03	ModelDataManager per source Level	original 3R-2L JVM	snapshotSectionRegion + source Level	not deep immutable mod data
+E03	Create visual custom owner	pinned Create6.0.10 source	FlywheelVisual update/delete; ClientContraption separate world	not runtime 21.1.215
+E03	Flywheel original 1.0.6 visual managers	original released 3R-7F-2	reset/delete/LevelAttached queue/resource	GPU execution V OPEN
+E03	AE2 custom model data	pinned AE2 19.2.18 source	FacadeBlockAccess, CableBusBakedModel	not loader/runtime proof
+E10	LevelRenderer world set	original 3R-2M JVM	setLevel -> SectionOcclusionGraph.waitAndReset	name not completion barrier
+E10	Occlusion graph wait and reset method	original selected original 3R-7F-4 pending	SectionOcclusionGraph.waitAndReset	inspect owner ordered bytecode
+E10	Chunk render dispatcher async task	original 3R-2M JVM	runTask -> CompletableFuture.supplyAsync -> thenCompose -> whenComplete	no worker join from this alone
+E10	Queue drain	original 3R-2M JVM	blockUntilClear -> clearBatchQueue	already running task may survive
+E10	Release/dispose pending uploads	original 3R-2M JVM	dispose -> uploadAllPendingUploads	may execute queued uploads
+E10	Rebuild cancellation	original 3R-2M JVM	RebuildTask.cancel AtomicBoolean	cooperative, not thread interruption
+E10	Compilation section model snapshot	original 3R-2L JVM	RenderChunkRegion/ModelData snapshot	source context must be retained
+E10	NeoForge independent section producer	original 3R-5 JVM	AdditionalSectionRenderer.render through ClientHooks	foreign source Level possible
+E10	Compiled section published to renderer	original selected 3R-7F-4 pending	RebuildTask.doTask callbacks + GPU upload	requires original selected path trace
+E10	Per-level epoch model	source-design requirement	source world vs render region and new active ClientLevel	no runtime verification
+E10	Resource generation vs world epoch	source-design requirement	reload/atlas shader buffer lifetime	distinct invalidation owners
+E10	Foreign virtual world teardown	pinned Create/Ponder source	Create VirtualRenderWorld and ContraptionVisual	loaded game V OPEN
+E10	Loaded compatibility tests	not yet tested	Create6.0.10/AE219.2.18/Flywheel1.0.6 target21.1.215	V_OPEN
