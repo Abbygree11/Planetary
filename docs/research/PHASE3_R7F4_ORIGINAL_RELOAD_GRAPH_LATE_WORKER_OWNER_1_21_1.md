@@ -1,5 +1,23 @@
 # Planetary — `3R-7F-4`: G06 client resource reload and late section-worker/occlusion graph source gate
 
+## Verified source evidence — first CI, before exact-assertion follow-up
+
+**First exact-original Java 21 CI [#40953298959 SUCCESS](https://github.com/Abbygree11/Planetary/actions/runs/40953298959) on test source [81268cc](https://github.com/Abbygree11/Planetary/commit/81268cc4cdecd97050d779fe253a1af9a8e84a18).** Independently downloaded artifact **12932821393** ZIP SHA256 **`5a3aaa57b19b3dffab16b5fe19d240427bf5c5b92f6543a7083a30b635231bfa`**, **101** entries overall, six new `3R-7F-4` research reports each hashed. **27 original classfiles (20 required, 7 optional present), 776 declared methods, 5,581 exact JVM calls, 3,702 selected ordered instructions and 37 selected reload/graph call edges.**
+
+| Exact original archive member | SHA256 |
+| --- | --- |
+| phase3-r7f4-original-reload-graph-owners.tsv | `b5b056bc3b836b2ab1cae9a3ea86c70c3a2ef9b8e99dc222773f86790b400e6e` |
+| phase3-r7f4-original-reload-graph-methods.tsv | `06fc300d8c8aa85b1aef7973ac1b8abce21354c4d060f0d46cffab32eb3e6dda` |
+| phase3-r7f4-original-reload-graph-calls.tsv | `1fca4067ba06a4ae34f68636a26bcc2d6ad44953889b7d6eb6370951d9894f63` |
+| phase3-r7f4-original-reload-graph-instructions.tsv | `e03b6b2b60fe985f885d1117306cfb597e8b5b52f6cfc8149c55e5d0fe99ef5e` |
+| phase3-r7f4-original-reload-registration-graph-calls.tsv | `4ffe79677adb1ecdd4744683e2cdbfd6223a68a48ee9da228564ee27b2df918f` |
+| phase3-r7f4-original-reload-graph-summary.txt | `3e9a7177428d04c72cccccb5cd2d46122aa6ed0afa128cf6b949d593fbd4c3a8` |
+
+**Semantics from inspected ORIGINAL ordered JVM instructions:** SectionOcclusionGraph.scheduleFullUpdate invokes ExecutorService.submit (Future); waitAndReset checks its `fullUpdateTask` field, explicitly invokes `Future.get()`, clears task, then when viewArea is non-null creates new GraphState via AtomicReference.set and calls invalidate (null area path clears graph AtomicReference). Thus it **does wait for its own tracked full-update Future**, but does **not** by that call join independent SectionRenderDispatcher CompletableFutures or GPU uploads. Original SectionRenderDispatcher.runTask uses supplyAsync -> thenCompose -> whenComplete, RebuildTask.doTask calls SectionCompiler.compile and CompletableFuture.handle, dispose runs uploadAllPendingUploads, whose body polls queue and calls Runnable.run. Minecraft constructor contains **23** direct ReloadableResourceManager.registerReloadListener calls, one ClientHooks.initClientHooks; target original ClientHooks.initClientHooks creates RegisterClientReloadListenersEvent, which forwards registerReloadListener to ReloadableResourceManager. The separate server-side AddReloadListenerEvent class exists, but no claim that its server-side listener chain has client resource scope.
+
+**Proof strengthening:** follow-up test [d9ddc8c](https://github.com/Abbygree11/Planetary/commit/d9ddc8c94806dd584e625f216907803e6014a6c5) makes nine of these previously independently inspected exact invocation edges mandatory test assertions; [CI #40954240361](https://github.com/Abbygree11/Planetary/actions/runs/40954240361) **PENDING** at this checkpoint. Current active 151 source gate remains 7F-3 until final CI verified. **No loaded client/world/mod/GPU acceptance, no production changes.**
+
+
 **2026-10-29 · branch `2.0` · MC 1.21.1 · NeoForge 21.1.215 · Java 21 · RESEARCH ONLY.**
 **Initial proof status:** exact original test at [81268cc](https://github.com/Abbygree11/Planetary/commit/81268cc4cdecd97050d779fe253a1af9a8e84a18); [original Java21 CI #40953298959](https://github.com/Abbygree11/Planetary/actions/runs/40953298959) **PENDING at initial documentation**. G06 E03/E10 remain blockers until actual original class reports inspected; full R OPEN / real visual V OPEN. No production code, Mixins, fixture worlds or main changes.
 
