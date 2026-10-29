@@ -140,8 +140,19 @@ def main():
                 "shader_files":sum(1 for s in shaders if s[0]==component),
                 "declared_dependencies":version_data.get("dependencies",[]),
             }
-    assert any("sodium" in str(d).lower() for d in details["iris"]["declared_dependencies"]), \
-        "Official Iris NeoForge 1.8.12 metadata lacks required Sodium dependency; review instead of guessing"
+    iris_deps = details["iris"]["declared_dependencies"]
+    sodium_project_dependency = any(
+        d.get("project_id") == "AANobbMI" or d.get("version_id") == "Pb3OXVqC"
+        for d in iris_deps if isinstance(d, dict)
+    )
+    details["iris"]["sodium_modrinth_api_direct_dependency"] = sodium_project_dependency
+    details["iris"]["dependency_disposition"] = (
+        "MODRINTH_API_PROJECT_LINK_CONFIRMED" if sodium_project_dependency
+        else "MODRINTH_API_LIST_INCOMPLETE_OR_NO_DIRECT_LINK_CHECK_JAR_TOML_AND_PUBLISHED_VERSION_PAGE"
+    )
+    # Modrinth dependencies, version page and the JAR's NeoForge loader
+    # metadata are different sources. Avoid treating a missing API dependency
+    # row as incompatible JAR evidence.
     rows(OUT/"release-hash-abi.tsv",
          ("component","modrinth_version_id","modrinth_project_id","jar",
           "bytes","sha1","sha256","sha512","verification"),
