@@ -1,0 +1,29 @@
+owner_id	path_or_producer	evidence_grade	method_or_contract	evidence_scope	outstanding_gate
+D14	Iris published JAR	OFFICIAL_MODRINTH_HASH_AND_JVM	version t3ruzodq; SHA256 3e3f94d2d5cdcb8145c4385d521974aa2d8669b2cc212351f70cf06488182e83	published binary	actual client loader OPEN
+D14	Sodium published JAR	OFFICIAL_MODRINTH_HASH_AND_JVM	version Pb3OXVqC; SHA256 7acd7af2ef75ec883a6872c17494ead65e38025151eb08a1d60e36d34377f403	published binary	actual client loader OPEN
+D14	Modrinth version dependency	OFFICIAL_API	Iris requires Sodium version ID Pb3OXVqC	metadata	no actual mixed startup
+D14	Iris Minecraft range	EXACT_JAR_TOML	[1.21,1.21.1) excluding 1.21.1 upper endpoint	jar metadata	loader acceptance conflict
+D14	Iris advertised version	OFFICIAL_MODRINTH_VERSION_PAGE	1.8.12+1.21.1-neoforge	published release	contradicts embedded jar range
+D14	Iris actual internal version	EXACT_JAR_TOML	1.8.12-snapshot+mc1.21.1-local	jar metadata	differs advertised public version
+D14	Sodium Minecraft loader	EXACT_JAR_TOML	Minecraft=1.21.1 NeoForge=[21.1.82,)	jar metadata	actual client startup not tested
+D14	Iris embedding and conflicts	EXACT_JAR_TOML	Sodium [0.6,) required and Embeddium incompatible	jar metadata	modset loader startup open
+D14	Iris per-dimension pipeline	PUBLISHED_ORIGINAL_JVM_JAVAP	PipelineManager and WorldRenderingPipeline	exact binary	pipeline state dynamic not loaded
+D14	Iris shaderpack stages	PUBLISHED_ORIGINAL_JVM_JAVAP	IrisRenderingPipeline and ShaderPack	exact binary	external shaderpack data not loaded
+D14	Iris shadow renderer	PUBLISHED_ORIGINAL_JVM_JAVAP	ShadowRenderer and shadow program	exact binary	normal/projection camera dynamic OPEN
+D14	Iris composite and render targets	PUBLISHED_ORIGINAL_JVM_JAVAP	CompositeRenderer and RenderTargets	exact binary	shaderpack GBuffer/PBR tests OPEN
+D14	Iris Sodium mod mixin	PUBLISHED_ORIGINAL_JVM_JAVAP	MixinSodiumWorldRenderer references Sodium terrain manager	exact binary	applied Mixin compatibility not tested
+D14	Sodium terrain source	PUBLISHED_ORIGINAL_JVM_JAVAP	BlockRenderer plus ChunkBuilder	exact binary	block local frames and vertex normals OPEN
+D14	Sodium chunk renderer	PUBLISHED_ORIGINAL_JVM_JAVAP	ShaderChunkRenderer plus RenderSectionManager	exact binary	section geometry source getter and GPU V OPEN
+D14	Sodium fluid/shaderpass	PUBLISHED_ORIGINAL_JVM_JAVAP	FluidRenderer and TerrainRenderPass	exact binary	modded fluid/transparent pipeline V OPEN
+D14	Iris Mixin targets	EXACT_JAR_JSON	11 Mixin configs including Sodium compatibility and vertex formats	published archive	not all mixins enabled
+D14	Sodium Mixin targets	EXACT_JAR_JSON	2 Mixin configs common and NeoForge	published archive	not all mixins enabled
+D14	Sodium block GLSL	PUBLISHED_ORIGINAL_SHADER_RESOURCE	block_layer_opaque.vsh/fsh, chunk_vertex.glsl, chunk_matrices.glsl	published archive	no shader execution or normal truth
+D14	Iris shader resources	PUBLISHED_ORIGINAL_SHADER_RESOURCE	centerDepth and colorSpace	published archive	not loaded OptiFine shaderpacks
+E22	Iris shader generation	PUBLISHED_ORIGINAL_JVM_JAVAP	PipelineManager versionCounterForSodiumShaderReload	exact binary	world/resource epoch lifecycle V OPEN
+E22	Iris dimension pipeline	PUBLISHED_ORIGINAL_JVM_JAVAP	pipelinesPerDimension and preparePipeline	exact binary	virtual-world source identity OPEN
+E22	Sodium buffer backend	PUBLISHED_ORIGINAL_JVM_JAVAP	GlProgram and ShaderChunkRenderer	exact binary	GL driver fences V OPEN
+E22	Sodium chunk compilation	PUBLISHED_ORIGINAL_JVM_JAVAP	ChunkBuilder / RenderSectionManager	exact binary	async job epoch publication V OPEN
+E22	Sodium vertex storage	PUBLISHED_ORIGINAL_JVM_JAVAP	VertexSerializer / RenderDevice	exact binary	normal orientation/vertex space V OPEN
+E22	Flywheel instance normal	EXACT_PUBLISHED_FLYWHEEL_JVM_3R7F2	pose + inverse-transpose or explicit matrix	existing 3R-7F-2	simultaneous Iris/Sodium/Flywheel GPU V OPEN
+E22	Modded Create visual source	PINNED_RELEASE_CREATE_SOURCE_3R5	VirtualRenderWorld + independent Flywheel visual instances	pinned source comparator	loader compatibility with NeoForge21.1.215 V OPEN
+E22	Real loaded shaderpack test	NOT_PERFORMED	shader OFF/ON, PBR normal shadow/transparency; +Y noPlanet 6/12/8	future V	no runtime shaders proven

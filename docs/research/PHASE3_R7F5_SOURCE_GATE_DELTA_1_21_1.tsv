@@ -1,0 +1,3 @@
+id	previous_status	new_status	source_evidence	outstanding_gate
+D14	OPTIONAL_SHADER_SOURCE_SCOPE_UNVERIFIED	BOUNDED_SHADER_BINARY_RESEARCH_PASS_LOADER_CONFLICT_V_OPEN	CI40961707969: official SHA1/SHA512 release + original 20 JVM classes / Mixin & shader resources	JAR Iris MC upper-exclusive [1.21,1.21.1) loader acceptance and actual loaded shader gameplay V_OPEN
+E22	OPTIONAL_SHADER_SOURCE_SCOPE_UNVERIFIED	BOUNDED_SHADER_BINARY_RESEARCH_PASS_LOADER_CONFLICT_V_OPEN	CI40961707969: official SHA1/SHA512 release + original 20 JVM classes / Mixin & shader resources	JAR Iris MC upper-exclusive [1.21,1.21.1) loader acceptance and actual loaded shader gameplay V_OPEN
