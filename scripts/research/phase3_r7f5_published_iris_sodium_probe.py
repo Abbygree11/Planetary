@@ -9,6 +9,7 @@ import re
 import subprocess
 import sys
 import time
+import tomllib
 import urllib.request
 from pathlib import Path
 from zipfile import ZipFile
@@ -98,6 +99,25 @@ def main():
             for p in mods_toml:
                 raw = z.read(p).decode("utf-8", "replace")
                 metadata.append((component, p, digest(z.read(p)), raw.replace("\n", "\\n")[:12000]))
+                actual_toml = tomllib.loads(raw)
+                actual_mods = actual_toml.get("mods", [])
+                assert actual_mods and actual_mods[0].get("modId") == component, (component, actual_mods)
+                mc_deps = [row for row in actual_toml.get("dependencies", {}).get(component, [])
+                           if row.get("modId") == "minecraft"]
+                nf_deps = [row for row in actual_toml.get("dependencies", {}).get(component, [])
+                           if row.get("modId") == "neoforge"]
+                sn_deps = [row for row in actual_toml.get("dependencies", {}).get(component, [])
+                           if row.get("modId") == "sodium"]
+                details.setdefault(component, {})["jar_declared_mod_version"] = actual_mods[0].get("version")
+                details[component]["jar_minecraft_version_ranges"] = [d.get("versionRange") for d in mc_deps]
+                details[component]["jar_neoforge_version_ranges"] = [d.get("versionRange") for d in nf_deps]
+                details[component]["jar_sodium_version_ranges"] = [d.get("versionRange") for d in sn_deps]
+                details[component]["loader_metadata_scope_warning"] = (
+                    "PUBLISHED_PAGE_LISTS_1_21_1_BUT_JAR_DECLARED_MINECRAFT_UPPER_EXCLUSIVE_1_21_1"
+                    if component == "iris" and any(
+                        d.get("versionRange") == "[1.21,1.21.1)" for d in mc_deps)
+                    else "NO_OBVIOUS_UPPER_EXCLUSIVE_1_21_1_CONFLICT_IN_SELECTED_METADATA"
+                )
             json_configs = [p for p in all_paths if p.endswith(".json") and "mixin" in p.lower()]
             for p in sorted(json_configs):
                 content = z.read(p)
@@ -129,7 +149,7 @@ def main():
                 original= z.read(p)
                 selected.append((component,p,digest(original),len(original),"ORIGINAL_RELEASE_CLASSFILE_JAVAP"))
                 javap_parts.append("===== "+component+" "+javaclass+" =====\n"+cp.stdout)
-            details[component] = {
+            details[component].update({
                 "jar": filename,
                 "version_id":version,
                 "sha256":digest(data),
@@ -139,7 +159,7 @@ def main():
                 "mixin_config_count":len(json_configs),
                 "shader_files":sum(1 for s in shaders if s[0]==component),
                 "declared_dependencies":version_data.get("dependencies",[]),
-            }
+            })
     iris_deps = details["iris"]["declared_dependencies"]
     sodium_project_dependency = any(
         d.get("project_id") == "AANobbMI" or d.get("version_id") == "Pb3OXVqC"
