@@ -1,0 +1,28 @@
+name: Planetary Phase 3R-7G full 151-owner research gate provenance
+
+on:
+  push:
+    branches: ["2.0"]
+    paths:
+      - "scripts/research/phase3_r7g_full_151_owner_gate_audit.py"
+      - "docs/research/PHASE3_R7G_*.tsv"
+      - ".github/workflows/phase3-r7g.yml"
+  workflow_dispatch:
+
+jobs:
+  verify-research-owner-coverage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify all 151 Phase3 mechanism owners and source anchor grades
+        run: python3 scripts/research/phase3_r7g_full_151_owner_gate_audit.py
+      - name: Upload auditable owner-by-owner SHA and source guard disposition reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase3-r7g-151-owner-source-audit
+          path: build/reports/planetary/phase3-r7g/
+          if-no-files-found: error
