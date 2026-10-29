@@ -1,5 +1,30 @@
 # Planetary — `3R-7F-4`: G06 client resource reload and late section-worker/occlusion graph source gate
 
+## Final 3R-7F-4 — 4/4 exact original source PASS, strengthened CI independently verified
+
+**Second authoritative exact Java 21 [CI #40954240361 SUCCESS](https://github.com/Abbygree11/Planetary/actions/runs/40954240361)** on strengthened test source [d9ddc8c](https://github.com/Abbygree11/Planetary/commit/d9ddc8c94806dd584e625f216907803e6014a6c5). It additionally asserts ORIGINAL method-owner -> target exact JVM edges for `Minecraft.<init> → ClientHooks.initClientHooks`, `ClientHooks.initClientHooks → RegisterClientReloadListenersEvent.<init>`, `RegisterClientReloadListenersEvent.registerReloadListener → ReloadableResourceManager.registerReloadListener`, `SectionOcclusionGraph.scheduleFullUpdate → ExecutorService.submit`, `SectionOcclusionGraph.waitAndReset → Future.get`, `SectionRenderDispatcher.runTask → CompletableFuture.thenCompose/whenComplete`, `RebuildTask.doTask → CompletableFuture.handle`, and `uploadAllPendingUploads → Runnable.run`. Source-only, original JVM selected owners: **27 classfiles (21 mandatory + 6 optional), 776 declared methods, 5,581 direct calls, 3,702 selected ordered instructions, 37 reload/graph-related edges**. Full original Java21 compilation and JUnit suite SUCCESS.
+
+Independently downloaded artifact **12931914563**, ZIP SHA256 **`dbe2a8335a4f96cbfee656a75ed4eaed865b5072c28a657242dc08d454485cd2`**, 101 entries overall; all six new stage files checked separately:
+
+| Exact original 3R-7F-4 report | SHA256 |
+| --- | --- |
+| `phase3-r7f4-original-reload-graph-owners.tsv` | `d5c2fcc506bf78d9a58b92e914567d9d608883277db749e6bad42dbead75c7ca` |
+| `phase3-r7f4-original-reload-graph-methods.tsv` | `06fc300d8c8aa85b1aef7973ac1b8abce21354c4d060f0d46cffab32eb3e6dda` |
+| `phase3-r7f4-original-reload-graph-calls.tsv` | `1fca4067ba06a4ae34f68636a26bcc2d6ad44953889b7d6eb6370951d9894f63` |
+| `phase3-r7f4-original-reload-graph-instructions.tsv` | `e03b6b2b60fe985f885d1117306cfb597e8b5b52f6cfc8149c55e5d0fe99ef5e` |
+| `phase3-r7f4-original-reload-registration-graph-calls.tsv` | `4ffe79677adb1ecdd4744683e2cdbfd6223a68a48ee9da228564ee27b2df918f` |
+| `phase3-r7f4-original-reload-graph-summary.txt` | `212e7b7e71d50091a2cfe40e3b24ab791d9910c4a43a5a6355f1bc586d1dd2ed` |
+
+**Precise original semantics:**
+
+1. E03: `Minecraft.<init>` contains **23 direct** `ReloadableResourceManager.registerReloadListener` callsites (not a count of unique installed mod listeners). `ClientHooks.initClientHooks` constructs `RegisterClientReloadListenersEvent`; the event's registration method delegates to the same resource manager. Client vs server reload remain independent. `ModelManager.reload`, `TextureManager.reload` and `BlockEntityRenderDispatcher.onResourceManagerReload → BlockEntityRenderers.createEntityRenderers` retain distinct resource/BER generations. Mod callbacks are extensible: **not** a globally enumerable all-mod whitelist.
+2. E10: `SectionOcclusionGraph.scheduleFullUpdate` calls `ExecutorService.submit` and stores a fullUpdateTask `Future`; `waitAndReset` **explicitly calls `Future.get()`** for that tracked graph job, clears the future and replaces/invalidates graph state. Contrary to a blanket nonblocking inference, it **does wait for its own graph full-update future**, but **does not** join unrelated `SectionRenderDispatcher.runTask` futures, `RebuildTask.doTask` handlers or backend GPU fences. `runTask` uses supplyAsync/thenCompose/whenComplete; `RebuildTask.doTask` invokes SectionCompiler.compile and CompletableFuture.handle. `SectionRenderDispatcher.dispose` drains queued tasks then executes uploadAllPendingUploads, which invokes pending Runnable.run. No real-world stale publication is claimed.
+
+**Bounded source-gate result:** G06 E03/E10 now **BOUNDED_R_SOURCE_PASS_V_OPEN**, using original release bytecode and pinned comparative NeoForge mod hooks; practical future adapter contract is separate world/section-task/resource/visual generations, source-correct Level/region and safe deferred publish/retirement. **No production implementation, no applied Mixin, no GPU/loaded mod/game V PASS.** The new [effective exact 151-row source gate](PHASE3_R7F4_EFFECTIVE_151_OWNER_SOURCE_GATE_1_21_1.tsv) changes only E03/E10; [two-row delta](PHASE3_R7F4_SOURCE_GATE_DELTA_1_21_1.tsv) proves the transition. Historical snapshots remain immutable. **Named source blockers 2 → 0; whole R still OPEN** pending **46 individual final source guards and 2 optional Iris/Sodium G07 shader claims**, plus other historical-source dispositions in `3R-7G`. **Real visual gate V OPEN** for modset loading and all six faces, twelve seams, eight corners, +Y/noPlanet, reload/world-switch timing.
+
+**Next:** for maximum planned third-party compatibility perform optional **`3R-7F-5` Iris/Sodium shader source ABI** before `3R-7G` 151-row research gate reconciliation. Only after R legitimately closes apply minimal Phase2 shared rendering fixes, run real mod-loaded V, and resume `2.4A`.
+
+
 ## Verified source evidence — first CI, before exact-assertion follow-up
 
 **First exact-original Java 21 CI [#40953298959 SUCCESS](https://github.com/Abbygree11/Planetary/actions/runs/40953298959) on test source [81268cc](https://github.com/Abbygree11/Planetary/commit/81268cc4cdecd97050d779fe253a1af9a8e84a18).** Independently downloaded artifact **12932821393** ZIP SHA256 **`5a3aaa57b19b3dffab16b5fe19d240427bf5c5b92f6543a7083a30b635231bfa`**, **101** entries overall, six new `3R-7F-4` research reports each hashed. **27 original classfiles (20 required, 7 optional present), 776 declared methods, 5,581 exact JVM calls, 3,702 selected ordered instructions and 37 selected reload/graph call edges.**

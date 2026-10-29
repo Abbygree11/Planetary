@@ -1,0 +1,3 @@
+id	previous_audit_disposition	new_audit_disposition	exact_original_evidence	remaining_gate
+E03	BLOCKS_R_SOURCE_GATE	BOUNDED_R_SOURCE_PASS_V_OPEN	CI40954240361 original 27 classfiles, exact client listener/graph Future/dispatcher edges, independently SHA256 checked	V_GAME_OR_MOD_LOADED_AND_3R7G_SOURCE_GUARDS
+E10	BLOCKS_R_SOURCE_GATE	BOUNDED_R_SOURCE_PASS_V_OPEN	CI40954240361 original 27 classfiles, exact client listener/graph Future/dispatcher edges, independently SHA256 checked	V_GAME_OR_MOD_LOADED_AND_3R7G_SOURCE_GUARDS
